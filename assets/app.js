@@ -194,8 +194,8 @@
           ]) },
         { id: "xg", vlan: "management", name: "USW-Pro-XG-24-PoE", loc: "Rack Cabinet", href: UI + "usw-pro-xg-24-poe", info: "2×SFP28 + 8×2.5G PoE+++ + 16×10G PoE+++. Unused ports hollow.",
           poeBar: { modes: [
-            { label: "PoE Power Used · Garage Flex on AC", used: 463.5, cap: 720 },
-            { label: "PoE Power Used · Garage Flex on PoE+++", used: 532.9, cap: 720 }
+            { label: "PoE Output Used · Garage Flex on AC", used: 463.5, cap: 720 },
+            { label: "PoE Output Used · Garage Flex on PoE+++", used: 532.9, cap: 720 }
           ] },
           up: [
             P("xg-sfp", "sfp", { t: "SFP28", title: "SFP28 ← UACC-DAC-SFP10 at 10G" }),
@@ -239,7 +239,8 @@
             { name: "Connect ZBT-2 · Zigbee", href: "https://www.home-assistant.io/connect/zbt-2/" },
             { name: "Connect ZBT-2 · Thread", href: "https://www.home-assistant.io/connect/zbt-2/" }
           ],
-          poeBar: { used: 30, cap: 90 },
+          /* Cap is min(device port class, upstream port class): PoE++ 60W vs XG PoE+++ 90W. */
+          poeBar: { used: 30, cap: 60 },
           up: [
             P("ha-up", "gbe2p5", { poe: "pp", title: "2.5G PoE++ IN" })
           ].concat(idleMany(3, "ha-lan", "gbe2p5", { title: "2.5G LAN unused", idle: true })),
@@ -255,13 +256,13 @@
             P("ha-com", "other", { t: "COM", title: "RS232 unused", idle: true })
           ] },
         { id: "u7b", vlan: "management", name: "U7-Pro", loc: "Basement", href: UI + "u7-pro", info: "2.5G PoE+ from Pro XG.",
-          poeBar: { used: 21, cap: 90 },
+          poeBar: { used: 21, cap: 30 },
           up: [P("u7b-up", "gbe2p5", { poe: "plus", title: "2.5G PoE+" })], down: [] },
         { id: "u7m", vlan: "management", name: "U7-Pro", loc: "Main", href: UI + "u7-pro", info: "2.5G PoE+ from Pro XG.",
-          poeBar: { used: 21, cap: 90 },
+          poeBar: { used: 21, cap: 30 },
           up: [P("u7m-up", "gbe2p5", { poe: "plus", title: "2.5G PoE+" })], down: [] },
         { id: "u7u", vlan: "management", name: "U7-Pro", loc: "Upper", href: UI + "u7-pro", info: "2.5G PoE+ from Pro XG.",
-          poeBar: { used: 21, cap: 90 },
+          poeBar: { used: 21, cap: 30 },
           up: [P("u7u-up", "gbe2p5", { poe: "plus", title: "2.5G PoE+" })], down: [] },
         { id: "drop-media-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to XG.",
           up: [P("drop-media-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
@@ -270,7 +271,8 @@
           up: [P("drop-media-up", "gbe10", { poe: "ppp", title: "10G ← Pro XG" })],
           down: [P("drop-media-dn", "gbe10", { poe: "ppp", title: "10G PoE+++ pass-through → Flex 2.5G at PoE+", child: "media-flex" })] },
         { id: "media-flex", vlan: "management", ltr: true, name: "USW-Flex-2.5G-8", loc: "Basement/Media Room", href: "https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", info: "Non-PoE model. C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45/SFP+ combo uplink and PoE+ input. Eight 2.5G downlinks have no PoE output.",
-          devicePower: { value: "14W" },
+          /* No PoE output, so it reads as a plain PD: draw against its PoE+ input. */
+          poeBar: { used: 14, cap: 30 },
           up: [
             P("media-flex-up", "gbe10", { poe: "plus", title: "10G RJ45 uplink · PoE+ input" }),
             P("media-flex-sfp", "sfp", { t: "SFP+", title: "SFP+ combo alternative · unused", idle: true })
@@ -309,7 +311,8 @@
 
         { id: "front-mini", vlan: "security", tb: true, name: "UA-Hub-Door-Mini", loc: "Front Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE+ → Entry and Frontyard Turret. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
-          poeBar: { label: "PoE Power Used", used: 33, cap: 45 },
+          /* Datasheet limit: 45W aggregated across the hub's PoE outputs. */
+          poeBar: { label: "PoE Output Used", used: 33, cap: 45 },
           up: [P("front-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
           down: [
             P("front-mini-poe1", "gbe1", { poe: "plus", title: "PoE+ → Entry", child: "front-entry" }),
@@ -326,7 +329,7 @@
 
         { id: "mud-mini", vlan: "security", tb: true, name: "UA-Hub-Door-Mini", loc: "Main/Mud/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → G3 and Backyard Turret. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
-          poeBar: { label: "PoE Power Used", used: 20, cap: 45 },
+          poeBar: { label: "PoE Output Used", used: 20, cap: 45 },
           up: [P("mud-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
           down: [
             P("mud-mini-poe1", "gbe1", { poe: "plus", title: "1G PoE+ port → UA-G3 at 100M PoE", child: "mud-g3" }),
@@ -336,14 +339,14 @@
             P("mud-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "mud-strike" })
           ] },
         { id: "mud-g3", vlan: "security", tb: true, hideLoc: true, name: "UA-G3", loc: "Main/Mud/Back Door", href: UI + "ua-g3", info: "PoE from Mud Mini.",
-          poeBar: { used: 5, cap: 30 },
+          poeBar: { used: 5, cap: 15.4 },
           up: [P("mud-g3-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
         { id: "mud-strike", tb: true, hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Main/Mud/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Mud Mini.",
           up: [P("mud-strike-dps", "other", { t: "DPS", title: "DPS" }), P("mud-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
 
         { id: "din-mini", vlan: "security", tb: true, name: "UA-Hub-Door-Mini", loc: "Main/Dining/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → G3 and Walkway Bullet. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
-          poeBar: { label: "PoE Power Used", used: 20, cap: 45 },
+          poeBar: { label: "PoE Output Used", used: 20, cap: 45 },
           up: [P("din-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
           down: [
             P("din-mini-poe1", "gbe1", { poe: "plus", title: "1G PoE+ port → UA-G3 at 100M PoE", child: "din-g3" }),
@@ -353,14 +356,14 @@
             P("din-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "din-strike" })
           ] },
         { id: "din-g3", vlan: "security", tb: true, hideLoc: true, name: "UA-G3", loc: "Main/Dining/Back Door", href: UI + "ua-g3", info: "PoE from Dining Mini.",
-          poeBar: { used: 5, cap: 30 },
+          poeBar: { used: 5, cap: 15.4 },
           up: [P("din-g3-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
         { id: "din-strike", tb: true, hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Main/Dining/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Dining Mini.",
           up: [P("din-strike-dps", "other", { t: "DPS", title: "DPS" }), P("din-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
 
         { id: "bsmt-mini", vlan: "security", tb: true, name: "UA-Hub-Door-Mini", loc: "Basement/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → G3 and Courtyard Turret. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
-          poeBar: { label: "PoE Power Used", used: 20, cap: 45 },
+          poeBar: { label: "PoE Output Used", used: 20, cap: 45 },
           up: [P("bsmt-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
           down: [
             P("bsmt-mini-poe1", "gbe1", { poe: "plus", title: "1G PoE+ port → UA-G3 at 100M PoE", child: "bsmt-g3" }),
@@ -370,13 +373,13 @@
             P("bsmt-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "bsmt-strike" })
           ] },
         { id: "bsmt-g3", vlan: "security", tb: true, hideLoc: true, name: "UA-G3", loc: "Basement/Back Door", href: UI + "ua-g3", info: "PoE from Basement Mini.",
-          poeBar: { used: 5, cap: 30 },
+          poeBar: { used: 5, cap: 15.4 },
           up: [P("bsmt-g3-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
         { id: "bsmt-strike", tb: true, hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Basement/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Basement Mini.",
           up: [P("bsmt-strike-dps", "other", { t: "DPS", title: "DPS" }), P("bsmt-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
 
         { id: "view", vlan: "security", name: "UP-Viewport", loc: "Main/Kitchen", href: UI + "ufp-viewport", info: "1G PoE from Pro XG.",
-          poeBar: { used: 9.5, cap: 90 },
+          poeBar: { used: 9.5, cap: 15.4 },
           up: [P("view-up", "gbe1", { poe: "poe", title: "1G PoE" })], down: [] },
         { id: "cam-fy", vlan: "security", tb: true, name: "UVC-G6-Pro-Turret", loc: "Frontyard/Front Eave/North East", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Front Door Mini.",
           poeBar: { used: 15, cap: 30 },
@@ -426,11 +429,11 @@
             P("flex-x4", "gbe2p5", { poe: "pp", title: "2.5G PoE++ unused", idle: true })
           ] },
         { id: "lite", vlan: "management", ltr: true, name: "U7-Lite", loc: "Garage", href: UI + "u7-lite", info: "2.5G PoE from Flex.",
-          poeBar: { used: 13, cap: 60 },
+          poeBar: { used: 13, cap: 15.4 },
           up: [P("lite-up", "gbe2p5", { poe: "poe", title: "2.5G PoE" })], down: [] },
         { id: "gar-mini", vlan: "security", ltr: true, name: "UA-Hub-Door-Mini", loc: "Garage Door", href: UI + "ua-hub-door-mini", info: "Uplink from Flex. PoE → G3 and Laneway Turret. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
-          poeBar: { label: "PoE Power Used", used: 20, cap: 45 },
+          poeBar: { label: "PoE Output Used", used: 20, cap: 45 },
           up: [P("gar-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
           down: [
             P("gar-mini-poe1", "gbe1", { poe: "plus", title: "1G PoE+ port → UA-G3 at 100M PoE", child: "gar-g3" }),
@@ -440,18 +443,18 @@
             P("gar-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "gar-strike" })
           ] },
         { id: "gar-g3", vlan: "security", ltr: true, hideLoc: true, name: "UA-G3", loc: "Garage Door", href: UI + "ua-g3", info: "PoE from Garage Mini.",
-          poeBar: { used: 5, cap: 30 },
+          poeBar: { used: 5, cap: 15.4 },
           up: [P("gar-g3-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
         { id: "gar-strike", ltr: true, hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Garage Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Garage Mini.",
           up: [P("gar-strike-dps", "other", { t: "DPS", title: "DPS" }), P("gar-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
-        { id: "walk", vlan: "security", tb: true, name: "UVC-G6-Pro-Bullet", loc: "Walkway/Balcony Eave/North East", href: UI + "uvc-g6-pro-bullet", info: "1G PoE+ from Dining Door Mini.",
+        { id: "walk", vlan: "security", tb: true, name: "UVC-G6-Pro-Bullet", loc: "Walkway/Balcony Eave/South East", href: UI + "uvc-g6-pro-bullet", info: "1G PoE+ from Dining Door Mini.",
           poeBar: { used: 15, cap: 30 },
           up: [P("walk-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
         { id: "lane", vlan: "security", ltr: true, name: "UVC-G6-Pro-Turret", loc: "Laneway/Garage/South", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Garage Door Mini.",
           poeBar: { used: 15, cap: 30 },
           up: [P("lane-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
         { id: "usl", vlan: "iot", ltr: true, name: "USL-Gateway", loc: "Garage", href: UI + "usl-gateway", info: "100M PoE from Flex.",
-          poeBar: { used: 3.4, cap: 60 },
+          poeBar: { used: 3.4, cap: 15.4 },
           up: [P("usl-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
         { id: "pw-lead", vlan: "iot", ltr: true, name: "Tesla Powerwall 3 (Leader)", loc: "Garage", href: "https://www.tesla.com/powerwall", info: "LAN from Flex. ETH → Follower. CAN → GW3.",
           up: [P("pw-lead-lan", "gbe1", { title: "1G ← Flex" })],
@@ -1001,12 +1004,14 @@
             port.style.left = "";
             port.style.top = "";
             port.style.transform = "";
+            port.style.translate = "";
           });
           Array.prototype.forEach.call(el.querySelectorAll("[data-port]"), function (port) {
             port.style.position = "";
             port.style.left = "";
             port.style.top = "";
             port.style.transform = "";
+            port.style.translate = "";
           });
         });
         normalizeDoorHubPoeWidths();
@@ -1423,6 +1428,25 @@
         centerXgVisiblePortBand("right");
       }
 
+      /*
+       * Rendered bottom of a whole branch, kept in sub-pixel space. offsetHeight
+       * rounds, and a rounded parent leaves a visible step against its deepest
+       * child once the sheet prints as vector instead of as a blurred bitmap.
+       */
+      function renderedTreeBottom(id) {
+        var el = els[id];
+        if (!el) return 0;
+        var bottom = el.getBoundingClientRect().bottom;
+        stageKids(id).forEach(function (childId) {
+          bottom = Math.max(bottom, renderedTreeBottom(childId));
+        });
+        var backupId = pairedBackupId(id);
+        if (backupId && els[backupId]) {
+          bottom = Math.max(bottom, els[backupId].getBoundingClientRect().bottom);
+        }
+        return bottom;
+      }
+
       function containPinnedSlots(id, axis) {
         var el = els[id];
         if (!el) return;
@@ -1446,14 +1470,31 @@
         Array.prototype.forEach.call(items, function (item) {
           maxBottom = Math.max(maxBottom, item.getBoundingClientRect().bottom);
         });
-        if (id === "flex") {
-          stageKids(id).forEach(function (childId) {
-            if (els[childId]) maxBottom = Math.max(maxBottom, els[childId].getBoundingClientRect().bottom);
-          });
-        }
-        var bottomPad = id === "flex" ? 0 : (parseFloat(cs.paddingBottom) || 0);
+        /*
+         * Every fanout closes on its own subtree, not just flex: the parent's
+         * bottom border and the deepest descendant's have to resolve to one
+         * line. The height stays unrounded for the same reason.
+         */
+        var subtreeBottom = 0;
+        stageKids(id).forEach(function (childId) {
+          subtreeBottom = Math.max(subtreeBottom, renderedTreeBottom(childId));
+        });
+        var bottomPad = subtreeBottom ? 0 : (parseFloat(cs.paddingBottom) || 0);
         var targetHeight = maxBottom - er.top + bottomPad;
-        el.style.height = (id === "flex" ? Math.round(targetHeight) : Math.ceil(targetHeight)) + "px";
+        if (subtreeBottom) {
+          /* Start on Blink's 1/64px layout grid, then correct against the used
+             rectangle. The second step removes the one-grid-step over/under
+             shoot that can otherwise survive after nested fanouts reflow. */
+          var exact = Math.max(targetHeight, subtreeBottom - er.top);
+          el.style.height = (Math.ceil(exact * 64) / 64) + "px";
+          var used = el.getBoundingClientRect();
+          var correction = subtreeBottom - used.bottom;
+          if (Math.abs(correction) >= 0.001) {
+            el.style.height = (used.height + correction) + "px";
+          }
+          return;
+        }
+        el.style.height = Math.ceil(targetHeight) + "px";
       }
 
       function pinTrailingIdleSlots(id, col, slots, suppliedSpecs, suppliedGap) {
@@ -1501,7 +1542,9 @@
           var probe = slot.querySelector("[data-port]");
           if (!p || !probe) return;
           var pr = p.getBoundingClientRect();
-          var off = probe.offsetTop + probe.offsetHeight / 2;
+          var sr = slot.getBoundingClientRect();
+          var probeRect = probe.getBoundingClientRect();
+          var off = probeRect.top + probeRect.height / 2 - sr.top;
           var top = pr.top + pr.height / 2 - cr.top - off;
           slot.style.top = top + "px";
           used.push({ i: i, top: top, sh: slot.offsetHeight || 17 });
@@ -1584,7 +1627,9 @@
           var probe = slot.querySelector("[data-port]");
           if (!p || !probe) return;
           var pr = p.getBoundingClientRect();
-          var off = probe.offsetLeft + probe.offsetWidth / 2;
+          var sr = slot.getBoundingClientRect();
+          var probeRect = probe.getBoundingClientRect();
+          var off = probeRect.left + probeRect.width / 2 - sr.left;
           var left = pr.left + pr.width / 2 - cr.left - off;
           slot.style.left = left + "px";
           used.push({ i: i, left: left, sw: slot.offsetWidth || 28 });
@@ -1791,25 +1836,42 @@
         var targetBottom = els.xg.getBoundingClientRect().bottom;
         var stageRect = stage.getBoundingClientRect();
         var scaleY = stage.offsetHeight ? stageRect.height / stage.offsetHeight : 1;
-        function renderedBottom(id) {
-          var bottom = els[id].getBoundingClientRect().bottom;
-          stageKids(id).forEach(function (childId) {
-            bottom = Math.max(bottom, renderedBottom(childId));
-          });
-          var backupId = pairedBackupId(id);
-          if (backupId && els[backupId]) {
-            bottom = Math.max(bottom, els[backupId].getBoundingClientRect().bottom);
-          }
-          return bottom;
-        }
         ["left", "right"].forEach(function (side) {
           var roots = xgBranchSlots(side).filter(function (slot) { return slot.child; });
           if (!roots.length) return;
           var bottom = Math.max.apply(null, roots.map(function (slot) {
-            return renderedBottom(slot.child);
+            return renderedTreeBottom(slot.child);
           }));
           var dy = (targetBottom - bottom) / scaleY;
           roots.forEach(function (slot) { shiftXgBranch(slot.child, dy); });
+        });
+      }
+
+      /*
+       * Child spacing is adjusted more than once during a dense relayout. Close
+       * every nested LTR fanout after those moves, deepest first, so each frame
+       * shares its final bottom coordinate with its subtree before XG aligns
+       * the two sides.
+       */
+      function reconcileFanoutBottoms() {
+        function depth(id) {
+          var kids = stageKids(id);
+          if (!kids.length) return 0;
+          return 1 + Math.max.apply(null, kids.map(depth));
+        }
+        var ids = Object.keys(els).filter(function (id) {
+          return isLTRFanout(id) && stageKids(id).length;
+        }).sort(function (a, b) {
+          return depth(b) - depth(a);
+        });
+        ids.forEach(function (id) {
+          var target = Math.max.apply(null, stageKids(id).map(renderedTreeBottom));
+          var el = els[id];
+          var used = el.getBoundingClientRect();
+          var delta = target - used.bottom;
+          if (Math.abs(delta) >= 0.001) {
+            el.style.height = (used.height + delta) + "px";
+          }
         });
       }
 
@@ -2046,6 +2108,69 @@
         return isTB(fromId) && isTB(toId);
       }
 
+      function linkRunsVertical(link) {
+        var route = link.getAttribute("data-route");
+        return route === "vertical" ||
+          (route !== "horizontal" &&
+            linkIsVertical(link.getAttribute("data-from"), link.getAttribute("data-to")));
+      }
+
+      /*
+       * Centre of a port chip as it will be painted: Blink snaps a box to whole
+       * pixels, so the painted centre is round(edge) + half the box.
+       */
+      function snappedPortCenter(el) {
+        var center = pt(el);
+        var rect = el.getBoundingClientRect();
+        var halfW = rect.width / 2;
+        var halfH = rect.height / 2;
+        return {
+          x: Math.round(center.x - halfW) + halfW,
+          y: Math.round(center.y - halfH) + halfH
+        };
+      }
+
+      /*
+       * A connection is one straight horizontal or vertical segment. Therefore
+       * collinearity is a layout invariant, not something paintLinks() can hide
+       * with a bend. Move only the source port glyph (and its count, when any)
+       * by the residual amount after all boxes and slots settle.
+       *
+       * The nudge is measured between snapped centres, which makes it a whole
+       * number of pixels. A transform is applied after Blink snaps the box, so a
+       * fractional nudge would push the chip off the pixel grid that
+       * paintLinks() rounds cable endpoints onto.
+       */
+      function alignLinkedPortAxes() {
+        var offsets = new Map();
+        linkEls.forEach(function (link) {
+          var port = portEl(link.getAttribute("data-from-port"));
+          if (!port) return;
+          var mover = port.closest(".topo-counted-port") || port;
+          if (!offsets.has(mover)) offsets.set(mover, { x: 0, y: 0 });
+          mover.style.translate = "";
+        });
+
+        for (var pass = 0; pass < 2; pass++) {
+          linkEls.forEach(function (link) {
+            var source = portEl(link.getAttribute("data-from-port"));
+            var target = portEl(link.getAttribute("data-to-port"));
+            if (!source || !target) return;
+            var mover = source.closest(".topo-counted-port") || source;
+            var offset = offsets.get(mover) || { x: 0, y: 0 };
+            var sourceCenter = snappedPortCenter(source);
+            var targetCenter = snappedPortCenter(target);
+            if (linkRunsVertical(link)) {
+              offset.x += targetCenter.x - sourceCenter.x;
+            } else {
+              offset.y += targetCenter.y - sourceCenter.y;
+            }
+            offsets.set(mover, offset);
+            mover.style.translate = offset.x + "px " + offset.y + "px";
+          });
+        }
+      }
+
       function paintLinks() {
         fitStage();
         var w = stage.offsetWidth, h = stage.offsetHeight;
@@ -2058,23 +2183,30 @@
           if (!a || !b) return;
           var sc = pt(a);
           var ec = pt(b);
-          var route = link.getAttribute("data-route");
-          var vertical = route === "vertical" || (route !== "horizontal" && linkIsVertical(link.getAttribute("data-from"), link.getAttribute("data-to")));
+          var vertical = linkRunsVertical(link);
           var s, e, d;
+          /*
+           * alignLinkedPortAxes() guarantees collinearity, so one segment is
+           * enough: no diagonal, elbow or jog is permitted. Coordinates are
+           * rounded because Blink snaps painted HTML boxes to whole CSS pixels
+           * while SVG keeps fractional geometry - a cable drawn at a port's
+           * exact layout centre would land up to half a pixel off the painted
+           * chip. A port box is 26px, so its snapped centre is round(centre).
+           */
           if (vertical) {
             s = pt(a, sc.y <= ec.y ? "bottom" : "top");
             e = pt(b, sc.y <= ec.y ? "top" : "bottom");
-            d = "M" + s.x + " " + s.y + " L" + s.x + " " + e.y;
+            s.x = e.x = Math.round((sc.x + ec.x) / 2);
+            s.y = Math.round(s.y);
+            e.y = Math.round(e.y);
           } else {
             s = pt(a, sc.x <= ec.x ? "right" : "left");
             e = pt(b, sc.x <= ec.x ? "left" : "right");
-            if (Math.abs(s.y - e.y) > 1.5) {
-              var midX = s.x + (e.x - s.x) / 2;
-              d = "M" + s.x + " " + s.y + " L" + midX + " " + s.y + " L" + midX + " " + e.y + " L" + e.x + " " + e.y;
-            } else {
-              d = "M" + s.x + " " + s.y + " L" + e.x + " " + s.y;
-            }
+            s.y = e.y = Math.round((sc.y + ec.y) / 2);
+            s.x = Math.round(s.x);
+            e.x = Math.round(e.x);
           }
+          d = "M" + s.x + " " + s.y + " L" + e.x + " " + e.y;
           link.setAttribute("d", d);
           var linkLabel = null;
           for (var i = 0; i < linkLabels.length; i++) {
@@ -2124,7 +2256,7 @@
         } else {
           rect.setAttribute("fill", "#fff");
           rect.setAttribute("stroke", spec.stroke || "#666");
-          rect.setAttribute("stroke-width", "1.5");
+          rect.setAttribute("stroke-width", "1");
         }
         g.appendChild(rect);
         if (spec.kind === "hollow") {
@@ -2143,7 +2275,7 @@
         var PADY = 14;
         var HEAD = 18;
         var height = PADY * 2 + HEAD + innerH;
-        var g = svgNode("g");
+        var g = svgNode("g", { "class": "topo-legend-card" });
         g.appendChild(svgNode("rect", {
           x: "0", y: "0", width: String(width), height: String(height),
           rx: "5", fill: "#fff", stroke: "#bbb", "stroke-width": "1"
@@ -2193,12 +2325,12 @@
           { color: "#8e24aa", label: "12V Lock / DPS" }
         ];
         var vlans = [
-          { color: "#005ea8", label: "VLAN 10 · Management", sub: "UniFi network gear" },
-          { color: "#2e7d32", label: "VLAN 20 · Trusted", sub: "Personal devices · not shown" },
-          { color: "#6a3d9a", label: "VLAN 30 · Servers", sub: "Mac Studio · NAS · HA" },
-          { color: "#a15c00", label: "VLAN 40 · IoT / Energy", sub: "Wallpanels · USL · Powerwall" },
-          { color: "#b3263e", label: "VLAN 50 · Protect / Access", sub: "Cameras · door controllers" },
-          { color: "#007c7a", label: "VLAN 60 · Guest", sub: "Guest clients · not shown" }
+          { color: "#005ea8", fill: "#edf3f7", label: "VLAN 10 · Management", sub: "UniFi network gear" },
+          { color: "#2e7d32", fill: "#eef4ee", label: "VLAN 20 · Trusted", sub: "Personal devices · not shown" },
+          { color: "#6a3d9a", fill: "#f2eff5", label: "VLAN 30 · Servers", sub: "Mac Studio · NAS · HA" },
+          { color: "#a15c00", fill: "#f7f2ea", label: "VLAN 40 · IoT / Energy", sub: "Wallpanels · USL · Powerwall" },
+          { color: "#b3263e", fill: "#f7eff0", label: "VLAN 50 · Protect / Access", sub: "Cameras · door controllers" },
+          { color: "#007c7a", fill: "#edf5f4", label: "VLAN 60 · Guest", sub: "Guest clients · not shown" }
         ];
 
         var ROW = 30;
@@ -2235,7 +2367,7 @@
           var y = PADY + HEAD + row * VLAN_ROW;
           vlanG.appendChild(svgNode("rect", {
             x: String(PADX), y: String(y + 6), width: "22", height: "12", rx: "2",
-            fill: item.color, stroke: "rgba(0,0,0,0.22)", "stroke-width": "1"
+            fill: item.fill, stroke: item.color, "stroke-width": "1"
           }));
           vlanG.appendChild(svgNode("text", Object.assign({
             x: String(PADX + 30), y: String(y + 12)
@@ -2427,10 +2559,13 @@
         pinBackupPairs();
         alignGarageUplink();
         alignMediaSwitchUplink();
+        reconcileFanoutBottoms();
         alignXgBranchBottoms();
         pinXgPorts();
+        alignLinkedPortAxes();
         paintLinks();
         layoutLegend();
+        canvas.scrollLeft = Math.max(0, (canvas.scrollWidth - canvas.clientWidth) / 2);
       }
 
       window.addEventListener("resize", function () {
@@ -2459,18 +2594,25 @@
       /*
        * Both sheets go through the browser's own PDF writer, so type, rules and
        * port chips stay vector instead of being rasterised by a canvas step.
-       * Sheet boxes are declared in inches (1in === 96px), which lets the
-       * topology fit scale be measured on screen before print media applies.
+       * Sheet boxes are declared in inches (1in === 96px). The Arch C topology
+       * sheet has enough room for its 1917 × 1626px stage at exactly 1:1.
        *
        * Design width is set by the widest schedule: the device list needs
        * 13.2in at 10pt with no cell wrapping, so 18in is the smallest
        * architectural sheet dimension that clears it.
        */
+      /*
+       * Every offset from the page corner to the drawing is a whole CSS pixel:
+       * page margin 30px + sheet border 2px + sheet padding 8px + an integral
+       * centring offset. Blink snaps painted boxes to whole pixels in page
+       * space, so an integral origin is what lets paintLinks() round cable
+       * endpoints onto the very grid the port chips are painted on.
+       */
       var papers = {
         topology: {
           page: "24in 18in",
-          margin: "0.3in",
-          sheet: { w: 23.35, h: 17.35 },
+          margin: "0.3125in",
+          sheet: { w: 2240, h: 1664 },
           label: "ARCH C · 24 × 18 IN · LANDSCAPE"
         },
         design: {
@@ -2486,10 +2628,34 @@
         });
       }
 
+      /*
+       * The print pass re-measures text, and a half-pixel difference in a
+       * text-driven box re-centres the ports inside it while the SVG cables keep
+       * the coordinates measured here. Pin every box in the clone to the size it
+       * had when the links were painted, so print has nothing left to measure.
+       */
+      function freezeCloneSizes(source, clone) {
+        var srcEls = source.querySelectorAll("*");
+        var cloneEls = clone.querySelectorAll("*");
+        if (srcEls.length !== cloneEls.length) return;
+        for (var i = 0; i < srcEls.length; i++) {
+          var el = srcEls[i];
+          if (el.namespaceURI !== "http://www.w3.org/1999/xhtml") continue;
+          if (window.getComputedStyle(el).display === "inline") continue;
+          var rect = el.getBoundingClientRect();
+          if (!rect.width || !rect.height) continue;
+          var target = cloneEls[i];
+          target.style.boxSizing = "border-box";
+          target.style.width = rect.width + "px";
+          target.style.height = rect.height + "px";
+        }
+      }
+
       function cloneTopology() {
         var source = document.querySelector("#topo-canvas .topo-stage");
         if (!source) return null;
         var clone = source.cloneNode(true);
+        freezeCloneSizes(source, clone);
         clone.removeAttribute("id");
         Array.prototype.forEach.call(clone.querySelectorAll("[id]"), function (el) {
           /* arrow markers stay: the cloned edges still point at url(#topo-arrow-*) */
@@ -2501,7 +2667,7 @@
         return clone;
       }
 
-      function fitTarget(target) {
+      function placeTargetOneToOne(target) {
         var viewport = target && target.parentElement;
         var content = target && target.firstElementChild;
         if (!viewport || !content) return null;
@@ -2513,43 +2679,54 @@
         var padRight = parseFloat(viewportStyle.paddingRight) || 0;
         var padTop = parseFloat(viewportStyle.paddingTop) || 0;
         var padBottom = parseFloat(viewportStyle.paddingBottom) || 0;
-        var availableWidth = Math.max(1, viewport.clientWidth - padLeft - padRight);
-        var availableHeight = Math.max(1, viewport.clientHeight - padTop - padBottom);
+        var viewportRect = viewport.getBoundingClientRect();
+        var availableWidth = Math.max(1, viewportRect.width - padLeft - padRight);
+        var availableHeight = Math.max(1, viewportRect.height - padTop - padBottom);
         var width = Math.max(content.scrollWidth, content.offsetWidth, 1);
         var height = Math.max(content.scrollHeight, content.offsetHeight, 1);
-        var scale = Math.min(availableWidth / width, availableHeight / height);
-        if (!isFinite(scale) || scale <= 0) return null;
-        target.style.transform = "scale(" + scale + ")";
-        target.style.left = padLeft + Math.max(0, (availableWidth - width * scale) / 2) + "px";
-        target.style.top = padTop + Math.max(0, (availableHeight - height * scale) / 2) + "px";
-        return scale;
+        if (availableWidth + 0.5 < width || availableHeight + 0.5 < height) {
+          throw new Error("Arch C topology viewport is smaller than the 1:1 stage");
+        }
+        /* Whole pixels only: a fractional offset would shift the drawing off the
+           page's pixel grid and undo the endpoint rounding in paintLinks(). */
+        target.style.left = Math.round(padLeft + (availableWidth - width) / 2) + "px";
+        target.style.top = Math.round(padTop + (availableHeight - height) / 2) + "px";
+        return 1;
       }
 
       /*
-       * The sheet is a real element sized in inches, so the scale measured by
-       * fitTarget() is the scale the printer ends up drawing at. Only the sheet
-       * carries a frame; the drawing area is padding alone.
+       * Metadata occupies a genuinely empty part of the topology instead of a
+       * separate header/footer band. That leaves the full sheet height to the
+       * stage and removes the old 0.92 fit transform. Only the sheet carries a
+       * frame; the drawing area has no nested panel border.
        */
       function buildSheet(spec) {
         if (!exportRoot) return null;
         exportRoot.innerHTML = "";
         var sheet = document.createElement("div");
         sheet.className = "export-sheet";
-        sheet.style.width = spec.sheet.w + "in";
-        sheet.style.height = spec.sheet.h + "in";
+        sheet.style.width = spec.sheet.w + "px";
+        sheet.style.height = spec.sheet.h + "px";
         sheet.innerHTML =
-          '<header class="blueprint-header"><div><h2>HOME NETWORK</h2><p>Physical Topology</p></div><p>' + spec.label + '</p></header>' +
-          '<div class="blueprint-viewport"><div class="blueprint-scale" data-export="main"></div></div>' +
-          '<footer class="blueprint-title-block">' +
-          '<div><strong>Home Network Spec</strong>Issued for on-site coordination</div>' +
-          '<div><strong>Scope</strong>Physical Topology</div>' +
-          '<div><strong>Sheet</strong>N-001</div>' +
-          '<div><strong>Format</strong>ARCH C · Landscape</div>' +
-          '</footer>';
+          '<div class="blueprint-viewport"><div class="blueprint-placement" data-export="main"></div></div>';
         exportRoot.appendChild(sheet);
         var mainTarget = sheet.querySelector('[data-export="main"]');
         var main = cloneTopology();
-        if (main && mainTarget) mainTarget.appendChild(main);
+        if (main && mainTarget) {
+          mainTarget.appendChild(main);
+          var meta = document.createElement("section");
+          meta.className = "blueprint-meta";
+          meta.innerHTML =
+            '<h2>HOME NETWORK</h2>' +
+            '<p class="blueprint-meta-subtitle">Physical Topology</p>' +
+            '<div class="blueprint-meta-details">' +
+            '<span><strong>Document</strong>Home Network Spec</span>' +
+            '<span><strong>Scope</strong>Physical Topology</span>' +
+            '<span><strong>Sheet</strong>N-001</span>' +
+            '<span><strong>Format</strong>' + spec.label + '</span>' +
+            '</div>';
+          main.appendChild(meta);
+        }
         return sheet;
       }
 
@@ -2572,7 +2749,7 @@
         var sheet = buildSheet(spec);
         await waitFrame();
         document.body.classList.remove("export-source-measure");
-        if (sheet) fitTarget(sheet.querySelector('[data-export="main"]'));
+        if (sheet) placeTargetOneToOne(sheet.querySelector('[data-export="main"]'));
         return sheet;
       }
 
@@ -2614,7 +2791,7 @@
           '<ul>' +
           '<li>Destination · <strong>Save as PDF</strong></li>' +
           '<li>Paper size · <strong data-hint="paper"></strong></li>' +
-          '<li>Margins &amp; Scale · <strong>Default</strong> / <strong>100%</strong></li>' +
+          '<li>Scale · <strong>100%</strong> (not “Fit to page”)</li>' +
           '<li>Headers and footers · <strong>off</strong></li>' +
           '</ul>' +
           '<label class="print-hint-mute"><input type="checkbox" data-hint="mute"> Skip this reminder next time</label>' +

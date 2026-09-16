@@ -750,7 +750,8 @@ html, body {
       background: #fff;
       background-color: #fff;
       box-shadow: none;
-      border: 1.5px solid var(--port-c);
+      /* One weight for every rule in the drawing: same as a device frame. */
+      border: 1px solid var(--port-c);
       color: var(--port-c);
     }
 
@@ -845,12 +846,12 @@ html, body {
       print-color-adjust: exact;
     }
 
-    .vlan-management { --vlan-color: #005ea8; }
-    .vlan-trusted { --vlan-color: #2e7d32; }
-    .vlan-servers { --vlan-color: #6a3d9a; }
-    .vlan-iot { --vlan-color: #a15c00; }
-    .vlan-security { --vlan-color: #b3263e; }
-    .vlan-guest { --vlan-color: #007c7a; }
+    .vlan-management { --vlan-color: #005ea8; --vlan-fill: #edf3f7; }
+    .vlan-trusted { --vlan-color: #2e7d32; --vlan-fill: #eef4ee; }
+    .vlan-servers { --vlan-color: #6a3d9a; --vlan-fill: #f2eff5; }
+    .vlan-iot { --vlan-color: #a15c00; --vlan-fill: #f7f2ea; }
+    .vlan-security { --vlan-color: #b3263e; --vlan-fill: #f7eff0; }
+    .vlan-guest { --vlan-color: #007c7a; --vlan-fill: #edf5f4; }
 
     .vlan-role small {
       display: block;
@@ -882,6 +883,7 @@ html, body {
 
     .topo-stage {
       position: relative;
+      margin-inline: auto;
     }
 
     .topo-edges {
@@ -895,9 +897,11 @@ html, body {
     .topo-link {
       fill: none;
       stroke: #e65100;
-      stroke-width: 1.45;
+      stroke-width: 1;
       stroke-linecap: round;
       stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+      shape-rendering: geometricPrecision;
       marker-end: url(#topo-arrow-cat6a);
       pointer-events: none;
     }
@@ -945,7 +949,17 @@ html, body {
       width: max-content;
       padding: 0.42rem;
       gap: 0.28rem 0.32rem;
-      border: 1px solid #bbb;
+      /*
+       * Frames are outlines, never borders. Blink floors a border's used width
+       * to whole device pixels (1px becomes 0.667px on a 150% display) but
+       * prints it at the full 1px, so a bordered box has one height on screen
+       * and another on paper. Stacked boxes accumulated that difference into a
+       * 7px drift between the ports and the SVG cables. An outline draws in the
+       * same place and contributes nothing to layout.
+       */
+      border: 0;
+      outline: 1px solid #bbb;
+      outline-offset: -1px;
       border-radius: 0.32rem;
       background: #fff;
       color: #1a1a1a;
@@ -954,6 +968,12 @@ html, body {
       line-height: 1.2;
       text-align: center;
       cursor: default;
+    }
+
+    .topo-node,
+    .topo-bundle-device,
+    .topo-apex {
+      transition: box-shadow 120ms ease;
     }
 
     /* XG: compact header above an equal-height dual-sided fanout section. */
@@ -968,19 +988,22 @@ html, body {
     }
 
     .topo-node.topo-xg > .topo-mid {
+      position: relative;
       grid-column: 1 / -1;
       grid-row: 2;
       align-self: start;
       justify-self: stretch;
       min-width: 11.5rem;
       padding-inline: 0;
+      padding-bottom: calc(0.3rem + 1px);
     }
 
     .topo-node.topo-xg > .topo-mid::after {
       content: "";
-      display: block;
-      width: 100%;
-      margin-top: 0.3rem;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
       border-top: 1px solid #c7d0d8;
     }
 
@@ -1027,7 +1050,7 @@ html, body {
     }
 
     .topo-node.topo-backup {
-      border-style: dashed;
+      outline-style: dashed;
     }
 
     .topo-counted-port {
@@ -1054,13 +1077,33 @@ html, body {
       grid-template-columns: max-content max-content max-content;
       width: max-content;
       padding: 0.42rem;
-      border: 1.5px dashed #8b99a6;
+      border: 0;
+      outline: 0;
       border-radius: 0.42rem;
       background: transparent;
       color: #1a1a1a;
       font: inherit;
       font-size: 0.7rem;
       line-height: 1.2;
+    }
+
+    /*
+     * The group frame and every rule inside a group are drawn on out-of-flow
+     * pseudo elements so they carry real borders - same device-pixel weight as a
+     * device frame, same vector output on paper - without adding anything to
+     * layout, which the print alignment depends on.
+     */
+    .topo-bundle::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px dashed #8b99a6;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .topo-bundle-door-matrix::before {
+      display: none;
     }
 
     /* Reserves GAP_X + port-wrap so inner devices keep the same XG gap as other nodes */
@@ -1093,14 +1136,16 @@ html, body {
       width: max-content;
       padding: 0.35rem;
       gap: 0.22rem 0.28rem;
-      border: 1px solid #bbb;
+      border: 0;
+      outline: 1px solid #bbb;
+      outline-offset: -1px;
       border-radius: 0.32rem;
       background: #fff;
       text-align: center;
     }
 
     .topo-bundle-device.topo-backup {
-      border-style: dashed;
+      outline-style: dashed;
     }
 
     .topo-bundle-device .topo-mid {
@@ -1174,6 +1219,7 @@ html, body {
       grid-template-columns: max-content max-content;
       padding: 0;
       border: 0;
+      outline: 0;
       border-radius: 0;
     }
 
@@ -1238,8 +1284,15 @@ html, body {
       grid-column: 1;
       grid-row: 1;
       margin-left: 0;
+      padding-left: 0;
+      padding-right: 1px;
+    }
+
+    .topo-bundle.flow-left:not(.topo-bundle-door-matrix) > .topo-bundle-locations::before {
+      left: auto;
+      right: 0;
       border-left: 0;
-      border-right: 1px solid #8b99a6;
+      border-right: 1px dashed #8b99a6;
     }
 
     .topo-bundle-door-matrix.flow-left > .topo-bundle-port-gutter {
@@ -1298,13 +1351,24 @@ html, body {
     }
 
     .topo-bundle-locations {
+      position: relative;
       display: grid;
       align-self: stretch;
       margin-left: 0;
-      border-left: 1px solid #8b99a6;
+      padding-left: 1px;
+    }
+
+    .topo-bundle-locations::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      border-left: 1px dashed #8b99a6;
     }
 
     .topo-bundle-location {
+      position: relative;
       display: flex;
       align-items: center;
       padding: 0.34rem 0.5rem;
@@ -1314,7 +1378,16 @@ html, body {
     }
 
     .topo-bundle-location:not(:first-child) {
-      border-top: 1px solid #c1cad2;
+      padding-top: calc(0.34rem + 1px);
+    }
+
+    .topo-bundle-location:not(:first-child)::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      border-top: 1px dashed #8b99a6;
     }
 
     .topo-mid {
@@ -1511,11 +1584,21 @@ html, body {
       cursor: pointer;
     }
 
-    .topo-node[class*="vlan-"] .topo-name,
-    .topo-bundle-device[class*="vlan-"] .topo-name {
-      color: var(--vlan-color);
+    /*
+     * Same pairing as the VLANS legend swatch: desaturated fill, saturated
+     * frame. Devices without a VLAN keep the neutral grey frame.
+     */
+    .topo-node[class*="vlan-"],
+    .topo-bundle-device[class*="vlan-"] {
+      background-color: var(--vlan-fill);
+      outline-color: var(--vlan-color);
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
+    }
+
+    .topo-node[class*="vlan-"] .topo-name,
+    .topo-bundle-device[class*="vlan-"] .topo-name {
+      color: #1a1a1a;
     }
 
     .topo-name:hover {
@@ -1575,16 +1658,40 @@ html, body {
       width: auto;
     }
 
+    /*
+     * The frame colour now carries VLAN meaning, so hover reads as a halo ring
+     * outside the frame instead of a colour change. box-shadow keeps it out of
+     * layout, which the print alignment depends on.
+     */
     .topo-node:hover,
-    .topo-apex:hover {
-      border-color: #1a6bb5;
+    .topo-node:focus-visible,
+    .topo-bundle-device:hover,
+    .topo-bundle-device:focus-within,
+    .topo-apex:hover,
+    .topo-apex:focus-within {
+      box-shadow: 0 0 0 3px rgba(26, 107, 181, 0.32);
+    }
+
+    .topo-legend-card {
+      pointer-events: all;
+      cursor: default;
+    }
+
+    .topo-legend-card > rect:first-child {
+      transition: stroke 120ms ease, stroke-width 120ms ease, filter 120ms ease;
+    }
+
+    .topo-legend-card:hover > rect:first-child {
+      filter: drop-shadow(0 0 3px rgba(26, 107, 181, 0.55));
     }
 
     .topo-embed {
       display: block;
       margin-top: 0.06rem;
       padding: 0.08rem 0.28rem;
-      border: 1px dashed #bbb;
+      border: 0;
+      outline: 1px dashed #bbb;
+      outline-offset: -1px;
       border-radius: 0.22rem;
       background: #f7f7f7;
       line-height: 1.2;
@@ -1629,13 +1736,18 @@ html, body {
     }
 
     .topo-poe-track {
-      height: 0.28rem;
+      box-sizing: border-box;
+      height: 4px;
+      min-height: 4px;
+      max-height: 4px;
+      flex: 0 0 4px;
       border-radius: 999px;
       background: #e6e6e6;
       overflow: hidden;
     }
 
     .topo-poe-fill {
+      box-sizing: border-box;
       display: block;
       height: 100%;
       border-radius: inherit;
@@ -1651,6 +1763,7 @@ html, body {
     }
 
     .topo-device-power {
+      position: relative;
       display: flex;
       justify-content: space-between;
       align-items: baseline;
@@ -1658,13 +1771,21 @@ html, body {
       width: 100%;
       min-width: 7.4rem;
       margin-top: 0.16rem;
-      padding-top: 0.14rem;
-      border-top: 1px solid #e2e2e2;
+      padding-top: calc(0.14rem + 1px);
       color: #666;
       font-size: 0.58rem;
       line-height: 1.2;
       text-align: left;
       white-space: nowrap;
+    }
+
+    .topo-device-power::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      border-top: 1px solid #e2e2e2;
     }
 
     .topo-device-power strong {
@@ -1681,7 +1802,9 @@ html, body {
       flex-direction: column;
       width: max-content;
       padding: 0.42rem;
-      border: 1.5px solid #888;
+      border: 0;
+      outline: 1px solid #888;
+      outline-offset: -1px;
       border-radius: 0.45rem;
       background: #f3f3f3;
     }
@@ -1886,33 +2009,55 @@ html, body {
 
     /*
      * buildSheet() sizes this box in inches and the browser prints it directly.
-     * A hairline still reads as a drawing frame at 24in, where the old 0.09in
-     * rule printed as a heavy black band.
+     * Metadata sits in the topology's empty upper-left area, so the full sheet
+     * height is available to the 1:1 stage.
      */
     .export-sheet {
+      position: relative;
       box-sizing: border-box;
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr) auto;
+      display: block;
       background: #fff;
       color: #172635;
       border: 2px solid #17324d;
-      padding: 0.18in;
+      /* Whole pixels: keeps the drawing origin on the page's pixel grid. The
+         2px margin centres the 2240x1664 sheet in the 2244x1668 page box. */
+      margin: 2px;
+      padding: 8px;
     }
 
-    /*
-     * Sheet type is set in points, not clamp()/vw: viewport units are unreliable
-     * once print media takes over, and the header height feeds the fit scale.
-     */
-    .blueprint-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 0.04in 0.02in 0.14in;
-      border-bottom: 1px solid #17324d;
+    .blueprint-viewport {
+      position: relative;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #fff;
     }
 
-    .blueprint-header h2 {
+    .blueprint-placement {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: max-content;
+      font-size: 0.7rem;
+      line-height: 1.2;
+    }
+
+    .blueprint-meta {
+      position: absolute;
+      left: 16px;
+      top: 16px;
+      z-index: 5;
+      box-sizing: border-box;
+      width: 475px;
+      color: #172635;
+      pointer-events: none;
+    }
+
+    .blueprint-meta h2 {
       margin: 0;
       padding: 0;
       border: 0;
@@ -1921,63 +2066,33 @@ html, body {
       letter-spacing: 0.025em;
     }
 
-    .blueprint-header p {
-      margin: 0;
+    .blueprint-meta-subtitle {
+      margin: 0.04in 0 0.1in;
       color: #40566c;
       font-size: 9.5pt;
-      white-space: nowrap;
-    }
-
-    .blueprint-viewport {
-      position: relative;
-      box-sizing: border-box;
-      min-width: 0;
-      min-height: 0;
-      padding: 0.12in;
-      overflow: hidden;
-      background: #fff;
-    }
-
-    .blueprint-scale {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: max-content;
-      font-size: 0.7rem;
       line-height: 1.2;
-      transform-origin: left top;
     }
 
-    .blueprint-scale > table {
-      margin: 0;
-    }
-
-    .blueprint-title-block {
+    .blueprint-meta-details {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto auto auto;
-      border-top: 1px solid #17324d;
+      grid-template-columns: max-content max-content;
+      gap: 0.06in 0.22in;
       font-size: 8.5pt;
       line-height: 1.25;
     }
 
-    .blueprint-title-block > div {
-      padding: 0.06in 0.1in;
-      border-left: 1px solid #71869a;
-    }
-
-    .blueprint-title-block > div:first-child {
-      border-left: 0;
-    }
-
-    .blueprint-title-block strong {
+    .blueprint-meta-details strong {
       display: block;
-      color: #17324d;
-      font-size: 1.08em;
+      color: #607386;
+      font-size: 7pt;
+      font-weight: 650;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
 
     body.export-source-measure #tab-topology {
       position: fixed !important;
-      left: -100000px !important;
+      left: 0 !important;
       top: 0 !important;
       display: flex !important;
       flex-direction: column !important;
@@ -2250,14 +2365,6 @@ html, body {
 
       .spa-design .spa-article {
         padding: 1.3rem 1.1rem 3rem;
-      }
-
-      .blueprint-title-block {
-        grid-template-columns: minmax(0, 1fr) auto auto;
-      }
-
-      .blueprint-title-block > div:nth-child(2) {
-        display: none;
       }
     }
 
