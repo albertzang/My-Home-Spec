@@ -176,12 +176,12 @@
 
       var UI = "https://store.ui.com/us/en/products/";
       var nodes = [
-        { id: "nah", ltr: true, name: "TELUS Network Access Hub", loc: "Rack Cabinet", href: "https://www.telus.com/en/bc/internet", info: "XGS-PON ends here. 10G RJ45 WAN out over a Cat6 rack patch.",
+        { id: "nah", name: "TELUS Network Access Hub", loc: "Rack Cabinet", href: "https://www.telus.com/en/bc/internet", info: "XGS-PON ends here. 10G RJ45 WAN out over a Cat6 rack patch.",
           up: [P("nah-pon", "other", { t: "F", title: "XGS-PON fiber in" })],
           down: idleMany(4, "nah-1g", "gbe1", { title: "1G RJ45 unused", idle: true }).concat([
             P("nah-10g", "gbe10", { poe: "wan", title: "10G RJ45 WAN out · Cat6 rack patch to UDM CM adapter", child: "udm" })
           ]) },
-        { id: "udm", vlan: "management", ltr: true, name: "UDM-Pro-Max", loc: "Rack Cabinet", href: UI + "udm-pro-max", info: "NAH Cat6 rack patch terminates at the RJ45 face of a UACC-CM-RJ45-MG inserted in UDM WAN SFP+. LAN SFP+ connects directly to Pro XG by one DAC.",
+        { id: "udm", vlan: "management", name: "UDM-Pro-Max", loc: "Rack Cabinet", href: UI + "udm-pro-max", info: "NAH Cat6 rack patch terminates at the RJ45 face of a UACC-CM-RJ45-MG inserted in UDM WAN SFP+. LAN SFP+ connects directly to Pro XG by one DAC.",
           embed: [
             { name: "UACC-CM-RJ45-MG · RJ45 ↔ SFP+", href: UI + "uacc-cm-rj45-mg" }
           ],
@@ -234,7 +234,7 @@
             P("nas-usb2", "other", { t: "USB-3", title: "USB 3.2 unused", idle: true }),
             P("nas-con", "other", { t: "COM", title: "Console unused", idle: true })
           ] },
-        { id: "ha", vlan: "servers", ltr: true, name: "ameriDroid PoE Mini PC for Home Assistant", loc: "Rack Cabinet", href: "https://ameridroid.com/products/poe-mini-pc-for-home-assistant", info: "Cat6 rack patch to XG. 4×2.5G Intel I225/I226: one PoE++ IN plus three unused NICs are shown upstream. Two nested ZBT-2 radios: Zigbee on USB-C, Thread on USB-3 via USB-A/C adapter.",
+        { id: "ha", vlan: "servers", name: "ameriDroid PoE Mini PC for Home Assistant", loc: "Rack Cabinet", href: "https://ameridroid.com/products/poe-mini-pc-for-home-assistant", info: "Cat6 rack patch to XG. 4×2.5G Intel I225/I226: one PoE++ IN plus three unused NICs are shown upstream. Two nested ZBT-2 radios: Zigbee on USB-C, Thread on USB-3 via USB-A/C adapter.",
           embed: [
             { name: "Connect ZBT-2 · Zigbee", href: "https://www.home-assistant.io/connect/zbt-2/" },
             { name: "Connect ZBT-2 · Thread", href: "https://www.home-assistant.io/connect/zbt-2/" }
@@ -270,7 +270,7 @@
         { id: "drop-media", name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "Active C6A home-run → Cat6 short patch → non-PoE Flex 2.5G at 10G. The second run is shown above as a separate dashed backup card.",
           up: [P("drop-media-up", "gbe10", { poe: "ppp", title: "10G ← Pro XG" })],
           down: [P("drop-media-dn", "gbe10", { poe: "ppp", title: "10G PoE+++ pass-through → Flex 2.5G at PoE+", child: "media-flex" })] },
-        { id: "media-flex", vlan: "management", ltr: true, name: "USW-Flex-2.5G-8", loc: "Basement/Media Room", href: "https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", info: "Non-PoE model. C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45/SFP+ combo uplink and PoE+ input. Eight 2.5G downlinks have no PoE output.",
+        { id: "media-flex", vlan: "management", name: "USW-Flex-2.5G-8", loc: "Basement/Media Room", href: "https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", info: "Non-PoE model. C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45/SFP+ combo uplink and PoE+ input. Eight 2.5G downlinks have no PoE output.",
           /* No PoE output, so it reads as a plain PD: draw against its PoE+ input. */
           poeBar: { used: 14, cap: 30 },
           up: [
@@ -309,7 +309,7 @@
           up: [P("drop-seat-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
           down: [P("drop-seat-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
 
-        { id: "front-mini", vlan: "security", tb: true, name: "UA-Hub-Door-Mini", loc: "Front Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE+ → Entry and Frontyard Turret. REX, DPS, LOCK.",
+        { id: "front-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Front Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE+ → Entry and Frontyard Turret. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
           /* Datasheet limit: 45W aggregated across the hub's PoE outputs. */
           poeBar: { label: "PoE Output Used", used: 33, cap: 45 },
@@ -321,13 +321,13 @@
             P("front-mini-dps", "other", { t: "DPS", title: "DPS → Strike", child: "front-strike" }),
             P("front-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "front-strike" })
           ] },
-        { id: "front-entry", vlan: "security", tb: true, hideLoc: true, name: "UVC-G6-Pro-Entry", loc: "Front Door", href: UI + "uvc-g6-pro-entry", info: "PoE+ from Front Mini.",
+        { id: "front-entry", vlan: "security", hideLoc: true, name: "UVC-G6-Pro-Entry", loc: "Front Door", href: UI + "uvc-g6-pro-entry", info: "PoE+ from Front Mini.",
           poeBar: { used: 18, cap: 30 },
           up: [P("front-entry-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
-        { id: "front-strike", tb: true, hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Front Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Front Mini.",
+        { id: "front-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Front Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Front Mini.",
           up: [P("front-strike-dps", "other", { t: "DPS", title: "DPS" }), P("front-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
 
-        { id: "mud-mini", vlan: "security", tb: true, name: "UA-Hub-Door-Mini", loc: "Main/Mud/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → G3 and Backyard Turret. REX, DPS, LOCK.",
+        { id: "mud-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Main/Mud/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → G3 and Backyard Turret. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
           poeBar: { label: "PoE Output Used", used: 20, cap: 45 },
           up: [P("mud-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
@@ -338,13 +338,13 @@
             P("mud-mini-dps", "other", { t: "DPS", title: "DPS → Strike", child: "mud-strike" }),
             P("mud-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "mud-strike" })
           ] },
-        { id: "mud-g3", vlan: "security", tb: true, hideLoc: true, name: "UA-G3", loc: "Main/Mud/Back Door", href: UI + "ua-g3", info: "PoE from Mud Mini.",
+        { id: "mud-g3", vlan: "security", hideLoc: true, name: "UA-G3", loc: "Main/Mud/Back Door", href: UI + "ua-g3", info: "PoE from Mud Mini.",
           poeBar: { used: 5, cap: 15.4 },
           up: [P("mud-g3-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
-        { id: "mud-strike", tb: true, hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Main/Mud/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Mud Mini.",
+        { id: "mud-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Main/Mud/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Mud Mini.",
           up: [P("mud-strike-dps", "other", { t: "DPS", title: "DPS" }), P("mud-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
 
-        { id: "din-mini", vlan: "security", tb: true, name: "UA-Hub-Door-Mini", loc: "Main/Dining/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → G3 and Walkway Bullet. REX, DPS, LOCK.",
+        { id: "din-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Main/Dining/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → G3 and Walkway Bullet. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
           poeBar: { label: "PoE Output Used", used: 20, cap: 45 },
           up: [P("din-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
@@ -355,13 +355,13 @@
             P("din-mini-dps", "other", { t: "DPS", title: "DPS → Strike", child: "din-strike" }),
             P("din-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "din-strike" })
           ] },
-        { id: "din-g3", vlan: "security", tb: true, hideLoc: true, name: "UA-G3", loc: "Main/Dining/Back Door", href: UI + "ua-g3", info: "PoE from Dining Mini.",
+        { id: "din-g3", vlan: "security", hideLoc: true, name: "UA-G3", loc: "Main/Dining/Back Door", href: UI + "ua-g3", info: "PoE from Dining Mini.",
           poeBar: { used: 5, cap: 15.4 },
           up: [P("din-g3-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
-        { id: "din-strike", tb: true, hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Main/Dining/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Dining Mini.",
+        { id: "din-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Main/Dining/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Dining Mini.",
           up: [P("din-strike-dps", "other", { t: "DPS", title: "DPS" }), P("din-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
 
-        { id: "bsmt-mini", vlan: "security", tb: true, name: "UA-Hub-Door-Mini", loc: "Basement/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → G3 and Courtyard Turret. REX, DPS, LOCK.",
+        { id: "bsmt-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Basement/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → G3 and Courtyard Turret. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
           poeBar: { label: "PoE Output Used", used: 20, cap: 45 },
           up: [P("bsmt-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
@@ -372,22 +372,22 @@
             P("bsmt-mini-dps", "other", { t: "DPS", title: "DPS → Strike", child: "bsmt-strike" }),
             P("bsmt-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "bsmt-strike" })
           ] },
-        { id: "bsmt-g3", vlan: "security", tb: true, hideLoc: true, name: "UA-G3", loc: "Basement/Back Door", href: UI + "ua-g3", info: "PoE from Basement Mini.",
+        { id: "bsmt-g3", vlan: "security", hideLoc: true, name: "UA-G3", loc: "Basement/Back Door", href: UI + "ua-g3", info: "PoE from Basement Mini.",
           poeBar: { used: 5, cap: 15.4 },
           up: [P("bsmt-g3-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
-        { id: "bsmt-strike", tb: true, hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Basement/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Basement Mini.",
+        { id: "bsmt-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Basement/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Basement Mini.",
           up: [P("bsmt-strike-dps", "other", { t: "DPS", title: "DPS" }), P("bsmt-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
 
         { id: "view", vlan: "security", name: "UP-Viewport", loc: "Main/Kitchen", href: UI + "ufp-viewport", info: "1G PoE from Pro XG.",
           poeBar: { used: 9.5, cap: 15.4 },
           up: [P("view-up", "gbe1", { poe: "poe", title: "1G PoE" })], down: [] },
-        { id: "cam-fy", vlan: "security", tb: true, name: "UVC-G6-Pro-Turret", loc: "Frontyard/Front Eave/North East", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Front Door Mini.",
+        { id: "cam-fy", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Frontyard/Front Eave/North East", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Front Door Mini.",
           poeBar: { used: 15, cap: 30 },
           up: [P("cam-fy-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
-        { id: "cam-by", vlan: "security", tb: true, name: "UVC-G6-Pro-Turret", loc: "Backyard/Balcony Eave/South West", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Mud Door Mini.",
+        { id: "cam-by", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Backyard/Balcony Eave/South West", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Mud Door Mini.",
           poeBar: { used: 15, cap: 30 },
           up: [P("cam-by-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
-        { id: "cam-ct", vlan: "security", tb: true, name: "UVC-G6-Pro-Turret", loc: "Courtyard/Eave", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Basement Door Mini.",
+        { id: "cam-ct", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Courtyard/Eave", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Basement Door Mini.",
           poeBar: { used: 15, cap: 30 },
           up: [P("cam-ct-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
 
@@ -407,7 +407,7 @@
         { id: "drop-gar", name: "UACC-Keystone-Jack-C6A", loc: "Garage", href: UI + "uacc-keystone-jack-c6a", info: "C6A home-run → Type 4 / 4PPoE Cat6 short patch → Flex 10G/PoE+++. The second wired run is shown above with a dashed device frame.",
           up: [P("drop-gar-xg", "gbe10", { poe: "ppp", title: "10G ← Pro XG" })],
           down: [P("drop-gar-flex", "gbe10", { poe: "ppp", title: "10G → Flex", child: "flex" })] },
-        { id: "flex", vlan: "management", ltr: true, name: "USW-Flex-2.5G-8-PoE", loc: "Garage", href: UI + "usw-flex-2-5g-8-poe", info: "10G/PoE+++ uplink through C6A + Type 4 / 4PPoE Cat6 short patch. SFP+ idle (combo). 8×2.5G PoE++. AC-210W nested.",
+        { id: "flex", vlan: "management", name: "USW-Flex-2.5G-8-PoE", loc: "Garage", href: UI + "usw-flex-2-5g-8-poe", info: "10G/PoE+++ uplink through C6A + Type 4 / 4PPoE Cat6 short patch. SFP+ idle (combo). 8×2.5G PoE++. AC-210W nested.",
           embed: [{ name: "UACC-Adapter-AC-210W", href: UI + "uacc-adapter-ac-210w" }],
           devicePower: { value: "17W AC / 14W PoE+++" },
           poeBar: { modes: [
@@ -428,10 +428,10 @@
             P("flex-x3", "gbe2p5", { poe: "pp", title: "2.5G PoE++ unused", idle: true }),
             P("flex-x4", "gbe2p5", { poe: "pp", title: "2.5G PoE++ unused", idle: true })
           ] },
-        { id: "lite", vlan: "management", ltr: true, name: "U7-Lite", loc: "Garage", href: UI + "u7-lite", info: "2.5G PoE from Flex.",
+        { id: "lite", vlan: "management", name: "U7-Lite", loc: "Garage", href: UI + "u7-lite", info: "2.5G PoE from Flex.",
           poeBar: { used: 13, cap: 15.4 },
           up: [P("lite-up", "gbe2p5", { poe: "poe", title: "2.5G PoE" })], down: [] },
-        { id: "gar-mini", vlan: "security", ltr: true, name: "UA-Hub-Door-Mini", loc: "Garage Door", href: UI + "ua-hub-door-mini", info: "Uplink from Flex. PoE → G3 and Laneway Turret. REX, DPS, LOCK.",
+        { id: "gar-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Garage Door", href: UI + "ua-hub-door-mini", info: "Uplink from Flex. PoE → G3 and Laneway Turret. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
           poeBar: { label: "PoE Output Used", used: 20, cap: 45 },
           up: [P("gar-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
@@ -442,30 +442,30 @@
             P("gar-mini-dps", "other", { t: "DPS", title: "DPS → Strike", child: "gar-strike" }),
             P("gar-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "gar-strike" })
           ] },
-        { id: "gar-g3", vlan: "security", ltr: true, hideLoc: true, name: "UA-G3", loc: "Garage Door", href: UI + "ua-g3", info: "PoE from Garage Mini.",
+        { id: "gar-g3", vlan: "security", hideLoc: true, name: "UA-G3", loc: "Garage Door", href: UI + "ua-g3", info: "PoE from Garage Mini.",
           poeBar: { used: 5, cap: 15.4 },
           up: [P("gar-g3-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
-        { id: "gar-strike", ltr: true, hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Garage Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Garage Mini.",
+        { id: "gar-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Garage Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Garage Mini.",
           up: [P("gar-strike-dps", "other", { t: "DPS", title: "DPS" }), P("gar-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
-        { id: "walk", vlan: "security", tb: true, name: "UVC-G6-Pro-Bullet", loc: "Walkway/Balcony Eave/South East", href: UI + "uvc-g6-pro-bullet", info: "1G PoE+ from Dining Door Mini.",
+        { id: "walk", vlan: "security", name: "UVC-G6-Pro-Bullet", loc: "Walkway/Balcony Eave/South East", href: UI + "uvc-g6-pro-bullet", info: "1G PoE+ from Dining Door Mini.",
           poeBar: { used: 15, cap: 30 },
           up: [P("walk-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
-        { id: "lane", vlan: "security", ltr: true, name: "UVC-G6-Pro-Turret", loc: "Laneway/Garage/South", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Garage Door Mini.",
+        { id: "lane", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Laneway/Garage/South", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Garage Door Mini.",
           poeBar: { used: 15, cap: 30 },
           up: [P("lane-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
-        { id: "usl", vlan: "iot", ltr: true, name: "USL-Gateway", loc: "Garage", href: UI + "usl-gateway", info: "100M PoE from Flex.",
+        { id: "usl", vlan: "iot", name: "USL-Gateway", loc: "Garage", href: UI + "usl-gateway", info: "100M PoE from Flex.",
           poeBar: { used: 3.4, cap: 15.4 },
           up: [P("usl-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
-        { id: "pw-lead", vlan: "iot", ltr: true, name: "Tesla Powerwall 3 (Leader)", loc: "Garage", href: "https://www.tesla.com/powerwall", info: "LAN from Flex. ETH → Follower. CAN → GW3.",
+        { id: "pw-lead", vlan: "iot", name: "Tesla Powerwall 3 (Leader)", loc: "Garage", href: "https://www.tesla.com/powerwall", info: "LAN from Flex. ETH → Follower. CAN → GW3.",
           up: [P("pw-lead-lan", "gbe1", { title: "1G ← Flex" })],
           down: [P("pw-lead-eth", "gbe1", { title: "1G → Follower", child: "pw-follow" }), P("pw-lead-can", "other", { t: "CAN", title: "CAN → GW3", child: "gw3" })] },
-        { id: "pw-follow", vlan: "iot", ltr: true, name: "Tesla Powerwall 3 (Follower)", loc: "Garage", href: "https://www.tesla.com/powerwall", info: "Same ports as Leader: 2×ETH + CAN. Second ETH and CAN unused.",
+        { id: "pw-follow", vlan: "iot", name: "Tesla Powerwall 3 (Follower)", loc: "Garage", href: "https://www.tesla.com/powerwall", info: "Same ports as Leader: 2×ETH + CAN. Second ETH and CAN unused.",
           up: [P("pw-follow-eth", "gbe1", { title: "1G ← Leader" })],
           down: [
             P("pw-follow-2", "gbe1", { title: "1G unused", idle: true }),
             P("pw-follow-can", "other", { t: "CAN", title: "CAN unused", idle: true })
           ] },
-        { id: "gw3", ltr: true, name: "Tesla Gateway 3", loc: "Garage", href: "https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf", info: "CAN from Leader only.",
+        { id: "gw3", name: "Tesla Gateway 3", loc: "Garage", href: "https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf", info: "CAN from Leader only.",
           up: [P("gw3-can", "other", { t: "CAN", title: "CAN ← Leader" })], down: [] },
 
         { id: "group-wallpanels", name: "Home Assistant PoE Wallpanel ×3", info: "Three identical XG-fed Wallpanel runs; locations are listed at right.",
@@ -542,10 +542,6 @@
         udm: ["xg"],
         xg: ["ha", "group-wallpanels", "group-main-doors", "group-aps", "view", "nas", "group-room-drops", "drop-media", "drop-gar"],
         "drop-media": ["media-flex"],
-        "front-mini": ["front-entry", "cam-fy", "front-strike"],
-        "mud-mini": ["mud-g3", "cam-by", "mud-strike"],
-        "din-mini": ["din-g3", "walk", "din-strike"],
-        "bsmt-mini": ["bsmt-g3", "cam-ct", "bsmt-strike"],
         "drop-gar": ["flex"],
         flex: ["lite", "usl", "pw-lead", "group-garage-door"],
         "pw-lead": ["pw-follow", "gw3"]
@@ -557,75 +553,14 @@
         { from: "xg", fp: "xg-nas", to: "nas", tp: "nas-10g", cable: "cat6", info: "Pro XG 10G → Cat6 rack patch → NAS LACP." },
         { from: "xg", fp: "xg-nas2", to: "nas", tp: "nas-10g2", cable: "cat6", info: "Pro XG 10G → Cat6 rack patch → NAS LACP." },
         { from: "xg", fp: "xg-ha", to: "ha", tp: "ha-up", cable: "cat6", info: "Pro XG 2.5G PoE+++ port → Cat6 rack patch → HA Mini PC at PoE++." },
-        { from: "xg", fp: "xg-u7b", to: "u7b", tp: "u7b-up", info: "Pro XG → U7-Pro Basement." },
-        { from: "xg", fp: "xg-u7m", to: "u7m", tp: "u7m-up", info: "Pro XG → U7-Pro Main." },
-        { from: "xg", fp: "xg-u7u", to: "u7u", tp: "u7u-up", info: "Pro XG → U7-Pro Upper." },
-        { from: "xg", fp: "xg-den-bak", to: "drop-den-bak", tp: "drop-den-bak-up", info: "Pro XG reserved → Den C6A backup." },
-        { from: "xg", fp: "xg-den", to: "drop-den", tp: "drop-den-up", info: "Pro XG → Den C6A." },
-        { from: "xg", fp: "xg-master-bak", to: "drop-master-bak", tp: "drop-master-bak-up", info: "Pro XG reserved → Master C6A backup." },
-        { from: "xg", fp: "xg-master", to: "drop-master", tp: "drop-master-up", info: "Pro XG → Master C6A." },
-        { from: "xg", fp: "xg-br1-bak", to: "drop-br1-bak", tp: "drop-br1-bak-up", info: "Pro XG reserved → Bedroom 1 C6A backup." },
-        { from: "xg", fp: "xg-br1", to: "drop-br1", tp: "drop-br1-up", info: "Pro XG → Bedroom 1 C6A." },
-        { from: "xg", fp: "xg-br2-bak", to: "drop-br2-bak", tp: "drop-br2-bak-up", info: "Pro XG reserved → Bedroom 2 C6A backup." },
-        { from: "xg", fp: "xg-br2", to: "drop-br2", tp: "drop-br2-up", info: "Pro XG → Bedroom 2 C6A." },
-        { from: "xg", fp: "xg-seat-bak", to: "drop-seat-bak", tp: "drop-seat-bak-up", info: "Pro XG reserved → Seating C6A backup." },
-        { from: "xg", fp: "xg-seat", to: "drop-seat", tp: "drop-seat-up", info: "Pro XG → Seating C6A." },
         { from: "xg", fp: "xg-gar", to: "drop-gar", tp: "drop-gar-xg", info: "Pro XG → Garage C6A." },
         { from: "drop-gar", fp: "drop-gar-flex", to: "flex", tp: "flex-up", cable: "cat6", info: "Garage C6A home-run → Type 4 / 4PPoE-rated 24–26AWG pure-copper Cat6 short patch → Flex 10G RJ45 / PoE+++ input." },
-        { from: "xg", fp: "xg-front", to: "front-mini", tp: "front-mini-up", info: "Pro XG → Front Mini." },
-        { from: "front-mini", fp: "front-mini-poe1", to: "front-entry", tp: "front-entry-up", info: "Front Mini PoE+ → Entry." },
-        { from: "front-mini", fp: "front-mini-poe2", to: "cam-fy", tp: "cam-fy-up", cable: "cat6", info: "Front Mini PoE+ → Frontyard Turret." },
-        { from: "front-mini", fp: "front-mini-lock", to: "front-strike", tp: "front-strike-lock", info: "Front Mini LOCK → Strike." },
-        { from: "front-mini", fp: "front-mini-dps", to: "front-strike", tp: "front-strike-dps", info: "Front Mini DPS → Strike." },
-        { from: "xg", fp: "xg-mud", to: "mud-mini", tp: "mud-mini-up", info: "Pro XG → Mud Mini." },
-        { from: "mud-mini", fp: "mud-mini-poe1", to: "mud-g3", tp: "mud-g3-up", info: "Mud Mini 1G PoE+ port → UA-G3 at 100M PoE." },
-        { from: "mud-mini", fp: "mud-mini-poe2", to: "cam-by", tp: "cam-by-up", cable: "cat6", info: "Mud Mini PoE+ → Backyard Turret." },
-        { from: "mud-mini", fp: "mud-mini-lock", to: "mud-strike", tp: "mud-strike-lock", info: "Mud Mini LOCK → Strike." },
-        { from: "mud-mini", fp: "mud-mini-dps", to: "mud-strike", tp: "mud-strike-dps", info: "Mud Mini DPS → Strike." },
-        { from: "xg", fp: "xg-din", to: "din-mini", tp: "din-mini-up", info: "Pro XG → Dining Mini." },
-        { from: "din-mini", fp: "din-mini-poe1", to: "din-g3", tp: "din-g3-up", info: "Dining Mini 1G PoE+ port → UA-G3 at 100M PoE." },
-        { from: "din-mini", fp: "din-mini-poe2", to: "walk", tp: "walk-up", cable: "cat6", info: "Dining Mini PoE+ → Walkway Bullet." },
-        { from: "din-mini", fp: "din-mini-lock", to: "din-strike", tp: "din-strike-lock", info: "Dining Mini LOCK → Strike." },
-        { from: "din-mini", fp: "din-mini-dps", to: "din-strike", tp: "din-strike-dps", info: "Dining Mini DPS → Strike." },
-        { from: "xg", fp: "xg-bsmt", to: "bsmt-mini", tp: "bsmt-mini-up", info: "Pro XG → Basement Mini." },
-        { from: "bsmt-mini", fp: "bsmt-mini-poe1", to: "bsmt-g3", tp: "bsmt-g3-up", info: "Basement Mini 1G PoE+ port → UA-G3 at 100M PoE." },
-        { from: "bsmt-mini", fp: "bsmt-mini-poe2", to: "cam-ct", tp: "cam-ct-up", cable: "cat6", info: "Basement Mini PoE+ → Courtyard Turret." },
-        { from: "bsmt-mini", fp: "bsmt-mini-lock", to: "bsmt-strike", tp: "bsmt-strike-lock", info: "Basement Mini LOCK → Strike." },
-        { from: "bsmt-mini", fp: "bsmt-mini-dps", to: "bsmt-strike", tp: "bsmt-strike-dps", info: "Basement Mini DPS → Strike." },
         { from: "xg", fp: "xg-view", to: "view", tp: "view-up", info: "Pro XG → Viewport." },
-        { from: "xg", fp: "xg-wp-b", to: "wp-b", tp: "wp-b-up", info: "Pro XG 2.5G PoE+++ port → Basement Wallpanel at 1G PoE++." },
-        { from: "xg", fp: "xg-wp-m", to: "wp-m", tp: "wp-m-up", info: "Pro XG 2.5G PoE+++ port → Main Wallpanel at 1G PoE++." },
-        { from: "xg", fp: "xg-wp-u", to: "wp-u", tp: "wp-u-up", info: "Pro XG 2.5G PoE+++ port → Upper Wallpanel at 1G PoE++." },
-        { from: "flex", fp: "flex-gmin", to: "gar-mini", tp: "gar-mini-up", info: "Flex → Garage Mini." },
-        { from: "gar-mini", fp: "gar-mini-poe1", to: "gar-g3", tp: "gar-g3-up", info: "Garage Mini PoE → UA-G3." },
-        { from: "gar-mini", fp: "gar-mini-poe2", to: "lane", tp: "lane-up", cable: "cat6", info: "Garage Mini PoE+ → Laneway Turret." },
-        { from: "gar-mini", fp: "gar-mini-lock", to: "gar-strike", tp: "gar-strike-lock", info: "Garage Mini LOCK → Strike." },
-        { from: "gar-mini", fp: "gar-mini-dps", to: "gar-strike", tp: "gar-strike-dps", info: "Garage Mini DPS → Strike." },
         { from: "flex", fp: "flex-usl", to: "usl", tp: "usl-up", info: "Flex 2.5G PoE++ port → USL-Gateway at 100M PoE." },
         { from: "flex", fp: "flex-tesla", to: "pw-lead", tp: "pw-lead-lan", info: "Flex 2.5G PoE++ port → PW3 Leader at 1G; PoE disabled at the endpoint." },
         { from: "flex", fp: "flex-lite", to: "lite", tp: "lite-up", info: "Flex 2.5G PoE++ port → U7-Lite at 2.5G PoE." },
         { from: "pw-lead", fp: "pw-lead-eth", to: "pw-follow", tp: "pw-follow-eth", info: "Leader Ethernet → Follower." },
-        { from: "pw-lead", fp: "pw-lead-can", to: "gw3", tp: "gw3-can", info: "Leader CAN → Gateway 3." }
-      ];
-
-      var bundledNodeIds = {
-        "wp-b": true, "wp-m": true, "wp-u": true,
-        "u7b": true, "u7m": true, "u7u": true,
-        "front-mini": true, "front-entry": true, "cam-fy": true, "front-strike": true,
-        "mud-mini": true, "mud-g3": true, "cam-by": true, "mud-strike": true,
-        "din-mini": true, "din-g3": true, "walk": true, "din-strike": true,
-        "bsmt-mini": true, "bsmt-g3": true, "cam-ct": true, "bsmt-strike": true,
-        "gar-mini": true, "gar-g3": true, "lane": true, "gar-strike": true,
-        "drop-den-bak": true, "drop-den": true,
-        "drop-master-bak": true, "drop-master": true,
-        "drop-br1-bak": true, "drop-br1": true,
-        "drop-br2-bak": true, "drop-br2": true,
-        "drop-seat-bak": true, "drop-seat": true
-      };
-      links = links.filter(function (link) {
-        return !bundledNodeIds[link.from] && !bundledNodeIds[link.to];
-      });
-      links = links.concat([
+        { from: "pw-lead", fp: "pw-lead-can", to: "gw3", tp: "gw3-can", info: "Leader CAN → Gateway 3." },
         { from: "xg", fp: "xg-wallpanels", to: "group-wallpanels", tp: "wp-b-up", info: "3× Pro XG 2.5G PoE+++ ports → HA Wallpanels at 1G PoE++." },
         { from: "xg", fp: "xg-aps", to: "group-aps", tp: "u7b-up", info: "3× Pro XG → U7-Pro." },
         { from: "xg", fp: "xg-front", to: "group-main-doors", tp: "front-mini-up", info: "Pro XG → Front Mini." },
@@ -659,7 +594,7 @@
         { from: "xg", fp: "xg-media-live", to: "drop-media", tp: "drop-media-up", info: "Pro XG 10G PoE+++ port → active Media Room Drop." },
         { from: "drop-media", fp: "drop-media-dn", to: "media-flex", tp: "media-flex-up", cable: "cat6", route: "horizontal", info: "Media Room C6A wall jack → Cat6 short patch → non-PoE Flex 2.5G at 10G with PoE+ input." },
         { from: "xg", fp: "xg-gar-backup", to: "drop-gar-bak", tp: "drop-gar-bak-up", info: "Wired Garage backup Room Drop → loose cabinet end; not connected to XG." }
-      ]);
+      ];
 
       var byId = {};
       nodes.forEach(function (n) { byId[n.id] = n; });
@@ -696,11 +631,6 @@
       });
       svg.appendChild(defs);
       stage.appendChild(svg);
-
-      var nested = {};
-      nodes.forEach(function (n) {
-        if (n.nest) n.nest.forEach(function (id) { nested[id] = true; });
-      });
 
       function fmtW(n) {
         var r = Math.round(n * 10) / 10;
@@ -748,7 +678,7 @@
         var html = n.href
           ? '<a class="topo-name" href="' + n.href + '" target="_blank" rel="noopener noreferrer">' + n.name + "</a>"
           : '<span class="topo-name">' + n.name + "</span>";
-        if (n.loc && !nested[n.id] && !n.hideLoc) html += "<small>" + n.loc + "</small>";
+        if (n.loc && !n.hideLoc) html += "<small>" + n.loc + "</small>";
         html += embedHTML(n);
         html += devicePowerHTML(n);
         html += poeBarHTML(n);
@@ -787,14 +717,6 @@
           diagram = '<div class="topo-bundle-row">' +
             bundleDeviceHTML(b.source, "", false) +
             "</div>";
-        } else if (b.kind === "door") {
-          diagram = '<div class="topo-bundle-door-tree">' +
-            bundleDeviceHTML(b.source, "topo-bundle-device-tb topo-bundle-door-root", true) +
-            '<div class="topo-bundle-door-children">' +
-              bundleDeviceHTML(b.endpoint, "topo-bundle-device-tb", false) +
-              bundleDeviceHTML(b.strike, "topo-bundle-device-tb", false) +
-            "</div>" +
-            "</div>";
         } else if (b.kind === "room") {
           diagram = b.rows.map(function (row) {
             var isBackup = !!byId[row.source].backup;
@@ -829,7 +751,7 @@
       function makeNode(n) {
         var btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "topo-node" + (n.vlan ? " vlan-" + n.vlan : "") + (isTB(n.id) ? " topo-tb" : "") + (n.id === "nah" || n.id === "udm" ? " topo-core-vertical" : "") + (n.id === "xg" ? " topo-xg" : "") + (n.corner ? " topo-corner" : "") + (n.backup ? " topo-backup" : "") + (hangsDown(n.id) ? " topo-hang" : "");
+        btn.className = "topo-node" + (n.vlan ? " vlan-" + n.vlan : "") + (isTB(n.id) ? " topo-tb" : "") + (n.id === "nah" || n.id === "udm" ? " topo-core-vertical" : "") + (n.id === "xg" ? " topo-xg" : "") + (n.backup ? " topo-backup" : "");
         btn.setAttribute("data-id", n.id);
         if (n.vlan) btn.setAttribute("data-vlan", n.vlan);
         btn.setAttribute("data-title", n.name);
@@ -840,12 +762,6 @@
             '<span class="topo-ports down left">' + downRowHTML(n, "left") + "</span>" +
             '<span class="topo-mid">' + midHTML(n) + "</span>" +
             '<span class="topo-ports down right">' + downRowHTML(n, "right") + "</span>";
-        } else if (n.corner) {
-          btn.innerHTML =
-            '<span class="topo-ports up">' + portsHTML(n.up) + "</span>" +
-            '<span class="topo-mid">' + midHTML(n) + "</span>" +
-            '<span class="topo-ports down"></span>' +
-            '<span class="topo-ports bottom">' + downRowHTML(n) + "</span>";
         } else {
           btn.innerHTML =
             '<span class="topo-ports up">' + portsHTML(n.up) + "</span>" +
@@ -855,25 +771,6 @@
         return btn;
       }
 
-      function makeApex(n) {
-        var box = document.createElement("div");
-        box.className = "topo-apex";
-        box.setAttribute("data-id", n.id);
-        box.setAttribute("data-title", n.name);
-        box.setAttribute("data-info", n.info);
-        var body = document.createElement("div");
-        body.className = "topo-apex-body";
-        n.nest.forEach(function (id) {
-          body.appendChild(makeNode(byId[id]));
-        });
-        box.appendChild(body);
-        var legend = document.createElement("div");
-        legend.className = "topo-apex-legend";
-        legend.innerHTML = '<a class="topo-name" href="' + n.href + '" target="_blank" rel="noopener noreferrer">' + n.name + "</a><small>" + n.loc + "</small>";
-        box.appendChild(legend);
-        return box;
-      }
-
       var els = {};
       function mount(id, parentEl) {
         var n = byId[id];
@@ -881,15 +778,6 @@
           var bundle = makeBundle(n);
           parentEl.appendChild(bundle);
           els[id] = bundle;
-          return;
-        }
-        if (n.nest) {
-          var apex = makeApex(n);
-          parentEl.appendChild(apex);
-          els[id] = apex;
-          n.nest.forEach(function (cid) {
-            els[cid] = apex.querySelector('.topo-node[data-id="' + cid + '"]');
-          });
           return;
         }
         var el = makeNode(n);
@@ -992,7 +880,6 @@
           el.style.width = "";
           el.style.height = "";
           el.classList.remove("is-fanout");
-          el.classList.remove("is-hang-fanout");
           Array.prototype.forEach.call(el.querySelectorAll(".topo-slot"), function (slot) {
             slot.style.top = "";
             slot.style.left = "";
@@ -1031,42 +918,14 @@
         return downSlots(byId[id] || {}).filter(function (s) { return s.child; }).length > 1;
       }
 
-      function hangsDown(id) {
-        return false;
-      }
-
-      function downsFaceDown(id) {
-        return hangsDown(id) || isTB(id);
-      }
-
-      function upsFaceUp(id) {
-        return isTB(id);
-      }
-
-      function stacksChildBelow(id) {
-        return id === "drop-gar";
-      }
-
       function pairedBackupId(id) {
         return id === "drop-media" ? "drop-media-bak"
           : id === "drop-gar" ? "drop-gar-bak"
           : null;
       }
 
-      function isHangFanout(id) {
-        return hangsDown(id) && isFanout(id);
-      }
-
       function isLTRFanout(id) {
-        return id !== "xg" && isFanout(id) && !isTB(id) && !hangsDown(id);
-      }
-
-      function hasHangBelow(id) {
-        var kids = stageKids(id);
-        for (var i = 0; i < kids.length; i++) {
-          if (hangsDown(kids[i]) || hasHangBelow(kids[i])) return true;
-        }
-        return false;
+        return id !== "xg" && isFanout(id) && !isTB(id);
       }
 
       function isDoorMini(id) {
@@ -1082,24 +941,16 @@
       }
 
       function stageKids(id) {
-        return (children[id] || []).filter(function (k) { return !nested[k]; });
+        return children[id] || [];
       }
 
       function inboundPort(id) {
         var n = byId[id];
         if (n && n.inbound) return n.inbound;
-        if (n && n.nest) {
-          var inner = byId[n.nest[0]];
-          return inner.up && inner.up[0] ? inner.up[0].id : null;
-        }
         if (n && n.up && n.up[0]) return n.up[0].id;
         var hit = links.filter(function (L) { return L.to === id; })[0];
         if (hit) return hit.tp;
         return null;
-      }
-
-      function bandH(id) {
-        return boxHeight(id);
       }
 
       function slotH(s, parentId) {
@@ -1112,29 +963,9 @@
             });
             return Math.max(SLOT_MIN, pairedBranchH + natural[backupId].h + 8);
           }
-          if (hangsDown(s.child)) return Math.max(SLOT_MIN, subtreeH(s.child));
-          if (hasHangBelow(s.child)) return Math.max(SLOT_MIN, boxHeight(s.child));
           return Math.max(SLOT_MIN, subtreeH(s.child));
         }
         return isDoorMini(parentId) ? SLOT_IDLE_MINI : SLOT_MIN;
-      }
-
-      function kidsRowW(id) {
-        var kids = stageKids(id);
-        var w = 0;
-        kids.forEach(function (k, i) {
-          w += subtreeW(k);
-          if (i) w += GAP_X;
-        });
-        return w;
-      }
-
-      function horizontalGap(fromId, toId) {
-        return GAP_X;
-      }
-
-      function hangWidth(id) {
-        return natural[id].w;
       }
 
       function slotsSum(id) {
@@ -1167,29 +998,18 @@
       function subtreeH(id) {
         if (subH[id] != null) return subH[id];
         var bh = boxHeight(id);
-        var self = bandH(id);
         var kids = stageKids(id);
         var h;
-        if (hangsDown(id) && isHangFanout(id)) {
-          var maxH = 0;
-          kids.forEach(function (k) { maxH = Math.max(maxH, subtreeH(k)); });
-          h = bh + (kids.length ? GAP_TB + maxH : 0);
-        } else if (hangsDown(id)) {
-          h = bh + (kids.length ? GAP_TB + kidsSumH(id) : 0);
-        } else if (kids.length === 1 && hangsDown(kids[0]) && (downsFaceDown(id) || stacksChildBelow(id))) {
-          h = bh + GAP_TB + subtreeH(kids[0]);
-        } else if (kids.length === 1 && hangsDown(kids[0])) {
-          h = Math.max(bh, subtreeH(kids[0]));
-        } else if (isTB(id) && kids.length === 1 && isTB(kids[0])) {
+        if (isTB(id) && kids.length === 1 && isTB(kids[0])) {
           h = bh + GAP_TB + subtreeH(kids[0]);
         } else if (isTB(id) && kids.length === 1) {
-          h = Math.max(self, subtreeH(kids[0]));
+          h = Math.max(bh, subtreeH(kids[0]));
         } else if (isLTRFanout(id)) {
-          h = Math.max(self, slotsSum(id) + boxPad(id));
+          h = Math.max(bh, slotsSum(id) + boxPad(id));
         } else if (kids.length) {
-          h = Math.max(self, kidsSumH(id));
+          h = Math.max(bh, kidsSumH(id));
         } else {
-          h = self;
+          h = bh;
         }
         subH[id] = h;
         return h;
@@ -1200,22 +1020,12 @@
         var bw = natural[id].w;
         var kids = stageKids(id);
         var w;
-        if (hangsDown(id) && isHangFanout(id)) {
-          w = Math.max(bw, kidsRowW(id));
-        } else if (hangsDown(id)) {
-          var maxC = bw;
-          kids.forEach(function (k) { maxC = Math.max(maxC, subtreeW(k)); });
-          w = maxC;
-        } else if (kids.length === 1 && hangsDown(kids[0]) && (downsFaceDown(id) || stacksChildBelow(id))) {
-          w = Math.max(bw, subtreeW(kids[0]));
-        } else if (kids.length === 1 && hangsDown(kids[0])) {
-          w = bw + GAP_X + subtreeW(kids[0]);
-        } else if (isTB(id) && kids.length === 1 && isTB(kids[0])) {
+        if (isTB(id) && kids.length === 1 && isTB(kids[0])) {
           w = Math.max(bw, subtreeW(kids[0]));
         } else if (kids.length) {
           var maxC = 0;
           kids.forEach(function (k) { maxC = Math.max(maxC, subtreeW(k)); });
-          w = bw + (kids.length === 1 ? horizontalGap(id, kids[0]) : GAP_X) + maxC;
+          w = bw + GAP_X + maxC;
         } else {
           w = bw;
         }
@@ -1447,25 +1257,15 @@
         return bottom;
       }
 
-      function containPinnedSlots(id, axis) {
+      function containPinnedSlots(id) {
         var el = els[id];
         if (!el) return;
-        var col = axis === "x" ? hangDownCol(el) : el.querySelector(".topo-ports.down");
+        var col = el.querySelector(".topo-ports.down");
         if (!col) return;
         var items = col.querySelectorAll(".topo-slot, [data-port]");
         if (!items.length) return;
         var er = el.getBoundingClientRect();
         var cs = window.getComputedStyle(el);
-        if (axis === "x") {
-          var maxRight = er.left;
-          Array.prototype.forEach.call(items, function (item) {
-            maxRight = Math.max(maxRight, item.getBoundingClientRect().right);
-          });
-          var rightLimit = er.right - (parseFloat(cs.paddingRight) || 0);
-          var growX = Math.ceil(maxRight - rightLimit);
-          if (growX > 0) el.style.width = (el.offsetWidth + growX) + "px";
-          return;
-        }
         var maxBottom = er.top;
         Array.prototype.forEach.call(items, function (item) {
           maxBottom = Math.max(maxBottom, item.getBoundingClientRect().bottom);
@@ -1577,123 +1377,12 @@
           }
         }
         pinTrailingIdleSlots(id, col, slots);
-        containPinnedSlots(id, "y");
+        containPinnedSlots(id);
         pinFanoutUpPorts(id);
       }
 
-      function pinHangChildren(id) {
-        if (!hangsDown(id) || !els[id]) return;
-        downSlots(byId[id]).forEach(function (s) {
-          if (!s.child) return;
-          var a = portEl(s.ports[0].id);
-          var b = portEl(inboundPort(s.child));
-          if (!a || !b) return;
-          var ar = a.getBoundingClientRect();
-          var br = b.getBoundingClientRect();
-          var dx = (ar.left + ar.width / 2) - (br.left + br.width / 2);
-          if (Math.abs(dx) >= 0.4) shiftTree(s.child, dx, 0);
-        });
-      }
-
-      function hangDownCol(el) {
-        return el.querySelector(".topo-ports.bottom") || el.querySelector(".topo-ports.down");
-      }
-
-      function coverHangFanout(id) {
-        var el = els[id];
-        var left = parseFloat(el.style.left || 0);
-        var right = left + (natural[id] ? natural[id].w : el.offsetWidth);
-        stageKids(id).forEach(function (cid) {
-          var c = els[cid];
-          if (!c) return;
-          right = Math.max(right, parseFloat(c.style.left || 0) + c.offsetWidth);
-        });
-        el.style.width = Math.max(natural[id].w, right - left) + "px";
-      }
-
-      function pinHangPorts(id) {
-        if (!isHangFanout(id) || !els[id]) return;
-        var el = els[id];
-        el.classList.add("is-hang-fanout");
-        var col = hangDownCol(el);
-        if (!col) return;
-        var slots = col.querySelectorAll(".topo-slot");
-        var cr = col.getBoundingClientRect();
-        var used = [];
-        downSlots(byId[id]).forEach(function (s, i) {
-          var slot = slots[i];
-          if (!slot || !s.child) return;
-          var p = portEl(inboundPort(s.child));
-          var probe = slot.querySelector("[data-port]");
-          if (!p || !probe) return;
-          var pr = p.getBoundingClientRect();
-          var sr = slot.getBoundingClientRect();
-          var probeRect = probe.getBoundingClientRect();
-          var off = probeRect.left + probeRect.width / 2 - sr.left;
-          var left = pr.left + pr.width / 2 - cr.left - off;
-          slot.style.left = left + "px";
-          used.push({ i: i, left: left, sw: slot.offsetWidth || 28 });
-        });
-        used.sort(function (a, b) { return a.i - b.i; });
-        var all = downSlots(byId[id]);
-        if (isDoorMini(id) && slots.length >= 4) {
-          Array.prototype.forEach.call(slots, function (slot) {
-            slot.style.gap = PORT_GAP_MINI + "px";
-          });
-          var firstUsed = used.filter(function (u) { return u.i === 0; })[0];
-          var lastUsed = used.filter(function (u) { return u.i === 3; })[0];
-          if (firstUsed && lastUsed && slots[1] && slots[2]) {
-            if (!all[1].child) slots[1].style.left = firstUsed.left + firstUsed.sw + PORT_GAP_MINI + "px";
-            if (!all[2].child) slots[2].style.left = lastUsed.left - slots[2].offsetWidth - PORT_GAP_MINI + "px";
-            containPinnedSlots(id, "x");
-            return;
-          }
-        }
-        var i = 0;
-        while (i < all.length) {
-          if (all[i].child || !slots[i]) {
-            i++;
-            continue;
-          }
-          var start = i;
-          while (i < all.length && !all[i].child && slots[i]) i++;
-          var end = i;
-          var prev = null, next = null;
-          used.forEach(function (u) {
-            if (u.i < start) prev = u;
-            if (u.i >= end && !next) next = u;
-          });
-          var total = 0;
-          for (var j = start; j < end; j++) total += slots[j].offsetWidth || 28;
-          var gap = 8;
-          var left;
-          if (prev && next) {
-            var room = next.left - (prev.left + prev.sw);
-            gap = Math.max(2, (room - total) / (end - start + 1));
-            left = prev.left + prev.sw + gap;
-          } else if (prev) {
-            left = prev.left + prev.sw + gap;
-          } else if (next) {
-            left = Math.max(0, next.left - total - gap * (end - start));
-          } else {
-            left = 0;
-          }
-          for (var k = start; k < end; k++) {
-            slots[k].style.left = left + "px";
-            left += (slots[k].offsetWidth || 28) + gap;
-          }
-        }
-        containPinnedSlots(id, "x");
-      }
-
       function pinAllFanout() {
-        Object.keys(els).forEach(function (id) {
-          if (isHangFanout(id)) {
-            coverHangFanout(id);
-            pinHangPorts(id);
-          } else if (hangsDown(id)) pinHangChildren(id);
-          else pinDownPorts(id);
-        });
+        Object.keys(els).forEach(pinDownPorts);
       }
 
       function bundleLeftInset(el) {
@@ -1713,10 +1402,6 @@
         var backupId = pairedBackupId(id);
         if (backupId && natural[backupId]) {
           place(id, x, slotTop + natural[backupId].h + 8);
-          return;
-        }
-        if (hangsDown(id)) {
-          place(id, x, slotTop);
           return;
         }
         var h = natural[id] ? natural[id].h : 0;
@@ -1902,40 +1587,7 @@
         pinCorePortBands();
       }
 
-      function placeHang(id, x, y) {
-        var el = els[id];
-        el.classList.add("topo-hang");
-        el.style.width = "";
-        el.style.height = "";
-        el.style.left = x + "px";
-        el.style.top = y + "px";
-        var bw = el.offsetWidth || natural[id].w;
-        var bh = el.offsetHeight || natural[id].h;
-        var kids = stageKids(id);
-        var cy = y + bh + GAP_TB;
-        if (isHangFanout(id)) {
-          var cx = x;
-          kids.forEach(function (cid) {
-            place(cid, cx, cy);
-            cx += subtreeW(cid) + GAP_X;
-          });
-          coverHangFanout(id);
-          pinHangPorts(id);
-        } else {
-          kids.forEach(function (cid) {
-            var cw = natural[cid] ? natural[cid].w : 0;
-            place(cid, x + Math.max(0, (bw - cw) / 2), cy);
-            cy += subtreeH(cid) + GAP_Y;
-          });
-          pinHangChildren(id);
-        }
-      }
-
       function place(id, x, y) {
-        if (hangsDown(id)) {
-          placeHang(id, x, y);
-          return;
-        }
         var el = els[id];
         if (isLTRFanout(id)) applySlotHeights(id);
         var bw = natural[id].w;
@@ -1944,25 +1596,16 @@
         el.style.top = y + "px";
         var kids = stageKids(id);
         if (!kids.length) return;
-        if (kids.length === 1 && hangsDown(kids[0])) {
-          var hw = natural[kids[0]].w;
-          if (downsFaceDown(id) || stacksChildBelow(id)) {
-            place(kids[0], x + (bw - hw) / 2, y + bh + GAP_TB);
-          } else {
-            place(kids[0], x + bw + GAP_X, y);
-          }
-          return;
-        }
         if (isTB(id) && kids.length === 1 && isTB(kids[0])) {
           var cw = natural[kids[0]].w;
           place(kids[0], x + (bw - cw) / 2, y + bh + GAP_TB);
           return;
         }
         if (isTB(id) && kids.length === 1) {
-          place(kids[0], x + bw + horizontalGap(id, kids[0]), y);
+          place(kids[0], x + bw + GAP_X, y);
           return;
         }
-        var cx = x + bw + (kids.length === 1 ? horizontalGap(id, kids[0]) : GAP_X);
+        var cx = x + bw + GAP_X;
         if (isLTRFanout(id)) {
           var g = gapDown(id);
           var cursor = y;
@@ -1985,7 +1628,7 @@
       }
 
       function shiftTree(id, dx, dy) {
-        if (!els[id] || nested[id]) return;
+        if (!els[id]) return;
         if (dx) els[id].style.left = (parseFloat(els[id].style.left || 0) + dx) + "px";
         if (dy) els[id].style.top = (parseFloat(els[id].style.top || 0) + dy) + "px";
         stageKids(id).forEach(function (cid) { shiftTree(cid, dx, dy); });
@@ -2058,14 +1701,6 @@
         return { x: x, y: y };
       }
 
-      function fromEdge(id) {
-        return downsFaceDown(id) ? "bottom" : "right";
-      }
-
-      function toEdge(id) {
-        return isTB(id) ? "top" : "left";
-      }
-
       function treeBox(id) {
         var el = els[id];
         var top = parseFloat(el.style.top || 0);
@@ -2084,16 +1719,9 @@
 
       function separateSiblings(id) {
         var kids = stageKids(id);
-        if (isHangFanout(id)) {
-          for (var i = 1; i < kids.length; i++) {
-            var needX = treeBox(kids[i - 1]).right + GAP_X - treeBox(kids[i]).left;
-            if (needX > 0.4) shiftTree(kids[i], needX, 0);
-          }
-        } else {
-          for (var i = 1; i < kids.length; i++) {
-            var need = treeBox(kids[i - 1]).bottom + GAP_Y - treeBox(kids[i]).top;
-            if (need > 0.4) shiftTree(kids[i], 0, need);
-          }
+        for (var i = 1; i < kids.length; i++) {
+          var need = treeBox(kids[i - 1]).bottom + GAP_Y - treeBox(kids[i]).top;
+          if (need > 0.4) shiftTree(kids[i], 0, need);
         }
         kids.forEach(separateSiblings);
       }
@@ -2103,9 +1731,7 @@
       }
 
       function linkIsVertical(fromId, toId) {
-        if (!fromId) return false;
-        if (downsFaceDown(fromId) && upsFaceUp(toId)) return true;
-        return isTB(fromId) && isTB(toId);
+        return !!(fromId && isTB(fromId) && isTB(toId));
       }
 
       function linkRunsVertical(link) {
@@ -2394,7 +2020,6 @@
         var drawingRight = 0;
         var nahTop = PAD;
         Object.keys(els).forEach(function (id) {
-          if (nested[id]) return;
           var el = els[id];
           var right = el.offsetLeft + el.offsetWidth;
           drawingRight = Math.max(drawingRight, right);
@@ -2431,7 +2056,6 @@
       function clampOrigin() {
         var minX = Infinity, minY = Infinity;
         Object.keys(els).forEach(function (id) {
-          if (nested[id]) return;
           minX = Math.min(minX, parseFloat(els[id].style.left || 0));
           minY = Math.min(minY, parseFloat(els[id].style.top || 0));
         });
@@ -2439,7 +2063,6 @@
         var dy = minY < PAD ? PAD - minY : 0;
         if (!dx && !dy) return;
         Object.keys(els).forEach(function (id) {
-          if (nested[id]) return;
           if (dx) els[id].style.left = (parseFloat(els[id].style.left || 0) + dx) + "px";
           if (dy) els[id].style.top = (parseFloat(els[id].style.top || 0) + dy) + "px";
         });
@@ -2767,7 +2390,6 @@
 
       function setExportLabel(key) {
         currentTab = key;
-        if (exportButton) exportButton.textContent = "Export PDF";
       }
 
       window.setExportLabel = setExportLabel;
