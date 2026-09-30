@@ -1,6 +1,6 @@
 (async function () {
   var host = document.getElementById("spa-content-loader");
-  var names = ["topology", "design"];
+  var names = ["topology", "spec"];
   var fragments;
   try {
     fragments = await Promise.all(names.map(async function (name) {
@@ -18,9 +18,9 @@
   host.remove();
 
     (function () {
-      var article = document.querySelector("#tab-design .spa-article");
-      var toc = document.querySelector("#tab-design .design-toc");
-      var scroller = document.getElementById("tab-design");
+      var article = document.querySelector("#tab-spec .spa-article");
+      var toc = document.querySelector("#tab-spec .design-toc");
+      var scroller = document.getElementById("tab-spec");
       if (!article || !toc || !scroller) return;
 
       var list = document.createElement("ol");
@@ -2220,7 +2220,7 @@
        * Sheet boxes are declared in inches (1in === 96px). The Arch C topology
        * sheet has enough room for its 1917 × 1626px stage at exactly 1:1.
        *
-       * Design width is set by the widest schedule: the device list needs
+       * Spec width is set by the widest schedule: the device list needs
        * 13.2in at 10pt with no cell wrapping, so 18in is the smallest
        * architectural sheet dimension that clears it.
        */
@@ -2238,7 +2238,7 @@
           sheet: { w: 2240, h: 1664 },
           label: "ARCH C · 24 × 18 IN · LANDSCAPE"
         },
-        design: {
+        spec: {
           page: "18in 24in",
           margin: "0.6in 0.7in",
           label: "ARCH C · 18 × 24 IN · PORTRAIT"
@@ -2343,7 +2343,7 @@
             '<h2>HOME NETWORK</h2>' +
             '<p class="blueprint-meta-subtitle">Physical Topology</p>' +
             '<div class="blueprint-meta-details">' +
-            '<span><strong>Document</strong>Home Network Spec</span>' +
+            '<span><strong>Document</strong>Home Spec</span>' +
             '<span><strong>Scope</strong>Physical Topology</span>' +
             '<span><strong>Sheet</strong>N-001</span>' +
             '<span><strong>Format</strong>' + spec.label + '</span>' +
@@ -2354,7 +2354,7 @@
       }
 
       function clearPrintMode() {
-        document.body.classList.remove("print-design", "print-topology", "export-source-measure");
+        document.body.classList.remove("print-spec", "print-topology", "export-source-measure");
         if (pageStyle.parentNode) pageStyle.parentNode.removeChild(pageStyle);
         if (exportRoot) exportRoot.innerHTML = "";
         if (typeof window.relayoutTopo === "function") window.relayoutTopo();
@@ -2382,7 +2382,7 @@
         clearPrintMode();
         pageStyle.textContent = "@page { size: " + spec.page + "; margin: " + spec.margin + "; }";
         document.head.appendChild(pageStyle);
-        document.body.classList.add(kind === "design" ? "print-design" : "print-topology");
+        document.body.classList.add(kind === "spec" ? "print-spec" : "print-topology");
         if (kind === "topology") await stageTopologySheet(spec);
         await waitFrame();
         window.print();
@@ -2480,7 +2480,7 @@
 (function () {
       var tabs = document.querySelectorAll(".spa-tab");
       var buttons = document.querySelectorAll(".spa-nav button[data-tab]");
-      var known = { topology: true, design: true };
+      var known = { topology: true, spec: true };
 
       function show(id) {
         var key = known[id] ? id : "topology";
