@@ -7,11 +7,13 @@ Follow this until the user says otherwise. It replaces opening a pull request or
 - "push" ends the iteration. Squash every local commit that is not yet on `origin/master` into one commit, write a message that covers that whole iteration, then push that one commit to `master`. Do not force-push.
 - The user edits this workspace from their local machine and may leave those edits uncommitted. Before starting a new round of work, and again before the squash-and-push, check the working tree. If those edits are uncommitted, commit them first with a message that describes them, then continue.
 
+
+
 ### Local review
 
 Open the page: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
-That address serves this checkout (`/workspace`). Use it for review. Saved edits to `index.html`, `sections/*.html`, `assets/styles.css`, and `assets/app.js` show up on refresh.
+That address serves this checkout (`/workspace`). Use it for review. Saved edits to `index.html`, `assets/styles.css`, and `assets/app.js` show up on refresh.
 
 If the address does not load, start the server once from `/workspace`:
 
@@ -23,9 +25,11 @@ That server sends `Cache-Control: no-cache`, so a normal reload picks up saved H
 
 If port 8000 is already serving this checkout, leave that process running. Do not start a second one.
 
-### Verifying edits
+### Page files
 
-This site is a static page (`index.html`, `sections/*.html`, `assets/styles.css`, `assets/app.js`).
+This site is one static page. Spec and Topology both live in `index.html` (`#tab-spec`, `#tab-topology`). Behaviour stays in `assets/app.js`; chrome and drawing styles stay in `assets/styles.css`.
+
+### Verifying edits
 
 For wording, names, links, or other copy changes, verify by reading the file and fetching [http://127.0.0.1:8000/](http://127.0.0.1:8000/), then checking that the expected strings are present. Do not take browser screenshots or screen recordings for those edits.
 
@@ -33,11 +37,18 @@ Open the page in a browser only when layout, styling, navigation, or another int
 
 ### Contents navigation
 
-The contents list includes heading levels 1 and 2 only: the numbered sections, and their subsections numbered like 2.1. Deeper headings stay on the page and are not added to the contents list. Do not raise that depth unless asked.
+The Spec Contents list includes document levels 1 and 2 only: the numbered `h2` sections, and their `h3` subsections numbered like 2.1. Deeper headings stay on the page and are not added to the contents list. Do not raise that depth unless asked.
+
+Keep enough bottom padding on the Spec article that the last Contents target can reach the reading line under the masthead. Without that room, the pane ends first and the last item never becomes active.
 
 ### Topology drawing
 
 The on-screen SVG and the exported sheet are one drawing. Do not fix a screen rule by bending a cable, or fix a PDF rule by shifting only the export.
+
+**Export Blueprint**
+
+- Topology only. Keep the control in the Topology toolbar outside `#topo-canvas`. Do not put it in the global masthead or on the Spec tab.
+- Export clones the on-screen topology stage; do not change the drawing to make the button fit.
 
 **Cables**
 
@@ -79,7 +90,7 @@ The on-screen SVG and the exported sheet are one drawing. Do not fix a screen ru
 
 **Sheet**
 
-- Arch C landscape, printed 1:1. Do not scale the drawing to fit the page.
+- Export Blueprint writes Arch C landscape at 1:1. Do not scale the drawing to fit the page.
 - Title is HOME NETWORK. Subtitle is Physical Topology. Put that metadata in the empty upper left of the drawing. The sheet has only its outer border.
 - The page margin, sheet size, sheet padding, and drawing origin are whole CSS pixels, so the cable grid and the painted port chips are the same grid.
 

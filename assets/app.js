@@ -1,22 +1,4 @@
-(async function () {
-  var host = document.getElementById("spa-content-loader");
-  var names = ["spec", "topology"];
-  var fragments;
-  try {
-    fragments = await Promise.all(names.map(async function (name) {
-      var response = await fetch("sections/" + name + ".html");
-      if (!response.ok) throw new Error("Unable to load " + name + " (HTTP " + response.status + ")");
-      return response.text();
-    }));
-  } catch (error) {
-    console.error(error);
-    if (host) host.innerHTML = '<p role="alert">Unable to load the specification sections. Serve this directory over HTTP and reload.</p>';
-    return;
-  }
-
-  host.insertAdjacentHTML("beforebegin", fragments.join("\n"));
-  host.remove();
-
+(function () {
     (function () {
       var article = document.querySelector("#tab-spec .spa-article");
       var toc = document.querySelector("#tab-spec .design-toc");
@@ -42,6 +24,7 @@
           event.preventDefault();
           var top = heading.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop - 8;
           scroller.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+          if (typeof window.setSpecSidebar === "function") window.setSpecSidebar(false);
         });
         item.appendChild(link);
         list.appendChild(item);
@@ -53,6 +36,49 @@
       title.textContent = "Contents";
       toc.appendChild(title);
       toc.appendChild(list);
+
+      /* Mobile Contents drawer — same pattern as A&J Studio Corporate Governance. */
+      (function () {
+        var navToggle = document.querySelector(".nav-toggle");
+        var backdrop = document.querySelector(".nav-backdrop");
+        var mobileNav = window.matchMedia("(max-width: 860px)");
+
+        function isMobileNav() {
+          return mobileNav.matches || window.innerWidth <= 860;
+        }
+
+        function setSidebar(open) {
+          var show = Boolean(open) && isMobileNav() && document.body.classList.contains("tab-spec");
+          toc.classList.toggle("is-open", show);
+          document.body.classList.toggle("nav-open", show);
+          if (navToggle) navToggle.setAttribute("aria-expanded", show ? "true" : "false");
+          if (backdrop) backdrop.hidden = !show;
+        }
+
+        window.setSpecSidebar = setSidebar;
+
+        if (navToggle) {
+          navToggle.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            setSidebar(!toc.classList.contains("is-open"));
+          });
+        }
+        if (backdrop) {
+          backdrop.addEventListener("click", function () { setSidebar(false); });
+        }
+        document.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") setSidebar(false);
+        });
+        if (mobileNav.addEventListener) {
+          mobileNav.addEventListener("change", function () {
+            if (!isMobileNav()) setSidebar(false);
+          });
+        }
+        window.addEventListener("resize", function () {
+          if (!isMobileNav()) setSidebar(false);
+        });
+      })();
 
       if (!("IntersectionObserver" in window)) {
         scroller.addEventListener("scroll", updateTocFromScroll);
@@ -71,10 +97,15 @@
       }
 
       function updateTocFromScroll() {
-        var origin = scroller.getBoundingClientRect().top + 28;
+        var scrollerRect = scroller.getBoundingClientRect();
+        var origin = scrollerRect.top + 28;
         var found = links[0];
+        /* At the bottom of the Spec pane the last heading can stay below the
+           reading line. Count it once it is on screen. */
+        var atEnd = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 2;
         links.forEach(function (item) {
-          if (item.heading.getBoundingClientRect().top <= origin) found = item;
+          var top = item.heading.getBoundingClientRect().top;
+          if (top <= origin || (atEnd && top < scrollerRect.bottom)) found = item;
         });
         links.forEach(function (item) {
           item.link.classList.toggle("is-active", item === found);
@@ -2213,37 +2244,24 @@
       var exportButton = document.getElementById("export-page-pdf");
       var pageStyle = document.createElement("style");
       pageStyle.id = "print-page-size";
-      var currentTab = "topology";
 
       /*
-       * Both sheets go through the browser's own PDF writer, so type, rules and
-       * port chips stay vector instead of being rasterised by a canvas step.
-       * Sheet boxes are declared in inches (1in === 96px). The Arch C topology
-       * sheet has enough room for its 1917 × 1626px stage at exactly 1:1.
+       * Export Blueprint is topology-only. The sheet goes through the browser's
+       * own PDF writer so type, rules and port chips stay vector. Sheet boxes
+       * are declared in inches (1in === 96px). The Arch C topology sheet has
+       * enough room for its 1917 × 1626px stage at exactly 1:1.
        *
-       * Spec width is set by the widest schedule: the device list needs
-       * 13.2in at 10pt with no cell wrapping, so 18in is the smallest
-       * architectural sheet dimension that clears it.
-       */
-      /*
        * Every offset from the page corner to the drawing is a whole CSS pixel:
        * page margin 30px + sheet border 2px + sheet padding 8px + an integral
        * centring offset. Blink snaps painted boxes to whole pixels in page
        * space, so an integral origin is what lets paintLinks() round cable
        * endpoints onto the very grid the port chips are painted on.
        */
-      var papers = {
-        topology: {
-          page: "24in 18in",
-          margin: "0.3125in",
-          sheet: { w: 2240, h: 1664 },
-          label: "ARCH C · 24 × 18 IN · LANDSCAPE"
-        },
-        spec: {
-          page: "18in 24in",
-          margin: "0.6in 0.7in",
-          label: "ARCH C · 18 × 24 IN · PORTRAIT"
-        }
+      var topologyPaper = {
+        page: "24in 18in",
+        margin: "0.3125in",
+        sheet: { w: 2240, h: 1664 },
+        label: "ARCH C · 24 × 18 IN · LANDSCAPE"
       };
 
       function waitFrame() {
@@ -2355,7 +2373,7 @@
       }
 
       function clearPrintMode() {
-        document.body.classList.remove("print-spec", "print-topology", "export-source-measure");
+        document.body.classList.remove("print-topology", "export-source-measure");
         if (pageStyle.parentNode) pageStyle.parentNode.removeChild(pageStyle);
         if (exportRoot) exportRoot.innerHTML = "";
         if (typeof window.relayoutTopo === "function") window.relayoutTopo();
@@ -2377,23 +2395,16 @@
         return sheet;
       }
 
-      async function runPrint(kind) {
-        var spec = papers[kind];
-        if (!spec) return;
+      async function runPrint() {
+        var spec = topologyPaper;
         clearPrintMode();
         pageStyle.textContent = "@page { size: " + spec.page + "; margin: " + spec.margin + "; }";
         document.head.appendChild(pageStyle);
-        document.body.classList.add(kind === "spec" ? "print-spec" : "print-topology");
-        if (kind === "topology") await stageTopologySheet(spec);
+        document.body.classList.add("print-topology");
+        await stageTopologySheet(spec);
         await waitFrame();
         window.print();
       }
-
-      function setExportLabel(key) {
-        currentTab = key;
-      }
-
-      window.setExportLabel = setExportLabel;
 
       /*
        * The browser writes the vector PDF, but two dialog defaults still spoil a
@@ -2407,9 +2418,9 @@
         hint.className = "print-hint";
         hint.hidden = true;
         hint.setAttribute("role", "dialog");
-        hint.setAttribute("aria-label", "Export PDF settings");
+        hint.setAttribute("aria-label", "Export Blueprint settings");
         hint.innerHTML =
-          '<p class="print-hint-title">Export PDF</p>' +
+          '<p class="print-hint-title">Export Blueprint</p>' +
           '<p class="print-hint-sheet" data-hint="sheet"></p>' +
           '<ul>' +
           '<li>Destination · <strong>Save as PDF</strong></li>' +
@@ -2431,10 +2442,10 @@
         var muted = false;
         try { muted = window.localStorage.getItem(HINT_KEY) === "1"; } catch (error) { muted = false; }
 
-        function startPrint(kind) {
+        function startTopologyPrint() {
           hint.hidden = true;
           exportButton.disabled = true;
-          runPrint(kind).catch(function (error) {
+          runPrint().catch(function (error) {
             console.error(error);
             clearPrintMode();
           }).then(function () {
@@ -2443,10 +2454,9 @@
         }
 
         exportButton.addEventListener("click", function () {
-          var spec = papers[currentTab];
-          if (!spec) return;
+          var spec = topologyPaper;
           if (muted) {
-            startPrint(currentTab);
+            startTopologyPrint();
             return;
           }
           hint.querySelector('[data-hint="sheet"]').textContent = spec.label;
@@ -2467,7 +2477,7 @@
             hint.hidden = true;
             return;
           }
-          startPrint(currentTab);
+          startTopologyPrint();
         });
 
         hint.addEventListener("keydown", function (event) {
@@ -2481,6 +2491,7 @@
 (function () {
       var tabs = document.querySelectorAll(".spa-tab");
       var buttons = document.querySelectorAll(".spa-nav button[data-tab]");
+      var brand = document.querySelector("a.brand[data-tab]");
       var known = { topology: true, spec: true };
 
       function show(id) {
@@ -2491,8 +2502,10 @@
         Array.prototype.forEach.call(buttons, function (b) {
           b.classList.toggle("is-on", b.getAttribute("data-tab") === key);
         });
+        document.body.classList.toggle("tab-spec", key === "spec");
+        document.body.classList.toggle("tab-topology", key === "topology");
+        if (typeof window.setSpecSidebar === "function") window.setSpecSidebar(false);
         if (history.replaceState) history.replaceState(null, "", "#" + key);
-        if (typeof window.setExportLabel === "function") window.setExportLabel(key);
         if (key === "topology" && typeof window.relayoutTopo === "function") {
           requestAnimationFrame(function () {
             window.relayoutTopo();
@@ -2504,6 +2517,12 @@
       Array.prototype.forEach.call(buttons, function (b) {
         b.addEventListener("click", function () { show(b.getAttribute("data-tab")); });
       });
+      if (brand) {
+        brand.addEventListener("click", function (event) {
+          event.preventDefault();
+          show(brand.getAttribute("data-tab") || "spec");
+        });
+      }
 
       var initial = (location.hash || "").replace("#", "");
       show(initial || "spec");
