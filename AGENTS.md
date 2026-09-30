@@ -1,5 +1,7 @@
 ### Git workflow
 
+Follow this until the user says otherwise. It replaces opening a pull request or pushing at the end of a turn.
+
 - Do not open, update, or merge a pull request unless the user explicitly asks for one.
 - Commit on local `master`. Leave every commit on this machine. Do not push until the user has checked the change on localhost and says "push".
 - "push" ends the iteration. Squash every local commit that is not yet on `origin/master` into one commit, write a message that covers that whole iteration, then push that one commit to `master`. Do not force-push.
@@ -20,6 +22,18 @@ python3 tools/local-server.py
 That server sends `Cache-Control: no-cache`, so a normal reload picks up saved HTML, CSS, and JavaScript. Do not use `python3 -m http.server` for this page; it leaves the browser holding a stale stylesheet.
 
 If port 8000 is already serving this checkout, leave that process running. Do not start a second one.
+
+### Verifying edits
+
+This site is a static page (`index.html`, `sections/*.html`, `assets/styles.css`, `assets/app.js`).
+
+For wording, names, links, or other copy changes, verify by reading the file and fetching [http://127.0.0.1:8000/](http://127.0.0.1:8000/), then checking that the expected strings are present. Do not take browser screenshots or screen recordings for those edits.
+
+Open the page in a browser only when layout, styling, navigation, or another interaction changed.
+
+### Contents navigation
+
+The contents list includes heading levels 1 and 2 only: the numbered sections, and their subsections numbered like 2.1. Deeper headings stay on the page and are not added to the contents list. Do not raise that depth unless asked.
 
 ### Topology drawing
 

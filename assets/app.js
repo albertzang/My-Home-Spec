@@ -1,6 +1,6 @@
 (async function () {
   var host = document.getElementById("spa-content-loader");
-  var names = ["topology", "spec"];
+  var names = ["spec", "topology"];
   var fragments;
   try {
     fragments = await Promise.all(names.map(async function (name) {
@@ -26,7 +26,8 @@
       var list = document.createElement("ol");
       list.className = "design-toc-list";
       var links = [];
-      Array.prototype.forEach.call(article.querySelectorAll("h2, h3, h4"), function (heading, index) {
+      /* Contents: numbered sections (h2) and 2.1-style subsections (h3) only. */
+      Array.prototype.forEach.call(article.querySelectorAll("h2, h3"), function (heading, index) {
         var raw = (heading.textContent || "section").replace(/\s+/g, " ").trim();
         if (!heading.id) {
           heading.id = "d-" + index + "-" + raw.toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, "-").replace(/^-+|-+$/g, "");
@@ -49,7 +50,7 @@
       toc.innerHTML = "";
       var title = document.createElement("p");
       title.className = "design-toc-title";
-      title.textContent = "On this page";
+      title.textContent = "Contents";
       toc.appendChild(title);
       toc.appendChild(list);
 
@@ -2505,6 +2506,6 @@
       });
 
       var initial = (location.hash || "").replace("#", "");
-      show(initial || "topology");
+      show(initial || "spec");
     })();
 })();
