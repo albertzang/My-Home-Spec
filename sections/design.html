@@ -15,7 +15,7 @@
     <li><strong>Media Room 交换机 → USW-Flex-2.5G-8</strong>：明确采用<strong>非 PoE 输出版本</strong>。active Media C6A home-run 在墙口后用 Cat6 短跳接入 10G RJ45 / SFP+ combo uplink，并由 XG 协商 PoE+ input（整机最大 14W）；八个 2.5G 下联口只传数据。备用 Media C6A 仍终结但不 patch。</li>
     <li><strong>车库交换机 → USW-Flex-2.5G-8-PoE</strong>：上联为 Garage C6A home-run + Flex 端 802.3bt Type 4 / 4PPoE 额定、24–26AWG 纯铜 Cat6 短跳；它仍属于 Cat6，且可保持 10GBASE-T 与 PoE+++，不降低端口能力。常态由 XG 的 PoE+++ 口供电；210W AC 为可选热备，不是必装。SFP+ 与 10G RJ45 是 combo，数据只能一路。</li>
     <li><strong>Garage room drop → C6A ×2</strong>：与全屋一致拉两根；一根 patch 到 XG 做 Flex 上联，另一根在配线架待命。永久链路仍按 C6A 预留 10G；仅 Flex 旁短跳改用 Cat6。车库出口只出一个插口。</li>
-    <li><strong>室内 Room Drop → 每间两根 C6A</strong>：七间一律两根 home-run 到配线架。Media / Den 墙面出<strong>双口 plate</strong>；Media 在用口下联非 PoE Flex，Den 在用口直连 Mac Studio，两个备用口都不 patch。其余五间（Master / BR1 / BR2 / Seating / Garage）出口只出一个插口，第二根作冗余备用、机柜端暂不 patch 到 XG。</li>
+    <li><strong>室内 Room Drop → 每间两根 C6A</strong>：七间一律两根 home-run 到配线架。Media / Den 墙面出<strong>双口 plate</strong>；Media 在用口下联非 PoE Flex，Den 在用口直连 Mac Studio，两个备用口都不 patch。其余五间（Master / BR1 / BR2 / Seating / Garage）出口只出一个插口，第二根作冗余备用、机柜端暂不 patch 到 XG。面板各买一包：横向双口、横向单口、纵向双口、纵向单口。官网每包 4 只。</li>
     <li><strong>备电</strong>：双 PW3 承担全屋持续供电。机柜 UPS 不是必须；仅当实测切换会重启核心设备、且不能接受短中断时，再加一台只桥接数分钟的小型 UPS。</li>
     <li><strong>NAS → Synology FS2500</strong>：跑 DSM；家庭<strong>多负载存储与管理层</strong>（LLM 模型库、安防录像、影音、文件、Web 等）。算力主机是 Mac Studio（经 Den Room Drop 上 XG）。机柜内 <strong>2×Cat6 短跳承载 2×10G LACP → Pro XG</strong>；12×2.5&quot; SSD all-flash；容量经济学非优先。选型依据见下方「NAS 选型」。</li>
     <li><strong>Zigbee + Thread</strong>：两根 Connect ZBT-2 嵌在 HA Mini PC 内，无独立连线。Zigbee 占 USB-C，Thread 占 USB-3（需一枚 USB-A/C 数据转换头）。一根棒不能同时跑两种协议。</li>
@@ -581,7 +581,7 @@
         <td>Basement/Media Room</td>
       </tr>
       <tr>
-        <td rowspan="7">Room Drop</td>
+        <td rowspan="11">Room Drop</td>
         <td>
           <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/b78c6ae3-515b-439d-86e6-079719ef5fca/c0e353a5-43e9-4fe0-8038-b2d7a27c62d3.png" alt="">
@@ -678,6 +678,82 @@
         <td class="poe-cell">-</td>
         <td class="poe-cell">-</td>
         <td>Garage</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/eafc887c-4c23-40f6-b5ce-3259cf0462f5.png" alt="">
+            <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-2p" target="_blank" rel="noopener noreferrer">UACC-WP-Keystone-H-2P</a>
+            <span class="udc-count" title="1 pack, 4 plates.">×1</span>
+          </span>
+        </td>
+        <td class="port-cell">
+          <span class="udc-ports" title="Two horizontal keystone openings. Passive Cat6A, PoE+++ pass-through.">
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+          </span>
+        </td>
+        <td class="port-cell">
+          <span class="udc-ports" title="Two horizontal keystone openings. Passive Cat6A, PoE+++ pass-through.">
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+          </span>
+        </td>
+        <td class="poe-cell">-</td>
+        <td class="poe-cell">-</td>
+        <td>Room drops</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/bc490d11-75e8-43cf-a205-34ece1b6f8ed.png" alt="">
+            <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-1p" target="_blank" rel="noopener noreferrer">UACC-WP-Keystone-H-1P</a>
+            <span class="udc-count" title="1 pack, 4 plates.">×1</span>
+          </span>
+        </td>
+        <td class="port-cell"><span class="udc-ports" title="One horizontal keystone opening. Passive Cat6A, PoE+++ pass-through."><span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
+        <td class="port-cell"><span class="udc-ports" title="One horizontal keystone opening. Passive Cat6A, PoE+++ pass-through."><span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
+        <td class="poe-cell">-</td>
+        <td class="poe-cell">-</td>
+        <td>Room drops</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/811c6fee-dfac-4d50-bad0-36c0f031b6f4.png" alt="">
+            <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-2p" target="_blank" rel="noopener noreferrer">UACC-WP-Keystone-V-2P</a>
+            <span class="udc-count" title="1 pack, 4 plates.">×1</span>
+          </span>
+        </td>
+        <td class="port-cell">
+          <span class="udc-ports" title="Two vertical keystone openings. Passive Cat6A, PoE+++ pass-through.">
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+          </span>
+        </td>
+        <td class="port-cell">
+          <span class="udc-ports" title="Two vertical keystone openings. Passive Cat6A, PoE+++ pass-through.">
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+          </span>
+        </td>
+        <td class="poe-cell">-</td>
+        <td class="poe-cell">-</td>
+        <td>Room drops</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/bbaab68e-40a7-4729-9d1f-0b53f1adec65.png" alt="">
+            <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-1p" target="_blank" rel="noopener noreferrer">UACC-WP-Keystone-V-1P</a>
+            <span class="udc-count" title="1 pack, 4 plates.">×1</span>
+          </span>
+        </td>
+        <td class="port-cell"><span class="udc-ports" title="One vertical keystone opening. Passive Cat6A, PoE+++ pass-through."><span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
+        <td class="port-cell"><span class="udc-ports" title="One vertical keystone opening. Passive Cat6A, PoE+++ pass-through."><span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
+        <td class="poe-cell">-</td>
+        <td class="poe-cell">-</td>
+        <td>Room drops</td>
       </tr>
       <tr>
         <td rowspan="4">Wi-Fi AP</td>
@@ -1339,7 +1415,7 @@
       <tr><td>UACC-DAC-SFP10</td><td>不分配 PoE 功率</td></tr>
       <tr><td>USW-Pro-XG-24-PoE</td><td>市电供电；720W 是 PoE 输出预算，不是交换机墙端功耗</td></tr>
       <tr><td>UACC-Adapter-AC-210W</td><td>可选热备，不是常态供电源；若接入，196W 是 Flex 可用 PoE 输出预算</td></tr>
-      <tr><td>Room drops / keystones</td><td>被动器件，0W</td></tr>
+      <tr><td>Room drops / keystones / wall plates</td><td>被动器件，0W</td></tr>
       <tr><td>Synology FS2500</td><td>市电供电，不从 Pro XG 获取 PoE；官网 Access ≈74.83W</td></tr>
       <tr><td>Tesla Powerwall / Gateway 3</td><td>设备自身系统供电；Ethernet / CAN 仅传输数据</td></tr>
     </tbody>
