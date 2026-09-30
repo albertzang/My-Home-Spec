@@ -92,17 +92,17 @@ html, body {
       margin: 0.75rem 0 1.4rem;
     }
 
-    .spa-design .spa-article .design-devices-wrap .devices-table {
+    .spa-spec .spa-article .design-devices-wrap .devices-table {
       width: 100%;
       max-width: 100%;
     }
 
-    .spa-design .spa-article .design-devices-wrap .devices-table th,
-    .spa-design .spa-article .design-devices-wrap .devices-table td {
+    .spa-spec .spa-article .design-devices-wrap .devices-table th,
+    .spa-spec .spa-article .design-devices-wrap .devices-table td {
       white-space: normal;
     }
 
-    .spa-design .spa-article .design-devices-wrap .devices-table .port-cell {
+    .spa-spec .spa-article .design-devices-wrap .devices-table .port-cell {
       white-space: nowrap;
     }
 
@@ -196,7 +196,7 @@ html, body {
       padding: 1.1rem 1.4rem 2.4rem;
     }
 
-    .spa-design .spa-article {
+    .spa-spec .spa-article {
       box-sizing: border-box;
       min-width: 0;
       max-width: none;
@@ -207,28 +207,28 @@ html, body {
       overflow-x: hidden;
     }
 
-    .spa-design .spa-article h2 {
+    .spa-spec .spa-article h2 {
       margin-top: 2.7rem;
       font-size: 1.52rem;
       letter-spacing: -0.02em;
       border-bottom-color: #eaecef;
     }
 
-    .spa-design .spa-article h2:first-child {
+    .spa-spec .spa-article h2:first-child {
       margin-top: 0;
     }
 
-    .spa-design .spa-article .lede {
+    .spa-spec .spa-article .lede {
       color: #444c56;
     }
 
-    .spa-design .spa-article table {
+    .spa-spec .spa-article table {
       width: 100%;
       max-width: 100%;
     }
 
-    .spa-design .spa-article th,
-    .spa-design .spa-article td {
+    .spa-spec .spa-article th,
+    .spa-spec .spa-article td {
       white-space: normal;
     }
 
@@ -1417,11 +1417,11 @@ html, body {
       white-space: nowrap;
     }
 
-    .spa-design .power-summary {
+    .spa-spec .power-summary {
       gap: 0.65rem;
     }
 
-    .spa-design .power-table {
+    .spa-spec .power-table {
       min-width: 0;
     }
 
@@ -1729,24 +1729,24 @@ html, body {
       }
 
       /* Port fills and rules must survive Chrome's "Background graphics" default. */
-      body.print-design *,
+      body.print-spec *,
       body.print-topology * {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
 
-      body.print-design,
+      body.print-spec,
       body.print-topology {
         display: block;
         min-height: 0;
       }
 
-      body.print-design .spa-bar,
+      body.print-spec .spa-bar,
       body.print-topology .spa-bar,
-      body.print-design .print-hint,
+      body.print-spec .print-hint,
       body.print-topology .print-hint,
-      body.print-design .design-toc,
-      body.print-design .spa-tab,
+      body.print-spec .design-toc,
+      body.print-spec .spa-tab,
       body.print-topology .spa-tab {
         display: none !important;
       }
@@ -1768,21 +1768,21 @@ html, body {
         break-inside: avoid;
       }
 
-      /* Design: Arch C portrait at 10pt. */
-      body.print-design #export-root {
+      /* Spec: Arch C portrait at 10pt. */
+      body.print-spec #export-root {
         display: none;
       }
 
-      body.print-design #tab-design {
+      body.print-spec #tab-spec {
         display: block !important;
         overflow: visible !important;
       }
 
-      body.print-design .design-shell {
+      body.print-spec .design-shell {
         display: block;
       }
 
-      body.print-design .spa-article {
+      body.print-spec .spa-article {
         max-width: none;
         padding: 0;
         font-size: 10pt;
@@ -1790,29 +1790,29 @@ html, body {
       }
 
       /* Prose keeps a readable measure while schedules use the whole sheet. */
-      body.print-design .spa-article p,
-      body.print-design .spa-article li,
-      body.print-design .spa-article .note {
+      body.print-spec .spa-article p,
+      body.print-spec .spa-article li,
+      body.print-spec .spa-article .note {
         max-width: 11in;
       }
 
-      body.print-design .spa-article h2,
-      body.print-design .spa-article h3,
-      body.print-design .spa-article h4 {
+      body.print-spec .spa-article h2,
+      body.print-spec .spa-article h3,
+      body.print-spec .spa-article h4 {
         break-after: avoid-page;
       }
 
       /* Screen-sized micro labels stay under 7pt even at a 10pt body. */
-      body.print-design .spa-article .poe-lbl {
+      body.print-spec .spa-article .poe-lbl {
         font-size: 7.5pt;
       }
 
-      body.print-design .spa-article .ha-guide-heading {
+      body.print-spec .spa-article .ha-guide-heading {
         break-before: page;
       }
 
-      body.print-design .spa-article pre,
-      body.print-design .spa-article .note {
+      body.print-spec .spa-article pre,
+      body.print-spec .spa-article .note {
         break-inside: avoid-page;
       }
 
@@ -1823,13 +1823,13 @@ html, body {
        * than one page break and repeat their header - keeping break-inside:
        * avoid on a 22in table is what clipped it before.
        */
-      body.print-design .spa-article .design-devices-wrap {
+      body.print-spec .spa-article .design-devices-wrap {
         overflow: visible !important;
         max-width: none !important;
       }
 
-      body.print-design .spa-article table,
-      body.print-design .spa-article .design-devices-wrap .devices-table {
+      body.print-spec .spa-article table,
+      body.print-spec .spa-article .design-devices-wrap .devices-table {
         width: max-content !important;
         min-width: 0;
         max-width: 100% !important;
@@ -1837,20 +1837,20 @@ html, body {
         break-inside: auto;
       }
 
-      body.print-design .spa-article th,
-      body.print-design .spa-article td {
+      body.print-spec .spa-article th,
+      body.print-spec .spa-article td {
         white-space: nowrap;
       }
 
-      body.print-design .spa-article thead {
+      body.print-spec .spa-article thead {
         display: table-header-group;
       }
 
-      body.print-design .spa-article tr {
+      body.print-spec .spa-article tr {
         break-inside: avoid;
       }
 
-      body.print-design a {
+      body.print-spec a {
         color: inherit;
         text-decoration: none;
       }
@@ -1874,7 +1874,7 @@ html, body {
         display: none;
       }
 
-      .spa-design .spa-article {
+      .spa-spec .spa-article {
         padding: 1.3rem 1.1rem 3rem;
       }
     }

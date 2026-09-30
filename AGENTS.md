@@ -33,7 +33,7 @@ The on-screen SVG and the exported sheet are one drawing. Do not fix a screen ru
 
 **Ports**
 
-- Every port chip is the same rounded square, in the diagram, the legend, and the Design document. Inner labels use one type size.
+- Every port chip is the same rounded square, in the diagram, the legend, and the Spec document. Inner labels use one type size.
 
 **Frames and rules**
 
@@ -46,7 +46,7 @@ The on-screen SVG and the exported sheet are one drawing. Do not fix a screen ru
 
 **Legend**
 
-- Draw the legend into the topology SVG, in the empty upper right. No sidebar, and do not put it in the Design document.
+- Draw the legend into the topology SVG, in the empty upper right. No sidebar, and do not put it in the Spec document.
 - Two equal-width columns. Tops align with NAH. No "Legend" heading.
 - Left column is PORTS. Right column is CABLES above VLANS.
 - Each card has its own border and the same inner padding.
