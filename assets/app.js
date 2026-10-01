@@ -297,12 +297,12 @@
 
       var UI = "https://store.ui.com/us/en/products/";
       var nodes = [
-        { id: "nah", name: "TELUS Network Access Hub", loc: "Rack Cabinet", href: "https://www.telus.com/en/bc/internet", info: "XGS-PON ends here. 10G RJ45 WAN out over a Cat6 rack patch.",
+        { id: "nah", name: "Nokia XS-250X-A", loc: "Rack Cabinet", href: "https://www.telus.com/en/bc/internet", info: "Preferred TELUS XGS-PON ONT (no Wi-Fi). 10G RJ45 WAN out over a Cat6 rack patch. If only a NAH is issued, same copper handoff with Port 10G Bridge—do not stack ONT+NAH.",
           up: [P("nah-pon", "other", { t: "F", title: "XGS-PON fiber in" })],
           down: idleMany(4, "nah-1g", "gbe1", { title: "1G RJ45 unused", idle: true }).concat([
             P("nah-10g", "gbe10", { poe: "wan", title: "10G RJ45 WAN out · Cat6 rack patch to UDM CM adapter", child: "udm" })
           ]) },
-        { id: "udm", vlan: "management", name: "UDM-Pro-Max", loc: "Rack Cabinet", href: UI + "udm-pro-max", info: "NAH Cat6 rack patch terminates at the RJ45 face of a UACC-CM-RJ45-MG inserted in UDM-Pro-Max WAN SFP+. LAN SFP+ connects directly to USW-Pro-XG-24-PoE by one DAC.",
+        { id: "udm", vlan: "management", name: "UDM-Pro-Max", loc: "Rack Cabinet", href: UI + "udm-pro-max", info: "ONT (or bridged NAH) Cat6 rack patch terminates at the RJ45 face of a UACC-CM-RJ45-MG inserted in UDM-Pro-Max WAN SFP+. LAN SFP+ connects directly to USW-Pro-XG-24-PoE by one DAC.",
           embed: [
             { name: "UACC-CM-RJ45-MG · RJ45 ↔ SFP+", href: UI + "uacc-cm-rj45-mg" }
           ],
@@ -388,7 +388,7 @@
         { id: "drop-media-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
           up: [P("drop-media-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
           down: [P("drop-media-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-media", name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "Active C6A home-run → Cat6 short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input. The second run is shown above as a separate dashed backup card.",
+        { id: "drop-media", name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "Active C6A home-run on a single-port plate → Cat6 short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input. The second run is shown above as a separate dashed backup card.",
           up: [P("drop-media-up", "gbe10", { poe: "ppp", title: "10G ← USW-Pro-XG-24-PoE" })],
           down: [P("drop-media-dn", "gbe10", { poe: "ppp", title: "10G PoE+++ pass-through → USW-Flex-2.5G-8 at PoE+", child: "media-flex" })] },
         { id: "media-flex", vlan: "management", name: "USW-Flex-2.5G-8", loc: "Basement/Media Room", href: "https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", info: "Non-PoE model. C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45 uplink and PoE+ input. SFP+ combo left unused. Eight 2.5G downlinks have no PoE output.",
@@ -402,13 +402,13 @@
         { id: "drop-den-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
           up: [P("drop-den-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
           down: [P("drop-den-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-den", name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. 2-port plate; second jack is the backup above.",
+        { id: "drop-den", name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Only Den uses a 2-port wall plate; second jack is the backup above.",
           up: [P("drop-den-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
           down: [P("drop-den-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
         { id: "drop-master-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Master Bedroom", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
           up: [P("drop-master-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
           down: [P("drop-master-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-master", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Master Bedroom", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Wall has one jack; spare is the backup above.",
+        { id: "drop-master", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Master Bedroom", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Single-port vertical plate; spare is the backup above.",
           up: [P("drop-master-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
           down: [P("drop-master-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
         { id: "drop-br1-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Bedroom 1", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
@@ -669,7 +669,7 @@
       };
 
       var links = [
-        { from: "nah", fp: "nah-10g", to: "udm", tp: "udm-wan", cable: "cat6", route: "vertical", info: "NAH 10G RJ45 → Cat6 rack patch → CM RJ45; CM SFP+ is inserted in UDM-Pro-Max WAN." },
+        { from: "nah", fp: "nah-10g", to: "udm", tp: "udm-wan", cable: "cat6", route: "vertical", info: "ONT/NAH 10G RJ45 → Cat6 rack patch → CM RJ45; CM SFP+ is inserted in UDM-Pro-Max WAN." },
         { from: "udm", fp: "udm-lan-sfp", to: "xg", tp: "xg-sfp", cable: "dac", route: "vertical", label: "UACC-DAC-SFP10", href: UI + "10gbps-direct-attach-cable", info: "One UACC-DAC-SFP10: UDM-Pro-Max LAN SFP+ → USW-Pro-XG-24-PoE SFP28 at 10G." },
         { from: "xg", fp: "xg-nas", to: "nas", tp: "nas-10g", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → Cat6 rack patch → Synology FS2500 LACP." },
         { from: "xg", fp: "xg-nas2", to: "nas", tp: "nas-10g2", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → Cat6 rack patch → Synology FS2500 LACP." },

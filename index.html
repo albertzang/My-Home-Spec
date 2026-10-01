@@ -65,29 +65,29 @@
   <p class="lede">WAN、网关、交换、Wi‑Fi、Room Drop 与线材的选型与适配。端口落点与连线见 <a href="#topology" class="page-ref">Topology</a>；本节只写型号能力与适配性。</p>
 
   <h4>1.1.1 ISP</h4>
-  <p>正式套餐为 Telus PureFibre 5 Gig（标称 5 Gbps）。入户是一根光纤；机柜里由运营商提供的 <a href="https://www.telus.com/en/bc/internet" target="_blank" rel="noopener noreferrer">TELUS Network Access Hub</a>（NAH，网络接入盒，常见型号 NH20A / NH20T）把光信号转成网线口，本宅不另买光电转换盒。客户侧这条网线必须能跑到 5G 或 10G，否则套餐会被口速卡死。</p>
-  <p>多千兆 PureFibre 用的是较新的 XGS-PON（一种对称约 10 Gbps 级的光纤接入技术）。旧套餐常见的是 GPON（约千兆级）。两者差别会影响「能不能把光模块直接插进自家路由器」——见下方。</p>
+  <p>正式套餐为 Telus PureFibre 5 Gig（标称 5 Gbps）。入户是一根光纤；机柜里只要一台运营商光终端，把光信号转成一根 10G 网线进 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>，本宅不另买光电转换盒。客户侧这条网线必须能跑到 5G 或 10G，否则套餐会被口速卡死。</p>
+  <p>多千兆 PureFibre 用的是较新的 XGS-PON（对称约 10 Gbps 级的光纤接入）。旧套餐常见 GPON（约千兆级）。机柜极简优先要独立 ONT；默认发给用户的往往是更胖的 <a href="https://www.telus.com/en/bc/internet" target="_blank" rel="noopener noreferrer">Network Access Hub</a>（NAH）——两者怎么取舍见下方。</p>
   <ul>
-    <li>链路：运营商光纤 → NAH（设备与供电由 TELUS 负责）→ 机柜内短 Cat6 网线 → <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> 的 SFP+ WAN 口。SFP+ 是可插拔模块槽；这里插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a>（把光口槽变成 1/2.5/5/10G 电口）。NAH 对外是标准 10G 电口（RJ45）；柜内短跳不会降速。WAN = 接外网的一侧；LAN = 接家里内网的一侧。</li>
-    <li>不要把 NAH 的 10G 网线直插 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> 面板上那个写着 WAN 的 2.5G 铜口——协商只会到 2.5 Gbps，5 Gig 套餐吃不满。必须走上面的 SFP+ WAN + 多速率模块。</li>
-    <li>能否完全绕开 NAH：网上有人把 NAH 笼子里的光模块拔出来，直接插进 UDM 的 SFP+。那在旧 GPON 上有时可行——那时模块本身往往就是登记过的 ONT（光网络终端，负责向局端证明「这是你的光纤账号」）。本宅 5 Gig 是 XGS-PON：向局端（OLT，运营商机房侧的光纤设备）认证的是 NAH 整机序列号，笼子里的模块多半只是光口零件，不能当独立 ONT 插进 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>。</li>
-    <li>能不能让客服 / 现场技师把 UDM 序列号登记进 OLT：不能，也不是这么登记的。局端认的是 PON 侧 ONT 身份（运营商库存里的光终端序列号），不是 UniFi 机箱序列号——UDM 本身不会说 PON 协议。技师能做的通常是：① 登记 / 更换 TELUS 自己的 ONT 或旧款 GPON ONT SFP（登记的是那块光模块，不是 UDM；5 Gig / XGS-PON 上这块往往也不适用）；② 有时换成独立外置 Nokia ONT，再用网线进 UDM（仍是运营商设备做光终结）；③ 把现有 NAH 设成桥接。社区共识是第三方设备不在他们开通清单里，后台加不进去。真要去掉 NAH，只能第三方 XGS-PON ONT 仿冒 NAH 身份，不受支持、易失效，本 Spec 不做。定稿保留 NAH。</li>
-    <li>NAH 工作模式（绕不开时）：
+    <li>机柜定稿（极简优先）：开通 / 上门时点名要独立 <strong>Nokia XS-250X-A</strong>（XGS-PON ONT：无 Wi‑Fi，常见 1×10G + 4×1G 电口；本宅只用 10G）。光纤进 ONT，10G 口短跳 Cat6 → UDM。订单备注写清「standalone Nokia XS-250X-A bridge ONT / enterprise firewall」；库存与技师意愿不保证，拿不到再退回 NAH。</li>
+    <li>回退：若只装到 NAH（常见 NH20A / NH20T），开 <strong>Port 10G Bridge</strong>，同样 10G 短跳进 UDM。功能上与独立 ONT 等价，只是机柜多一台更占位的盒子。不要 ONT 与 NAH 叠两台（有 Optik / 座机时技师有时会这么装）——本宅不依赖运营商电视 / 电话进机柜时，坚持只要一台光终端。</li>
+    <li>链路（ONT 或桥接后的 NAH 相同）：运营商光纤 → TELUS 光终端 → 柜内短 Cat6 → <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> 的 SFP+ WAN。SFP+ 是可插拔模块槽；这里插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a>（把槽变成 1/2.5/5/10G 电口）。光终端对外是 10G 电口（RJ45）；柜内短跳不会降速。WAN = 外网侧；LAN = 家里内网侧。</li>
+    <li>不要把光终端的 10G 网线直插 UDM 面板上那个 2.5G WAN 铜口——只会协商到 2.5 Gbps，5 Gig 吃不满。必须走 SFP+ WAN + 多速率模块。</li>
+    <li>能否把光纤直接插进 UDM、干掉所有 TELUS 盒子：旧 GPON 上有时可行（笼子里的模块本身是已登记 ONT）。本宅 5 Gig 是 XGS-PON：局端（OLT）认证的是运营商光终端整机序列号，笼子里的模块多半只是光口零件。客服 / 技师也不能把 UDM 机箱序列号登记进 OLT——局端认的是 PON ONT 身份，UDM 不会说 PON。第三方仿冒 ONT 不受支持，本 Spec 不做。机柜极简的上限是「一台 TELUS 光终端 + UDM」，不是零运营商设备。</li>
+    <li>若落到 NAH，模式怎么选：
       <ul>
-        <li><strong>Router（路由）模式</strong>：出厂默认。NAH 自己分配内网地址、做 NAT（把家里多台设备共用一个公网出口）和防火墙。再挂一台自家路由器，就会形成双 NAT——两层地址转换，端口转发、部分 VPN / 入站服务容易出问题。本宅不要。</li>
-        <li><strong>Port 10G Bridge（10G 口桥接）</strong>：只把紫色/标 10G 的那个电口改成「透明管道」，公网地址直接落到后面的路由器；NAH 其余 1G LAN 口仍可留给排障或运营商设备。本宅定稿此模式。</li>
-        <li><strong>Port 1 Bridge</strong>：同样是桥接，但桥的是 1G 口，口速不够 5 Gig，不用。</li>
-        <li><strong>Full Bridge（全桥）</strong>：NAH 上每个口都像直接暴露在运营商侧；家用通常只有很少几个动态公网 IP，且每个下游设备都得自己扛防火墙。本宅只需一条进 UDM 的 WAN，不必全桥。</li>
+        <li><strong>Router（路由）</strong>：默认。NAH 自做 NAT / DHCP / 防火墙；后面再挂 UDM = 双 NAT。不要。</li>
+        <li><strong>Port 10G Bridge</strong>：只把 10G 口透传成 WAN，公网落到 UDM。回退定稿。</li>
+        <li><strong>Port 1 Bridge</strong>：桥的是 1G 口，不够 5 Gig。</li>
+        <li><strong>Full Bridge</strong>：所有口暴露给运营商侧；家用动态公网 IP 少，且下游都要自己扛防火墙。本宅只需一条进 UDM 的 WAN。</li>
       </ul>
     </li>
-    <li>为何要桥接：本宅要让 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> 拿到公网 WAN，独自做路由、防火墙、VPN 和 UniFi 管理。留 Router 模式就是双 NAT。装机时在 NAH 管理页开 Port 10G Bridge，再接上述 Cat6 → SFP+ 模块。公网地址一般由 UDM 用 DHCP（自动要地址）取得；少数地区要 PPPoE（账号密码拨号），按开通单配置即可。</li>
-    <li>分工：NAH 只负责把光纤变成网线（ONT / 光电终结），并开 Port 10G Bridge；家里怎么走路由、怎么分段，全部交给 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>。套餐不规定家用交换机型号；后级交换与 Wi‑Fi 见下方 <a href="#1.1.2" class="page-ref">Gateway</a> / <a href="#1.1.3" class="page-ref">Switching</a> / <a href="#1.1.4" class="page-ref">WiFi</a>。</li>
+    <li>分工：光终端（XS-250X-A，或桥接后的 NAH）只做光纤→网线；路由、防火墙、VPN、UniFi 全部交给 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>。公网地址一般由 UDM 用 DHCP 取得（少数地区 PPPoE，按开通单）。后级交换与 Wi‑Fi 见 <a href="#1.1.2" class="page-ref">Gateway</a> / <a href="#1.1.3" class="page-ref">Switching</a> / <a href="#1.1.4" class="page-ref">WiFi</a>。</li>
   </ul>
 
   <h4>1.1.2 Gateway</h4>
   <p>机柜网关定为 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>：UniFi OS 一体机，承担路由、威胁管理、统一控制面，并内建 Protect / Access / Network 应用托管。</p>
   <ul>
-    <li>WAN：SFP+ 插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a> 接 NAH，对齐 PureFibre 5 Gig；勿用 2.5G 铜 WAN。</li>
+    <li>WAN：SFP+ 插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a> 接 TELUS 光终端（优先 XS-250X-A；回退为桥接 NAH），对齐 PureFibre 5 Gig；勿用 2.5G 铜 WAN。</li>
     <li>LAN：<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> LAN SFP+ ↔ <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> SFP28，机柜内用 <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">10G Direct Attach Cable</a>（10G DAC）。短、稳、不占铜口。</li>
     <li>为何是 Pro Max：需要同时扛多应用（Network + Protect 录像调度 + Access）与 10G WAN/LAN；家用一体机里口速与应用密度匹配本宅，不必再拆独立安全设备。</li>
     <li>供电：市电；不占 PoE 预算。机柜回路应在 Powerwall whole-home backup 内（备电策略见 <a href="#4" class="page-ref">§4</a>）。</li>
@@ -112,11 +112,11 @@
   <h4>1.1.5 Room Drops</h4>
   <p>七个房间（Media / Den / Master / BR1 / BR2 / Seating / Garage）各拉两根 Cat6A 实心铜 home-run 到机柜配线架，完整通道按 Type 4 / 4PPoE 选材，全部终结、认证、贴标。每间只启用一根；备用线占配线架，不占交换机口。Media 与 Garage 的在用口在远端接边缘 Flex，再经该 Room Drop 回到机柜 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>——不是另拉一条「交换机上联」进柜。</p>
   <ul>
-    <li>Media / Den：墙面双口 plate。Media 在用口经短跳接 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 的 10G RJ45 上联；Den 在用口接 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（机身 10GbE）。第二口贴「未连接」。</li>
-    <li>Garage：墙面单口；在用口经短跳接 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 的 10G RJ45 上联。第二根留在墙盒 / 配线架作冗余。</li>
-    <li>其余四间（Master / BR1 / BR2 / Seating）：墙面单口；第二根留在墙盒 / 配线架作冗余，不做出第二插口以免误插。</li>
-    <li>面板采购：横向双口、横向单口、纵向双口、纵向单口各一包（官网每包 4 只）；keystone 用 <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack, 12-Pack</a>。</li>
-    <li>扩展路线（按需升级，不提前每间装交换机）：① AP + 1×C6A → ② 该 C6A 上联房间交换机 → ③（仅 Media/Den）启用第二口：一根直连、一根上联或一根备用 → ④ 两根都进同一交换机时必须 LACP 或 STP，禁止随手双接成环。</li>
+    <li>Den：墙面双口 plate。在用口接 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（机身 10GbE）；第二口贴「未连接」。</li>
+    <li>Media / Garage：墙面单口。Media 在用口经短跳接 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 的 10G RJ45 上联；Garage 在用口经短跳接 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 的 10G RJ45 上联。第二根留在墙盒 / 配线架作冗余，不做出第二插口以免误插。</li>
+    <li>其余四间（Master / BR1 / BR2 / Seating）：墙面单口；第二根同样只留在墙盒 / 配线架。</li>
+    <li>面板采购：横向双口一包（Den）、纵向单口两包（其余六间墙面 + 余量；官网每包 4 只）；keystone 用 <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack, 12-Pack</a>。</li>
+    <li>扩展路线（按需升级，不提前每间装交换机）：① AP + 1×C6A → ② 该 C6A 上联房间交换机 → ③（仅 Den 已有双口）启用第二口：一根直连、一根上联或一根备用 → ④ 两根都进同一交换机时必须 LACP 或 STP，禁止随手双接成环。其它房间若以后要双口，再换面板。</li>
     <li>Mechanical Room：机柜已在本室，不再做「卧室式 Room Drop」。需要时从配线架就地短跳到 HVAC / 热水 / 集水坑控制区（默认不 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
   </ul>
 
@@ -124,17 +124,14 @@
   <p>全项目铜缆统一按 IEEE 802.3bt Type 4 / 4PPoE 完整通道选材与验收（线缆、跳线、keystone、配线架、端接）。Type 4 是供电承载能力，不改变 Cat6 / Cat6A 的数据类别；无 PoE 或低功率口仍只按设备协商，不会被强制送 90W。</p>
   <ul>
     <li>Cat6A 实心铜：永久入墙 / home-run（Room Drop、主屋 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>、AP、Wallpanel、<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a>、Garage Room Drop 等），保证百米级 10G 与余量。</li>
-    <li>Cat6 短跳：柜内 NAH→<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>、<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>→HA / NAS、墙口→<a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> / <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a>、<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>→读头/摄像头、<a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> / <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 下联、Tesla 以太网等短距离；短跳不限速这些链路，但须为纯铜、24–26 AWG、Type 4 额定。禁用 CCA / 未标定细径线。</li>
+    <li>Cat6 短跳：柜内 TELUS 光终端→<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>、<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>→HA / NAS、墙口→<a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> / <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a>、<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>→读头/摄像头、<a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> / <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 下联、Tesla 以太网等短距离；短跳不限速这些链路，但须为纯铜、24–26 AWG、Type 4 额定。禁用 CCA / 未标定细径线。</li>
     <li>光 / DAC：<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>↔<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 用 <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">10G Direct Attach Cable</a>。</li>
     <li>非以太网：门锁 LOCK/DPS 为 12V 控制线；Tesla 控制为 CAN——不要用网线标准去套这两类。</li>
   </ul>
 
   <h3>1.2 Protect &amp; Access</h3>
-  <p class="lede">按门位列出 Hub、读头、Strike 与下挂 Protect 摄像头的型号与功率适配。连线落点见 <a href="#topology" class="page-ref">Topology</a>。</p>
-  <p>五扇人行门共用同一模式：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 作就地汇聚——上行 PoE++，两个 PoE+ 口分别给读头与一台摄像头，LOCK（Wet 12V）+ DPS 接 <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>；REX 本宅空闲。<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 出站 Σ≤45W、单口 ≤30W；接受 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 重启时该门口摄像头短暂同离线。<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a> 是 Protect 监视器，直连交换，不挂在 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 下。</p>
-
-  <h5>门锁 Access Status（五扇人行门共用）</h5>
-  <p>一律 <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>，同时接 LOCK 与 DPS。App 状态由这两路组合；无 DPS 时只能显示 Locked / Unlocked。</p>
+  <p class="lede">按门位列出 Hub、读头、Strike 与下挂 Protect 摄像头的型号与 PoE 接口。连线落点见 <a href="#topology" class="page-ref">Topology</a>；功率预算见 <a href="#1.4" class="page-ref">§1.4</a>。</p>
+  <p>五扇人行门共用同一模式：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 作就地汇聚——上行 PoE++，两个 PoE+ 口分别给读头与一台摄像头，LOCK（Wet 12V）+ DPS 接 <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>；REX 本宅空闲。接受 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 重启时该门口摄像头短暂同离线。<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a> 是 Protect 监视器，直连交换，不挂在 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 下。门锁 Access Status 五扇共用：一律接 LOCK 与 DPS，App 状态由这两路组合；无 DPS 时只能显示 Locked / Unlocked。</p>
   <div class="table-scroll">
   <table>
     <thead>
@@ -177,52 +174,52 @@
   <h4>1.2.1 Front Door</h4>
   <ul>
     <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
-    <li>读头 / 摄像一体：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-entry" target="_blank" rel="noopener noreferrer">G6 Pro Entry</a>（约 18W）——前门独有，占 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 一个 PoE+ 口。</li>
-    <li>外景摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>（Frontyard / Front Eave / North East，约 15W）占另一 PoE+ 口。支路输出 18+15=33W，低于 Σ45W；整机「with PoE output」按 50W 上限预留。</li>
+    <li>读头 / 摄像一体：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-entry" target="_blank" rel="noopener noreferrer">G6 Pro Entry</a>——前门独有，占 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 一个 PoE+ 口。</li>
+    <li>外景摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>（Frontyard / Front Eave / North East）占另一 PoE+ 口。</li>
     <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。</li>
   </ul>
 
   <h4>1.2.2 Mud Door</h4>
   <ul>
-    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。位置：Main / Mud / Back Door。</li>
-    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>（约 5W，100M PoE）。</li>
-    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>（Backyard / Balcony Eave / South West，约 15W）。</li>
-    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。支路约 19W（<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 含 Wet）+ 5 + 15 = 39W。</li>
+    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
+    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>（100M PoE）。</li>
+    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>（Backyard / Balcony Eave / South West）。</li>
+    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。</li>
   </ul>
 
   <h4>1.2.3 Dining Door</h4>
   <ul>
-    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。位置：Main / Dining / Back Door。</li>
-    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>（约 5W）。</li>
-    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-bullet" target="_blank" rel="noopener noreferrer">G6 Pro Bullet</a>（Walkway / Balcony Eave / South East，约 15W）。</li>
-    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。功率账同 Mud（约 39W）。</li>
+    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
+    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>（100M PoE）。</li>
+    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-bullet" target="_blank" rel="noopener noreferrer">G6 Pro Bullet</a>（Walkway / Balcony Eave / South East）。</li>
+    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。</li>
   </ul>
 
   <h4>1.2.4 Basement Door</h4>
   <ul>
-    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。位置：Basement / Back Door。</li>
-    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>（约 5W）。</li>
-    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>（Courtyard / Eave，约 15W）。</li>
-    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。功率账同 Mud（约 39W）。</li>
+    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
+    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>（100M PoE）。</li>
+    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>（Courtyard / Eave）。</li>
+    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。</li>
   </ul>
 
   <h4>1.2.5 Garage Door</h4>
   <ul>
     <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（上行自 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 的 PoE++ 口，不是 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
-    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>（约 5W）。</li>
-    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>（Laneway / Garage / South，约 15W）。</li>
-    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。支路约 39W，计入 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> PoE 输出预算，见 <a href="#1.4" class="page-ref">§1.4</a>。</li>
+    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>（100M PoE）。</li>
+    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>（Laneway / Garage / South）。</li>
+    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。</li>
   </ul>
 
   <h4>1.2.6 Garage Gate</h4>
-  <p>车道大门 / 电动门禁位，与 Garage Door（车库行人/车门）分开记账。控制与读头型号待定；选定前不占用 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 端口，也不并入现有五套 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 子树。选型时须单独核算：是否需要 Access Hub、锁体/电机干接点、读头供电等级，以及上联落在 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 还是日后 Utility Switch。</p>
+  <p>车道大门 / 电动门禁位，与 Garage Door（车库行人/车门）分开记账。控制与读头型号待定；选定前不占用 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 端口，也不并入现有五套 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 子树。选型时须单独定：是否需要 Access Hub、锁体/电机干接点、读头 PoE 接口等级，以及上联落在 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 还是日后 Utility Switch。</p>
 
   <h4>1.2.7 USL</h4>
-  <p><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a> 是 SuperLink / BLE 网关，不是传感器：约 100M PoE · 3.4W，由 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 直供，不经过 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>。</p>
+  <p><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a> 是 SuperLink / BLE 网关，不是传感器：100M PoE，由 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 直供，不经过 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>。</p>
   <ul>
     <li>传感器：<a href="https://store.ui.com/us/en/products/usl-environmental" target="_blank" rel="noopener noreferrer">Environmental Sensor</a> 电池供电，测漏水 / 温湿度 / 环境光，经 SuperLink（北美约 915 MHz）回 Gateway，无需 Ethernet。</li>
     <li>布置：Gateway 挂车库半高墙、避大金属面；Environmental 放集水坑、热水器、冷热水汇管附近即可。</li>
-    <li>覆盖：地下室混凝土与炉体可能衰减 915 MHz。若 Protect 里传感器不稳，再在 Mechanical Room 加第二台 <a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a>（同样 ~3.4W PoE），就地短跳，仍不要经 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>。</li>
+    <li>覆盖：地下室混凝土与炉体可能衰减 915 MHz。若 Protect 里传感器不稳，再在 Mechanical Room 加第二台 <a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a>（同样 100M PoE），就地短跳，仍不要经 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>。</li>
   </ul>
 
   <h3>1.3 Device List</h3>
@@ -331,7 +328,7 @@
           </span></td>
       </tr>
       <tr>
-        <td rowspan="5">Room Drop</td>
+        <td rowspan="3">Room Drop</td>
         <td>
           <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/b78c6ae3-515b-439d-86e6-079719ef5fca/c0e353a5-43e9-4fe0-8038-b2d7a27c62d3.png" alt="">
@@ -360,35 +357,9 @@
       <tr>
         <td>
           <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/bc490d11-75e8-43cf-a205-34ece1b6f8ed.png" alt="">
-            <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-1p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a></span>
-              <span class="udc-sku">UACC-WP-Keystone-H-1P</span>
-            </span>
-          </span>
-        </td>
-        <td class="port-cell">-</td>
-        <td class="port-cell">-</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/811c6fee-dfac-4d50-bad0-36c0f031b6f4.png" alt="">
-            <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-2p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a></span>
-              <span class="udc-sku">UACC-WP-Keystone-V-2P</span>
-            </span>
-          </span>
-        </td>
-        <td class="port-cell">-</td>
-        <td class="port-cell">-</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/bbaab68e-40a7-4729-9d1f-0b53f1adec65.png" alt="">
             <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-1p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a></span>
+              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-1p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a> <span class="udc-count">×2</span></span>
               <span class="udc-sku">UACC-WP-Keystone-V-1P</span>
             </span>
           </span>
@@ -563,8 +534,8 @@
             </span>
           </span>
         </td>
-        <td class="port-cell"><span class="udc-ports" title="SFP+ to 1/2.5/5/10G RJ45 · NAH WAN">
-              <span class="udc-port gbe10" title="10G RJ45 toward NAH"><svg class="udc-poe" aria-hidden="true"><use href="#udc-wan"/></svg></span>
+        <td class="port-cell"><span class="udc-ports" title="SFP+ to 1/2.5/5/10G RJ45 · TELUS ONT/NAH WAN">
+              <span class="udc-port gbe10" title="10G RJ45 toward TELUS ONT/NAH"><svg class="udc-poe" aria-hidden="true"><use href="#udc-wan"/></svg></span>
             </span></td>
         <td class="port-cell"><span class="udc-ports" title="SFP+ module edge into UDM WAN">
               <span class="udc-port sfp" title="SFP+ → UDM WAN">
@@ -793,7 +764,7 @@
       <tr><th>Device / Group</th><th>Treatment</th></tr>
     </thead>
     <tbody>
-      <tr><td>TELUS NAH</td><td>市电供电；当前 Spec 未列自身功耗</td></tr>
+      <tr><td>TELUS 光终端（XS-250X-A 或 NAH）</td><td>市电供电；当前 Spec 未列自身功耗</td></tr>
       <tr><td><a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a></td><td>市电供电；自身功耗不属于 PoE 输出预算</td></tr>
       <tr><td><a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a></td><td>由 SFP 主机供电；当前未单独计值</td></tr>
       <tr><td><a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">10G Direct Attach Cable</a></td><td>不分配 PoE 功率</td></tr>
@@ -1372,7 +1343,7 @@
   <p>两台并联 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 解决的是全屋持续供电。机柜不再需要一台大容量 UPS 来撑整晚。UPS 只补两个缺口：Gateway 切换虽标 seamless，Tesla 没有承诺 UPS 级零中断，部分交换机 / NAS / 光猫可能在切换瞬间重启；以及 Powerwall 维护、故障或电量耗尽时，给 NAS 一个正常关机窗口。</p>
   <ul>
     <li>先确认机柜回路在 whole-home backup 范围内，并做一次离网切换测试。</li>
-    <li>若 NAH、<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>、<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>、NAS、HA 均不重启，可以不装 UPS。</li>
+    <li>若 TELUS 光终端、<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>、<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>、NAS、HA 均不重启，可以不装 UPS。</li>
     <li>若摄像、门禁、HA、上网不能接受哪怕数秒中断，再加一台只桥接数分钟的小型 UPS，负荷按 UniFi 遥测和墙端实耗选，不要按含 180W Wallpanel 占位的规划总数选。</li>
     <li>UPS 须能接受 Powerwall 离网时的电压/频率窗口；装完再测一次切换。</li>
   </ul>
