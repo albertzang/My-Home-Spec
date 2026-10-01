@@ -236,15 +236,18 @@
       margin: 0.65rem 0 1rem;
     }
 
-    /* Fit the reading column — never grow past the pane or scroll sideways. */
+    /*
+     * Leaf cells stay nowrap. At the usual Spec reading width the fixed
+     * columns fit; below min-width the wrap grows a horizontal scrollbar.
+     */
     .spa-spec .spa-article .power-tree-wrap {
-      overflow-x: hidden;
+      overflow-x: auto;
     }
 
     .spa-spec .spa-article table.power-tree {
       width: 100%;
-      min-width: 0;
-      max-width: 100%;
+      min-width: 50rem;
+      max-width: none;
       table-layout: fixed;
     }
 
@@ -254,8 +257,6 @@
 
     .spa-spec .spa-article table.power-tree tr.power-tree-leaf > td {
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .appliances-table {
