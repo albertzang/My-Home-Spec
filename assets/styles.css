@@ -528,6 +528,29 @@
       flex-shrink: 0;
     }
 
+    .udc-device-meta {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.1rem;
+      min-width: 0;
+    }
+
+    .udc-device-title {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.35rem;
+      line-height: 1.25;
+    }
+
+    .udc-sku {
+      font-size: 0.72rem;
+      line-height: 1.2;
+      color: #777;
+      font-variant-numeric: tabular-nums;
+    }
+
     .udc-ports {
       display: inline-flex;
       flex-wrap: nowrap;
