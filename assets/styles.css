@@ -237,22 +237,10 @@
     }
 
     /*
-     * Leaf cells stay nowrap. At the usual Spec reading width the fixed
-     * columns fit; below min-width the wrap is a sideways scrollport.
-     * Use overflow-x: scroll (not auto) so iOS/WebKit actually pans;
-     * overflow-y: hidden avoids the auto/visible → both-axes promotion.
+     * Same scroll rule as other Spec table wraps (overflow-x: auto above):
+     * no bar when the pane is wide enough; bar appears when it is not.
+     * Leaf cells stay nowrap; min-width keeps the fixed columns from crushing.
      */
-    .spa-spec .spa-article .power-tree-wrap {
-      display: block;
-      width: 100%;
-      max-width: 100%;
-      overflow-x: scroll;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior-x: contain;
-      touch-action: pan-x pan-y;
-    }
-
     .spa-spec .spa-article table.power-tree {
       width: 100%;
       min-width: 50rem;
@@ -2221,16 +2209,6 @@
         max-width: none;
         padding: 20px max(20px, env(safe-area-inset-right)) calc(100dvh - var(--header-h) - 2rem) max(20px, env(safe-area-inset-left));
         overflow-x: clip;
-      }
-
-      .spa-spec .spa-article .power-tree-wrap,
-      .spa-spec .spa-article .design-devices-wrap,
-      .spa-spec .spa-article .table-scroll,
-      .spa-spec .spa-article .appliances-wrap {
-        overflow-x: scroll;
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior-x: contain;
       }
 
       .topo-wrap {

@@ -957,331 +957,395 @@
   </div>
 
 <h2>2. Home Assistant System</h2>
-  <p class="lede">本地智能家居控制面：HA 主机、Wallpanel、Zigbee / Thread，以及与其它子系统的联动边界。</p>
-  <p class="lede">本宅 HA 主机与射频 / 墙面附件。同型号合并一行，数量写 <code>×n</code>（×1 省略）。</p>
-<div class="design-devices-wrap">
+  <p class="lede">本地智能家居控制面：机柜 Hub、墙面 Wallpanel、射频协议与家居设备清单。录像 / 门禁仍归 <a href="#1.2" class="page-ref">§1.2</a> UniFi Protect / Access；HA 只做联动，不取代 NVR 或 Access 逻辑。</p>
+
+  <h3>2.1 Hub</h3>
+  <p>机柜里的 HA 主机跑 Home Assistant OS，挂全部集成、自动化、Add-on，以及 <a href="#2.3" class="page-ref">§2.3</a> 的射频棒。候选只剩两台：<a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a>（Intel N100）与 <a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi 5</a>。对比前提是本宅已定稿的 UniFi 机柜（<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 多口 PoE+++、Protect / Access 已占控制面）以及 Home Office（Den <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> + 机柜 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">FS2500</a>）——HA 必须是独立、低功耗、可 PoE 上电的第三台常驻机器，不能挤 Studio 或 NAS。</p>
+
+  <div class="design-devices-wrap">
   <table class="devices-table">
     <thead>
       <tr>
-        <th rowspan="2">Category</th>
-        <th rowspan="2">Device</th>
-        <th colspan="2" class="port-group">Port</th>
-      </tr>
-      <tr>
-        <th class="port-sub">Uplink</th>
-        <th class="port-sub">Downlink</th>
+        <th>维度</th>
+        <th><a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC</a></th>
+        <th><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi 5</a></th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td rowspan="4">Home Assistant</td>
-        <td>
-          <span class="udc-device">
-            <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="Mini PC uplink: 2.5G RJ45 PoE++ IN"><span class="udc-port gbe2p5" title="2.5 GbE RJ45 PoE++ IN"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></span></td>
-        <td class="port-cell"><span class="udc-ports" title="3×2.5G LAN · HDMI · DP · USB-2 · USB-3 · USB-C · RS232">
-              <span class="udc-port-wrap">
-                <span class="udc-port gbe2p5" title="2.5 GbE RJ45 LAN ×3"></span>
-                <span class="udc-count">×3</span>
-              </span>
-              <span class="udc-port other" title="HDMI 2.0">HDMI</span>
-              <span class="udc-port other" title="DisplayPort 1.4">DP</span>
-              <span class="udc-port-wrap">
-                <span class="udc-port other" title="USB 2.0 ×4">USB-2</span>
-                <span class="udc-count">×4</span>
-              </span>
-              <span class="udc-port other" title="USB 3.0">USB-3</span>
-              <span class="udc-port other" title="USB-C">USB-C</span>
-              <span class="udc-port other" title="RJ45 RS232">COM</span>
-            </span></td>
+        <td>算力 / 内存</td>
+        <td>N100 四核 x86；单条 SODIMM 最高 32 GB DDR4；跑 HAOS + Z-Wave JS + Matter + Mosquitto + 若干 Add-on 仍有余量</td>
+        <td>Cortex-A76 四核；常见 2–8 GB LPDDR4X；轻量 HAOS 够用，Add-on / 录像辅助 / 大型数据库更容易顶满</td>
       </tr>
       <tr>
-        <td>
-          <span class="udc-device">
-            <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a>
-            <span class="udc-count">×2</span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="ZBT-2 USB-C"><span class="udc-port other" title="USB-C">USB-C</span></span></td>
-        <td class="port-cell">-</td>
+        <td>存储</td>
+        <td>M.2 SATA + 可选 2.5″ SATA；适合 24/7 主机盘</td>
+        <td>microSD 起步，稳妥方案仍要另加 NVMe HAT；与墙面三套 Pi 再抢同一配件生态</td>
       </tr>
       <tr>
-        <td>
-          <span class="udc-device">
-            <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZWA-2</a>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="ZWA-2 USB-C"><span class="udc-port other" title="USB-C">USB-C</span></span></td>
-        <td class="port-cell">-</td>
+        <td>有线网络</td>
+        <td>4×2.5 GbE（一口 PoE++ IN）；可把 HA 单独挂 IoT VLAN 口，或日后拆第二口做实验网，不必再买网卡</td>
+        <td>1×1 GbE；多网段要 USB 网卡或依赖 VLAN 子接口，机柜里不如原生多口干净</td>
       </tr>
       <tr>
-        <td>
-          <span class="udc-device">
-            Home Assistant PoE Wallpanel
-            <span class="udc-count">×3</span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="1G RJ45, PoE++"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></span></td>
-        <td class="port-cell">-</td>
+        <td>供电</td>
+        <td>原生 802.3at/bt PoE++ IN（厂商要求 ≥30 W）+ 随附 12 V DC；直接吃 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 2.5G PoE+++ 口，与本宅「固定设备走 PoE」一致</td>
+        <td>默认可 5 V USB-C；机柜 PoE 必须再叠 PoE HAT，功耗与散热要按 HAT + 棒一起算</td>
+      </tr>
+      <tr>
+        <td>USB / 射频</td>
+        <td>USB-C + USB-A 足够同时挂 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>×2 + <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a>；金属机箱 + 天线延长出柜</td>
+        <td>USB 口同样能挂三根棒，但整机更吃 GPIO / HAT 层叠；金属柜衰减问题两边一样要延长天线</td>
+      </tr>
+      <tr>
+        <td>与本宅其它角色冲突</td>
+        <td>专用 HA 主机；不碰 Mac Studio / NAS 算力</td>
+        <td><a href="#2.2" class="page-ref">§2.2 Wallpanel</a> 已锁定 Pi 5 + Touch Display 2——主机再上 Pi 5 等于机柜与墙面同架构抢配件、同质化故障面</td>
+      </tr>
+      <tr>
+        <td>HAOS 支持</td>
+        <td>Generic x86-64，官方一等公民；ameriDroid 面向 HA 预调 BIOS（Wake-on-LAN、掉电自启等）</td>
+        <td>官方 Raspberry Pi 镜像成熟，社区资料最多</td>
+      </tr>
+      <tr>
+        <td>典型功耗 / 预算</td>
+        <td>整机常见约 6–15 W；Spec / 拓扑按 30 W PoE++ 预留（含两根 ZBT-2）</td>
+        <td>板级更低，但加 PoE HAT + 三棒后机柜预算仍要按 PoE+ 级预留，优势不明显</td>
       </tr>
     </tbody>
   </table>
   </div>
 
-  <h4>2.1 MQTT、Zigbee、Thread</h4>
-  <p>三者不是同一层的三种「无线」。落实到本宅：两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 分别固定 Zigbee 与 Thread；MQTT 只是软件，不增加射频硬件。</p>
+  <p><strong>定稿：Hub 用 ameriDroid PoE Mini PC。</strong>理由收束成三条：① 机柜已有富裕的 2.5G PoE+++，原生 PoE++ 进线比「Pi 5 + HAT」更干净；② N100 / 多 2.5G / SSD 给 Add-on 与日后扩展留头寸，而 Den 的 Mac Studio 与机柜 NAS 不应兼 HA；③ Pi 5 产能与配件留给三套 Wallpanel（10″ Touch Display 2 只认 Pi 5）。Pi 5 仍是优秀的 HA 入门主机，只是不适合本宅机柜角色。</p>
   <ul>
-    <li>MQTT：跑在 Ethernet / Wi‑Fi / IP 上的消息总线，不是无线制式。设备把状态发到 Broker（常用 Mosquitto），HA 订阅。Tasmota / ESPHome、部分墙面面板走这条。Mini PC 上装 Mosquitto 即可，无新硬件。</li>
-    <li>Zigbee：独立的 2.4 GHz mesh，不进你家普通 IP LAN。需要一个 Coordinator + 插电路由节点 + 电池末端。第一根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 专用 Zigbee。可用内置 ZHA（直进 HA，不用 MQTT），或日后改 Zigbee2MQTT（Zigbee → MQTT → HA）。</li>
-    <li>Thread：同样是 2.4 GHz / IEEE 802.15.4 mesh，但承载 IPv6。Thread 只负责传输。常见路径：<code>Matter → Thread → Border Router → 家庭 IPv6 → HA Matter Server</code>。第二根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 专用 Thread，做 HA 自己的 Border Router。</li>
-  </ul>
-  <p>因此：Zigbee 与 Thread 硬件相近但网络互不兼容；MQTT 与两者无绑定，只有 Zigbee2MQTT 才会同时用到 Zigbee 和 MQTT；Matter-over-Thread 用 Matter + Thread，不用 MQTT；Matter-over-Wi‑Fi / Ethernet 不需要 Thread 棒。</p>
-  <p>官方明确：一根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 不能稳定同时跑 Zigbee + Thread（不要用 MultiPAN）。参考 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Connect ZBT-2</a> · <a href="https://www.home-assistant.io/integrations/thread/" target="_blank" rel="noopener noreferrer">HA Thread</a> · <a href="https://www.home-assistant.io/integrations/matter" target="_blank" rel="noopener noreferrer">HA Matter</a>。</p>
-  <h5>硬件怎么接</h5>
-  <ul>
-    <li>两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 作为嵌套部件画在 Mini PC 内，不拉拓扑线。</li>
-    <li>Zigbee 棒 → Mini PC USB-C（占用）。</li>
-    <li>Thread 棒 → Mini PC USB-3（占用），中间一枚合格的 USB-A → USB-C 数据转换头（要能传数据，不要只充电的线）。转换头只写本页，不进设备清单 / 拓扑。</li>
-    <li>两根天线都用延长线出金属柜，间距约 0.5–1 m。</li>
-  </ul>
-  <p>Z‑Wave 用一根 <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Connect ZWA-2</a>（北美频段 / Long Range），与两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 一样插 Mini PC USB、天线出柜。蓝牙用房间里的 ESPHome Bluetooth Proxy，不要把 BLE 棒丢在金属柜里；Lutron 等私有协议仍要自家 Bridge。无法用一只通用棒吃下所有厂商。</p>
-
-  <h4 class="ha-guide-heading">2.2 Home Assistant Setup Guide</h4>
-  <p class="lede">面向零基础的搭建说明：按本页设备清单，从主机到墙面平板、Zigbee、备份与日常维护。建议从上到下按顺序做；标有「可选」的步骤可延后。</p>
-
-  <h5>1. 这套系统在做什么</h5>
-  <p>Home Assistant（简称 HA）是跑在你家本地的智能家居「大脑」：设备连进来、自动化写在里面、墙面平板只当显示屏。云账号不是必须的；远程访问可之后用 Nabu Casa 或自己的 VPN。</p>
-  <p>按本表，你的架构是：</p>
-  <ul>
-    <li>机柜主机：<a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC</a> 跑 Home Assistant OS（系统 + 全部集成/自动化）。</li>
-    <li>无线传感器总线：两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Connect ZBT-2</a>（Zigbee + Thread 各一）+ 一根 <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Connect ZWA-2</a>（Z‑Wave）。Zigbee 插 Mini PC USB-C；Thread / Z‑Wave 经 USB 口（Thread 用 USB-A/C 数据转换头插 USB-3）。天线都出柜。</li>
-    <li>墙面 Dashboard ×3（Basement / Main / Upper）：Home Assistant PoE Wallpanel 占位（1G PoE++，功耗按 60W 预留）。具体机型见下方「<a href="#ha-panel-选型" class="page-ref">HA Panel 选型</a>」。</li>
-    <li>网络底座：UniFi 交换机（如 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）提供 PoE+/++；Protect 摄像头与 Access 门锁可先独立用 UniFi 应用，再在 HA 里做联动。</li>
+    <li>上联：Mini PC 的 PoE IN 口 → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++；功耗预留见 <a href="#1.4" class="page-ref">§1.4</a>。</li>
+    <li>射频：<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>×2 + <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a>×1 插 Mini PC USB，天线延长出金属柜（细节 <a href="#2.3" class="page-ref">§2.3</a>）。</li>
+    <li>不做：HA 装进 NAS 虚拟机当唯一主机、HA 装进 Mac Studio、机柜再用一台 Pi 5 当 Hub。</li>
   </ul>
 
-  <h5>2. 开箱前要弄清的概念</h5>
-  <h6>2.1 集成 vs Add-on vs 自动化</h6>
+  <h3>2.2 Wallpanel</h3>
+  <p>三套墙面 Dashboard（Basement / Main / Upper）共用同一硬件栈：官方 10″ 触控屏 + Pi 5 薄配 + 主动散热 + PoE 供电 + 背面防护。交换机侧仍按每路 1G 设备 / 2.5G PoE+++ 口、60 W 预留记账（见 <a href="#1.4" class="page-ref">§1.4</a>）；定型后若实测远低于此，再回填实际功耗，不在选型阶段先砍预算。</p>
+
+  <h4>2.2.1 选型结论</h4>
   <ul>
-    <li>Integration（集成）：让 HA「认识」某类设备/服务（如 Zigbee、Samsung TV、UniFi）。</li>
-    <li>Add-on：装在 HA OS 旁边的小服务（如文件编辑器、Mosquitto MQTT、Zigbee2MQTT）。初学者可先少装。</li>
-    <li>Automation / Script / Scene：自动化规则、可复用动作、一键场景。</li>
-    <li>Dashboard（Lovelace）：手机/平板上的界面；墙面平板通常全屏打开某个 Dashboard。</li>
-  </ul>
-  <h6>2.2 Zigbee / Thread / Matter / Wi‑Fi（怎么选）</h6>
-  <ul>
-    <li>Zigbee：传感器与开关生态最大；<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 专做协调器后，设备经 mesh 互中继，不占家用 Wi‑Fi。</li>
-    <li>Thread + Matter：新一代本地协议；很多 Matter 电池设备走 Thread。<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 不能同时跑 Zigbee 和 Thread，官方也不推荐「多协议」模式。</li>
-    <li>Wi‑Fi 智能设备：可直接用厂商集成或 Matter-over-Wi‑Fi，但大量设备会挤占无线；优先把「常在线小设备」放 Zigbee。</li>
-    <li>本宅决定：两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 从一开始就分开——Zigbee 用 ZHA，Thread 做 Matter Border Router。不要把任一根改成 MultiPAN。</li>
-  </ul>
-  <h6>2.3 ZHA vs Zigbee2MQTT</h6>
-  <ul>
-    <li>ZHA（内置）：设置少，跟 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 官方向导最合拍，零基础优先。</li>
-    <li>Zigbee2MQTT：设备支持面更广、调试强，但要 MQTT + 额外配置。等你熟悉后再迁不迟。</li>
+    <li>显示与主板：<a href="https://www.raspberrypi.com/products/touch-display-2/?variant=touch-display-2-10-inch-portrait" target="_blank" rel="noopener noreferrer">Raspberry Pi Touch Display 2 — 10″ Portrait</a> + <a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi 5（2 GB）</a>。10″ 仅兼容 Pi 5 / CM；Dashboard 常驻用 2 GB 足够，把 4/8 GB 留给日后真有需要的节点。</li>
+    <li>板级附件：<a href="https://www.raspberrypi.com/products/raspberry-pi-bumper/" target="_blank" rel="noopener noreferrer">Raspberry Pi Bumper</a>（板边防护）+ <a href="https://www.raspberrypi.com/products/active-cooler/" target="_blank" rel="noopener noreferrer">Raspberry Pi Active Cooler</a>（官方主动散热）。</li>
+    <li>PoE HAT（定稿）：<a href="https://www.waveshare.com/poe-m.2-hat-plus-b.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (B)</a>。厂商对照表写明兼容官方 Active Cooler（非 B 版自带风扇、与 Active Cooler 冲突）；IEEE 802.3af/at；GPIO 5 V / 4.5 A；并保留 M.2 NVMe（2230–2280）可选，墙面 24/7 可从 microSD 升级到 SSD 启动。备选：<a href="https://52pi.com/products/p30-poe-hat-for-raspberry-pi-5-with-official-pi-5-active-cooler" target="_blank" rel="noopener noreferrer">52Pi P30 PoE+ HAT</a>（同样按 Active Cooler 设计、802.3at、无 M.2；只要 TF 卡、结构更矮时再考虑）。</li>
+    <li>Back case（定稿路径）：10″ Touch Display 2 目前<strong>没有</strong>官方后壳，也没有同时声明「TD2 10″ + Pi 5 + Active Cooler + PoE HAT」的量产墙装壳。商业件里唯一明确贴合官方 10″ 面板背面的是 <a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame（10.1″）</a>——保护背面、端口外露，但是桌面支架形态（含支脚），不能当暗装墙壳。墙装阶段：以 Pibow / 裸板完成组装与老化 → 再上 3D 打印后壳 + 墙托 / VESA（社区已有 TD2 10″ VESA 适配与 MakerWorld 后壳模型；量产墙壳上市后可替换）。明确不采用：Waveshare <a href="https://www.waveshare.com/pi5-case-td2.htm" target="_blank" rel="noopener noreferrer">PI5-CASE-TD2</a>（仅 7″）；Argon Industria HMI 10CS（自带另一块 10″ 屏，会换掉官方 Touch Display 2 整栈）。</li>
   </ul>
 
-  <h5>3. 网络与供电准备（装 HA 之前）</h5>
-  <ol class="checklist">
-    <li>交换机侧给 Mini PC 分配 PoE+ 或 PoE++ 端口（预算按表内 30W 预留）。</li>
-    <li>三块墙面 Wallpanel 各自占一口 2.5G PoE+++ <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 端口（设备侧 1G PoE++ 上行；每路按 PoE++ 上限 60W 预留）。</li>
-    <li>建议给 HA 主机做 DHCP 保留 / 静态 IP，并记下来（之后平板书签、备份恢复都要用）。</li>
-    <li>可选：单独 IoT / Camera VLAN。初学者可先同一 LAN，先跑通再拆网段；若拆 VLAN，要提前规划防火墙放行 HA ↔ 设备。</li>
-    <li>墙面点位：每层预留一根到 Wallpanel 的网线（设备侧 PoE++）。</li>
-  </ol>
-  <div class="note">
-    功耗粗算（仅 HA 相关）： Mini PC 按 30W 预留（含两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>，各约 2.5W）+ 三套 Wallpanel 按 3×60W。实际选型后常远低于满载，但仍要从交换机总 PoE 预算里扣掉摄像头、AP、Access 等。
+  <h4>2.2.2 物料清单（单套；全宅 ×3）</h4>
+  <div class="design-devices-wrap">
+  <table class="devices-table">
+    <thead>
+      <tr>
+        <th>数量 / 套</th>
+        <th>物料</th>
+        <th>链接</th>
+        <th>备注</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>×1</td>
+        <td>Raspberry Pi Touch Display 2 — 10″ Portrait</td>
+        <td><a href="https://www.raspberrypi.com/products/touch-display-2/?variant=touch-display-2-10-inch-portrait" target="_blank" rel="noopener noreferrer">raspberrypi.com</a></td>
+        <td>含 DSI 线、GPIO 供电线、M2.5 螺丝；仅 Pi 5 / CM</td>
+      </tr>
+      <tr>
+        <td>×1</td>
+        <td>Raspberry Pi 5 — 2 GB RAM</td>
+        <td><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">raspberrypi.com</a></td>
+        <td>墙面 kiosk；OS 用 Raspberry Pi OS 或轻量浏览器镜向 HA</td>
+      </tr>
+      <tr>
+        <td>×1</td>
+        <td>Raspberry Pi Bumper</td>
+        <td><a href="https://www.raspberrypi.com/products/raspberry-pi-bumper/" target="_blank" rel="noopener noreferrer">raspberrypi.com</a></td>
+        <td>板边橡胶防护；与 Active Cooler 同用</td>
+      </tr>
+      <tr>
+        <td>×1</td>
+        <td>Raspberry Pi Active Cooler</td>
+        <td><a href="https://www.raspberrypi.com/products/active-cooler/" target="_blank" rel="noopener noreferrer">raspberrypi.com</a></td>
+        <td>官方主动散热；PoE HAT 必须选兼容此件的型号</td>
+      </tr>
+      <tr>
+        <td>×1</td>
+        <td>Waveshare PoE M.2 HAT+ (B)</td>
+        <td><a href="https://www.waveshare.com/poe-m.2-hat-plus-b.htm" target="_blank" rel="noopener noreferrer">waveshare.com</a> · <a href="https://www.waveshare.com/wiki/PoE_M.2_HAT%2B_(B)" target="_blank" rel="noopener noreferrer">Wiki</a></td>
+        <td>802.3af/at；兼容 Active Cooler；可选 NVMe</td>
+      </tr>
+      <tr>
+        <td>×1（可选）</td>
+        <td>M.2 NVMe SSD（2230 / 2242 优先，壳深允许可 2280）</td>
+        <td>—</td>
+        <td>24/7 墙面建议上 SSD；未上盘前用高耐久 microSD</td>
+      </tr>
+      <tr>
+        <td>×1</td>
+        <td>Pimoroni Pibow Frame — Touch Display 2 10.1″</td>
+        <td><a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">shop.pimoroni.com</a></td>
+        <td>现唯一商业背面防护 / 桌架；墙装另配打印壳或托架</td>
+      </tr>
+      <tr>
+        <td>×1</td>
+        <td>墙装后壳 / VESA 托架（3D 打印或后续量产件）</td>
+        <td>—</td>
+        <td>须让出 Active Cooler 出风与 PoE HAT / RJ45；买前按实物堆叠复核净空</td>
+      </tr>
+      <tr>
+        <td>×1</td>
+        <td>microSD（若暂无 NVMe）</td>
+        <td>—</td>
+        <td>A2 / 高耐久；镜像与 kiosk 配置做好克隆</td>
+      </tr>
+    </tbody>
+  </table>
   </div>
+  <p>软件侧（不进硬件 BOM）：每块板用独立 panel 用户 + 全屏 Dashboard（Companion 作 Home App，或 Fully Kiosk）；人近亮屏 / 人走降亮可用板载相机或房间存在传感器。施工：每层一根 home-run 到机柜，口上 PoE+/++；先桌面 PoE 老化再开孔上墙。</p>
 
-  <h5>4. 主机硬件安装（机柜）</h5>
-  <h6>4.1 <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC</a></h6>
-  <ol>
-    <li>装好 SSD（若未预装）、接上显示器 + 键盘仅用于首次烧录/排错（日常可无头运行）。</li>
-    <li>网线接到交换机 PoE 口；确认口灯与 PoE 供电正常（也可先用随附 DC 供电完成装机，再改 PoE）。</li>
-    <li>Zigbee 用的 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>：自带 USB‑C 线插 Mini PC 的 USB-C。</li>
-    <li>Thread 用的 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>：经 USB-A/C 数据转换头插 Mini PC 的 USB-3。不要用只能充电的线。</li>
-    <li>两根天线都用延长线出柜或放到机柜顶开阔处（金属柜会严重衰减 2.4 GHz），彼此分开约 0.5–1 m，远离 USB 3、SSD 和 AP。</li>
-  </ol>
-  <h6>4.2 安装 Home Assistant OS</h6>
-  <ol>
-    <li>电脑打开官方安装说明：<a href="https://www.home-assistant.io/installation/" target="_blank" rel="noopener noreferrer">home-assistant.io/installation</a>，选择 Generic x86-64（Mini PC 属此类）。</li>
-    <li>用 <a href="https://www.balena.io/etcher/" target="_blank" rel="noopener noreferrer">balenaEtcher</a>（或厂商说明的工具）把 HA OS 镜像写入目标盘。会清空该盘，确认盘符无误。</li>
-    <li>从该盘启动 Mini PC。首次启动可能需 5–20 分钟（扩容、拉更新）。</li>
-    <li>同一局域网的手机/电脑浏览器访问 <code>http://homeassistant.local:8123</code>；若 mDNS 失败，改用 <code>http://&lt;主机IP&gt;:8123</code>。</li>
-  </ol>
-  <h6>4.3 首次引导（Onboarding）</h6>
-  <ol>
-    <li>创建管理员账号（密码用密码管理器保存）。</li>
-    <li>设定家名称、位置、时区、单位（温湿度自动化会用到位置与时区）。</li>
-    <li>可跳过「正在检测的设备」，稍后手动加。</li>
-    <li>强烈建议尽早在 Settings → System → Backups 做一次完整备份，并下载到电脑/网盘。</li>
-  </ol>
-  <div class="note">
-    可选账号：<a href="https://www.nabucasa.com/" target="_blank" rel="noopener noreferrer">Home Assistant Cloud (Nabu Casa)</a> 提供官方远程访问与语音等，付费但省事。也可用 Tailscale/WireGuard 等自建远程，难度更高。
+  <h3>2.3 Protocols</h3>
+  <p>协议层决定设备怎么进 HA、掉线时从哪一层查。本宅射频硬件先锁官方 Connect 三件套；IP 侧协议（Wi‑Fi / MQTT / Matter-over-Wi‑Fi）不另买棒。</p>
+
+  <h4>2.3.1 已落实物料</h4>
+  <ul>
+    <li>2× <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a>——一根固定 Zigbee（推荐 ZHA），一根固定 Thread（HA Border Router）。官方不推荐 MultiPAN；一根棒不要同时扛 Zigbee + Thread。</li>
+    <li>1× <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZWA-2</a>——Z-Wave / Z-Wave Long Range（北美频段），经 Z-Wave JS 进 HA。</li>
+    <li>安装：三根都插 <a href="#2.1" class="page-ref">§2.1</a> Mini PC USB；天线用延长线出金属柜，彼此约 0.5–1 m，远离 USB 3、SSD 与 AP。Thread 棒若占 USB-A 口，中间只用可传数据的 USB-A→C 转换，不要充电专用线。</li>
+  </ul>
+
+  <h4>2.3.2 建议追加（按需，非 Day-1）</h4>
+  <ul>
+    <li><strong>ESPHome Bluetooth Proxy（Ethernet / PoE）</strong>：机柜深处的 USB BLE 棒几乎无用。按楼层放 1–2 台以太网 ESP32（优先外置天线，如 Olimex ESP32-PoE-ISO-EA 一类），专做 BLE 广告与短连接；不要拿 ZWA-2 兼 BLE 主力。</li>
+    <li><strong>厂商 Bridge（有才买）</strong>：Lutron Caseta / RadioRA、部分窗帘与红外空调仍要自家网桥或 IR blaster；通用 802.15.4 棒吃不下私有射频。</li>
+    <li><strong>IR blaster（ESPHome / Broadlink 等）</strong>：仅当一楼仍有大量红外-only 空调 / 音响、且无云控本地方案时再补；优先买原生局域网 / Matter / Zigbee 设备。</li>
+    <li>不需要：第二套 Zigbee 协调器、机柜 USB Wi‑Fi 棒、Thread 再买第三根 ZBT-2（除非日后要独立实验室网络）。</li>
+  </ul>
+
+  <h4>2.3.3 Z-Wave</h4>
+  <p><strong>角色：</strong>门锁、部分墙开 / 插座、对穿透与干扰更敏感的「关键控制」设备的主射频之一；与 2.4 GHz 家用 Wi‑Fi 错开（Sub‑GHz）。本宅用 <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a> + Z-Wave JS。</p>
+  <ul>
+    <li>优点：墙体穿透通常好于 2.4 GHz mesh；认证设备互操作规范；LR 适合大宅庭院距离；不占 Wi‑Fi airtime。</li>
+    <li>缺点：北美 / 欧频不通用，出国淘货易买错频；生态体量小于 Zigbee；新设备价格偏高；mesh 仍依赖插电路由节点。</li>
+    <li>品质与掉线：认证锁与老牌墙开（Zooz / Inovelli / Yale 等社区口碑线）稳定；杂牌「名义 Z-Wave」固件差会导致莫名离线。掉线优先查：天线是否出柜、路由节点是否被拔掉、是否混入错误频段设备、控制器附近 USB 3 噪声。</li>
+    <li>地位：与 Zigbee 并列的「本地控制」骨干，不互相替代；门锁优先看 Z-Wave / 已有 UniFi Access，不优先 Wi‑Fi 云锁。</li>
+  </ul>
+
+  <h4>2.3.4 Zigbee</h4>
+  <p><strong>角色：</strong>传感器、灯泡、开关、插座数量最大的本地 mesh；第一根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> + ZHA（日后若兼容性逼仄再评估 Zigbee2MQTT）。</p>
+  <ul>
+    <li>优点：设备便宜、选型多；有电路由节点一开，电池末端跟网；不进家用 Wi‑Fi；ZHA 零基础路径短。</li>
+    <li>缺点：与 Wi‑Fi / Thread 同处 2.4 GHz，信道要规划；厂商私有 cluster（部分 Tuya）在 ZHA 上功能残缺；mesh 质量取决于「家里插电 Zigbee 设备密度」，不是协调器标称距离。</li>
+    <li>品质与掉线：IKEA / Hue / Aqara（注意桥与直连差异）/ Sonoff 官方 Zigbee 等主流线更稳；白牌电池传感省电激进、隔墙掉线常见——用插座 / 灯作路由骨架后再放末端。协调器塞金属柜是本宅最需要避免的人为掉线。</li>
+    <li>地位：默认「小数目常在线设备」首选；能 Zigbee 就不要堆 Wi‑Fi IoT。</li>
+  </ul>
+
+  <h4>2.3.5 Thread</h4>
+  <p><strong>角色：</strong>低功耗 IPv6 mesh 传输层，主要承载 Matter-over-Thread 设备；第二根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 做 HA 自有 Border Router，不依赖 HomePod / Nest 是否在线。</p>
+  <ul>
+    <li>优点：为电池设备优化；IP 地址可直达（经 Border Router）；Matter 生态主推路径之一；多 Border Router 时可提升冗余（日后 Apple TV / Nest 可作辅，但本宅以 HA 棒为准）。</li>
+    <li>缺点：Thread 本身不是应用层——没有 Matter / 厂商应用就「裸 Thread」对用户无意义；前期设备贵、调试信息少；与 Zigbee 同频干扰要分开天线与信道策略。</li>
+    <li>品质与掉线：Matter 认证电池设备近年明显好转，但仍见固件入网失败、迁移网络后变砖；掉线常见于 Border Router 断电、IPv6 / mDNS 被 VLAN 防火墙误伤、只用一根 BR 且位置极差。</li>
+    <li>地位：新买电池类 Matter 设备的传输首选；不取代现有 Zigbee 库存。</li>
+  </ul>
+
+  <h4>2.3.6 Wi‑Fi</h4>
+  <p><strong>角色：</strong>高带宽或厂商只给了 Wi‑Fi 的设备（部分摄像头配件、电器、Matter-over-Wi‑Fi）；本宅无线由 UniFi AP 承担，HA 不另建 Wi‑Fi。</p>
+  <ul>
+    <li>优点：人人会配；吞吐高；Matter-over-Wi‑Fi / 局域网 HTTP 集成简单。</li>
+    <li>缺点：占 AP airtime；每台设备一个 DHCP / 固件攻击面；云依赖机型断云即残；2.4 GHz 拥堵时与 Zigbee / Thread 互害。</li>
+    <li>品质与掉线：本地 API 清晰的品牌（部分 ESPHome 刷机设备、严谨局域网家电）可用；Tuya 云灯 / 杂牌插座是掉线与隐私重灾区。能有线（Room Drop）的固定设备不要走 Wi‑Fi。</li>
+    <li>地位：补充通道，不是传感器主干；IoT SSID / VLAN 可后续拆，Day-1 以少而稳为先。</li>
+  </ul>
+
+  <h4>2.3.7 Bluetooth（含 BLE）</h4>
+  <p><strong>角色：</strong>短距传感器、部分体脂秤 / 温湿度 / BTHome 设备、手机存在探测的辅助；靠房间级 Bluetooth Proxy 延伸，不靠机柜 USB 棒。</p>
+  <ul>
+    <li>优点：设备门槛低；BLE 广告传感功耗极低；ESPHome Proxy 与 HA 集成成熟。</li>
+    <li>缺点：墙体衰减狠、无 mesh；活跃连接数有限；与 2.4 GHz 其它射频共存压力大；安全配对体验参差。</li>
+    <li>品质与掉线：BTHome / 开放协议传感尚可；强依赖手机蓝牙的「在家检测」误报多，重要安防不要只靠它。Proxy 请用以太网供电板，避免 Proxy 自己还去打 Wi‑Fi。</li>
+    <li>地位：有则用之的边缘协议；不与 Z-Wave / Zigbee 抢门锁与墙开。</li>
+  </ul>
+
+  <h4>2.3.8 MQTT</h4>
+  <p><strong>角色：</strong>软件消息总线，不是无线制式。跑在 Ethernet / Wi‑Fi / IP 上；本宅在 Hub 上按需装 Mosquitto。Tasmota / ESPHome、部分墙面或 DIY 设备、以及日后 Zigbee2MQTT 都经它进 HA。</p>
+  <ul>
+    <li>优点：解耦生产者 / 消费者；保留历史状态与桥接老设备极灵活；局域网可完全本地。</li>
+    <li>缺点：要自己管 Broker 账号、ACL 与发现约定（或依赖 HA 发现）；配置出错时「设备在线但 HA 无实体」难查；不是 end-user 产品协议。</li>
+    <li>品质与掉线：Broker 与 HA 同机或同 VLAN 时极稳；跨 VLAN 忘放行 1883/8883、或设备 Wi‑Fi 本身漂，才会表现为 MQTT 掉线。</li>
+    <li>地位：集成胶水层。ZHA 直连 Zigbee 时不必为 Zigbee 而装 MQTT；只有 Zigbee2MQTT / 大量 ESP 设备时才升格为基础设施。</li>
+  </ul>
+
+  <h4>2.3.9 Matter</h4>
+  <p><strong>角色：</strong>应用层互联标准（可跑在 Thread 或 Wi‑Fi / Ethernet 上）。HA 用 Matter Server 做本地控制器；Thread 设备经本宅 Border Router，Wi‑Fi Matter 设备经局域网委托。</p>
+  <ul>
+    <li>优点：多生态本地控制的长期方向；减少「每家一个桥」；与 HA 官方路径对齐。</li>
+    <li>缺点：标准仍在猛迭代，真实设备质量两极；入网 / 共享 / OTA 失败故事仍多；「Matter」贴纸不保证好用——要看传输是 Thread 还是 Wi‑Fi、以及厂商固件态度。</li>
+    <li>品质与掉线：认证灯泡 / 插座近年可用；复杂门锁、桥接器式「把旧射频包装成 Matter」的产品仍是重灾区。出问题先分清是 Thread 网、Wi‑Fi、还是 Matter 委托失败。</li>
+    <li>地位：新设备采购的加分项，不是把现有稳定 Zigbee / Z-Wave 网推倒重来的理由。Matter-over-Thread 用第二根 ZBT-2；Matter-over-Wi‑Fi 不占用该棒。</li>
+  </ul>
+
+  <h4>2.3.10 对照与注意事项</h4>
+  <div class="design-devices-wrap">
+  <table class="devices-table">
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th>层</th>
+        <th>本宅载体</th>
+        <th>典型设备</th>
+        <th>优先场景</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Z-Wave</td>
+        <td>射频 mesh（Sub‑GHz）</td>
+        <td>ZWA-2</td>
+        <td>锁、墙开、部分插座</td>
+        <td>穿透 / 关键控制</td>
+      </tr>
+      <tr>
+        <td>Zigbee</td>
+        <td>射频 mesh（2.4 GHz）</td>
+        <td>ZBT-2 #1 · ZHA</td>
+        <td>灯、传感、开关、插座</td>
+        <td>数量大的本地设备</td>
+      </tr>
+      <tr>
+        <td>Thread</td>
+        <td>IPv6 mesh 传输</td>
+        <td>ZBT-2 #2 · BR</td>
+        <td>Matter 电池设备</td>
+        <td>新一代低功耗 Matter</td>
+      </tr>
+      <tr>
+        <td>Wi‑Fi</td>
+        <td>IP / AP</td>
+        <td>UniFi AP</td>
+        <td>电器、Matter-Wi‑Fi、少数 IoT</td>
+        <td>高带宽或无其它选项</td>
+      </tr>
+      <tr>
+        <td>Bluetooth</td>
+        <td>短距 BLE</td>
+        <td>ESPHome Proxy</td>
+        <td>BLE 传感、辅助存在</td>
+        <td>房间级短距</td>
+      </tr>
+      <tr>
+        <td>MQTT</td>
+        <td>IP 消息总线</td>
+        <td>Mosquitto on Hub</td>
+        <td>ESPHome / Tasmota / Z2M</td>
+        <td>DIY 与桥接</td>
+      </tr>
+      <tr>
+        <td>Matter</td>
+        <td>应用标准</td>
+        <td>HA Matter Server</td>
+        <td>Thread 或 Wi‑Fi 设备</td>
+        <td>多生态本地控制</td>
+      </tr>
+    </tbody>
+  </table>
   </div>
-
-  <h5>5. <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Connect ZBT-2</a> ×2（Zigbee + Thread）</h5>
-  <ol>
-    <li>两根棒都上电后，到 Settings → Devices &amp; services → Add integration。先完成 Zigbee（ZHA），再把第二根向导走成 Thread。</li>
-    <li>每根棒只选一种协议，不要 MultiPAN。文档：<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Connect ZBT-2</a>。</li>
-    <li>Zigbee 推荐内置 ZHA；记下/备份网络密钥出现在备份里即可，不必手抄。</li>
-    <li>Thread 棒随后作为 HA 的 Border Router，给 Matter-over-Thread 设备用。</li>
-    <li>Zigbee 入网顺序：先插电的路由器型设备（智能插座、有电的灯具）形成骨架，再加电池传感器。入网时靠近协调器，成功后再移到安装位。</li>
-    <li>2.4 GHz 会与 Wi‑Fi、微波炉互相干扰；两根天线都远离 AP，并互相分开。</li>
-  </ol>
-  <p>兼容性要点：</p>
   <ul>
-    <li>标称 Zigbee 3.0 的设备成功率最高；部分 Tuya 私有设备可能需改固件或改用 Zigbee2MQTT。</li>
-    <li>买之前可在 <a href="https://zigbee.blakadder.com/" target="_blank" rel="noopener noreferrer">Zigbee Device Compatibility Repository</a> 或 HA 社区搜型号。</li>
-    <li>同一房屋里避免同时跑两套互不相通的 Zigbee 协调器（例如 HA + 某网关各搞一套）除非你清楚要隔离。</li>
-    <li>Philips Hue、IKEA 等也可「直连」ZHA，或继续用官方桥再集成进 HA——初学直连更简单，大型 Hue 灯网可保留桥。</li>
+    <li>Zigbee 与 Thread 硬件相近、网络不互通；MQTT 与两者无绑定。</li>
+    <li>2.4 GHz：AP 信道、Zigbee 信道、Thread 并存时拉开空间与频谱；天线出柜是刚需。</li>
+    <li>VLAN：Matter / Thread 对 IPv6 与 mDNS 敏感，防火墙未放行前不要先拆网段。</li>
+    <li>买设备前先查 HA Integrations / 社区兼容表；优先本地控制，云只作后备。</li>
   </ul>
 
-  <h5>6. 墙面 Wallpanel</h5>
-  <p>三套点位相同（Basement / Main / Upper）。机型未定，见下方「<a href="#ha-panel-选型" class="page-ref">HA Panel 选型</a>」。施工先按 1G PoE++ 上行、每路 60W 预留。</p>
+  <h3>2.4 Devices</h3>
+  <p>按子类别列出值得纳入 HA 的家居设备清单。每个子类先写边界与选型态度，选品表留 placeholder，后续按子类单独敲定型号。录像机与门禁读头不在本章展开（见 <a href="#1.2" class="page-ref">§1.2</a>）；此处只保留「进 HA 联动」的接口意识。</p>
 
-  <h5>HA Panel 选型</h5>
-  <p>三套点位共用同一套门槛。机型未定；先锁硬性要求，之后按此筛产品。不满足下列任一条即淘汰。</p>
-  <h6>软件与系统</h6>
+  <h4>2.4.1 Lighting</h4>
+  <p>灯具与光源：球泡、灯带、筒灯、橱柜灯等。优先 Zigbee / Matter-over-Thread 的本地灯；高功率或特殊光谱再看专用驱动。与墙开策略一起设计，避免「智能灯 + 断电墙开」死锁。</p>
   <ul>
-    <li>Android-based OS：基于 Android 即可，不要求完整 Play 生态，也不要求能装、能跑其他 App。本机只做 HA 面板；系统锁死在这一用途上反而更好。</li>
-    <li>Home Assistant Companion：须明确支持把 Companion 设为 Android Home App，全屏常驻 Dashboard。</li>
-    <li>Fully Kiosk：须支持 Fully Kiosk（或同等 lock-task / 全屏 kiosk），可关状态栏、禁退出、开机自启。</li>
-  </ul>
-  <h6>供电与网络</h6>
-  <ul>
-    <li>原生 IEEE PoE：设备自带 RJ45，走标准 IEEE 802.3af / at / bt。不允许 proprietary / passive PoE，不允许 USB-C / 分线器 / 注入器等任何转接头。</li>
-    <li>无电池：固定墙装、由 PoE 直供；不要平板电池长期插电循环。</li>
-  </ul>
-  <h6>安装与传感</h6>
-  <ul>
-    <li>Proximity / presence：须有接近或存在传感，人近亮屏、人走熄屏或降亮。</li>
-    <li>原生墙装：嵌入或厂商原厂墙装，按 24/7 常亮设计，不是消费平板外加支架/锁架。</li>
-    <li>加拿大可买、北美可装：须有加拿大购买渠道；安装尺寸与电气须符合北美标准（盒规、认证、接线），不要欧规改件。</li>
-  </ul>
-  <h6>规格态度</h6>
-  <ul>
-    <li>屏幕尺寸、分辨率、内存以满足家用 Dashboard 为底线，不追求性能过剩。</li>
-    <li>优先看品质、触控与显示体验、易维护（可换、可更新、可远程管）、以及长期耐用。</li>
-  </ul>
-  <div class="note">
-    施工与交换机侧仍按占位预留：设备上行 1G PoE++，每路功耗按 PoE++ 上限 60W；<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 侧物理端口仍保留 2.5G PoE+++ 能力。定型后回填实际功耗与端口。
-  </div>
-
-  <h6>参考：Cameron Gray 视频要点</h6>
-  <p>素材：<a href="https://www.youtube.com/watch?v=lBU4yU9eD2U" target="_blank" rel="noopener noreferrer">The Ultimate In-Wall Tablets for Home Assistant Dashboards!</a>。下面只作实践摘录，不是本页门槛，也不等于选型结论。视频机型为 AliExpress 白牌 + 英规单联盒。</p>
-  <p>他怎么选 / 比</p>
-  <ul>
-    <li>早期 Tuya / Smart Life 或底层 Linux、要解锁才像 Android 的面板难用；较新的墙装机是接近原版 Android，可直接装应用。</li>
-    <li>搜「PoE Android」比搜「in-wall tablet」更容易找到墙装 PoE 机；同类外观常无统一型号，按外观和规格比价。</li>
-    <li>横屏 / 竖屏按墙面：靠近门套、开关正上方空间窄用竖屏，宽墙用横屏。</li>
-    <li>同外观常有两套板：八核 + Android 14（约 4 GB / 64 GB）比四核 + Android 13（约 4 GB / 32 GB）跟手。4 GB 跑 Dashboard 够用；CPU 代际比再堆内存更明显。</li>
-    <li>旧板个例：一熄屏就 kernel panic 重启，只能 24/7 亮着，不适合卧室。退货期内必须测熄屏 / 亮屏 / 重页面。</li>
-    <li>厂商自带 kiosk、MQTT、板载 Zigbee、继电器 / GPIO / IR / RS485、LED 灯环当附加能力；USB-C 多半只能 ADB / 刷机，不能供电。他用 PoE，不用随附 12 V 适配器。</li>
-  </ul>
-  <p>安装</p>
-  <ol>
-    <li>墙内预留网线（他用 Cat6），机柜端先做好、交换机口配好，再上墙。</li>
-    <li>英规深盒约 47 mm，螺丝须凹进墙面，浅表装盒会顶出来。塑胶干衬盒两侧凸耳可能卡住托板，有时要削耳、开槽；金属暗盒更干净。</li>
-    <li>高度对齐恒温器 / 门禁键盘一类「伸手就点」的位置，不要太低（LCD 俯视角度差）。</li>
-    <li>托板固定后：插 RJ45 → 挂上滑到位。磁吸只防轻碰，承重靠挂钩。</li>
-    <li>先 PoE 桌测完整软件，再开孔。</li>
-  </ol>
-  <p>设置</p>
-  <ul>
-    <li>跳过 Google 账号；墙面无锁屏，登私人 Google 等于把邮箱交给路过的人。</li>
-    <li>不给墙面设开机 PIN。他建议独立 VLAN、禁出站，只放行 HA（及 MQTT）。</li>
-    <li>HA 用独立 panel 用户，不是管理员。</li>
-    <li>Companion「Allow as Home app」能开机进 HA，但通知栏仍能进系统，侧栏也藏不干净。</li>
-    <li>他实际用 Fully Kiosk Browser Plus（约 €7.90 终身，可迁机）：Start URL 指向该房间 Dashboard；开机自启；禁止导航键 / 通知栏；连点五下 + PIN 退出；URL 白名单；空闲后回到首页（已在首页则不刷新）；导出配置再导入到第二台。</li>
-    <li>需要后台 MQTT 小工具时，用 Fully Universal Launcher 开机拉起再置后。</li>
-    <li>HA 侧用 HACS kiosk-mode，按 panel 用户藏 header / sidebar。</li>
-    <li>一层一块房间 Dashboard：大按钮、场景；手机版尺寸不要原样上墙。场景可先关 Adaptive Lighting，另留 Auto 再开自动。</li>
-    <li>亮屏：Fully 可用摄像头移动侦测；坐着可能侦不到，也可用房间 PIR。熄屏后点屏幕可醒。演示 30 s 熄屏太短，他倾向房间有人就保持亮、久无活动再关；也可用屏保代替全黑。</li>
-  </ul>
-  <p>维护</p>
-  <ul>
-    <li>白牌固件基本无安全更新；当哑终端，用 Fully 远程改 URL、亮度、开关屏、重启。</li>
-    <li>换机：转移 Plus 许可 + 导入配置。</li>
-    <li>熄屏即崩 / 点太快就重启：退货或只放客厅并常亮；他后来买新的会选较新的 Android 14 板。</li>
-    <li>板载温湿度、LED、继电器可通过厂商 MQTT 或社区 HAD Panel 进 HA，不是必选项。</li>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
   </ul>
 
-  <h5>7. 与 UniFi Protect / Access 的关系</h5>
+  <h4>2.4.2 Switch</h4>
+  <p>墙开、场景开关、智能继电器 / 开关模组。决定「谁切火线、谁走智能」：保留机械过载与 triple-click 等手感时，常要开关模组 + 普通面板，或认证智能墙开。Z-Wave / Zigbee 为主，避开纯云开关。</p>
   <ul>
-    <li>Protect（G6 相机、Viewport）：录像与实时预览以 UniFi Protect 为准；HA 可通过社区/官方相关集成做通知、开关灯联动等，但不要指望用 HA 取代 NVR。</li>
-    <li>Access（<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>、<a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a>）：门禁逻辑以 UniFi Access 为准；HA 适合做「开门→亮灯/撤防」类联动。</li>
-    <li>集成前确保 HA 能访问 UniFi 控制台地址；本地 API/账号权限按该集成文档最小授权。</li>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
   </ul>
 
-  <h5>8. 建议的启用顺序（避免一次做完崩溃）</h5>
-  <ol>
-    <li>HA OS 装好 + 备份。</li>
-    <li>手机 Companion 能稳定打开。</li>
-    <li><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> + 2～3 个 Zigbee 插座/灯，写第一条「开关 → 灯」自动化。</li>
-    <li>装第一块墙面平板并全屏 Dashboard。</li>
-    <li>复制到另外两层；再批量加传感器。</li>
-    <li>Thread 棒就位后，再加 Matter-over-Thread 设备；复杂日程、能耗、语音放最后。</li>
-  </ol>
-
-  <h5>9. 推荐的基础设置与 Add-on（可循序渐进）</h5>
+  <h4>2.4.3 HVAC</h4>
+  <p>温控、新风 / 排风、地暖或热泵接口、分室温控。恒温器要本地 API 或官方 HA 集成；红外空调仅作过渡。与机械室传感、电力负荷（Powerwall / 电价）联动预留接口，但不在 HA 里重写厂家安全逻辑。</p>
   <ul>
-    <li>Backups：每日自动备份；重要变更前手动备份。</li>
-    <li>Settings → System → Hardware / Updates：系统与 Supervisor 更新，先读变更说明再升。</li>
-    <li>Add-on 可选：Studio Code Server 或 File editor（改 <code>configuration.yaml</code>）、Samba share（从电脑拷备份）、Advanced SSH（进阶）。</li>
-    <li>若大量 Wi‑Fi/Tuya MQTT 设备：再装 Mosquitto；上 Zigbee2MQTT 时才强依赖 MQTT。</li>
-    <li>仪表盘：先用官方 Sections 视图；不必一上来就装一大堆 HACS 前端。</li>
-  </ul>
-  <div class="note">
-    关于 HACS：第三方集成市场，很强大，也是新手踩坑来源。等官方集成不够用再装；每次只加一个，并做好备份。
-  </div>
-
-  <h5>10. 自动化入门（最小闭环）</h5>
-  <ol>
-    <li>Settings → Automations → Create：触发（如 Zigbee 人体传感器 occupied）→ 动作（开灯）。</li>
-    <li>用 Areas（区域）把设备归到 Basement / Main / Upper，方便按房间写灯控。</li>
-    <li>避免「环形自动化」（A 开 B、B 又开 A）。</li>
-    <li>通知类先用手机 Companion 推送，跑通后再上墙面。</li>
-  </ol>
-
-  <h5>11. 安全与家庭使用习惯</h5>
-  <ul>
-    <li>管理员账号仅你使用；家人/墙面用普通用户 + 受限 Dashboard。</li>
-    <li>不要把 <code>:8123</code> 直接裸暴露到公网端口转发。</li>
-    <li>SSD 与备份同样重要：盘坏可重装，无备份则自动化全丢。</li>
-    <li>停电：全屋由双 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> 备电。仅当实测切换会重启核心设备时，再给「网关 + PoE 交换机 + HA + NAS」加小型桥接 UPS；墙面平板可接受短时掉电。</li>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
   </ul>
 
-  <h5>12. 常见问题速查</h5>
+  <h4>2.4.4 Shades &amp; Blinds</h4>
+  <p>窗帘、百叶、遮阳。优先支持本地的电机生态（Zigbee / Z-Wave / Matter / 局域网桥）；量窗与供电（电池 / 有线 / 太阳能）和开合噪音一并选型。与光照传感、温度自动化强相关。</p>
   <ul>
-    <li>打不开 homeassistant.local：改用 IP；检查电脑与 HA 是否同网段/VLAN。</li>
-    <li>PoE 不上电：确认口协商到 PoE++（Wallpanel / 主机）；线序与线材质量（建议实心铜 Cat6 以上）。</li>
-    <li>Zigbee 经常掉线：协调器移出金属柜、加路由节点、避开 Wi‑Fi 拥挤信道。</li>
-    <li>更新后异常：用备份还原；看 Settings → System → Logs。</li>
-    <li>Matter-over-Thread 设备入不了网：确认第二根棒已固定为 Thread、天线已出柜；不要把 Zigbee 那根改来改去。</li>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
   </ul>
 
-  <h5>13. 学习路径与官方文档</h5>
-  <ol>
-    <li><a href="https://www.home-assistant.io/getting-started/" target="_blank" rel="noopener noreferrer">Getting Started</a></li>
-    <li><a href="https://www.home-assistant.io/docs/" target="_blank" rel="noopener noreferrer">Documentation 首页</a>（Concepts、Dashboards、Automations）</li>
-    <li><a href="https://www.home-assistant.io/integrations/" target="_blank" rel="noopener noreferrer">Integrations 目录</a>（买设备前先搜能不能本地接入）</li>
-    <li><a href="https://companion.home-assistant.io/" target="_blank" rel="noopener noreferrer">Companion App</a></li>
-    <li>社区：<a href="https://community.home-assistant.io/" target="_blank" rel="noopener noreferrer">community.home-assistant.io</a>；中文也可搜「Home Assistant 中国」等论坛/群，但配置以英文官方文档为准更不易过时。</li>
-  </ol>
-
-  <h5>14. 与本表对应的物料清单（HA 部分）</h5>
+  <h4>2.4.5 Sensors</h4>
+  <p>环境与状态传感：温湿度、门窗磁、水浸、烟雾 / CO（注意：生命安全报警器以本地法规与独立报警为准，HA 只做通知备份）、照度、粉尘等。电池设备优先 Zigbee / Thread；重要告警设备看是否要主电 + 电池备份。</p>
   <ul>
-    <li>1× <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC</a>（机柜）</li>
-    <li>2× <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a>（Zigbee + Thread 各一）</li>
-    <li>1× <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZWA-2</a>（Z‑Wave）</li>
-    <li>1× USB-A/C 数据转换头（Thread 棒 → Mini PC USB-3；不要只充电的线）</li>
-    <li>3× Home Assistant PoE Wallpanel（选型待定）</li>
-    <li>交换机侧：至少 1 个 PoE++（主机）+ 3 个 PoE++（Wallpanel，每路按 60W 预留；当前接在 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 PoE+++ 口）；线材与墙面点位按楼层施工图预留</li>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
   </ul>
-  <p class="lede">本指南会随你的实际安装进度继续补洞（VLAN、具体自动化模板、Protect 集成步骤等）。先把第 4–6 节跑通，就是成功的第一步。</p>
-  <h2>3. Home Office Setup</h2>
+
+  <h4>2.4.6 Energy &amp; Power</h4>
+  <p>电能监测：整屋 CT、回路级监测、智能插座功率、EVSE 负荷视角（与 <a href="#4" class="page-ref">§4</a> 能源章节交叉）。HA 做可视化与自动化阈值；计费级精度不要指望消费级插座。</p>
+  <ul>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
+  </ul>
+
+  <h4>2.4.7 Presence &amp; Occupancy</h4>
+  <p>人在 / 房间占用：mmWave、PIR、房间级存在传感器、手机 / BLE 辅助。灯控与 HVAC 的主信号应来自房间存在，而不是仅靠手机连 Wi‑Fi。与 Wallpanel 亮屏策略共用同一存在源更干净。</p>
+  <ul>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
+  </ul>
+
+  <h4>2.4.8 Locks &amp; Access Integration</h4>
+  <p>锁体与门禁联动。外门主路径是 UniFi Access（<a href="#1.2.1" class="page-ref">§1.2.1</a>）；HA 侧只做「开门 → 灯 / 撤防 / 通知」类自动化。若另有内门锁 / 柜锁，再在 Z-Wave / Matter 里单列，避免两套门禁逻辑并行写锁。</p>
+  <ul>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
+  </ul>
+
+  <h4>2.4.9 Media &amp; AV</h4>
+  <p>电视、流媒体盒、功放、HDMI 矩阵 / CEC、音箱。能局域网控制的进 HA 做场景（观影模式）；语音与高码率播放仍交给专用设备。不在 HA 里重做 NVR 或整套影音接线。</p>
+  <ul>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
+  </ul>
+
+  <h4>2.4.10 Irrigation &amp; Outdoor</h4>
+  <p>灌溉阀、庭院插座、户外灯、车库外设备。优先本地控制器；纳入雨量 / 湿度跳过浇灌等自动化。户外设备的防水、供电与冬季策略写进选品备注。</p>
+  <ul>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
+  </ul>
+
+  <h4>2.4.11 Water Safety</h4>
+  <p>漏水监测、自动截断阀、水泵 / 集水坑液位（与机械室相关）。告警要本地响 + 手机推送；截断阀选型看失效模式（断电开 / 关）是否可接受。</p>
+  <ul>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
+  </ul>
+
+  <h4>2.4.12 Voice &amp; Assist Satellites</h4>
+  <p>本地语音卫星（Home Assistant Voice / ESPHome Assists 等）。与云音箱分工：隐私指令走本地，音乐娱乐可仍用消费音箱。卫星布置避开机柜风机噪声。</p>
+  <ul>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
+  </ul>
+
+  <h4>2.4.13 Buttons &amp; Scene Controllers</h4>
+  <p>无线按钮、旋钮、遥控、床头场景键。补墙开覆盖不到的「一键场景」；协议与家里主流 mesh 一致，减少又一套网关。</p>
+  <ul>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
+  </ul>
+
+  <h4>2.4.14 Fans &amp; Air Quality</h4>
+  <p>吊扇、排气扇、空气净化器、CO₂ / PM 监测联动。风扇控制与 HVAC 设定点分开，避免两套逻辑抢执行器。</p>
+  <ul>
+    <li>选品清单：<em>placeholder（后续探讨）</em></li>
+  </ul>
+
+<h2>3. Home Office Setup</h2>
   <p class="lede"><a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（Den）与机柜 NAS 的算力 / 存储分工，以及书房桌面显示器与外设。Den Room Drop 铜缆见 <a href="#1.1" class="page-ref">§1.1</a>；NAS / Studio 在拓扑上的落点见 <a href="#topology" class="page-ref">Topology</a>。</p>
 
   <h4>3.1 NAS · <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a></h4>
