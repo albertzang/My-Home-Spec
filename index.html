@@ -706,7 +706,7 @@
 
 <h3>1.4 PoE Power Breakdown</h3>
 
-  <p class="lede">按当前设备规格与预留值核算 PoE 输出负载，不是 UniFi 实时遥测。两台 Flex 上联均由 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 经 Room Drop 以 PoE+++ 口供电：Media <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 按 PoE+ PD 约 14W；Garage <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 按 PoE+++ 整支约 69.4W（上一级只记这一次，不再另加下游 55.4W）。PoE Power Used / PoE Output Used 只计对应 PSE 的输出；有下游供电的设备在下方按子树展开，上一级只记整支一次。<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 有 19W（无 PoE 输出）与 50W（有 PoE 输出）两种整机上限，支路按 19W + 实际输出估算且不超过 50W。两台 Flex 硬件均可改接 AC 适配器，本宅不采用。</p>
+  <p class="lede">按当前设备规格与预留值核算 PoE 输出负载，不是 UniFi 实时遥测。两台 Flex 上联均由 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 经 Room Drop 以 PoE+++ 口供电：Media <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 按 PoE+ PD 约 14W；Garage <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 按 PoE+++ 整支约 69.4W（上一级只记这一次，不再另加下游 55.4W）。PoE Power Used / PoE Output Used 只计对应 PSE 的输出；有下游供电的设备在下方按子树展开，上一级只记整支一次。<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>：整机有 19W（无 PoE 输出）与 50W（有 PoE 输出）两种上限，支路上联按 19W + 实际下游输出估算且不超过 50W；卡片分母 45W 是官方 PoE 输出合计上限（两口聚合），只约束下游输出、不含本机 19W。两台 Flex 硬件均可改接 AC 适配器，本宅不采用。</p>
 
   <div class="power-tree-wrap">
   <table class="power-tree">
@@ -801,7 +801,7 @@
               <p class="power-card-title">Front <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></p>
               <p class="power-card-value">33 / 45W <small>73.3%</small></p>
               <div class="power-meter" aria-label="Front Door Hub Mini PoE Output Used 33 of 45 watts"><span style="width:73.333%"></span></div>
-              <p class="power-formula"><code>Device 19W · PoE Output 18 + 15 = 33W · Upstream 50W cap</code></p>
+              <p class="power-formula"><code>Device 19W · Out 18+15=33 ≤45W · Up 50W</code></p>
             </div>
           </div></td>
       </tr>
@@ -827,7 +827,7 @@
               <p class="power-card-title">Mud <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></p>
               <p class="power-card-value">20 / 45W <small>44.4%</small></p>
               <div class="power-meter" aria-label="Mud Door Hub Mini PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
-              <p class="power-formula"><code>Device 19W · PoE Output 5 + 15 = 20W · Upstream 39W</code></p>
+              <p class="power-formula"><code>Device 19W · Out 5+15=20 ≤45W · Up 39W</code></p>
             </div>
           </div></td>
       </tr>
@@ -853,7 +853,7 @@
               <p class="power-card-title">Dining <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></p>
               <p class="power-card-value">20 / 45W <small>44.4%</small></p>
               <div class="power-meter" aria-label="Dining Door Hub Mini PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
-              <p class="power-formula"><code>Device 19W · PoE Output 5 + 15 = 20W · Upstream 39W</code></p>
+              <p class="power-formula"><code>Device 19W · Out 5+15=20 ≤45W · Up 39W</code></p>
             </div>
           </div></td>
       </tr>
@@ -879,7 +879,7 @@
               <p class="power-card-title">Basement <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></p>
               <p class="power-card-value">20 / 45W <small>44.4%</small></p>
               <div class="power-meter" aria-label="Basement Door Hub Mini PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
-              <p class="power-formula"><code>Device 19W · PoE Output 5 + 15 = 20W · Upstream 39W</code></p>
+              <p class="power-formula"><code>Device 19W · Out 5+15=20 ≤45W · Up 39W</code></p>
             </div>
           </div></td>
       </tr>
@@ -934,7 +934,7 @@
               <p class="power-card-title">Garage <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></p>
               <p class="power-card-value">20 / 45W <small>44.4%</small></p>
               <div class="power-meter" aria-label="Garage Door Hub Mini PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
-              <p class="power-formula"><code>Device 19W · PoE Output 5 + 15 = 20W · Upstream 39W</code></p>
+              <p class="power-formula"><code>Device 19W · Out 5+15=20 ≤45W · Up 39W</code></p>
             </div>
           </div></td>
       </tr>
