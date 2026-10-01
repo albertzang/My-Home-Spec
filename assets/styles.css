@@ -238,10 +238,19 @@
 
     /*
      * Leaf cells stay nowrap. At the usual Spec reading width the fixed
-     * columns fit; below min-width the wrap grows a horizontal scrollbar.
+     * columns fit; below min-width the wrap is a sideways scrollport.
+     * Use overflow-x: scroll (not auto) so iOS/WebKit actually pans;
+     * overflow-y: hidden avoids the auto/visible → both-axes promotion.
      */
     .spa-spec .spa-article .power-tree-wrap {
-      overflow-x: auto;
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      touch-action: pan-x pan-y;
     }
 
     .spa-spec .spa-article table.power-tree {
@@ -277,7 +286,8 @@
     .spa-doc.is-on {
       display: block;
       overflow: auto;
-      overflow-x: hidden;
+      /* clip keeps the pane from shifting sideways; nested wraps can still pan-x. */
+      overflow-x: clip;
     }
 
     .design-shell {
@@ -387,7 +397,8 @@
       font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
       font-size: 0.95rem;
       line-height: 1.7;
-      overflow-x: hidden;
+      /* clip (not hidden): still trims paint, but nested x-scrollports can pan. */
+      overflow-x: clip;
     }
 
     .spa-spec .spa-article h2 {
@@ -2209,6 +2220,17 @@
       .spa-spec .spa-article {
         max-width: none;
         padding: 20px max(20px, env(safe-area-inset-right)) calc(100dvh - var(--header-h) - 2rem) max(20px, env(safe-area-inset-left));
+        overflow-x: clip;
+      }
+
+      .spa-spec .spa-article .power-tree-wrap,
+      .spa-spec .spa-article .design-devices-wrap,
+      .spa-spec .spa-article .table-scroll,
+      .spa-spec .spa-article .appliances-wrap {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
       }
 
       .topo-wrap {
