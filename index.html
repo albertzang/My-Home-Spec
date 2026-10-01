@@ -62,76 +62,67 @@
   <article class="spa-article">
   <h2>1. UniFi Networking System</h2>
   <h3>1.1 Ethernet Infrastructure</h3>
-  <p class="lede">WAN、网关、交换、Wi‑Fi、Room Drop 与线材的选型与适配。端口落点与连线见 Topology；本节只写型号能力与为何适配本宅。</p>
+  <p class="lede">WAN、网关、交换、Wi‑Fi、Room Drop 与线材的选型与适配。端口落点与连线见 <a href="#topology" class="page-ref">Topology</a>；本节只写型号能力与适配性。</p>
 
-  <h4>ISP</h4>
-  <h5>Telus PureFibre 5 Gig</h5>
-  <p>正式套餐为 <strong>Telus PureFibre 5 Gig</strong>（标称 5 Gbps 级宽带）。对本宅的硬约束不是「有没有光纤」，而是<strong>客户侧以太网口必须能跑到 5G/10G</strong>，否则套餐速率会被口速锁死。</p>
+  <h4>1.1.1 ISP</h4>
+  <p>正式套餐为 Telus PureFibre 5 Gig（标称 5 Gbps）。运营商用 <a href="https://www.telus.com/en/bc/internet" target="_blank" rel="noopener noreferrer">TELUS Network Access Hub</a>（NAH）在机柜侧终结光纤并给出客户以太网口，本宅不另买外置光电转换盒。硬约束是这条客户侧链路必须能协商到 5G/10G，否则套餐会被口速锁死。</p>
   <ul>
-    <li><strong>不要</strong>把 NAH 的 10G RJ45 直插 UDM-Pro-Max 面板上的 <strong>2.5G WAN</strong> 铜口——那会把 5 Gig 套餐卡在 2.5 Gbps。</li>
-    <li><strong>要</strong>走 UDM 的 <strong>SFP+ WAN</strong>，配能协商 1/2.5/5/10G 的 RJ45 光模块（本宅用 UACC-CM-RJ45-MG），才能吃满套餐。</li>
-    <li>套餐本身不规定家用交换机型号；后级交换与 Wi‑Fi 按局域网需求另选，见下方 Gateway / Switching / WiFi。</li>
+    <li>链路：运营商光纤 → NAH（设备与供电由 TELUS 负责）→ 机柜内短 Cat6 → <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">UDM-Pro-Max</a> 的 SFP+ WAN，模块用 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">UACC-CM-RJ45-MG</a>（1/2.5/5/10G）。NAH 客户侧为 10GBASE-T RJ45；柜内短跳不会降速。</li>
+    <li>不要把 NAH 的 10G RJ45 直插 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">UDM-Pro-Max</a> 面板上的 2.5G WAN 铜口——会把 5 Gig 卡在 2.5 Gbps。要走上面的 SFP+ WAN + 多速率模块，才能吃满套餐。</li>
+    <li>分工：NAH 只做 WAN 终结；路由、防火墙、VPN、UniFi 管理面全部交给 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">UDM-Pro-Max</a>，避免双 NAT / 双路由。套餐不规定家用交换机型号；后级交换与 Wi‑Fi 见下方 <a href="#1.1.2" class="page-ref">Gateway</a> / <a href="#1.1.3" class="page-ref">Switching</a> / <a href="#1.1.4" class="page-ref">WiFi</a>。</li>
   </ul>
 
-  <h5>Network Access Hub</h5>
-  <p><strong>TELUS Network Access Hub（NAH）</strong> 是运营商提供的光网络终端：光纤在 NAH 内终结，客户侧给出以太网口。本宅不另买外置光电转换盒。</p>
+  <h4>1.1.2 Gateway</h4>
+  <p>机柜网关定为 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">UDM-Pro-Max</a>：UniFi OS 一体机，承担路由、威胁管理、统一控制面，并内建 Protect / Access / Network 应用托管。</p>
   <ul>
-    <li><strong>上行</strong>：运营商光纤 → NAH（设备与供电由 TELUS 侧负责）。</li>
-    <li><strong>客户侧口</strong>：NAH 提供 <strong>10GBASE-T RJ45</strong>。机柜内用短 <strong>Cat6</strong> 跳到 UDM WAN SFP+ 中的 <strong>UACC-CM-RJ45-MG</strong>（多速率 1/2.5/5/10G）。柜内短跳不会把 5G/10G 降速。</li>
-    <li><strong>适配性</strong>：NAH 只做 WAN 终结；路由、防火墙、VPN、UniFi 管理面全部交给 UDM-Pro-Max，避免双 NAT / 双路由。</li>
+    <li>WAN：SFP+ 插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">UACC-CM-RJ45-MG</a> 接 NAH，对齐 PureFibre 5 Gig；勿用 2.5G 铜 WAN。</li>
+    <li>LAN：<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">UDM-Pro-Max</a> LAN SFP+ ↔ <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> SFP28，机柜内用 <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">UACC-DAC-SFP10</a>（10G DAC）。短、稳、不占铜口。</li>
+    <li>为何是 Pro Max：需要同时扛多应用（Network + Protect 录像调度 + Access）与 10G WAN/LAN；家用一体机里口速与应用密度匹配本宅，不必再拆独立安全设备。</li>
+    <li>供电：市电；不占 PoE 预算。机柜回路应在 Powerwall whole-home backup 内（备电策略见 <a href="#4" class="page-ref">§4</a>）。</li>
+  </ul>
+  <p>机柜 NAS（<a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a>）见 <a href="#3" class="page-ref">§3 Home Office Setup</a>；交换侧仅预留其 2×10G LACP 上联。</p>
+
+  <h4>1.1.3 Switching</h4>
+  <p>有线核心是一台机柜汇聚 + 两台房间/车库边缘交换机。两台边缘交换机都不直连机柜铜口：各自走本室 Room Drop（Media / Garage）home-run 到配线架，再 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>；墙口再用短跳接到 Flex 的 10G RJ45 上联口。两台 Flex 上联均只用 10G RJ45（不用 combo 上的 SFP+），并由该口经 PoE 供电；不接墙端 AC、不装随附 / 可选 AC 适配器。选型看口速、PoE 等级与是否需要下游供电，端口表见 <a href="#topology" class="page-ref">Topology</a> / <a href="#1.3" class="page-ref">§1.3</a>。</p>
+  <ul>
+    <li><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>：16×10G + 8×2.5G，铜口均可 PoE+++（802.3bt Type 4），交换侧 PoE 预算 720W；另有 SFP28 上联（接 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">UDM-Pro-Max</a>）。负责 AP、门禁上行、HA / Wallpanel、各 Room Drop（其中 Media / Garage 两路在远端喂两台边缘 Flex 并为其供电）与 NAS LACP。市电供电，720W 是输出预算不是墙端功耗。</li>
+    <li><a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8</a>（Media，非 PoE 输出）：经 Media Room Drop 接到机柜 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>。上联仅用 10G RJ45（SFP+ combo 口空闲），并由该口吃 PoE+ input（整机最大约 14W）；不接随附 5V USB-C，不接 AC。八个 2.5G 下联口只传数据、不供电。Media 室需要多口有线但不需要边缘 PoE，因此明确不用 PoE 输出版。</li>
+    <li><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a>（Garage）：经 Garage Room Drop 接到机柜 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>。上联仅用 10G RJ45（SFP+ combo 口空闲），并由该口吃 PoE+++ 供电（短线厂商可用下游约 76W）；不接 <a href="https://store.ui.com/us/en/products/uacc-adapter-ac-210w" target="_blank" rel="noopener noreferrer">UACC-Adapter-AC-210W</a>，不接墙端 AC。八个 2.5G 下联可 PoE。车库边缘有 <a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7-Lite</a>、<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>、<a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">USL-Gateway</a> 等 PoE 负载，故必须用 PoE 版。</li>
   </ul>
 
-  <h4>Gateway</h4>
-  <p>机柜网关定为 <strong><a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">UDM-Pro-Max</a></strong>：UniFi OS 一体机，承担路由、威胁管理、统一控制面，并内建 Protect / Access / Network 应用托管。</p>
+  <h4>1.1.4 WiFi</h4>
+  <p>主屋覆盖：Main 天花板 <a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7-Pro</a>；Basement / Upper 墙面 <a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7-Pro-Wall</a> ×2；车库一台 <a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7-Lite</a>。<a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7-Pro</a> / <a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7-Pro-Wall</a> 都以 2.5G / PoE+ 级口速与 Wi‑Fi 7 能力服务主屋；<a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7-Lite</a> 覆盖车库与车道侧，功耗与口速更低，适合挂在 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 下。</p>
   <ul>
-    <li><strong>WAN</strong>：SFP+ 插 <strong>UACC-CM-RJ45-MG</strong> 接 NAH，对齐 PureFibre 5 Gig；勿用 2.5G 铜 WAN。</li>
-    <li><strong>LAN 上联交换</strong>：UDM LAN SFP+ ↔ Pro XG SFP28，机柜内用 <strong>UACC-DAC-SFP10</strong>（10G DAC）。短、稳、不占铜口。</li>
-    <li><strong>为何是 Pro Max</strong>：需要同时扛多应用（Network + Protect 录像调度 + Access）与 10G WAN/LAN；家用一体机里口速与应用密度匹配本宅，不必再拆独立安全设备。</li>
-    <li><strong>供电</strong>：市电；不占 PoE 预算。机柜回路应在 Powerwall whole-home backup 内（备电策略见 §4）。</li>
-  </ul>
-  <p>机柜 NAS（Synology FS2500）的选型与 Studio 分工见 <strong>§3 Home Office Setup</strong>；交换侧仅预留其 <strong>2×10G LACP</strong> 上联。</p>
-
-  <h4>Switching</h4>
-  <p>有线核心是一台机柜汇聚 + 两台房间/车库边缘交换机。选型看口速、PoE 等级与是否需要下游供电，不在这里展开端口表（见 Topology / §1.3）。</p>
-  <ul>
-    <li><strong><a href="https://techspecs.ui.com/unifi/switching/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a></strong>：16×10G + 8×2.5G，铜口均可 <strong>PoE+++（802.3bt Type 4）</strong>，交换侧 PoE 预算 <strong>720W</strong>；另有 SFP28 上联。负责 AP、门禁上行、HA / Wallpanel、Room Drop、Garage Flex 上联与 NAS LACP。市电供电，720W 是输出预算不是墙端功耗。</li>
-    <li><strong><a href="https://techspecs.ui.com/unifi/switching/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8</a>（Media，非 PoE 输出）</strong>：10G RJ45 / SFP+ combo 上联，可吃 <strong>PoE+ input</strong>（整机最大约 14W），或改用随附 5V USB-C；<strong>八个 2.5G 下联口只传数据、不供电</strong>。Media 室需要多口有线但不需要边缘 PoE，因此明确不用 PoE 输出版。</li>
-    <li><strong><a href="https://techspecs.ui.com/unifi/switching/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a>（Garage）</strong>：同样 10G combo 上联 + 8×2.5G，但下联可 PoE。上联可同时收 <strong>PoE+++</strong>（短线厂商可用下游约 76W）或改接可选 <strong>UACC-Adapter-AC-210W</strong>（约 196W 输出，热备）。SFP+ 与 10G RJ45 互斥。车库边缘有 U7-Lite、Door Mini、USL 等 PoE 负载，故必须用 PoE 版。</li>
-  </ul>
-  <p>口位余量：主屋摄像头下挂 Door Mini 后，不必立刻加 Utility Switch；日后再扩时优先空闲 <strong>SFP28</strong> 上联，而不是先填满铜口。迁移 Door Mini 前须确认目标交换机的 802.3bt 单口功率与总预算。</p>
-
-  <h4>WiFi</h4>
-  <p>覆盖用三台天花板 <strong><a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7-Pro</a></strong>（Basement / Main / Upper）+ 车库一台 <strong>U7-Lite</strong>。U7-Pro 以 2.5G / PoE+ 级口速与 Wi‑Fi 7 能力服务主屋；U7-Lite 覆盖车库与车道侧，功耗与口速更低，适合挂在 Garage Flex 下。</p>
-  <ul>
-    <li><strong>固定终端原则</strong>：有网口、固定位置、在意延迟或 NAS 大流量 → <strong>Ethernet</strong>（Room Drop / 房间交换机）；手机、平板、笔记本、多数 IoT → <strong>Wi‑Fi</strong>。把电视墙、游戏机、Mac Studio 挪出无线后，airtime 留给移动设备。</li>
-    <li><strong>适配性</strong>：三层各一 U7-Pro 足够本宅面积与墙体；车库单独 Lite，避免用主屋 AP 硬打穿混凝土/金属门。</li>
+    <li>固定终端原则：有网口、固定位置、在意延迟或 NAS 大流量 → Ethernet（Room Drop / 房间交换机）；手机、平板、笔记本、多数 IoT → Wi‑Fi。把电视墙、游戏机、<a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> 挪出无线后，airtime 留给移动设备。</li>
+    <li>适配性：Main 用天花板 <a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7-Pro</a>；Basement / Upper 改墙面 <a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7-Pro-Wall</a>，便于贴墙安装；车库单独 <a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7-Lite</a>，避免用主屋 AP 硬打穿混凝土/金属门。</li>
   </ul>
 
-  <h4>Room Drops</h4>
-  <p>七个房间（Media / Den / Master / BR1 / BR2 / Seating / Garage）各拉 <strong>两根 Cat6A 实心铜 home-run</strong> 到机柜配线架，完整通道按 Type 4 / 4PPoE 选材，全部终结、认证、贴标。每间只启用一根；备用线占配线架，不占交换机口。</p>
+  <h4>1.1.5 Room Drops</h4>
+  <p>七个房间（Media / Den / Master / BR1 / BR2 / Seating / Garage）各拉两根 Cat6A 实心铜 home-run 到机柜配线架，完整通道按 Type 4 / 4PPoE 选材，全部终结、认证、贴标。每间只启用一根；备用线占配线架，不占交换机口。Media 与 Garage 的在用口在远端接边缘 Flex，再经该 Room Drop 回到机柜 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>——不是另拉一条「交换机上联」进柜。</p>
   <ul>
-    <li><strong>Media / Den</strong>：墙面<strong>双口 plate</strong>。Media 在用口经短跳接非 PoE Flex；Den 在用口接 Mac Studio（机身 10GbE）。第二口贴「未连接」。</li>
-    <li><strong>其余五间</strong>：墙面<strong>单口</strong>；第二根留在墙盒 / 配线架作冗余，不做出第二插口以免误插。</li>
-    <li><strong>面板采购</strong>：横向双口、横向单口、纵向双口、纵向单口各一包（官网每包 4 只）；keystone 用 <strong>UACC-Keystone-Jack-C6A</strong>。</li>
-    <li><strong>扩展路线</strong>（按需升级，不提前每间装交换机）：① AP + 1×C6A → ② 该 C6A 上联房间交换机 → ③（仅 Media/Den）启用第二口：一根直连、一根上联或一根备用 → ④ 两根都进同一交换机时必须 <strong>LACP 或 STP</strong>，禁止随手双接成环。</li>
-    <li><strong>Mechanical Room</strong>：机柜已在本室，不再做「卧室式 Room Drop」。需要时从配线架就地短跳到 HVAC / 热水 / 集水坑控制区（默认不 patch 进 XG）。</li>
+    <li>Media / Den：墙面双口 plate。Media 在用口经短跳接 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8</a> 的 10G RJ45 上联；Den 在用口接 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（机身 10GbE）。第二口贴「未连接」。</li>
+    <li>Garage：墙面单口；在用口经短跳接 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 的 10G RJ45 上联。第二根留在墙盒 / 配线架作冗余。</li>
+    <li>其余四间（Master / BR1 / BR2 / Seating）：墙面单口；第二根留在墙盒 / 配线架作冗余，不做出第二插口以免误插。</li>
+    <li>面板采购：横向双口、横向单口、纵向双口、纵向单口各一包（官网每包 4 只）；keystone 用 <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">UACC-Keystone-Jack-C6A</a>。</li>
+    <li>扩展路线（按需升级，不提前每间装交换机）：① AP + 1×C6A → ② 该 C6A 上联房间交换机 → ③（仅 Media/Den）启用第二口：一根直连、一根上联或一根备用 → ④ 两根都进同一交换机时必须 LACP 或 STP，禁止随手双接成环。</li>
+    <li>Mechanical Room：机柜已在本室，不再做「卧室式 Room Drop」。需要时从配线架就地短跳到 HVAC / 热水 / 集水坑控制区（默认不 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>）。</li>
   </ul>
 
-  <h4>Cables</h4>
-  <p>全项目铜缆统一按 IEEE 802.3bt <strong>Type 4 / 4PPoE</strong> 完整通道选材与验收（线缆、跳线、keystone、配线架、端接）。Type 4 是供电承载能力，不改变 Cat6 / Cat6A 的数据类别；无 PoE 或低功率口仍只按设备协商，不会被强制送 90W。</p>
+  <h4>1.1.6 Cables</h4>
+  <p>全项目铜缆统一按 IEEE 802.3bt Type 4 / 4PPoE 完整通道选材与验收（线缆、跳线、keystone、配线架、端接）。Type 4 是供电承载能力，不改变 Cat6 / Cat6A 的数据类别；无 PoE 或低功率口仍只按设备协商，不会被强制送 90W。</p>
   <ul>
-    <li><strong>Cat6A 实心铜</strong>：永久入墙 / home-run（Room Drop、主屋 Door Mini、AP、Wallpanel、Viewport、Garage 上联等），保证百米级 10G 与余量。</li>
-    <li><strong>Cat6 短跳</strong>：柜内 NAH→UDM、XG→HA / NAS、墙口→Flex、Door Mini→读头/摄像头、Flex 下联、Tesla 以太网等短距离；短跳不限速这些链路，但须为纯铜、24–26 AWG、Type 4 额定。禁用 CCA / 未标定细径线。</li>
-    <li><strong>光 / DAC</strong>：UDM↔XG 用 <strong>UACC-DAC-SFP10</strong>。</li>
-    <li><strong>非以太网</strong>：门锁 LOCK/DPS 为 12V 控制线；Tesla 控制为 CAN——不要用网线标准去套这两类。</li>
+    <li>Cat6A 实心铜：永久入墙 / home-run（Room Drop、主屋 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>、AP、Wallpanel、<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">UP-Viewport</a>、Garage Room Drop 等），保证百米级 10G 与余量。</li>
+    <li>Cat6 短跳：柜内 NAH→<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">UDM-Pro-Max</a>、<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>→HA / NAS、墙口→<a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8</a> / <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a>、<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>→读头/摄像头、<a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8</a> / <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 下联、Tesla 以太网等短距离；短跳不限速这些链路，但须为纯铜、24–26 AWG、Type 4 额定。禁用 CCA / 未标定细径线。</li>
+    <li>光 / DAC：<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">UDM-Pro-Max</a>↔<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 用 <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">UACC-DAC-SFP10</a>。</li>
+    <li>非以太网：门锁 LOCK/DPS 为 12V 控制线；Tesla 控制为 CAN——不要用网线标准去套这两类。</li>
   </ul>
 
   <h3>1.2 Protect &amp; Access</h3>
-  <p class="lede">按门位列出 Hub、读头、Strike 与下挂 Protect 摄像头的型号与功率适配。连线落点见 Topology。</p>
-  <p>五扇人行门共用同一模式：<strong>UA-Hub-Door-Mini</strong> 作就地汇聚——上行 PoE++，两个 PoE+ 口分别给读头与一台摄像头，LOCK（Wet 12V）+ DPS 接 Strike；REX 本宅空闲。Mini 出站 Σ≤45W、单口 ≤30W；接受 Mini 重启时该门口摄像头短暂同离线。Viewport 是 Protect 监视器，直连交换，不挂在 Mini 下。</p>
+  <p class="lede">按门位列出 Hub、读头、Strike 与下挂 Protect 摄像头的型号与功率适配。连线落点见 <a href="#topology" class="page-ref">Topology</a>。</p>
+  <p>五扇人行门共用同一模式：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> 作就地汇聚——上行 PoE++，两个 PoE+ 口分别给读头与一台摄像头，LOCK（Wet 12V）+ DPS 接 <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">UACC-Lock-Strike-Secure-15mm</a>；REX 本宅空闲。<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> 出站 Σ≤45W、单口 ≤30W；接受 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> 重启时该门口摄像头短暂同离线。<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">UP-Viewport</a> 是 Protect 监视器，直连交换，不挂在 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> 下。</p>
 
   <h5>门锁 Access Status（五扇人行门共用）</h5>
-  <p>一律 <strong>UACC-Lock-Strike-Secure-15mm</strong>，同时接 LOCK 与 DPS。App 状态由这两路组合；无 DPS 时只能显示 Locked / Unlocked。</p>
+  <p>一律 <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">UACC-Lock-Strike-Secure-15mm</a>，同时接 LOCK 与 DPS。App 状态由这两路组合；无 DPS 时只能显示 Locked / Unlocked。</p>
   <div class="table-scroll">
   <table>
     <thead>
@@ -171,59 +162,59 @@
   </table>
   </div>
 
-  <h4>Front Door</h4>
+  <h4>1.2.1 Front Door</h4>
   <ul>
-    <li><strong>Hub</strong>：UA-Hub-Door-Mini（上行 PoE++ 自 Pro XG）。</li>
-    <li><strong>读头 / 摄像一体</strong>：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-entry" target="_blank" rel="noopener noreferrer">UVC-G6-Pro-Entry</a>（约 18W）——前门独有，占 Mini 一个 PoE+ 口。</li>
-    <li><strong>外景摄像</strong>：UVC-G6-Pro-Turret（Frontyard / Front Eave / North East，约 15W）占另一 PoE+ 口。支路输出 18+15=33W，低于 Σ45W；整机「with PoE output」按 50W 上限预留。</li>
-    <li><strong>锁</strong>：UACC-Lock-Strike-Secure-15mm（LOCK + DPS）。</li>
+    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>）。</li>
+    <li>读头 / 摄像一体：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-entry" target="_blank" rel="noopener noreferrer">UVC-G6-Pro-Entry</a>（约 18W）——前门独有，占 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> 一个 PoE+ 口。</li>
+    <li>外景摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">UVC-G6-Pro-Turret</a>（Frontyard / Front Eave / North East，约 15W）占另一 PoE+ 口。支路输出 18+15=33W，低于 Σ45W；整机「with PoE output」按 50W 上限预留。</li>
+    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">UACC-Lock-Strike-Secure-15mm</a>（LOCK + DPS）。</li>
   </ul>
 
-  <h4>Mud Door</h4>
+  <h4>1.2.2 Mud Door</h4>
   <ul>
-    <li><strong>Hub</strong>：UA-Hub-Door-Mini（上行 PoE++ 自 Pro XG）。位置：Main / Mud / Back Door。</li>
-    <li><strong>读头</strong>：UA-G3（约 5W，100M PoE）。</li>
-    <li><strong>摄像</strong>：UVC-G6-Pro-Turret（Backyard / Balcony Eave / South West，约 15W）。</li>
-    <li><strong>锁</strong>：Strike Secure 15mm（LOCK + DPS）。支路约 19W（Mini 含 Wet）+ 5 + 15 = 39W。</li>
+    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>）。位置：Main / Mud / Back Door。</li>
+    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">UA-G3</a>（约 5W，100M PoE）。</li>
+    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">UVC-G6-Pro-Turret</a>（Backyard / Balcony Eave / South West，约 15W）。</li>
+    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">UACC-Lock-Strike-Secure-15mm</a>（LOCK + DPS）。支路约 19W（<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> 含 Wet）+ 5 + 15 = 39W。</li>
   </ul>
 
-  <h4>Dining Door</h4>
+  <h4>1.2.3 Dining Door</h4>
   <ul>
-    <li><strong>Hub</strong>：UA-Hub-Door-Mini（上行 PoE++ 自 Pro XG）。位置：Main / Dining / Back Door。</li>
-    <li><strong>读头</strong>：UA-G3（约 5W）。</li>
-    <li><strong>摄像</strong>：UVC-G6-Pro-Bullet（Walkway / Balcony Eave / South East，约 15W）。</li>
-    <li><strong>锁</strong>：Strike Secure 15mm（LOCK + DPS）。功率账同 Mud（约 39W）。</li>
+    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>）。位置：Main / Dining / Back Door。</li>
+    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">UA-G3</a>（约 5W）。</li>
+    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-bullet" target="_blank" rel="noopener noreferrer">UVC-G6-Pro-Bullet</a>（Walkway / Balcony Eave / South East，约 15W）。</li>
+    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">UACC-Lock-Strike-Secure-15mm</a>（LOCK + DPS）。功率账同 Mud（约 39W）。</li>
   </ul>
 
-  <h4>Basement Door</h4>
+  <h4>1.2.4 Basement Door</h4>
   <ul>
-    <li><strong>Hub</strong>：UA-Hub-Door-Mini（上行 PoE++ 自 Pro XG）。位置：Basement / Back Door。</li>
-    <li><strong>读头</strong>：UA-G3（约 5W）。</li>
-    <li><strong>摄像</strong>：UVC-G6-Pro-Turret（Courtyard / Eave，约 15W）。</li>
-    <li><strong>锁</strong>：Strike Secure 15mm（LOCK + DPS）。功率账同 Mud（约 39W）。</li>
+    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>）。位置：Basement / Back Door。</li>
+    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">UA-G3</a>（约 5W）。</li>
+    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">UVC-G6-Pro-Turret</a>（Courtyard / Eave，约 15W）。</li>
+    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">UACC-Lock-Strike-Secure-15mm</a>（LOCK + DPS）。功率账同 Mud（约 39W）。</li>
   </ul>
 
-  <h4>Garage Door</h4>
+  <h4>1.2.5 Garage Door</h4>
   <ul>
-    <li><strong>Hub</strong>：UA-Hub-Door-Mini（上行自 Garage Flex 的 PoE++ 口，不是 XG）。</li>
-    <li><strong>读头</strong>：UA-G3（约 5W）。</li>
-    <li><strong>摄像</strong>：UVC-G6-Pro-Turret（Laneway / Garage / South，约 15W）。</li>
-    <li><strong>锁</strong>：Strike Secure 15mm（LOCK + DPS）。支路约 39W，计入 Flex PoE 输出预算，见 §1.4。</li>
+    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>（上行自 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 的 PoE++ 口，不是 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>）。</li>
+    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">UA-G3</a>（约 5W）。</li>
+    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">UVC-G6-Pro-Turret</a>（Laneway / Garage / South，约 15W）。</li>
+    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">UACC-Lock-Strike-Secure-15mm</a>（LOCK + DPS）。支路约 39W，计入 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> PoE 输出预算，见 <a href="#1.4" class="page-ref">§1.4</a>。</li>
   </ul>
 
-  <h4>Garage Gate</h4>
-  <p>车道大门 / 电动门禁位，与 Garage Door（车库行人/车门）分开记账。控制与读头型号<strong>待定</strong>；选定前不占用 Door Mini 端口，也不并入现有五套 Mini 子树。选型时须单独核算：是否需要 Access Hub、锁体/电机干接点、读头供电等级，以及上联落在 Flex 还是日后 Utility Switch。</p>
+  <h4>1.2.6 Garage Gate</h4>
+  <p>车道大门 / 电动门禁位，与 Garage Door（车库行人/车门）分开记账。控制与读头型号待定；选定前不占用 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> 端口，也不并入现有五套 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> 子树。选型时须单独核算：是否需要 Access Hub、锁体/电机干接点、读头供电等级，以及上联落在 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 还是日后 Utility Switch。</p>
 
-  <h4>USL</h4>
-  <p><strong><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">USL-Gateway</a></strong> 是 SuperLink / BLE 网关，不是传感器：约 <strong>100M PoE · 3.4W</strong>，由 Garage Flex 直供，<strong>不经过 Door Mini</strong>。</p>
+  <h4>1.2.7 USL</h4>
+  <p><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">USL-Gateway</a> 是 SuperLink / BLE 网关，不是传感器：约 100M PoE · 3.4W，由 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 直供，不经过 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>。</p>
   <ul>
-    <li><strong>传感器</strong>：<a href="https://store.ui.com/us/en/products/usl-environmental" target="_blank" rel="noopener noreferrer">USL-Environmental</a> 电池供电，测漏水 / 温湿度 / 环境光，经 SuperLink（北美约 915 MHz）回 Gateway，无需 Ethernet。</li>
-    <li><strong>布置</strong>：Gateway 挂车库半高墙、避大金属面；Environmental 放集水坑、热水器、冷热水汇管附近即可。</li>
-    <li><strong>覆盖</strong>：地下室混凝土与炉体可能衰减 915 MHz。若 Protect 里传感器不稳，再在 Mechanical Room 加第二台 USL-Gateway（同样 ~3.4W PoE），就地短跳，仍不要经 Door Hub。</li>
+    <li>传感器：<a href="https://store.ui.com/us/en/products/usl-environmental" target="_blank" rel="noopener noreferrer">USL-Environmental</a> 电池供电，测漏水 / 温湿度 / 环境光，经 SuperLink（北美约 915 MHz）回 Gateway，无需 Ethernet。</li>
+    <li>布置：Gateway 挂车库半高墙、避大金属面；Environmental 放集水坑、热水器、冷热水汇管附近即可。</li>
+    <li>覆盖：地下室混凝土与炉体可能衰减 915 MHz。若 Protect 里传感器不稳，再在 Mechanical Room 加第二台 <a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">USL-Gateway</a>（同样 ~3.4W PoE），就地短跳，仍不要经 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>。</li>
   </ul>
 
   <h3>1.3 Device List</h3>
-  <p class="lede">与拓扑共用同一套端口 / PoE 图标。大字 <span class="poe-lbl">w/</span> = with PoE output；小字 <span class="poe-lbl">w/o</span> = without PoE output。数字无 <code>≤</code> 为设备自身功耗；<code>≤</code> / <code>Σ≤</code> 为端口或供电合计上限。</p>
+  <p class="lede">与拓扑共用同一套端口 / PoE 图标。大字 <span class="poe-lbl">w/</span> = with PoE output；小字 <span class="poe-lbl">w/o</span> = without PoE output。数字无 <code>≤</code> 为设备自身功耗；<code>≤</code> / <code>Σ≤</code> 为端口或供电合计上限。同型号合并一行，数量写 <code>×n</code>（×1 省略）。</p>
 <div class="design-devices-wrap">
   <table class="devices-table">
     <thead>
@@ -232,7 +223,6 @@
         <th rowspan="2">Device</th>
         <th colspan="2" class="port-group">Port</th>
         <th colspan="2" class="port-group">PoE</th>
-        <th rowspan="2">Location</th>
       </tr>
       <tr>
         <th class="port-sub">Uplink</th>
@@ -261,29 +251,16 @@
         </td>
         <td class="poe-cell">-</td>
         <td class="poe-cell">-</td>
-        <td>Rack Cabinet</td>
       </tr>
       <tr>
         <td>Gateway</td>
         <td>
-          <span class="udc-device-stack">
-            <span class="udc-device">
-              <img src="https://static.ui.com/fingerprint/ui/images/40ae7055-11f8-4c8e-9a58-a4c6eead2055/default/4a4722f355074f13d9a4ea8e3dbca7be.png" alt="">
-              <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">UDM-Pro-Max</a>
-            </span>
-            <span class="udc-accessory">
-              <img src="https://cdn.ecomm.ui.com/products/dacb316d-b254-40a0-8994-04bbf39bbddf/11c64b84-8bd1-43d1-b2dd-899305d8bb96.png" alt="">
-              <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">UACC-CM-RJ45-MG</a>
-            </span>
-            <span class="udc-accessory">
-              <img src="https://cdn.ecomm.ui.com/products/984725ff-e0cc-4bf9-8673-88a6515cf0d4/49fa943a-6c12-4211-b204-09c98b9f793c.png" alt="">
-              <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">UACC-DAC-SFP10</a>
-            </span>
+          <span class="udc-device">
+            <img src="https://static.ui.com/fingerprint/ui/images/40ae7055-11f8-4c8e-9a58-a4c6eead2055/default/4a4722f355074f13d9a4ea8e3dbca7be.png" alt="">
+            <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">UDM-Pro-Max</a>
           </span>
         </td>
         <td class="port-cell">
-          <div class="kit-stack">
-          <div class="kit-seg">
             <span class="udc-ports" title="WAN: 2.5G RJ45 + 10G SFP+">
               <span class="udc-port gbe2p5" title="WAN 2.5 GbE RJ45"><svg class="udc-poe" aria-hidden="true"><use href="#udc-wan"/></svg></span>
               <span class="udc-port sfp" title="WAN 10G SFP+">
@@ -291,22 +268,8 @@
                 <span class="udc-sfp-txt">SFP+</span>
               </span>
             </span>
-          </div>
-          <div class="kit-seg acc">
-            <span class="udc-ports" title="SFP+ to 1/2.5/5/10G RJ45 · NAH WAN">
-              <span class="udc-port gbe10" title="10G RJ45 toward NAH"><svg class="udc-poe" aria-hidden="true"><use href="#udc-wan"/></svg></span>
-            </span>
-          </div>
-          <div class="kit-seg acc">
-            <span class="udc-ports" title="SFP+ DAC end toward UDM LAN">
-              <span class="udc-port sfp" title="SFP+ ← UDM LAN"><span class="udc-sfp-txt">SFP+</span></span>
-            </span>
-          </div>
-          </div>
         </td>
         <td class="port-cell">
-          <div class="kit-stack">
-          <div class="kit-seg">
             <span class="udc-ports" title="LAN: 8×1G RJ45 + 10G SFP+">
               <span class="udc-port-wrap">
                 <span class="udc-port gbe1" title="LAN 1 GbE RJ45 ×8"></span>
@@ -314,37 +277,9 @@
               </span>
               <span class="udc-port sfp" title="LAN 10G SFP+"><span class="udc-sfp-txt">SFP+</span></span>
             </span>
-          </div>
-          <div class="kit-seg acc">
-            <span class="udc-ports" title="SFP+ module edge into UDM WAN">
-              <span class="udc-port sfp" title="SFP+ → UDM WAN">
-                <svg class="udc-poe" aria-hidden="true"><use href="#udc-wan"/></svg>
-                <span class="udc-sfp-txt">SFP+</span>
-              </span>
-            </span>
-          </div>
-          <div class="kit-seg acc">
-            <span class="udc-ports" title="SFP+ DAC → Pro XG SFP28">
-              <span class="udc-port sfp" title="SFP+ → Pro XG SFP28"><span class="udc-sfp-txt">SFP+</span></span>
-            </span>
-          </div>
-          </div>
         </td>
-        <td class="poe-cell">
-          <div class="kit-stack">
-          <div class="kit-seg">-</div>
-          <div class="kit-seg acc">-</div>
-          <div class="kit-seg acc">-</div>
-          </div>
-        </td>
-        <td class="poe-cell">
-          <div class="kit-stack">
-          <div class="kit-seg">-</div>
-          <div class="kit-seg acc">-</div>
-          <div class="kit-seg acc">-</div>
-          </div>
-        </td>
-        <td>Rack Cabinet</td>
+        <td class="poe-cell">-</td>
+        <td class="poe-cell">-</td>
       </tr>
       <tr>
         <td rowspan="3">Switching</td>
@@ -379,64 +314,36 @@
           <span class="poe-val">≤90W/port</span>
           <span class="poe-sub">Σ≤720W</span>
         </td>
-        <td>Rack Cabinet</td>
       </tr>
       <tr>
         <td>
-          <span class="udc-device-stack">
-            <span class="udc-device">
-              <img src="https://cdn.ecomm.ui.com/products/e9d97121-f363-4261-83db-5f74e093a304/05403282-3bfb-4e81-b548-dd467301738b.png" alt="">
-              <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a>
-            </span>
-            <span class="udc-accessory">
-              <img src="https://cdn.ecomm.ui.com/products/9e9ef3ba-4cc7-4362-a76e-13322f1c3d61/12079742-e0b8-444e-8a97-28d37ecd19df.png" alt="">
-              <a href="https://store.ui.com/us/en/products/uacc-adapter-ac-210w" target="_blank" rel="noopener noreferrer">UACC-Adapter-AC-210W</a>
-            </span>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/e9d97121-f363-4261-83db-5f74e093a304/05403282-3bfb-4e81-b548-dd467301738b.png" alt="">
+            <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a>
           </span>
         </td>
         <td class="port-cell">
-          <div class="kit-stack">
-          <div class="kit-seg">
-            <span class="udc-ports" title="10G RJ45 / SFP+ combo uplink">
-              <span class="udc-port gbe10" title="10 GbE RJ45 uplink (PoE+++ in or data)"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port sfp" title="10G SFP+ combo"><span class="udc-sfp-txt">SFP+</span></span>
+            <span class="udc-ports" title="10G RJ45 uplink · PoE+++ in; SFP+ unused">
+              <span class="udc-port gbe10" title="10 GbE RJ45 uplink · PoE+++ in"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port sfp" title="10G SFP+ combo · unused"><span class="udc-sfp-txt">SFP+</span></span>
             </span>
-          </div>
-          <div class="kit-seg acc">-</div>
-          </div>
         </td>
         <td class="port-cell">
-          <div class="kit-stack">
-          <div class="kit-seg">
             <span class="udc-ports" title="8×2.5G RJ45 PoE++">
               <span class="udc-port-wrap">
                 <span class="udc-port gbe2p5" title="2.5 GbE RJ45 PoE++ ×8"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span>
                 <span class="udc-count">×8</span>
               </span>
             </span>
-          </div>
-          <div class="kit-seg acc">-</div>
-          </div>
         </td>
         <td class="poe-cell">
-          <div class="kit-stack">
-          <div class="kit-seg">
             <span class="poe-val">PoE+++ / AC</span>
             <span class="poe-sub">14W / 17W <span class="poe-lbl">w/o</span></span>
-          </div>
-          <div class="kit-seg acc">-</div>
-          </div>
         </td>
         <td class="poe-cell">
-          <div class="kit-stack">
-          <div class="kit-seg">
             <span class="poe-val">≤64W/port</span>
             <span class="poe-sub">Σ≤76W / 196W</span>
-          </div>
-          <div class="kit-seg acc">-</div>
-          </div>
         </td>
-        <td>Garage</td>
       </tr>
       <tr>
         <td>
@@ -446,9 +353,9 @@
           </span>
         </td>
         <td class="port-cell">
-          <span class="udc-ports" title="10G RJ45 PoE+ input / SFP+ combo uplink">
+          <span class="udc-ports" title="10G RJ45 uplink · PoE+ in; SFP+ unused">
             <span class="udc-port gbe10" title="10 GbE RJ45 uplink · PoE+ input"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
-            <span class="udc-port sfp" title="10G SFP+ combo alternative"><span class="udc-sfp-txt">SFP+</span></span>
+            <span class="udc-port sfp" title="10G SFP+ combo · unused"><span class="udc-sfp-txt">SFP+</span></span>
           </span>
         </td>
         <td class="port-cell">
@@ -464,185 +371,9 @@
           <span class="poe-sub">14W</span>
         </td>
         <td class="poe-cell">-</td>
-        <td>Basement/Media Room</td>
       </tr>
       <tr>
-        <td rowspan="11">Room Drop</td>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/b78c6ae3-515b-439d-86e6-079719ef5fca/c0e353a5-43e9-4fe0-8038-b2d7a27c62d3.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">UACC-Keystone-Jack-C6A</a>
-            <span class="udc-count">×2</span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="2× Media C6A: one active XG 10G PoE+++ run + one loose cabinet-end backup"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="port-cell"><span class="udc-ports" title="Active 10G PoE+++ pass-through → Flex 2.5G at PoE+; backup unused"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="poe-cell">-</td>
-        <td class="poe-cell">-</td>
-        <td>Basement/Media Room</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/b78c6ae3-515b-439d-86e6-079719ef5fca/c0e353a5-43e9-4fe0-8038-b2d7a27c62d3.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">UACC-Keystone-Jack-C6A</a>
-            <span class="udc-count">×2</span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++ pass-through"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="poe-cell">-</td>
-        <td class="poe-cell">-</td>
-        <td>Main/Den</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/b78c6ae3-515b-439d-86e6-079719ef5fca/c0e353a5-43e9-4fe0-8038-b2d7a27c62d3.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">UACC-Keystone-Jack-C6A</a>
-            <span class="udc-count">×2</span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++ pass-through"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="poe-cell">-</td>
-        <td class="poe-cell">-</td>
-        <td>Upper/Master Bedroom</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/b78c6ae3-515b-439d-86e6-079719ef5fca/c0e353a5-43e9-4fe0-8038-b2d7a27c62d3.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">UACC-Keystone-Jack-C6A</a>
-            <span class="udc-count">×2</span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++ pass-through"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="poe-cell">-</td>
-        <td class="poe-cell">-</td>
-        <td>Upper/Bedroom 1</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/b78c6ae3-515b-439d-86e6-079719ef5fca/c0e353a5-43e9-4fe0-8038-b2d7a27c62d3.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">UACC-Keystone-Jack-C6A</a>
-            <span class="udc-count">×2</span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++ pass-through"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="poe-cell">-</td>
-        <td class="poe-cell">-</td>
-        <td>Upper/Bedroom 2</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/b78c6ae3-515b-439d-86e6-079719ef5fca/c0e353a5-43e9-4fe0-8038-b2d7a27c62d3.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">UACC-Keystone-Jack-C6A</a>
-            <span class="udc-count">×2</span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++ pass-through"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="poe-cell">-</td>
-        <td class="poe-cell">-</td>
-        <td>Upper/Seating Area</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/b78c6ae3-515b-439d-86e6-079719ef5fca/c0e353a5-43e9-4fe0-8038-b2d7a27c62d3.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">UACC-Keystone-Jack-C6A</a>
-            <span class="udc-count">×2</span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++ pass-through"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++ → Flex"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="poe-cell">-</td>
-        <td class="poe-cell">-</td>
-        <td>Garage</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/eafc887c-4c23-40f6-b5ce-3259cf0462f5.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-2p" target="_blank" rel="noopener noreferrer">UACC-WP-Keystone-H-2P</a>
-            <span class="udc-count" title="1 pack, 4 plates.">×1</span>
-          </span>
-        </td>
-        <td class="port-cell">
-          <span class="udc-ports" title="Two horizontal keystone openings. Passive Cat6A, PoE+++ pass-through.">
-            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-          </span>
-        </td>
-        <td class="port-cell">
-          <span class="udc-ports" title="Two horizontal keystone openings. Passive Cat6A, PoE+++ pass-through.">
-            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-          </span>
-        </td>
-        <td class="poe-cell">-</td>
-        <td class="poe-cell">-</td>
-        <td>Room drops</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/bc490d11-75e8-43cf-a205-34ece1b6f8ed.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-1p" target="_blank" rel="noopener noreferrer">UACC-WP-Keystone-H-1P</a>
-            <span class="udc-count" title="1 pack, 4 plates.">×1</span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="One horizontal keystone opening. Passive Cat6A, PoE+++ pass-through."><span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="port-cell"><span class="udc-ports" title="One horizontal keystone opening. Passive Cat6A, PoE+++ pass-through."><span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="poe-cell">-</td>
-        <td class="poe-cell">-</td>
-        <td>Room drops</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/811c6fee-dfac-4d50-bad0-36c0f031b6f4.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-2p" target="_blank" rel="noopener noreferrer">UACC-WP-Keystone-V-2P</a>
-            <span class="udc-count" title="1 pack, 4 plates.">×1</span>
-          </span>
-        </td>
-        <td class="port-cell">
-          <span class="udc-ports" title="Two vertical keystone openings. Passive Cat6A, PoE+++ pass-through.">
-            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-          </span>
-        </td>
-        <td class="port-cell">
-          <span class="udc-ports" title="Two vertical keystone openings. Passive Cat6A, PoE+++ pass-through.">
-            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-          </span>
-        </td>
-        <td class="poe-cell">-</td>
-        <td class="poe-cell">-</td>
-        <td>Room drops</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/bbaab68e-40a7-4729-9d1f-0b53f1adec65.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-1p" target="_blank" rel="noopener noreferrer">UACC-WP-Keystone-V-1P</a>
-            <span class="udc-count" title="1 pack, 4 plates.">×1</span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="One vertical keystone opening. Passive Cat6A, PoE+++ pass-through."><span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="port-cell"><span class="udc-ports" title="One vertical keystone opening. Passive Cat6A, PoE+++ pass-through."><span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
-        <td class="poe-cell">-</td>
-        <td class="poe-cell">-</td>
-        <td>Room drops</td>
-      </tr>
-      <tr>
-        <td rowspan="4">Wi-Fi AP</td>
+        <td rowspan="3">Wi-Fi AP</td>
         <td>
           <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/fa8dd4e4-36c8-4c79-a928-22c7bff2ce29/ab5bc8a4-6135-402e-a695-e3ea5e16d3e6.png" alt="">
@@ -652,31 +383,18 @@
         <td class="port-cell"><span class="udc-ports" title="2.5G RJ45, PoE+"><span class="udc-port gbe2p5"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span></td>
         <td class="port-cell">-</td>
         <td class="poe-cell"><span class="poe-val">21W</span></td><td class="poe-cell">-</td>
-        <td>Basement</td>
       </tr>
       <tr>
         <td>
           <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/fa8dd4e4-36c8-4c79-a928-22c7bff2ce29/ab5bc8a4-6135-402e-a695-e3ea5e16d3e6.png" alt="">
-            <a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7-Pro</a>
+            <img src="https://cdn.ecomm.ui.com/products/7dacb4f6-b703-4154-9264-784f2eb0dbda/f1cb65a5-c557-4e02-bcbb-090502a95b84.png" alt="">
+            <a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7-Pro-Wall</a>
+            <span class="udc-count">×2</span>
           </span>
         </td>
         <td class="port-cell"><span class="udc-ports" title="2.5G RJ45, PoE+"><span class="udc-port gbe2p5"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span></td>
         <td class="port-cell">-</td>
-        <td class="poe-cell"><span class="poe-val">21W</span></td><td class="poe-cell">-</td>
-        <td>Main</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/fa8dd4e4-36c8-4c79-a928-22c7bff2ce29/ab5bc8a4-6135-402e-a695-e3ea5e16d3e6.png" alt="">
-            <a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7-Pro</a>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="2.5G RJ45, PoE+"><span class="udc-port gbe2p5"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span></td>
-        <td class="port-cell">-</td>
-        <td class="poe-cell"><span class="poe-val">21W</span></td><td class="poe-cell">-</td>
-        <td>Upper</td>
+        <td class="poe-cell"><span class="poe-val">22W</span></td><td class="poe-cell">-</td>
       </tr>
       <tr>
         <td>
@@ -688,179 +406,73 @@
         <td class="port-cell"><span class="udc-ports" title="2.5G RJ45, PoE"><span class="udc-port gbe2p5"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span></td>
         <td class="port-cell">-</td>
         <td class="poe-cell"><span class="poe-val">13W</span></td><td class="poe-cell">-</td>
-        <td>Garage</td>
       </tr>
       <tr>
-        <td rowspan="12">Protect &amp; Access</td>
+        <td rowspan="7">Protect &amp; Access</td>
         <td>
-          <span class="udc-device-stack">
-            <span class="udc-device">
-              <img src="https://cdn.ecomm.ui.com/products/9550c5cc-2b6d-4910-81ec-3cb37c85db50/04093a9c-52cf-4769-b9d8-0838ed2f6f68.png" alt="">
-              <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>
-            </span>
-            <span class="udc-accessory">
-              <img src="https://cdn.ecomm.ui.com/products/d0355a03-91c9-4d71-a5b2-003f70ef722d/513cca75-07c6-4b31-94d3-78f1fc7c31a6.png" alt="">
-              <a href="https://store.ui.com/us/en/products/uvc-g6-pro-entry" target="_blank" rel="noopener noreferrer">UVC-G6-Pro-Entry</a>
-            </span>
-            <span class="udc-accessory">
-              <img src="https://cdn.ecomm.ui.com/products/4169e695-52be-466d-af67-4f258887ea6c/009b4172-ae10-45e5-a793-8d668561b4e1.png" alt="">
-              <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">UACC-Lock-Strike-Secure-15mm</a>
-            </span>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/9550c5cc-2b6d-4910-81ec-3cb37c85db50/04093a9c-52cf-4769-b9d8-0838ed2f6f68.png" alt="">
+            <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>
+            <span class="udc-count">×5</span>
           </span>
         </td>
         <td class="port-cell">
-          <div class="kit-stack">
-          <div class="kit-seg">
-            <span class="udc-ports" title="Door Mini uplink: 1G PoE++">
+            <span class="udc-ports" title="UA-Hub-Door-Mini uplink: 1G PoE++">
               <span class="udc-port gbe1" title="1 GbE PoE++ input"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span>
             </span>
-          </div>
-          <div class="kit-seg acc">
+        </td>
+        <td class="port-cell">
+            <span class="udc-ports" title="2× PoE+ out; REX; DPS; LOCK">
+              <span class="udc-port-wrap">
+                <span class="udc-port gbe1" title="1 GbE PoE+ out ×2"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
+                <span class="udc-count">×2</span>
+              </span>
+              <span class="udc-port other" title="Request to Exit">REX</span>
+              <span class="udc-port other" title="Door Position Sensor">DPS</span>
+              <span class="udc-port other" title="Lock relay">LOCK</span>
+            </span>
+        </td>
+        <td class="poe-cell">
+            <span class="poe-val">50W <span class="poe-lbl">w/</span></span>
+            <span class="poe-sub">19W <span class="poe-lbl">w/o</span></span>
+        </td>
+        <td class="poe-cell">
+            <span class="poe-val">≤30W/port</span>
+            <span class="poe-sub">Σ≤45W</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/d0355a03-91c9-4d71-a5b2-003f70ef722d/513cca75-07c6-4b31-94d3-78f1fc7c31a6.png" alt="">
+            <a href="https://store.ui.com/us/en/products/uvc-g6-pro-entry" target="_blank" rel="noopener noreferrer">UVC-G6-Pro-Entry</a>
+          </span>
+        </td>
+        <td class="port-cell">
             <span class="udc-ports" title="Entry · PoE+">
               <span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
             </span>
-          </div>
-          <div class="kit-seg acc">
-            <span class="udc-ports" title="Strike · LOCK + DPS">
-              <span class="udc-port other" title="Lock relay">LOCK</span>
-              <span class="udc-port other" title="Door Position Sensor">DPS</span>
-            </span>
-          </div>
-          </div>
         </td>
-        <td class="port-cell">
-          <div class="kit-stack">
-          <div class="kit-seg">
-            <span class="udc-ports" title="2× PoE+ out; REX; DPS; LOCK">
-              <span class="udc-port-wrap">
-                <span class="udc-port gbe1" title="1 GbE PoE+ out ×2"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
-                <span class="udc-count">×2</span>
-              </span>
-              <span class="udc-port other" title="Request to Exit">REX</span>
-              <span class="udc-port other" title="Door Position Sensor">DPS</span>
-              <span class="udc-port other" title="Lock relay">LOCK</span>
-            </span>
-          </div>
-          <div class="kit-seg acc">-</div>
-          <div class="kit-seg acc">-</div>
-          </div>
-        </td>
-        <td class="poe-cell">
-          <div class="kit-stack">
-          <div class="kit-seg">
-            <span class="poe-val">50W <span class="poe-lbl">w/</span></span>
-            <span class="poe-sub">19W <span class="poe-lbl">w/o</span></span>
-          </div>
-          <div class="kit-seg acc">
-            <span class="poe-val">18W</span>
-          </div>
-          <div class="kit-seg acc">
-            <span class="poe-val">4.8W</span>
-            <span class="poe-sub">LOCK 12V</span>
-          </div>
-          </div>
-        </td>
-        <td class="poe-cell">
-          <div class="kit-stack">
-          <div class="kit-seg">
-            <span class="poe-val">≤30W/port</span>
-            <span class="poe-sub">Σ≤45W</span>
-          </div>
-          <div class="kit-seg acc">-</div>
-          <div class="kit-seg acc">-</div>
-          </div>
-        </td>
-        <td>Front Door</td>
+        <td class="port-cell">-</td>
+        <td class="poe-cell"><span class="poe-val">18W</span></td>
+        <td class="poe-cell">-</td>
       </tr>
       <tr>
-        <td rowspan="4">
-          <span class="udc-device-stack">
-            <span class="udc-device">
-              <img src="https://cdn.ecomm.ui.com/products/9550c5cc-2b6d-4910-81ec-3cb37c85db50/04093a9c-52cf-4769-b9d8-0838ed2f6f68.png" alt="">
-              <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>
-            </span>
-            <span class="udc-accessory">
-              <img src="https://cdn.ecomm.ui.com/products/f20970ca-1951-4ed9-9016-3eea65981a94/b36edf90-78d4-43fc-b818-172dbc1ce079.png" alt="">
-              <a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">UA-G3</a>
-            </span>
-            <span class="udc-accessory">
-              <img src="https://cdn.ecomm.ui.com/products/4169e695-52be-466d-af67-4f258887ea6c/009b4172-ae10-45e5-a793-8d668561b4e1.png" alt="">
-              <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">UACC-Lock-Strike-Secure-15mm</a>
-            </span>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/f20970ca-1951-4ed9-9016-3eea65981a94/b36edf90-78d4-43fc-b818-172dbc1ce079.png" alt="">
+            <a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">UA-G3</a>
+            <span class="udc-count">×4</span>
           </span>
         </td>
-        <td class="port-cell" rowspan="4">
-          <div class="kit-stack">
-          <div class="kit-seg">
-            <span class="udc-ports" title="Door Mini uplink: 1G PoE++">
-              <span class="udc-port gbe1" title="1 GbE PoE++ input"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span>
-            </span>
-          </div>
-          <div class="kit-seg acc">
+        <td class="port-cell">
             <span class="udc-ports" title="UA-G3 · PoE">
               <span class="udc-port fe"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span>
             </span>
-          </div>
-          <div class="kit-seg acc">
-            <span class="udc-ports" title="Strike · LOCK + DPS">
-              <span class="udc-port other" title="Lock relay">LOCK</span>
-              <span class="udc-port other" title="Door Position Sensor">DPS</span>
-            </span>
-          </div>
-          </div>
         </td>
-        <td class="port-cell" rowspan="4">
-          <div class="kit-stack">
-          <div class="kit-seg">
-            <span class="udc-ports" title="2× PoE+ out; REX; DPS; LOCK">
-              <span class="udc-port-wrap">
-                <span class="udc-port gbe1" title="1 GbE PoE+ out ×2"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
-                <span class="udc-count">×2</span>
-              </span>
-              <span class="udc-port other" title="Request to Exit">REX</span>
-              <span class="udc-port other" title="Door Position Sensor">DPS</span>
-              <span class="udc-port other" title="Lock relay">LOCK</span>
-            </span>
-          </div>
-          <div class="kit-seg acc">-</div>
-          <div class="kit-seg acc">-</div>
-          </div>
-        </td>
-        <td class="poe-cell" rowspan="4">
-          <div class="kit-stack">
-          <div class="kit-seg">
-            <span class="poe-val">50W <span class="poe-lbl">w/</span></span>
-            <span class="poe-sub">19W <span class="poe-lbl">w/o</span></span>
-          </div>
-          <div class="kit-seg acc">
-            <span class="poe-val">5W</span>
-          </div>
-          <div class="kit-seg acc">
-            <span class="poe-val">4.8W</span>
-            <span class="poe-sub">LOCK 12V</span>
-          </div>
-          </div>
-        </td>
-        <td class="poe-cell" rowspan="4">
-          <div class="kit-stack">
-          <div class="kit-seg">
-            <span class="poe-val">≤30W/port</span>
-            <span class="poe-sub">Σ≤45W</span>
-          </div>
-          <div class="kit-seg acc">-</div>
-          <div class="kit-seg acc">-</div>
-          </div>
-        </td>
-        <td>Main/Mud/Back Door</td>
-      </tr>
-      <tr>
-        <td>Main/Dining/Back Door</td>
-      </tr>
-      <tr>
-        <td>Basement/Back Door</td>
-      </tr>
-      <tr>
-        <td>Garage Door</td>
+        <td class="port-cell">-</td>
+        <td class="poe-cell"><span class="poe-val">5W</span></td>
+        <td class="poe-cell">-</td>
       </tr>
       <tr>
         <td>
@@ -872,43 +484,18 @@
         <td class="port-cell"><span class="udc-ports" title="1G RJ45, PoE"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span></td>
         <td class="port-cell">-</td>
         <td class="poe-cell"><span class="poe-val">9.5W</span></td><td class="poe-cell">-</td>
-        <td>Main/Kitchen</td>
       </tr>
       <tr>
         <td>
           <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/26e646b0-09d9-4f83-b9a2-398f55f31f28/959cdb9c-6699-4be9-b445-a8f7bd6d3e7f.png" alt="">
             <a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">UVC-G6-Pro-Turret</a>
+            <span class="udc-count">×4</span>
           </span>
         </td>
         <td class="port-cell"><span class="udc-ports" title="1G RJ45, PoE+"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span></td>
         <td class="port-cell">-</td>
         <td class="poe-cell"><span class="poe-val">15W</span></td><td class="poe-cell">-</td>
-        <td>Frontyard/Front Eave/North East</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/26e646b0-09d9-4f83-b9a2-398f55f31f28/959cdb9c-6699-4be9-b445-a8f7bd6d3e7f.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">UVC-G6-Pro-Turret</a>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="1G RJ45, PoE+"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span></td>
-        <td class="port-cell">-</td>
-        <td class="poe-cell"><span class="poe-val">15W</span></td><td class="poe-cell">-</td>
-        <td>Backyard/Balcony Eave/South West</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/26e646b0-09d9-4f83-b9a2-398f55f31f28/959cdb9c-6699-4be9-b445-a8f7bd6d3e7f.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">UVC-G6-Pro-Turret</a>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="1G RJ45, PoE+"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span></td>
-        <td class="port-cell">-</td>
-        <td class="poe-cell"><span class="poe-val">15W</span></td><td class="poe-cell">-</td>
-        <td>Courtyard/Eave</td>
       </tr>
       <tr>
         <td>
@@ -920,19 +507,6 @@
         <td class="port-cell"><span class="udc-ports" title="1G RJ45, PoE+"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span></td>
         <td class="port-cell">-</td>
         <td class="poe-cell"><span class="poe-val">15W</span></td><td class="poe-cell">-</td>
-        <td>Walkway/Balcony Eave/South East</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/26e646b0-09d9-4f83-b9a2-398f55f31f28/959cdb9c-6699-4be9-b445-a8f7bd6d3e7f.png" alt="">
-            <a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">UVC-G6-Pro-Turret</a>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="1G RJ45, PoE+"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span></td>
-        <td class="port-cell">-</td>
-        <td class="poe-cell"><span class="poe-val">15W</span></td><td class="poe-cell">-</td>
-        <td>Laneway/Garage/South</td>
       </tr>
       <tr>
         <td>
@@ -944,10 +518,167 @@
         <td class="port-cell"><span class="udc-ports" title="10/100M RJ45, PoE"><span class="udc-port fe"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span></td>
         <td class="port-cell">-</td>
         <td class="poe-cell"><span class="poe-val">3.4W</span></td><td class="poe-cell">-</td>
-        <td>Garage</td>
       </tr>
       <tr>
-        <td rowspan="4">Home Assistant</td>
+        <td rowspan="9">Accessories</td>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/dacb316d-b254-40a0-8994-04bbf39bbddf/11c64b84-8bd1-43d1-b2dd-899305d8bb96.png" alt="">
+            <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">UACC-CM-RJ45-MG</a>
+          </span>
+        </td>
+        <td class="port-cell">
+            <span class="udc-ports" title="SFP+ to 1/2.5/5/10G RJ45 · NAH WAN">
+              <span class="udc-port gbe10" title="10G RJ45 toward NAH"><svg class="udc-poe" aria-hidden="true"><use href="#udc-wan"/></svg></span>
+            </span>
+        </td>
+        <td class="port-cell">
+            <span class="udc-ports" title="SFP+ module edge into UDM WAN">
+              <span class="udc-port sfp" title="SFP+ → UDM WAN">
+                <svg class="udc-poe" aria-hidden="true"><use href="#udc-wan"/></svg>
+                <span class="udc-sfp-txt">SFP+</span>
+              </span>
+            </span>
+        </td>
+        <td class="poe-cell">-</td>
+        <td class="poe-cell">-</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/984725ff-e0cc-4bf9-8673-88a6515cf0d4/49fa943a-6c12-4211-b204-09c98b9f793c.png" alt="">
+            <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">UACC-DAC-SFP10</a>
+          </span>
+        </td>
+        <td class="port-cell">
+            <span class="udc-ports" title="SFP+ DAC end toward UDM-Pro-Max LAN">
+              <span class="udc-port sfp" title="SFP+ ← UDM-Pro-Max LAN"><span class="udc-sfp-txt">SFP+</span></span>
+            </span>
+        </td>
+        <td class="port-cell">
+            <span class="udc-ports" title="SFP+ DAC → USW-Pro-XG-24-PoE SFP28">
+              <span class="udc-port sfp" title="SFP+ → USW-Pro-XG-24-PoE SFP28"><span class="udc-sfp-txt">SFP+</span></span>
+            </span>
+        </td>
+        <td class="poe-cell">-</td>
+        <td class="poe-cell">-</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/9e9ef3ba-4cc7-4362-a76e-13322f1c3d61/12079742-e0b8-444e-8a97-28d37ecd19df.png" alt="">
+            <a href="https://store.ui.com/us/en/products/uacc-adapter-ac-210w" target="_blank" rel="noopener noreferrer">UACC-Adapter-AC-210W</a>
+          </span>
+        </td>
+        <td class="port-cell">-</td>
+        <td class="port-cell">-</td>
+        <td class="poe-cell">-</td>
+        <td class="poe-cell">-</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/4169e695-52be-466d-af67-4f258887ea6c/009b4172-ae10-45e5-a793-8d668561b4e1.png" alt="">
+            <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">UACC-Lock-Strike-Secure-15mm</a>
+            <span class="udc-count">×5</span>
+          </span>
+        </td>
+        <td class="port-cell">
+            <span class="udc-ports" title="Strike · LOCK + DPS">
+              <span class="udc-port other" title="Lock relay">LOCK</span>
+              <span class="udc-port other" title="Door Position Sensor">DPS</span>
+            </span>
+        </td>
+        <td class="port-cell">-</td>
+        <td class="poe-cell">
+            <span class="poe-val">4.8W</span>
+            <span class="poe-sub">LOCK 12V</span>
+        </td>
+        <td class="poe-cell">-</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/b78c6ae3-515b-439d-86e6-079719ef5fca/c0e353a5-43e9-4fe0-8038-b2d7a27c62d3.png" alt="">
+            <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">UACC-Keystone-Jack-C6A</a>
+            <span class="udc-count">×14</span>
+          </span>
+        </td>
+        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++ pass-through"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
+        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++ pass-through"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
+        <td class="poe-cell">-</td>
+        <td class="poe-cell">-</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/eafc887c-4c23-40f6-b5ce-3259cf0462f5.png" alt="">
+            <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-2p" target="_blank" rel="noopener noreferrer">UACC-WP-Keystone-H-2P</a>
+          </span>
+        </td>
+        <td class="port-cell">
+          <span class="udc-ports" title="Two horizontal keystone openings. Passive Cat6A, PoE+++ pass-through.">
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+          </span>
+        </td>
+        <td class="port-cell">
+          <span class="udc-ports" title="Two horizontal keystone openings. Passive Cat6A, PoE+++ pass-through.">
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+          </span>
+        </td>
+        <td class="poe-cell">-</td>
+        <td class="poe-cell">-</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/bc490d11-75e8-43cf-a205-34ece1b6f8ed.png" alt="">
+            <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-1p" target="_blank" rel="noopener noreferrer">UACC-WP-Keystone-H-1P</a>
+          </span>
+        </td>
+        <td class="port-cell"><span class="udc-ports" title="One horizontal keystone opening. Passive Cat6A, PoE+++ pass-through."><span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
+        <td class="port-cell"><span class="udc-ports" title="One horizontal keystone opening. Passive Cat6A, PoE+++ pass-through."><span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
+        <td class="poe-cell">-</td>
+        <td class="poe-cell">-</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/811c6fee-dfac-4d50-bad0-36c0f031b6f4.png" alt="">
+            <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-2p" target="_blank" rel="noopener noreferrer">UACC-WP-Keystone-V-2P</a>
+          </span>
+        </td>
+        <td class="port-cell">
+          <span class="udc-ports" title="Two vertical keystone openings. Passive Cat6A, PoE+++ pass-through.">
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+          </span>
+        </td>
+        <td class="port-cell">
+          <span class="udc-ports" title="Two vertical keystone openings. Passive Cat6A, PoE+++ pass-through.">
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+            <span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+          </span>
+        </td>
+        <td class="poe-cell">-</td>
+        <td class="poe-cell">-</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/a75fa00b-bcf6-407e-a733-7ad2562013bc/bbaab68e-40a7-4729-9d1f-0b53f1adec65.png" alt="">
+            <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-1p" target="_blank" rel="noopener noreferrer">UACC-WP-Keystone-V-1P</a>
+          </span>
+        </td>
+        <td class="port-cell"><span class="udc-ports" title="One vertical keystone opening. Passive Cat6A, PoE+++ pass-through."><span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
+        <td class="port-cell"><span class="udc-ports" title="One vertical keystone opening. Passive Cat6A, PoE+++ pass-through."><span class="udc-port gbe10" title="10G RJ45, PoE+++ pass-through"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
+        <td class="poe-cell">-</td>
+        <td class="poe-cell">-</td>
+      </tr>
+      <tr>
+        <td rowspan="2">Home Assistant</td>
         <td>
           <span class="udc-device-stack">
             <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a>
@@ -1009,23 +740,17 @@
           <div class="kit-seg acc">-</div>
           </div>
         </td>
-        <td>Rack Cabinet</td>
       </tr>
       <tr>
-        <td rowspan="3">
-          <span class="udc-device">Home Assistant PoE Wallpanel</span>
+        <td>
+          <span class="udc-device">Home Assistant PoE Wallpanel
+            <span class="udc-count">×3</span>
+          </span>
         </td>
-        <td class="port-cell" rowspan="3"><span class="udc-ports" title="1G RJ45, PoE++"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></span></td>
-        <td class="port-cell" rowspan="3">-</td>
-        <td class="poe-cell" rowspan="3"><span class="poe-val">60W</span></td>
-        <td class="poe-cell" rowspan="3">-</td>
-        <td>Basement Wall Mount</td>
-      </tr>
-      <tr>
-        <td>Main Wall Mount</td>
-      </tr>
-      <tr>
-        <td>Upper Wall Mount</td>
+        <td class="port-cell"><span class="udc-ports" title="1G RJ45, PoE++"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></span></td>
+        <td class="port-cell">-</td>
+        <td class="poe-cell"><span class="poe-val">60W</span></td>
+        <td class="poe-cell">-</td>
       </tr>
       <tr>
         <td>NAS</td>
@@ -1053,7 +778,6 @@
         </td>
         <td class="poe-cell">-</td>
         <td class="poe-cell">-</td>
-        <td>Rack Cabinet</td>
       </tr>
       <tr>
         <td rowspan="3">IoT</td>
@@ -1071,7 +795,6 @@
         </td>
         <td class="poe-cell">-</td>
         <td class="poe-cell">-</td>
-        <td rowspan="3">Garage</td>
       </tr>
       <tr>
         <td><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Tesla Powerwall 3</a> (Follower)</td>
@@ -1102,76 +825,76 @@
 
 <h3>1.4 PoE Power Breakdown</h3>
 
-  <p class="lede">按当前设备规格与预留值核算，不是 UniFi 实时遥测。<strong>PoE Power Used</strong> 只计算对应 PSE 的输出负载；PoE 中继设备的 <strong>Device Power</strong> 单独列出，并在上一级供电源中合并一次。Garage Flex <strong>常态按 PoE+++ 计入 Pro XG</strong>；下方同时保留 AC 热备的卡片与分表，供以后对照，不表示 AC 仍是必装电源。</p>
+  <p class="lede">按当前设备规格与预留值核算，不是 UniFi 实时遥测。PoE Power Used 只计算对应 PSE 的输出负载；PoE 中继设备的 Device Power 单独列出，并在上一级供电源中合并一次。<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 常态按 PoE+++ 计入 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>；下方同时保留 AC 热备的卡片与分表，供以后对照，不表示 AC 仍是必装电源。</p>
 
-  <h5>Garage Flex 供电结论</h5>
+  <h5><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 供电结论</h5>
   <div class="power-callout">
-    <strong>常态：XG PoE+++ 供电。210W AC 降为可选热备，不从设计里删除。</strong>
-    <p>IEEE 802.3bt Type 4 Class 8 的 <strong>71.3W</strong> 是最坏 100m 通道后到达 <strong>PD 输入端</strong> 的保证，不是 Flex 还能给下游吐出 71W。PSE 仍约送 90W，差额是线损。UniFi「PoE+++ 输入 → 76W 下游可用」再加自身约 14W，接近 90W，是短线 / 理想通道的厂商值；官方也写实际可用功率随输入线长和线材变化。若真按 100m、71.3W 进电再扣 14W，留给下游大约 57W，和当前 55.4W 贴脸，不能当作保证。</p>
-    <p>本宅已实测 Garage C6A 远小于 100m，实际更接近 76W 输出；车库也明确不再增加 PoE 设备（四个闲置 PoE++ 口保持空闲）。因此 <strong>当前负载可以只靠 PoE+++</strong>：下游 55.4 / 76W（72.9%，理论余量 20.6W），Flex 自身 14W，上游 XG 口 69.4 / 90W（77.1%）。XG 运行合计按 <strong>532.9 / 720W</strong>。</p>
-    <p>UACC-Adapter-AC-210W 仍保留为可选热备（196W 输出、约 140.6W 余量；车库 AC 受 Powerwall 备电）。需要扩容、更换长跳、或实测 PoE+++ 裕量不够时再接入。下面的 AC 卡片与「Garage Flex 使用 AC」分表不参与常态合计，只作未来参考。</p>
+    常态：<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> PoE+++ 供电。210W AC 降为可选热备，不从设计里删除。
+    <p>IEEE 802.3bt Type 4 Class 8 的 71.3W 是最坏 100m 通道后到达 PD 输入端的保证，不是 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 还能给下游吐出 71W。PSE 仍约送 90W，差额是线损。UniFi「PoE+++ 输入 → 76W 下游可用」再加自身约 14W，接近 90W，是短线 / 理想通道的厂商值；官方也写实际可用功率随输入线长和线材变化。若真按 100m、71.3W 进电再扣 14W，留给下游大约 57W，和当前 55.4W 贴脸，不能当作保证。</p>
+    <p>本宅已实测 Garage C6A 远小于 100m，实际更接近 76W 输出；车库也明确不再增加 PoE 设备（四个闲置 PoE++ 口保持空闲）。因此当前负载可以只靠 PoE+++：下游 55.4 / 76W（72.9%，理论余量 20.6W），<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 自身 14W，上游 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 口 69.4 / 90W（77.1%）。<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 运行合计按 534.9 / 720W。</p>
+    <p><a href="https://store.ui.com/us/en/products/uacc-adapter-ac-210w" target="_blank" rel="noopener noreferrer">UACC-Adapter-AC-210W</a> 仍保留为可选热备（196W 输出、约 140.6W 余量；车库 AC 受 Powerwall 备电）。需要扩容、更换长跳、或实测 PoE+++ 裕量不够时再接入。下面的 AC 卡片与「<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 使用 AC」分表不参与常态合计，只作未来参考。</p>
   </div>
 
   <div class="power-summary">
     <section class="power-card">
-      <p class="power-card-title">Pro XG · Garage Flex on PoE+++（常态）</p>
-      <p class="power-card-value">532.9 / 720W <small>74.0%</small></p>
-      <div class="power-meter" aria-label="Pro XG 532.9 of 720 watts"><span style="width:74.014%"></span></div>
-      <div class="power-card-meta"><span>PoE Power Used</span><span>187.1W headroom</span></div>
+      <p class="power-card-title"><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> · <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> on PoE+++（常态）</p>
+      <p class="power-card-value">534.9 / 720W <small>74.3%</small></p>
+      <div class="power-meter" aria-label="USW-Pro-XG-24-PoE 534.9 of 720 watts"><span style="width:74.292%"></span></div>
+      <div class="power-card-meta"><span>PoE Power Used</span><span>185.1W headroom</span></div>
     </section>
     <section class="power-card">
-      <p class="power-card-title">Pro XG · Garage Flex on AC（参考）</p>
-      <p class="power-card-value">463.5 / 720W <small>64.4%</small></p>
-      <div class="power-meter" aria-label="Pro XG 463.5 of 720 watts"><span style="width:64.375%"></span></div>
-      <div class="power-card-meta"><span>PoE Power Used · 热备对照</span><span>256.5W headroom</span></div>
+      <p class="power-card-title"><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> · <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> on AC（参考）</p>
+      <p class="power-card-value">465.5 / 720W <small>64.7%</small></p>
+      <div class="power-meter" aria-label="USW-Pro-XG-24-PoE 465.5 of 720 watts"><span style="width:64.653%"></span></div>
+      <div class="power-card-meta"><span>PoE Power Used · 热备对照</span><span>254.5W headroom</span></div>
     </section>
     <section class="power-card">
-      <p class="power-card-title">Garage Flex · AC mode（参考）</p>
+      <p class="power-card-title"><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> · AC mode（参考）</p>
       <p class="power-card-value">55.4 / 196W <small>28.3%</small></p>
-      <div class="power-meter" aria-label="Garage Flex 55.4 of 196 watts"><span style="width:28.265%"></span></div>
+      <div class="power-meter" aria-label="USW-Flex-2.5G-8-PoE 55.4 of 196 watts"><span style="width:28.265%"></span></div>
       <div class="power-card-meta"><span>PoE output · 140.6W headroom</span><span>17 + 55.4 = 72.4W device-side</span></div>
     </section>
   </div>
 
-  <h5>Pro XG · 463.5W → 532.9W</h5>
-  <p>从「Garage Flex 走 AC、C6A 只传数据」的 463.5W 基线，把整条车库 PoE 分支加回 XG，得到常态合计 <strong>532.9W</strong>。AC 基线本身见下一节，仅作热备对照。</p>
-  <p class="power-formula"><code>463.5 + (55.4 + 14) = 463.5 + 69.4 = 532.9W</code></p>
+  <h5><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> · 465.5W → 534.9W</h5>
+  <p>从「<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 走 AC、C6A 只传数据」的 465.5W 基线，把整条车库 PoE 分支加回 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>，得到常态合计 534.9W。AC 基线本身见 <a href="#usw-pro-xg-24-poe-usw-flex-2-5g-8-poe-使用-ac-参考" class="page-ref">下方 AC 热备分表</a>，仅作对照。</p>
+  <p class="power-formula"><code>465.5 + (55.4 + 14) = 465.5 + 69.4 = 534.9W</code></p>
   <div class="power-table-wrap">
   <table class="power-table">
     <thead>
       <tr>
         <th>Step</th>
         <th class="num">Added Load</th>
-        <th class="num">XG Running Total</th>
+        <th class="num"><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> Running Total</th>
         <th>Reason</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>Garage Flex 使用 AC</td>
+        <td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 使用 AC</td>
         <td class="num">—</td>
-        <td class="num">463.5W</td>
-        <td>Garage C6A 只传输数据，Flex 不从 XG 取电</td>
+        <td class="num">465.5W</td>
+        <td>Garage C6A 只传输数据，<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 不从 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 取电</td>
       </tr>
       <tr>
-        <td>加入 Garage Flex 下游 PoE 输出</td>
+        <td>加入 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 下游 PoE 输出</td>
         <td class="num">+55.4W</td>
-        <td class="num">518.9W</td>
-        <td>U7-Lite、Garage Door Mini 子树与 USL</td>
+        <td class="num">520.9W</td>
+        <td><a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7-Lite</a>、Garage <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> 子树与 <a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">USL-Gateway</a></td>
       </tr>
       <tr>
-        <td>加入 Garage Flex 自身功耗</td>
+        <td>加入 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 自身功耗</td>
         <td class="num">+14W</td>
-        <td class="num"><strong>532.9W</strong></td>
-        <td>Garage Flex 改由 XG 的 PoE+++ 端口供电</td>
+        <td class="num">534.9W</td>
+        <td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 改由 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 的 PoE+++ 端口供电</td>
       </tr>
     </tbody>
   </table>
   </div>
 
-  <h5>Pro XG · Garage Flex 使用 AC（参考）</h5>
-  <p>可选热备账：Garage C6A 只传输数据，Flex 不从 XG 取电。不计入当前 532.9W 常态合计。</p>
-  <p class="power-formula"><code>30 + 180 + 63 + 9.5 + 14 + 50 + 117 = 463.5W</code></p>
+  <h5><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> · <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 使用 AC（参考）</h5>
+  <p>可选热备账：Garage C6A 只传输数据，<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 不从 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 取电。不计入当前 534.9W 常态合计。</p>
+  <p class="power-formula"><code>30 + 180 + 65 + 9.5 + 14 + 50 + 117 = 465.5W</code></p>
   <div class="power-table-wrap">
     <table class="power-table">
       <thead>
@@ -1185,66 +908,73 @@
       </thead>
       <tbody>
         <tr>
-          <td>ameriDroid PoE Mini PC + ZBT-2 ×2</td>
+          <td><a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC</a> + <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> ×2</td>
           <td class="num">1</td>
           <td class="num">30W</td>
           <td class="num">30W</td>
-          <td>Mini PC 简化按 30W；两根 ZBT-2 包含在该预留内</td>
+          <td>Mini PC 简化按 30W；两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 包含在该预留内</td>
         </tr>
         <tr>
           <td>Home Assistant PoE Wallpanel</td>
           <td class="num">3</td>
           <td class="num">60W</td>
           <td class="num">180W</td>
-          <td>机型未定，每路按设备侧 PoE++ 上限预留；XG 端口仍保留 PoE+++ 能力</td>
+          <td>机型未定，每路按设备侧 PoE++ 上限预留；<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 端口仍保留 PoE+++ 能力</td>
         </tr>
         <tr>
-          <td>U7-Pro</td>
-          <td class="num">3</td>
+          <td><a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7-Pro</a></td>
+          <td class="num">1</td>
           <td class="num">21W</td>
-          <td class="num">63W</td>
-          <td>Basement / Main / Upper</td>
+          <td class="num">21W</td>
+          <td>Main</td>
         </tr>
         <tr>
-          <td>UP-Viewport</td>
+          <td><a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7-Pro-Wall</a></td>
+          <td class="num">2</td>
+          <td class="num">22W</td>
+          <td class="num">44W</td>
+          <td>Basement / Upper</td>
+        </tr>
+        <tr>
+          <td><a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">UP-Viewport</a></td>
           <td class="num">1</td>
           <td class="num">9.5W</td>
           <td class="num">9.5W</td>
-          <td>Pro XG 直供</td>
+          <td><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 直供</td>
         </tr>
         <tr>
-          <td>USW-Flex-2.5G-8 · non-PoE</td>
+          <td><a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8</a> · non-PoE</td>
           <td class="num">1</td>
           <td class="num">14W</td>
           <td class="num">14W</td>
           <td>Media Room active C6A carries 10G + PoE+ input；八个 2.5G 下联口不输出 PoE</td>
         </tr>
         <tr>
-          <td>Front Door Mini subtree</td>
+          <td>Front <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> subtree</td>
           <td class="num">1</td>
           <td class="num">50W rated cap</td>
           <td class="num">50W</td>
-          <td>Entry 18W + Turret 15W 在 45W 输出预算内；整条支路按 Door Mini 官方 “with PoE output” 50W 上限计</td>
+          <td>Entry 18W + Turret 15W 在 45W 输出预算内；整条支路按 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> 官方 “with PoE output” 50W 上限计</td>
         </tr>
         <tr>
-          <td>Mud / Dining / Basement Mini subtrees</td>
+          <td>Mud / Dining / Basement <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> subtrees</td>
           <td class="num">3</td>
           <td class="num">19W + 5W + 15W</td>
           <td class="num">117W</td>
-          <td>每路 Door Mini（含 Wet 锁）+ UA-G3 + 对应 Protect 摄像头 = 39W</td>
+          <td>每路 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a>（含 Wet 锁）+ <a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">UA-G3</a> + 对应 Protect 摄像头 = 39W</td>
         </tr>
         <tr>
-          <td><strong>Pro XG subtotal</strong></td>
+          <td><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> subtotal</td>
           <td class="num">—</td>
           <td class="num">—</td>
-          <td class="num"><strong>463.5W</strong></td>
-          <td>Garage Flex 走 AC 热备时的 XG 合计；Media Room Flex 仍由 XG PoE+ 供电。本行不作为常态。</td>
+          <td class="num">465.5W</td>
+          <td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 走 AC 热备时的 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 合计；Media Room <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8</a> 仍由 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> PoE+ 供电。本行不作为常态。</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <h5>Flex · 下游 PoE 输出</h5>
+  <h5><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> · 下游 PoE 输出</h5>
   <p class="power-formula"><code>13 + 39 + 3.4 = 55.4W</code></p>
   <div class="power-table-wrap">
   <table class="power-table">
@@ -1256,11 +986,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td>U7-Lite</td><td class="num">13W</td><td>Flex 直供</td></tr>
-      <tr><td>Garage Door Mini subtree</td><td class="num">39W</td><td>Door Mini 19W（含 Wet 锁）+ UA-G3 5W + Laneway Turret 15W</td></tr>
-      <tr><td>USL-Gateway</td><td class="num">3.4W</td><td>Flex 直供</td></tr>
+      <tr><td><a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7-Lite</a></td><td class="num">13W</td><td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 直供</td></tr>
+      <tr><td>Garage <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> subtree</td><td class="num">39W</td><td><a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> 19W（含 Wet 锁）+ <a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">UA-G3</a> 5W + Laneway Turret 15W</td></tr>
+      <tr><td><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">USL-Gateway</a></td><td class="num">3.4W</td><td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 直供</td></tr>
       <tr><td>Tesla Powerwall branch</td><td class="num">0W</td><td>仅数据，不由 PoE 供电</td></tr>
-      <tr><td><strong>Flex PoE output subtotal</strong></td><td class="num"><strong>55.4W</strong></td><td>不含 Flex 自身功耗</td></tr>
+      <tr><td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> PoE output subtotal</td><td class="num">55.4W</td><td>不含 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 自身功耗</td></tr>
     </tbody>
   </table>
   </div>
@@ -1278,13 +1008,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td>Front Door Mini</td><td class="num">19W</td><td class="num">33W</td><td class="num">50W cap</td><td>19W 与 50W 是官方无 / 有 PoE 输出两种整机上限，不直接相加；33W 输出低于 Σ45W</td></tr>
-      <tr><td>Mud Door Mini</td><td class="num">19W</td><td class="num">20W</td><td class="num">39W</td><td>UA-G3 5W + Backyard Turret 15W</td></tr>
-      <tr><td>Dining Door Mini</td><td class="num">19W</td><td class="num">20W</td><td class="num">39W</td><td>UA-G3 5W + Walkway Bullet 15W</td></tr>
-      <tr><td>Basement Door Mini</td><td class="num">19W</td><td class="num">20W</td><td class="num">39W</td><td>UA-G3 5W + Courtyard Turret 15W</td></tr>
-      <tr><td>Garage Door Mini</td><td class="num">19W</td><td class="num">20W</td><td class="num">39W</td><td>UA-G3 5W + Laneway Turret 15W；计入 Flex</td></tr>
-      <tr><td>Flex · AC mode</td><td class="num">17W</td><td class="num">55.4W</td><td class="num">72.4W + loss</td><td>可选热备；自身功耗来自 AC，不进入 Pro XG 常态合计</td></tr>
-      <tr><td>Flex · PoE+++ mode</td><td class="num">14W</td><td class="num">55.4W</td><td class="num">69.4W</td><td>整条 Garage 分支计入 Pro XG</td></tr>
+      <tr><td>Front <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a></td><td class="num">19W</td><td class="num">33W</td><td class="num">50W cap</td><td>19W 与 50W 是官方无 / 有 PoE 输出两种整机上限，不直接相加；33W 输出低于 Σ45W</td></tr>
+      <tr><td>Mud <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a></td><td class="num">19W</td><td class="num">20W</td><td class="num">39W</td><td><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">UA-G3</a> 5W + Backyard Turret 15W</td></tr>
+      <tr><td>Dining <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a></td><td class="num">19W</td><td class="num">20W</td><td class="num">39W</td><td><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">UA-G3</a> 5W + Walkway Bullet 15W</td></tr>
+      <tr><td>Basement <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a></td><td class="num">19W</td><td class="num">20W</td><td class="num">39W</td><td><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">UA-G3</a> 5W + Courtyard Turret 15W</td></tr>
+      <tr><td>Garage <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a></td><td class="num">19W</td><td class="num">20W</td><td class="num">39W</td><td><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">UA-G3</a> 5W + Laneway Turret 15W；计入 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a></td></tr>
+      <tr><td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> · AC mode</td><td class="num">17W</td><td class="num">55.4W</td><td class="num">72.4W + loss</td><td>可选热备；自身功耗来自 AC，不进入 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 常态合计</td></tr>
+      <tr><td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> · PoE+++ mode</td><td class="num">14W</td><td class="num">55.4W</td><td class="num">69.4W</td><td>整条 Garage 分支计入 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a></td></tr>
     </tbody>
   </table>
   </div>
@@ -1297,99 +1027,99 @@
     </thead>
     <tbody>
       <tr><td>TELUS NAH</td><td>市电供电；当前 Spec 未列自身功耗</td></tr>
-      <tr><td>UDM-Pro-Max</td><td>市电供电；自身功耗不属于 PoE 输出预算</td></tr>
-      <tr><td>UACC-CM-RJ45-MG</td><td>由 SFP 主机供电；当前未单独计值</td></tr>
-      <tr><td>UACC-DAC-SFP10</td><td>不分配 PoE 功率</td></tr>
-      <tr><td>USW-Pro-XG-24-PoE</td><td>市电供电；720W 是 PoE 输出预算，不是交换机墙端功耗</td></tr>
-      <tr><td>UACC-Adapter-AC-210W</td><td>可选热备，不是常态供电源；若接入，196W 是 Flex 可用 PoE 输出预算</td></tr>
+      <tr><td><a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">UDM-Pro-Max</a></td><td>市电供电；自身功耗不属于 PoE 输出预算</td></tr>
+      <tr><td><a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">UACC-CM-RJ45-MG</a></td><td>由 SFP 主机供电；当前未单独计值</td></tr>
+      <tr><td><a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">UACC-DAC-SFP10</a></td><td>不分配 PoE 功率</td></tr>
+      <tr><td><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a></td><td>市电供电；720W 是 PoE 输出预算，不是交换机墙端功耗</td></tr>
+      <tr><td><a href="https://store.ui.com/us/en/products/uacc-adapter-ac-210w" target="_blank" rel="noopener noreferrer">UACC-Adapter-AC-210W</a></td><td>可选热备，不是常态供电源；若接入，196W 是 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 可用 PoE 输出预算</td></tr>
       <tr><td>Room drops / keystones / wall plates</td><td>被动器件，0W</td></tr>
-      <tr><td>Synology FS2500</td><td>市电供电，不从 Pro XG 获取 PoE；官网 Access ≈74.83W</td></tr>
-      <tr><td>Tesla Powerwall / Gateway 3</td><td>设备自身系统供电；Ethernet / CAN 仅传输数据</td></tr>
+      <tr><td><a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a></td><td>市电供电，不从 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 获取 PoE；官网 Access ≈74.83W</td></tr>
+      <tr><td>Tesla Powerwall / <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a></td><td>设备自身系统供电；Ethernet / CAN 仅传输数据</td></tr>
     </tbody>
   </table>
   </div>
 
-  <p class="power-footnote"><strong>避免重复计算：</strong>叶节点只在直接供电它的 PSE 下计一次。Media Room 非 PoE Flex 仅计自身 14W，没有下游 PoE 输出。Door Mini 的 19W（without PoE output）与 50W（with PoE output）是两种整机上限；一般支路以 19W + 实际输出估算，但不得超过 50W。Garage Flex 使用 PoE+++ 时，XG 只加入整条 Flex 上游功耗 69.4W，不再额外重复加入 55.4W。</p>
+  <p class="power-footnote">避免重复计算：叶节点只在直接供电它的 PSE 下计一次。Media Room <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8</a> 仅计自身 14W，没有下游 PoE 输出。<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">UA-Hub-Door-Mini</a> 的 19W（without PoE output）与 50W（with PoE output）是两种整机上限；一般支路以 19W + 实际输出估算，但不得超过 50W。<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 使用 PoE+++ 时，<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 只加入整条 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> 上游功耗 69.4W，不再额外重复加入 55.4W。</p>
 
 <h2>2. Home Assistant System</h2>
   <p class="lede">本地智能家居控制面：HA 主机、Wallpanel、Zigbee / Thread，以及与其它子系统的联动边界。</p>
-  <h4>MQTT、Zigbee、Thread</h4>
-  <p>三者不是同一层的三种「无线」。落实到本宅：<strong>两根 ZBT-2 分别固定 Zigbee 与 Thread</strong>；MQTT 只是软件，不增加射频硬件。</p>
+  <h4>2.1 MQTT、Zigbee、Thread</h4>
+  <p>三者不是同一层的三种「无线」。落实到本宅：两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 分别固定 Zigbee 与 Thread；MQTT 只是软件，不增加射频硬件。</p>
   <ul>
-    <li><strong>MQTT</strong>：跑在 Ethernet / Wi‑Fi / IP 上的消息总线，不是无线制式。设备把状态发到 Broker（常用 Mosquitto），HA 订阅。Tasmota / ESPHome、部分墙面面板走这条。Mini PC 上装 Mosquitto 即可，无新硬件。</li>
-    <li><strong>Zigbee</strong>：独立的 2.4 GHz mesh，不进你家普通 IP LAN。需要一个 Coordinator + 插电路由节点 + 电池末端。第一根 ZBT-2 专用 Zigbee。可用内置 <strong>ZHA</strong>（直进 HA，不用 MQTT），或日后改 <strong>Zigbee2MQTT</strong>（Zigbee → MQTT → HA）。</li>
-    <li><strong>Thread</strong>：同样是 2.4 GHz / IEEE 802.15.4 mesh，但承载 IPv6。Thread 只负责传输。常见路径：<code>Matter → Thread → Border Router → 家庭 IPv6 → HA Matter Server</code>。第二根 ZBT-2 专用 Thread，做 HA 自己的 Border Router。</li>
+    <li>MQTT：跑在 Ethernet / Wi‑Fi / IP 上的消息总线，不是无线制式。设备把状态发到 Broker（常用 Mosquitto），HA 订阅。Tasmota / ESPHome、部分墙面面板走这条。Mini PC 上装 Mosquitto 即可，无新硬件。</li>
+    <li>Zigbee：独立的 2.4 GHz mesh，不进你家普通 IP LAN。需要一个 Coordinator + 插电路由节点 + 电池末端。第一根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 专用 Zigbee。可用内置 ZHA（直进 HA，不用 MQTT），或日后改 Zigbee2MQTT（Zigbee → MQTT → HA）。</li>
+    <li>Thread：同样是 2.4 GHz / IEEE 802.15.4 mesh，但承载 IPv6。Thread 只负责传输。常见路径：<code>Matter → Thread → Border Router → 家庭 IPv6 → HA Matter Server</code>。第二根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 专用 Thread，做 HA 自己的 Border Router。</li>
   </ul>
   <p>因此：Zigbee 与 Thread 硬件相近但网络互不兼容；MQTT 与两者无绑定，只有 Zigbee2MQTT 才会同时用到 Zigbee 和 MQTT；Matter-over-Thread 用 Matter + Thread，不用 MQTT；Matter-over-Wi‑Fi / Ethernet 不需要 Thread 棒。</p>
-  <p>官方明确：<strong>一根 ZBT-2 不能稳定同时跑 Zigbee + Thread</strong>（不要用 MultiPAN）。参考 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Connect ZBT-2</a> · <a href="https://www.home-assistant.io/integrations/thread/" target="_blank" rel="noopener noreferrer">HA Thread</a> · <a href="https://www.home-assistant.io/integrations/matter" target="_blank" rel="noopener noreferrer">HA Matter</a>。</p>
+  <p>官方明确：一根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 不能稳定同时跑 Zigbee + Thread（不要用 MultiPAN）。参考 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Connect ZBT-2</a> · <a href="https://www.home-assistant.io/integrations/thread/" target="_blank" rel="noopener noreferrer">HA Thread</a> · <a href="https://www.home-assistant.io/integrations/matter" target="_blank" rel="noopener noreferrer">HA Matter</a>。</p>
   <h5>硬件怎么接</h5>
   <ul>
-    <li>两根 ZBT-2 作为嵌套部件画在 Mini PC 内，不拉拓扑线。</li>
-    <li>Zigbee 棒 → Mini PC <strong>USB-C</strong>（占用）。</li>
-    <li>Thread 棒 → Mini PC <strong>USB-3</strong>（占用），中间一枚合格的 <strong>USB-A → USB-C 数据转换头</strong>（要能传数据，不要只充电的线）。转换头只写本页，不进设备清单 / 拓扑。</li>
+    <li>两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 作为嵌套部件画在 Mini PC 内，不拉拓扑线。</li>
+    <li>Zigbee 棒 → Mini PC USB-C（占用）。</li>
+    <li>Thread 棒 → Mini PC USB-3（占用），中间一枚合格的 USB-A → USB-C 数据转换头（要能传数据，不要只充电的线）。转换头只写本页，不进设备清单 / 拓扑。</li>
     <li>两根天线都用延长线出金属柜，间距约 0.5–1 m。</li>
   </ul>
   <p>若还要覆盖其它常见协议，按需再加，不必现在买：Z‑Wave（北美锁/开关）加北美频段 800/LR 棒；蓝牙用房间里的 ESPHome Bluetooth Proxy，不要把 BLE 棒丢在金属柜里；Lutron 等私有协议仍要自家 Bridge。无法用一只通用棒吃下所有厂商。</p>
 
-  <h4 class="ha-guide-heading">Home Assistant Setup Guide</h4>
+  <h4 class="ha-guide-heading">2.2 Home Assistant Setup Guide</h4>
   <p class="lede">面向零基础的搭建说明：按本页设备清单，从主机到墙面平板、Zigbee、备份与日常维护。建议从上到下按顺序做；标有「可选」的步骤可延后。</p>
 
   <h5>1. 这套系统在做什么</h5>
   <p>Home Assistant（简称 HA）是跑在你家本地的智能家居「大脑」：设备连进来、自动化写在里面、墙面平板只当显示屏。云账号不是必须的；远程访问可之后用 Nabu Casa 或自己的 VPN。</p>
   <p>按本表，你的架构是：</p>
   <ul>
-    <li><strong>机柜主机</strong>：ameriDroid PoE Mini PC 跑 Home Assistant OS（系统 + 全部集成/自动化）。</li>
-    <li><strong>无线传感器总线</strong>：两根 Connect ZBT-2——一根专做 <strong>Zigbee</strong>，一根专做 <strong>Thread</strong>。Zigbee 插 Mini PC USB-C；Thread 经 USB-A/C 转换头插 USB-3。两根天线都出柜。</li>
-    <li><strong>墙面 Dashboard ×3</strong>（Basement / Main / Upper）：<strong>Home Assistant PoE Wallpanel</strong> 占位（1G PoE++，功耗按 60W 预留）。具体机型见下方「HA Panel 选型」。</li>
-    <li><strong>网络底座</strong>：UniFi 交换机（如 USW-Pro-XG-24-PoE）提供 PoE+/++；Protect 摄像头与 Access 门锁可先独立用 UniFi 应用，再在 HA 里做联动。</li>
+    <li>机柜主机：<a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC</a> 跑 Home Assistant OS（系统 + 全部集成/自动化）。</li>
+    <li>无线传感器总线：两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Connect ZBT-2</a>——一根专做 Zigbee，一根专做 Thread。Zigbee 插 Mini PC USB-C；Thread 经 USB-A/C 转换头插 USB-3。两根天线都出柜。</li>
+    <li>墙面 Dashboard ×3（Basement / Main / Upper）：Home Assistant PoE Wallpanel 占位（1G PoE++，功耗按 60W 预留）。具体机型见下方「<a href="#ha-panel-选型" class="page-ref">HA Panel 选型</a>」。</li>
+    <li>网络底座：UniFi 交换机（如 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>）提供 PoE+/++；Protect 摄像头与 Access 门锁可先独立用 UniFi 应用，再在 HA 里做联动。</li>
   </ul>
 
   <h5>2. 开箱前要弄清的概念</h5>
   <h6>2.1 集成 vs Add-on vs 自动化</h6>
   <ul>
-    <li><strong>Integration（集成）</strong>：让 HA「认识」某类设备/服务（如 Zigbee、Samsung TV、UniFi）。</li>
-    <li><strong>Add-on</strong>：装在 HA OS 旁边的小服务（如文件编辑器、Mosquitto MQTT、Zigbee2MQTT）。初学者可先少装。</li>
-    <li><strong>Automation / Script / Scene</strong>：自动化规则、可复用动作、一键场景。</li>
-    <li><strong>Dashboard（Lovelace）</strong>：手机/平板上的界面；墙面平板通常全屏打开某个 Dashboard。</li>
+    <li>Integration（集成）：让 HA「认识」某类设备/服务（如 Zigbee、Samsung TV、UniFi）。</li>
+    <li>Add-on：装在 HA OS 旁边的小服务（如文件编辑器、Mosquitto MQTT、Zigbee2MQTT）。初学者可先少装。</li>
+    <li>Automation / Script / Scene：自动化规则、可复用动作、一键场景。</li>
+    <li>Dashboard（Lovelace）：手机/平板上的界面；墙面平板通常全屏打开某个 Dashboard。</li>
   </ul>
   <h6>2.2 Zigbee / Thread / Matter / Wi‑Fi（怎么选）</h6>
   <ul>
-    <li><strong>Zigbee</strong>：传感器与开关生态最大；ZBT-2 专做协调器后，设备经 mesh 互中继，不占家用 Wi‑Fi。</li>
-    <li><strong>Thread + Matter</strong>：新一代本地协议；很多 Matter 电池设备走 Thread。ZBT-2 <strong>不能同时</strong>跑 Zigbee 和 Thread，官方也不推荐「多协议」模式。</li>
-    <li><strong>Wi‑Fi 智能设备</strong>：可直接用厂商集成或 Matter-over-Wi‑Fi，但大量设备会挤占无线；优先把「常在线小设备」放 Zigbee。</li>
-    <li><strong>本宅决定</strong>：两根 ZBT-2 从一开始就分开——Zigbee 用 ZHA，Thread 做 Matter Border Router。不要把任一根改成 MultiPAN。</li>
+    <li>Zigbee：传感器与开关生态最大；<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 专做协调器后，设备经 mesh 互中继，不占家用 Wi‑Fi。</li>
+    <li>Thread + Matter：新一代本地协议；很多 Matter 电池设备走 Thread。<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 不能同时跑 Zigbee 和 Thread，官方也不推荐「多协议」模式。</li>
+    <li>Wi‑Fi 智能设备：可直接用厂商集成或 Matter-over-Wi‑Fi，但大量设备会挤占无线；优先把「常在线小设备」放 Zigbee。</li>
+    <li>本宅决定：两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 从一开始就分开——Zigbee 用 ZHA，Thread 做 Matter Border Router。不要把任一根改成 MultiPAN。</li>
   </ul>
   <h6>2.3 ZHA vs Zigbee2MQTT</h6>
   <ul>
-    <li><strong>ZHA</strong>（内置）：设置少，跟 ZBT-2 官方向导最合拍，零基础优先。</li>
-    <li><strong>Zigbee2MQTT</strong>：设备支持面更广、调试强，但要 MQTT + 额外配置。等你熟悉后再迁不迟。</li>
+    <li>ZHA（内置）：设置少，跟 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 官方向导最合拍，零基础优先。</li>
+    <li>Zigbee2MQTT：设备支持面更广、调试强，但要 MQTT + 额外配置。等你熟悉后再迁不迟。</li>
   </ul>
 
   <h5>3. 网络与供电准备（装 HA 之前）</h5>
   <ol class="checklist">
-    <li>交换机侧给 Mini PC 分配 <strong>PoE+ 或 PoE++</strong> 端口（预算按表内 30W 预留）。</li>
-    <li>三块墙面 Wallpanel 各自占一口 <strong>2.5G PoE+++ XG 端口</strong>（设备侧 1G PoE++ 上行；每路按 PoE++ 上限 60W 预留）。</li>
-    <li>建议给 HA 主机做 <strong>DHCP 保留 / 静态 IP</strong>，并记下来（之后平板书签、备份恢复都要用）。</li>
+    <li>交换机侧给 Mini PC 分配 PoE+ 或 PoE++ 端口（预算按表内 30W 预留）。</li>
+    <li>三块墙面 Wallpanel 各自占一口 2.5G PoE+++ <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 端口（设备侧 1G PoE++ 上行；每路按 PoE++ 上限 60W 预留）。</li>
+    <li>建议给 HA 主机做 DHCP 保留 / 静态 IP，并记下来（之后平板书签、备份恢复都要用）。</li>
     <li>可选：单独 IoT / Camera VLAN。初学者可先同一 LAN，先跑通再拆网段；若拆 VLAN，要提前规划防火墙放行 HA ↔ 设备。</li>
     <li>墙面点位：每层预留一根到 Wallpanel 的网线（设备侧 PoE++）。</li>
   </ol>
   <div class="note">
-    <strong>功耗粗算（仅 HA 相关）：</strong> Mini PC 按 30W 预留（含两根 ZBT-2，各约 2.5W）+ 三套 Wallpanel 按 3×60W。实际选型后常远低于满载，但仍要从交换机总 PoE 预算里扣掉摄像头、AP、Access 等。
+    功耗粗算（仅 HA 相关）： Mini PC 按 30W 预留（含两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>，各约 2.5W）+ 三套 Wallpanel 按 3×60W。实际选型后常远低于满载，但仍要从交换机总 PoE 预算里扣掉摄像头、AP、Access 等。
   </div>
 
   <h5>4. 主机硬件安装（机柜）</h5>
-  <h6>4.1 ameriDroid PoE Mini PC</h6>
+  <h6>4.1 <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC</a></h6>
   <ol>
     <li>装好 SSD（若未预装）、接上显示器 + 键盘仅用于首次烧录/排错（日常可无头运行）。</li>
     <li>网线接到交换机 PoE 口；确认口灯与 PoE 供电正常（也可先用随附 DC 供电完成装机，再改 PoE）。</li>
-    <li>Zigbee 用的 ZBT-2：自带 USB‑C 线插 Mini PC 的 <strong>USB-C</strong>。</li>
-    <li>Thread 用的 ZBT-2：经 <strong>USB-A/C 数据转换头</strong> 插 Mini PC 的 <strong>USB-3</strong>。不要用只能充电的线。</li>
+    <li>Zigbee 用的 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>：自带 USB‑C 线插 Mini PC 的 USB-C。</li>
+    <li>Thread 用的 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>：经 USB-A/C 数据转换头插 Mini PC 的 USB-3。不要用只能充电的线。</li>
     <li>两根天线都用延长线出柜或放到机柜顶开阔处（金属柜会严重衰减 2.4 GHz），彼此分开约 0.5–1 m，远离 USB 3、SSD 和 AP。</li>
   </ol>
   <h6>4.2 安装 Home Assistant OS</h6>
   <ol>
-    <li>电脑打开官方安装说明：<a href="https://www.home-assistant.io/installation/" target="_blank" rel="noopener noreferrer">home-assistant.io/installation</a>，选择 <strong>Generic x86-64</strong>（Mini PC 属此类）。</li>
-    <li>用 <a href="https://www.balena.io/etcher/" target="_blank" rel="noopener noreferrer">balenaEtcher</a>（或厂商说明的工具）把 HA OS 镜像写入目标盘。<strong>会清空该盘</strong>，确认盘符无误。</li>
+    <li>电脑打开官方安装说明：<a href="https://www.home-assistant.io/installation/" target="_blank" rel="noopener noreferrer">home-assistant.io/installation</a>，选择 Generic x86-64（Mini PC 属此类）。</li>
+    <li>用 <a href="https://www.balena.io/etcher/" target="_blank" rel="noopener noreferrer">balenaEtcher</a>（或厂商说明的工具）把 HA OS 镜像写入目标盘。会清空该盘，确认盘符无误。</li>
     <li>从该盘启动 Mini PC。首次启动可能需 5–20 分钟（扩容、拉更新）。</li>
     <li>同一局域网的手机/电脑浏览器访问 <code>http://homeassistant.local:8123</code>；若 mDNS 失败，改用 <code>http://&lt;主机IP&gt;:8123</code>。</li>
   </ol>
@@ -1398,22 +1128,22 @@
     <li>创建管理员账号（密码用密码管理器保存）。</li>
     <li>设定家名称、位置、时区、单位（温湿度自动化会用到位置与时区）。</li>
     <li>可跳过「正在检测的设备」，稍后手动加。</li>
-    <li>强烈建议尽早在 <strong>Settings → System → Backups</strong> 做一次完整备份，并下载到电脑/网盘。</li>
+    <li>强烈建议尽早在 Settings → System → Backups 做一次完整备份，并下载到电脑/网盘。</li>
   </ol>
   <div class="note">
-    <strong>可选账号：</strong><a href="https://www.nabucasa.com/" target="_blank" rel="noopener noreferrer">Home Assistant Cloud (Nabu Casa)</a> 提供官方远程访问与语音等，付费但省事。也可用 Tailscale/WireGuard 等自建远程，难度更高。
+    可选账号：<a href="https://www.nabucasa.com/" target="_blank" rel="noopener noreferrer">Home Assistant Cloud (Nabu Casa)</a> 提供官方远程访问与语音等，付费但省事。也可用 Tailscale/WireGuard 等自建远程，难度更高。
   </div>
 
-  <h5>5. Connect ZBT-2 ×2（Zigbee + Thread）</h5>
+  <h5>5. <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Connect ZBT-2</a> ×2（Zigbee + Thread）</h5>
   <ol>
-    <li>两根棒都上电后，到 <strong>Settings → Devices &amp; services → Add integration</strong>。先完成 <strong>Zigbee（ZHA）</strong>，再把第二根向导走成 <strong>Thread</strong>。</li>
-    <li>每根棒<strong>只选一种协议</strong>，不要 MultiPAN。文档：<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Connect ZBT-2</a>。</li>
-    <li>Zigbee 推荐内置 <strong>ZHA</strong>；记下/备份网络密钥出现在备份里即可，不必手抄。</li>
+    <li>两根棒都上电后，到 Settings → Devices &amp; services → Add integration。先完成 Zigbee（ZHA），再把第二根向导走成 Thread。</li>
+    <li>每根棒只选一种协议，不要 MultiPAN。文档：<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Connect ZBT-2</a>。</li>
+    <li>Zigbee 推荐内置 ZHA；记下/备份网络密钥出现在备份里即可，不必手抄。</li>
     <li>Thread 棒随后作为 HA 的 Border Router，给 Matter-over-Thread 设备用。</li>
-    <li>Zigbee 入网顺序：先插电的<strong>路由器型设备</strong>（智能插座、有电的灯具）形成骨架，再加电池传感器。入网时靠近协调器，成功后再移到安装位。</li>
+    <li>Zigbee 入网顺序：先插电的路由器型设备（智能插座、有电的灯具）形成骨架，再加电池传感器。入网时靠近协调器，成功后再移到安装位。</li>
     <li>2.4 GHz 会与 Wi‑Fi、微波炉互相干扰；两根天线都远离 AP，并互相分开。</li>
   </ol>
-  <p><strong>兼容性要点：</strong></p>
+  <p>兼容性要点：</p>
   <ul>
     <li>标称 Zigbee 3.0 的设备成功率最高；部分 Tuya 私有设备可能需改固件或改用 Zigbee2MQTT。</li>
     <li>买之前可在 <a href="https://zigbee.blakadder.com/" target="_blank" rel="noopener noreferrer">Zigbee Device Compatibility Repository</a> 或 HA 社区搜型号。</li>
@@ -1422,39 +1152,39 @@
   </ul>
 
   <h5>6. 墙面 Wallpanel</h5>
-  <p>三套点位相同（Basement / Main / Upper）。机型未定，见下方「HA Panel 选型」。施工先按 <strong>1G PoE++</strong> 上行、每路 <strong>60W</strong> 预留。</p>
+  <p>三套点位相同（Basement / Main / Upper）。机型未定，见下方「<a href="#ha-panel-选型" class="page-ref">HA Panel 选型</a>」。施工先按 1G PoE++ 上行、每路 60W 预留。</p>
 
   <h5>HA Panel 选型</h5>
   <p>三套点位共用同一套门槛。机型未定；先锁硬性要求，之后按此筛产品。不满足下列任一条即淘汰。</p>
   <h6>软件与系统</h6>
   <ul>
-    <li><strong>Android-based OS</strong>：基于 Android 即可，不要求完整 Play 生态，也不要求能装、能跑其他 App。本机只做 HA 面板；系统锁死在这一用途上反而更好。</li>
-    <li><strong>Home Assistant Companion</strong>：须明确支持把 Companion 设为 Android Home App，全屏常驻 Dashboard。</li>
-    <li><strong>Fully Kiosk</strong>：须支持 Fully Kiosk（或同等 lock-task / 全屏 kiosk），可关状态栏、禁退出、开机自启。</li>
+    <li>Android-based OS：基于 Android 即可，不要求完整 Play 生态，也不要求能装、能跑其他 App。本机只做 HA 面板；系统锁死在这一用途上反而更好。</li>
+    <li>Home Assistant Companion：须明确支持把 Companion 设为 Android Home App，全屏常驻 Dashboard。</li>
+    <li>Fully Kiosk：须支持 Fully Kiosk（或同等 lock-task / 全屏 kiosk），可关状态栏、禁退出、开机自启。</li>
   </ul>
   <h6>供电与网络</h6>
   <ul>
-    <li><strong>原生 IEEE PoE</strong>：设备自带 RJ45，走标准 IEEE 802.3af / at / bt。不允许 proprietary / passive PoE，不允许 USB-C / 分线器 / 注入器等任何转接头。</li>
-    <li><strong>无电池</strong>：固定墙装、由 PoE 直供；不要平板电池长期插电循环。</li>
+    <li>原生 IEEE PoE：设备自带 RJ45，走标准 IEEE 802.3af / at / bt。不允许 proprietary / passive PoE，不允许 USB-C / 分线器 / 注入器等任何转接头。</li>
+    <li>无电池：固定墙装、由 PoE 直供；不要平板电池长期插电循环。</li>
   </ul>
   <h6>安装与传感</h6>
   <ul>
-    <li><strong>Proximity / presence</strong>：须有接近或存在传感，人近亮屏、人走熄屏或降亮。</li>
-    <li><strong>原生墙装</strong>：嵌入或厂商原厂墙装，按 24/7 常亮设计，不是消费平板外加支架/锁架。</li>
-    <li><strong>加拿大可买、北美可装</strong>：须有加拿大购买渠道；安装尺寸与电气须符合北美标准（盒规、认证、接线），不要欧规改件。</li>
+    <li>Proximity / presence：须有接近或存在传感，人近亮屏、人走熄屏或降亮。</li>
+    <li>原生墙装：嵌入或厂商原厂墙装，按 24/7 常亮设计，不是消费平板外加支架/锁架。</li>
+    <li>加拿大可买、北美可装：须有加拿大购买渠道；安装尺寸与电气须符合北美标准（盒规、认证、接线），不要欧规改件。</li>
   </ul>
   <h6>规格态度</h6>
   <ul>
-    <li>屏幕尺寸、分辨率、内存以满足家用 Dashboard 为底线，<strong>不追求性能过剩</strong>。</li>
+    <li>屏幕尺寸、分辨率、内存以满足家用 Dashboard 为底线，不追求性能过剩。</li>
     <li>优先看品质、触控与显示体验、易维护（可换、可更新、可远程管）、以及长期耐用。</li>
   </ul>
   <div class="note">
-    施工与交换机侧仍按占位预留：设备上行 <strong>1G PoE++</strong>，每路功耗按 PoE++ 上限 <strong>60W</strong>；XG 侧物理端口仍保留 2.5G PoE+++ 能力。定型后回填实际功耗与端口。
+    施工与交换机侧仍按占位预留：设备上行 1G PoE++，每路功耗按 PoE++ 上限 60W；<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 侧物理端口仍保留 2.5G PoE+++ 能力。定型后回填实际功耗与端口。
   </div>
 
   <h6>参考：Cameron Gray 视频要点</h6>
   <p>素材：<a href="https://www.youtube.com/watch?v=lBU4yU9eD2U" target="_blank" rel="noopener noreferrer">The Ultimate In-Wall Tablets for Home Assistant Dashboards!</a>。下面只作实践摘录，不是本页门槛，也不等于选型结论。视频机型为 AliExpress 白牌 + 英规单联盒。</p>
-  <p><strong>他怎么选 / 比</strong></p>
+  <p>他怎么选 / 比</p>
   <ul>
     <li>早期 Tuya / Smart Life 或底层 Linux、要解锁才像 Android 的面板难用；较新的墙装机是接近原版 Android，可直接装应用。</li>
     <li>搜「PoE Android」比搜「in-wall tablet」更容易找到墙装 PoE 机；同类外观常无统一型号，按外观和规格比价。</li>
@@ -1463,7 +1193,7 @@
     <li>旧板个例：一熄屏就 kernel panic 重启，只能 24/7 亮着，不适合卧室。退货期内必须测熄屏 / 亮屏 / 重页面。</li>
     <li>厂商自带 kiosk、MQTT、板载 Zigbee、继电器 / GPIO / IR / RS485、LED 灯环当附加能力；USB-C 多半只能 ADB / 刷机，不能供电。他用 PoE，不用随附 12 V 适配器。</li>
   </ul>
-  <p><strong>安装</strong></p>
+  <p>安装</p>
   <ol>
     <li>墙内预留网线（他用 Cat6），机柜端先做好、交换机口配好，再上墙。</li>
     <li>英规深盒约 47 mm，螺丝须凹进墙面，浅表装盒会顶出来。塑胶干衬盒两侧凸耳可能卡住托板，有时要削耳、开槽；金属暗盒更干净。</li>
@@ -1471,19 +1201,19 @@
     <li>托板固定后：插 RJ45 → 挂上滑到位。磁吸只防轻碰，承重靠挂钩。</li>
     <li>先 PoE 桌测完整软件，再开孔。</li>
   </ol>
-  <p><strong>设置</strong></p>
+  <p>设置</p>
   <ul>
     <li>跳过 Google 账号；墙面无锁屏，登私人 Google 等于把邮箱交给路过的人。</li>
     <li>不给墙面设开机 PIN。他建议独立 VLAN、禁出站，只放行 HA（及 MQTT）。</li>
     <li>HA 用独立 panel 用户，不是管理员。</li>
     <li>Companion「Allow as Home app」能开机进 HA，但通知栏仍能进系统，侧栏也藏不干净。</li>
-    <li>他实际用 <strong>Fully Kiosk Browser Plus</strong>（约 €7.90 终身，可迁机）：Start URL 指向该房间 Dashboard；开机自启；禁止导航键 / 通知栏；连点五下 + PIN 退出；URL 白名单；空闲后回到首页（已在首页则不刷新）；导出配置再导入到第二台。</li>
+    <li>他实际用 Fully Kiosk Browser Plus（约 €7.90 终身，可迁机）：Start URL 指向该房间 Dashboard；开机自启；禁止导航键 / 通知栏；连点五下 + PIN 退出；URL 白名单；空闲后回到首页（已在首页则不刷新）；导出配置再导入到第二台。</li>
     <li>需要后台 MQTT 小工具时，用 Fully Universal Launcher 开机拉起再置后。</li>
-    <li>HA 侧用 HACS <strong>kiosk-mode</strong>，按 panel 用户藏 header / sidebar。</li>
+    <li>HA 侧用 HACS kiosk-mode，按 panel 用户藏 header / sidebar。</li>
     <li>一层一块房间 Dashboard：大按钮、场景；手机版尺寸不要原样上墙。场景可先关 Adaptive Lighting，另留 Auto 再开自动。</li>
     <li>亮屏：Fully 可用摄像头移动侦测；坐着可能侦不到，也可用房间 PIR。熄屏后点屏幕可醒。演示 30 s 熄屏太短，他倾向房间有人就保持亮、久无活动再关；也可用屏保代替全黑。</li>
   </ul>
-  <p><strong>维护</strong></p>
+  <p>维护</p>
   <ul>
     <li>白牌固件基本无安全更新；当哑终端，用 Fully 远程改 URL、亮度、开关屏、重启。</li>
     <li>换机：转移 Plus 许可 + 导入配置。</li>
@@ -1493,8 +1223,8 @@
 
   <h5>7. 与 UniFi Protect / Access 的关系</h5>
   <ul>
-    <li><strong>Protect</strong>（G6 相机、Viewport）：录像与实时预览以 UniFi Protect 为准；HA 可通过社区/官方相关集成做通知、开关灯联动等，但不要指望用 HA 取代 NVR。</li>
-    <li><strong>Access</strong>（UA-G3、USL-Gateway）：门禁逻辑以 UniFi Access 为准；HA 适合做「开门→亮灯/撤防」类联动。</li>
+    <li>Protect（G6 相机、Viewport）：录像与实时预览以 UniFi Protect 为准；HA 可通过社区/官方相关集成做通知、开关灯联动等，但不要指望用 HA 取代 NVR。</li>
+    <li>Access（<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">UA-G3</a>、<a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">USL-Gateway</a>）：门禁逻辑以 UniFi Access 为准；HA 适合做「开门→亮灯/撤防」类联动。</li>
     <li>集成前确保 HA 能访问 UniFi 控制台地址；本地 API/账号权限按该集成文档最小授权。</li>
   </ul>
 
@@ -1502,7 +1232,7 @@
   <ol>
     <li>HA OS 装好 + 备份。</li>
     <li>手机 Companion 能稳定打开。</li>
-    <li>ZBT-2 + 2～3 个 Zigbee 插座/灯，写第一条「开关 → 灯」自动化。</li>
+    <li><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> + 2～3 个 Zigbee 插座/灯，写第一条「开关 → 灯」自动化。</li>
     <li>装第一块墙面平板并全屏 Dashboard。</li>
     <li>复制到另外两层；再批量加传感器。</li>
     <li>Thread 棒就位后，再加 Matter-over-Thread 设备；复杂日程、能耗、语音放最后。</li>
@@ -1510,20 +1240,20 @@
 
   <h5>9. 推荐的基础设置与 Add-on（可循序渐进）</h5>
   <ul>
-    <li><strong>Backups</strong>：每日自动备份；重要变更前手动备份。</li>
-    <li><strong>Settings → System → Hardware / Updates</strong>：系统与 Supervisor 更新，先读变更说明再升。</li>
-    <li>Add-on 可选：<strong>Studio Code Server</strong> 或 File editor（改 <code>configuration.yaml</code>）、<strong>Samba share</strong>（从电脑拷备份）、<strong>Advanced SSH</strong>（进阶）。</li>
-    <li>若大量 Wi‑Fi/Tuya MQTT 设备：再装 <strong>Mosquitto</strong>；上 Zigbee2MQTT 时才强依赖 MQTT。</li>
+    <li>Backups：每日自动备份；重要变更前手动备份。</li>
+    <li>Settings → System → Hardware / Updates：系统与 Supervisor 更新，先读变更说明再升。</li>
+    <li>Add-on 可选：Studio Code Server 或 File editor（改 <code>configuration.yaml</code>）、Samba share（从电脑拷备份）、Advanced SSH（进阶）。</li>
+    <li>若大量 Wi‑Fi/Tuya MQTT 设备：再装 Mosquitto；上 Zigbee2MQTT 时才强依赖 MQTT。</li>
     <li>仪表盘：先用官方 Sections 视图；不必一上来就装一大堆 HACS 前端。</li>
   </ul>
   <div class="note">
-    <strong>关于 HACS：</strong>第三方集成市场，很强大，也是新手踩坑来源。等官方集成不够用再装；每次只加一个，并做好备份。
+    关于 HACS：第三方集成市场，很强大，也是新手踩坑来源。等官方集成不够用再装；每次只加一个，并做好备份。
   </div>
 
   <h5>10. 自动化入门（最小闭环）</h5>
   <ol>
-    <li><strong>Settings → Automations</strong> → Create：触发（如 Zigbee 人体传感器 occupied）→ 动作（开灯）。</li>
-    <li>用 <strong>Areas（区域）</strong> 把设备归到 Basement / Main / Upper，方便按房间写灯控。</li>
+    <li>Settings → Automations → Create：触发（如 Zigbee 人体传感器 occupied）→ 动作（开灯）。</li>
+    <li>用 Areas（区域）把设备归到 Basement / Main / Upper，方便按房间写灯控。</li>
     <li>避免「环形自动化」（A 开 B、B 又开 A）。</li>
     <li>通知类先用手机 Companion 推送，跑通后再上墙面。</li>
   </ol>
@@ -1533,16 +1263,16 @@
     <li>管理员账号仅你使用；家人/墙面用普通用户 + 受限 Dashboard。</li>
     <li>不要把 <code>:8123</code> 直接裸暴露到公网端口转发。</li>
     <li>SSD 与备份同样重要：盘坏可重装，无备份则自动化全丢。</li>
-    <li>停电：全屋由双 PW3 备电。仅当实测切换会重启核心设备时，再给「网关 + PoE 交换机 + HA + NAS」加小型桥接 UPS；墙面平板可接受短时掉电。</li>
+    <li>停电：全屋由双 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> 备电。仅当实测切换会重启核心设备时，再给「网关 + PoE 交换机 + HA + NAS」加小型桥接 UPS；墙面平板可接受短时掉电。</li>
   </ul>
 
   <h5>12. 常见问题速查</h5>
   <ul>
-    <li><strong>打不开 homeassistant.local</strong>：改用 IP；检查电脑与 HA 是否同网段/VLAN。</li>
-    <li><strong>PoE 不上电</strong>：确认口协商到 PoE++（Wallpanel / 主机）；线序与线材质量（建议实心铜 Cat6 以上）。</li>
-    <li><strong>Zigbee 经常掉线</strong>：协调器移出金属柜、加路由节点、避开 Wi‑Fi 拥挤信道。</li>
-    <li><strong>更新后异常</strong>：用备份还原；看 Settings → System → Logs。</li>
-    <li><strong>Matter-over-Thread 设备入不了网</strong>：确认第二根棒已固定为 Thread、天线已出柜；不要把 Zigbee 那根改来改去。</li>
+    <li>打不开 homeassistant.local：改用 IP；检查电脑与 HA 是否同网段/VLAN。</li>
+    <li>PoE 不上电：确认口协商到 PoE++（Wallpanel / 主机）；线序与线材质量（建议实心铜 Cat6 以上）。</li>
+    <li>Zigbee 经常掉线：协调器移出金属柜、加路由节点、避开 Wi‑Fi 拥挤信道。</li>
+    <li>更新后异常：用备份还原；看 Settings → System → Logs。</li>
+    <li>Matter-over-Thread 设备入不了网：确认第二根棒已固定为 Thread、天线已出柜；不要把 Zigbee 那根改来改去。</li>
   </ul>
 
   <h5>13. 学习路径与官方文档</h5>
@@ -1556,25 +1286,25 @@
 
   <h5>14. 与本表对应的物料清单（HA 部分）</h5>
   <ul>
-    <li>1× ameriDroid PoE Mini PC（机柜）</li>
-    <li>2× Home Assistant Connect ZBT-2（Zigbee + Thread 各一）</li>
+    <li>1× <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC</a>（机柜）</li>
+    <li>2× <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a>（Zigbee + Thread 各一）</li>
     <li>1× USB-A/C 数据转换头（Thread 棒 → Mini PC USB-3；不要只充电的线）</li>
     <li>3× Home Assistant PoE Wallpanel（选型待定）</li>
-    <li>交换机侧：至少 1 个 PoE++（主机）+ 3 个 PoE++（Wallpanel，每路按 60W 预留；当前接在 XG 的 PoE+++ 口）；线材与墙面点位按楼层施工图预留</li>
+    <li>交换机侧：至少 1 个 PoE++（主机）+ 3 个 PoE++（Wallpanel，每路按 60W 预留；当前接在 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a> 的 PoE+++ 口）；线材与墙面点位按楼层施工图预留</li>
   </ul>
   <p class="lede">本指南会随你的实际安装进度继续补洞（VLAN、具体自动化模板、Protect 集成步骤等）。先把第 4–6 节跑通，就是成功的第一步。</p>
   <h2>3. Home Office Setup</h2>
-  <p class="lede">Mac Studio（Den）与机柜 NAS 的算力 / 存储分工，以及书房桌面显示器与外设。Den Room Drop 铜缆见 §1.1；NAS / Studio 在拓扑上的落点见 Topology。</p>
+  <p class="lede"><a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（Den）与机柜 NAS 的算力 / 存储分工，以及书房桌面显示器与外设。Den Room Drop 铜缆见 <a href="#1.1" class="page-ref">§1.1</a>；NAS / Studio 在拓扑上的落点见 <a href="#topology" class="page-ref">Topology</a>。</p>
 
-  <h4>NAS · Synology FS2500</h4>
-  <p>机柜存储正式选型 <strong><a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a></strong>（曾对照 <a href="https://www.synology.com/en-global/products/RS1626xs+" target="_blank" rel="noopener noreferrer">RS1626xs+</a> 后改回）。与 Den 的 Mac Studio 是一套分工：Studio 是<strong>算力主机</strong>（本地 LLM 推理、重视频等）；NAS 是家庭<strong>多负载存储与轻服务层</strong>（模型库、安防录像、影音、文件、Web），不算力、不做主推理。</p>
+  <h4>3.1 NAS · <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a></h4>
+  <p>机柜存储正式选型 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a>（曾对照 <a href="https://www.synology.com/en-global/products/RS1626xs+" target="_blank" rel="noopener noreferrer">RS1626xs+</a> 后改回）。与 Den 的 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> 是一套分工：Studio 是算力主机（本地 LLM 推理、重视频等）；NAS 是家庭多负载存储与轻服务层（模型库、安防录像、影音、文件、Web），不算力、不做主推理。</p>
   <ul>
-    <li><strong>硬性门槛</strong>：官方 DSM；19&quot; 机柜式（1U），进 Mechanical Room 机柜。</li>
-    <li><strong>网络</strong>：内建 <strong>2×10GbE</strong>，机柜内 Cat6 短跳做 <strong>LACP → Pro XG</strong>（口位见 §1.3）；另有 2×1G。Studio 经 Den 单路 10G 同交换域，大文件 / 模型搬运走有线，不走 Wi‑Fi。</li>
-    <li><strong>存储</strong>：12×2.5&quot; SSD all-flash（不能插 HDD）；用多 Storage Pool / Volume 按录像、影音、文件、模型库分池。容量经济学非优先。内存建议升到 <strong>16–32 GB</strong>（上限 32 GB）。</li>
-    <li><strong>供电</strong>：单电 + 市电/PW3 即可；冗余 PSU / OOB 是加分项，非选型主因。</li>
+    <li>硬性门槛：官方 DSM；19&quot; 机柜式（1U），进 Mechanical Room 机柜。</li>
+    <li>网络：内建 2×10GbE，机柜内 Cat6 短跳做 LACP → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>（口位见 <a href="#1.3" class="page-ref">§1.3</a>）；另有 2×1G。Studio 经 Den 单路 10G 同交换域，大文件 / 模型搬运走有线，不走 Wi‑Fi。</li>
+    <li>存储：12×2.5&quot; SSD all-flash（不能插 HDD）；用多 Storage Pool / Volume 按录像、影音、文件、模型库分池。容量经济学非优先。内存建议升到 16–32 GB（上限 32 GB）。</li>
+    <li>供电：单电 + 市电/<a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> 即可；冗余 PSU / OOB 是加分项，非选型主因。</li>
   </ul>
-  <p>与 RS1626xs+ 对照：两者都过门槛且都有 2×10G；RS 在混闪/扩柜/双电/OOB/更高 CPU·内存上更强，但在本宅「算力在 Studio、容量经济学非优先、PW3 管市电」下多为余量。FS 开箱 12 闪存位、路径简单，定稿 FS2500。</p>
+  <p>与 <a href="https://www.synology.com/en-global/products/RS1626xs+" target="_blank" rel="noopener noreferrer">RS1626xs+</a> 对照：两者都过门槛且都有 2×10G；RS 在混闪/扩柜/双电/OOB/更高 CPU·内存上更强，但在本宅「算力在 Studio、容量经济学非优先、<a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> 管市电」下多为余量。FS 开箱 12 闪存位、路径简单，定稿 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">FS2500</a>。</p>
   <div class="table-scroll">
   <table>
     <thead>
@@ -1590,13 +1320,13 @@
         <td>定位</td>
         <td>1U all-flash；12×2.5&quot; SSD only</td>
         <td>4 盘 + 2×M.2；可 SSD/HDD；+RX1225RP→16</td>
-        <td><strong>选 FS</strong>：一次到位闪存位</td>
+        <td>选 FS：一次到位闪存位</td>
       </tr>
       <tr>
         <td>容量经济学</td>
         <td>$/TB 高</td>
         <td>可用 HDD 容量层，更省</td>
-        <td><strong>非优先</strong> → 不倒向 RS</td>
+        <td>非优先 → 不倒向 RS</td>
       </tr>
       <tr>
         <td>热/冷分池</td>
@@ -1608,13 +1338,13 @@
         <td>CPU / 内存</td>
         <td>V1780B 4C/8T；8→32 GB</td>
         <td>Xeon D-1726 6C/12T；16→64 GB</td>
-        <td>Studio 扛算力；FS 升内存后对本宅<strong>非瓶颈</strong></td>
+        <td>Studio 扛算力；FS 升内存后对本宅非瓶颈</td>
       </tr>
       <tr>
         <td>双电 / OOB</td>
         <td>单电；无 OOB</td>
         <td>冗余 PSU；独立 OOB</td>
-        <td>PW3 + 机柜可到达 → <strong>非选型主因</strong></td>
+        <td><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> + 机柜可到达 → 非选型主因</td>
       </tr>
       <tr>
         <td>网络</td>
@@ -1626,10 +1356,10 @@
   </table>
   </div>
   <div class="note">
-    <strong>正式选型</strong>：Synology FS2500——2×10G LACP、12×SSD、内存 16–32 GB；按池/卷隔离负载。RS1626xs+ 仅作对照。
+    正式选型：<a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a>——2×10G LACP、12×SSD、内存 16–32 GB；按池/卷隔离负载。<a href="https://www.synology.com/en-global/products/RS1626xs+" target="_blank" rel="noopener noreferrer">RS1626xs+</a> 仅作对照。
   </div>
 
-  <h4>Den 设备清单</h4>
+  <h4>3.2 Den 设备清单</h4>
   <p class="lede">桌面离地 30&quot;。主显示器下边缘距离桌面 6&quot;；上方一对副屏对齐主显示器。</p>
 <div class="design-devices-wrap appliances-wrap">
 <table class="appliances-table">
@@ -1674,7 +1404,7 @@
   <td>7.7 × 3.7 × 7.7 in</td>
   <td></td>
   <td></td>
-  <td>1×10Gb RJ45；经 Den Room Drop 上联 Pro XG（§1.1）。与机柜 FS2500 同交换域；算力在此，存储见上方 NAS。</td>
+  <td>1×10Gb RJ45；经 Den Room Drop 上联 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>（<a href="#1.1" class="page-ref">§1.1</a>）。与机柜 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">FS2500</a> 同交换域；算力在此，存储见上方 <a href="#3.1" class="page-ref">NAS</a>。</td>
 </tr>
 <tr>
   <td>打印机</td>
@@ -1690,29 +1420,29 @@
 </table>
 </div>
   <h2>4. Tesla Energy System</h2>
-  <p class="lede">Powerwall 3、Gateway 3 与车库侧数据链；全屋备电策略及机柜 UPS 取舍。</p>
-  <h4>Tesla 链</h4>
+  <p class="lede"><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a>、<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 与车库侧数据链；全屋备电策略及机柜 UPS 取舍。</p>
+  <h4>4.1 Tesla 链</h4>
   <ul>
-    <li><strong>Leader / Follower 同口</strong>：每台 PW3 都是 2×ETH（交换）+ CAN。Leader：ETH→Flex、ETH→Follower、CAN→Gateway 3。Follower：ETH←Leader，第二路 ETH 与 CAN 空闲。</li>
-    <li><strong>Follower / Gateway 3</strong>：不另接家用交换机。</li>
-    <li><strong>禁止</strong>把 UniFi 设备串进两台 PW 之间。</li>
+    <li>Leader / Follower 同口：每台 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> 都是 2×ETH（交换）+ CAN。Leader：ETH→<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a>、ETH→Follower、CAN→<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a>。Follower：ETH←Leader，第二路 ETH 与 CAN 空闲。</li>
+    <li>Follower / <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a>：不另接家用交换机。</li>
+    <li>禁止把 UniFi 设备串进两台 PW 之间。</li>
   </ul>
-  <pre style="background:#fafafa;border:1px solid #ddd;padding:0.9rem 1rem;overflow-x:auto;line-height:1.35;font-size:0.9rem;">Flex ──► PW3 Leader ──Ethernet──► PW3 Follower
+  <pre style="background:#fafafa;border:1px solid #ddd;padding:0.9rem 1rem;overflow-x:auto;line-height:1.35;font-size:0.9rem;"><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">USW-Flex-2.5G-8-PoE</a> ──► <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> Leader ──Ethernet──► <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> Follower
               │
-              └── CAN / 12V ──► Gateway 3</pre>
+              └── CAN / 12V ──► <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a></pre>
 
-  <h4>备电与机柜 UPS</h4>
-  <p>两台并联 Powerwall 3 解决的是<strong>全屋持续供电</strong>。机柜不再需要一台大容量 UPS 来撑整晚。UPS 只补两个缺口：Gateway 切换虽标 seamless，Tesla <strong>没有承诺 UPS 级零中断</strong>，部分交换机 / NAS / 光猫可能在切换瞬间重启；以及 Powerwall 维护、故障或电量耗尽时，给 NAS 一个正常关机窗口。</p>
+  <h4>4.2 备电与机柜 UPS</h4>
+  <p>两台并联 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 解决的是全屋持续供电。机柜不再需要一台大容量 UPS 来撑整晚。UPS 只补两个缺口：Gateway 切换虽标 seamless，Tesla 没有承诺 UPS 级零中断，部分交换机 / NAS / 光猫可能在切换瞬间重启；以及 Powerwall 维护、故障或电量耗尽时，给 NAS 一个正常关机窗口。</p>
   <ul>
     <li>先确认机柜回路在 whole-home backup 范围内，并做一次离网切换测试。</li>
-    <li>若 NAH、UDM、XG、NAS、HA 均不重启，<strong>可以不装 UPS</strong>。</li>
+    <li>若 NAH、<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">UDM-Pro-Max</a>、<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">USW-Pro-XG-24-PoE</a>、NAS、HA 均不重启，可以不装 UPS。</li>
     <li>若摄像、门禁、HA、上网不能接受哪怕数秒中断，再加一台只桥接数分钟的小型 UPS，负荷按 UniFi 遥测和墙端实耗选，不要按含 180W Wallpanel 占位的规划总数选。</li>
     <li>UPS 须能接受 Powerwall 离网时的电压/频率窗口；装完再测一次切换。</li>
   </ul>
-  <p>结论：双 PW3 前提下，UPS 从「强烈需要」降为「连续性保险」。参考 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3 Datasheet</a>。</p>
+  <p>结论：双 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> 前提下，UPS 从「强烈需要」降为「连续性保险」。参考 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3 Datasheet</a>。</p>
 
   <h2>5. Whole Home Appliances &amp; Furnitures</h2>
-  <p class="lede">全屋电器与家具按功能区划分。下表来自已定选型清单：Category 只保留品类；安装与接口说明进 Notes；原 Budget 列中的标价与购买链接已拆成 Budget（CAD）与 Purchase。Mechanical Room 网络机柜见 §1.1；Den 见 §3。</p>
+  <p class="lede">全屋电器与家具按功能区划分。下表来自已定选型清单：Category 只保留品类；安装与接口说明进 Notes；原 Budget 列中的标价与购买链接已拆成 Budget（CAD）与 Purchase。Mechanical Room 网络机柜见 <a href="#1.1" class="page-ref">§1.1</a>；Den 见 <a href="#3" class="page-ref">§3</a>。</p>
   <h3>5.1 Kitchen</h3>
   <p class="lede">Main Kitchen。过滤水系统可参考 <a href="https://barflybymercer.com/" target="_blank" rel="noopener noreferrer">Barfly by Mercer</a> · <a href="https://rhinocoffeegear.com/" target="_blank" rel="noopener noreferrer">Rhino Coffee Gear</a>。</p>
 <div class="design-devices-wrap appliances-wrap">
@@ -2104,13 +1834,13 @@
 </table>
 </div>
   <h3>5.6 Bath</h3>
-  <h4>Ensuite</h4>
+  <h4>5.6.1 Ensuite</h4>
   <p>待补全。</p>
-  <h4>Bath 1</h4>
+  <h4>5.6.2 Bath 1</h4>
   <p>待补全。</p>
-  <h4>Bath 2</h4>
+  <h4>5.6.3 Bath 2</h4>
   <p>待补全。</p>
-  <h4>Bath 3</h4>
+  <h4>5.6.4 Bath 3</h4>
   <p class="lede">家用洗烘叠放。</p>
 <div class="design-devices-wrap appliances-wrap">
 <table class="appliances-table">
@@ -2150,7 +1880,7 @@
 </tbody>
 </table>
 </div>
-  <h4>Powder</h4>
+  <h4>5.6.5 Powder</h4>
   <p>待补全。</p>
   <h3>5.7 Bedroom</h3>
   <p>待补全。</p>
@@ -2189,7 +1919,7 @@
 </table>
 </div>
   <h3>5.11 Mechanical</h3>
-  <p>待补全。网络机柜与铜缆见 §1.1。</p>
+  <p>待补全。网络机柜与铜缆见 <a href="#1.1" class="page-ref">§1.1</a>。</p>
 </article>
   </div>
   </section>

@@ -8,13 +8,98 @@
       var list = document.createElement("ol");
       list.className = "design-toc-list";
       var links = [];
-      /* Contents: numbered sections (h2) and 2.1-style subsections (h3) only. */
-      Array.prototype.forEach.call(article.querySelectorAll("h2, h3"), function (heading, index) {
+      var usedIds = Object.create(null);
+
+      function slugFromText(raw) {
+        return raw.toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, "-").replace(/^-+|-+$/g, "") || "section";
+      }
+
+      function headingIdFromText(raw) {
+        var numbered = raw.match(/^(\d+(?:\.\d+)*)\b/);
+        if (numbered) return numbered[1];
+        return slugFromText(raw);
+      }
+
+      function assignHeadingId(heading, slugOnly) {
         var raw = (heading.textContent || "section").replace(/\s+/g, " ").trim();
-        if (!heading.id) {
-          heading.id = "d-" + index + "-" + raw.toLowerCase().replace(/[^\w\u4e00-\u9fff]+/g, "-").replace(/^-+|-+$/g, "");
+        var id = slugOnly ? slugFromText(raw) : headingIdFromText(raw);
+        if (usedIds[id]) {
+          var n = 2;
+          while (usedIds[id + "-" + n]) n += 1;
+          id = id + "-" + n;
         }
+        usedIds[id] = true;
+        heading.id = id;
         heading.style.scrollMarginTop = "0.6rem";
+        return raw;
+      }
+
+      function scrollToHeading(heading, behavior) {
+        if (!heading) return;
+        var top = heading.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop - 8;
+        scroller.scrollTo({ top: Math.max(0, top), behavior: behavior || "smooth" });
+      }
+
+      function setHeadingHash(heading) {
+        if (!heading || !heading.id || !history.replaceState) return;
+        history.replaceState(null, "", "#" + heading.id);
+      }
+
+      /* Live fragment ids for every Spec heading. Always recompute from the
+         current title — never keep retired ids or alias redirects. */
+      Array.prototype.forEach.call(article.querySelectorAll("h2, h3, h4"), function (heading) {
+        assignHeadingId(heading);
+      });
+
+      /* Fragment ids for h5 targets (e.g. HA Panel) — not Contents items.
+         Slug-only so guide steps like "1. …" do not collide with outline §1. */
+      Array.prototype.forEach.call(article.querySelectorAll("h5"), function (heading) {
+        assignHeadingId(heading, true);
+      });
+
+      /* Spec h2 / h3 / h4 body titles are clickable in-page tag refs. */
+      Array.prototype.forEach.call(article.querySelectorAll("h2, h3, h4"), function (heading) {
+        if (!heading.id || heading.querySelector(":scope > a.heading-ref")) return;
+        var link = document.createElement("a");
+        link.className = "heading-ref";
+        link.href = "#" + heading.id;
+        while (heading.firstChild) link.appendChild(heading.firstChild);
+        heading.appendChild(link);
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          if (typeof window.applyLocationHash === "function") {
+            window.applyLocationHash("#" + heading.id, "smooth");
+          } else {
+            scrollToHeading(heading, "smooth");
+            setHeadingHash(heading);
+          }
+        });
+      });
+
+      /* Body page-refs (§1.3, Topology, 见下方…) scroll the Spec pane / switch tabs. */
+      article.addEventListener("click", function (event) {
+        var a = event.target.closest && event.target.closest("a.page-ref");
+        if (!a || !article.contains(a)) return;
+        var href = a.getAttribute("href") || "";
+        if (href.charAt(0) !== "#") return;
+        event.preventDefault();
+        if (typeof window.applyLocationHash === "function") {
+          window.applyLocationHash(href, "auto");
+        } else if (href.slice(1)) {
+          location.hash = href.slice(1);
+        }
+      });
+
+      window.scrollSpecHeading = scrollToHeading;
+      window.specHeadingById = function (id) {
+        if (!id) return null;
+        var el = document.getElementById(id);
+        return el && article.contains(el) ? el : null;
+      };
+
+      /* Contents: numbered sections (h2) and 2.1-style subsections (h3) only. */
+      Array.prototype.forEach.call(article.querySelectorAll("h2, h3"), function (heading) {
+        var raw = (heading.textContent || "section").replace(/\s+/g, " ").trim();
         var item = document.createElement("li");
         item.className = "toc-" + heading.tagName.toLowerCase();
         var link = document.createElement("a");
@@ -22,8 +107,12 @@
         link.textContent = raw;
         link.addEventListener("click", function (event) {
           event.preventDefault();
-          var top = heading.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop - 8;
-          scroller.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+          if (typeof window.applyLocationHash === "function") {
+            window.applyLocationHash("#" + heading.id, "smooth");
+          } else {
+            scrollToHeading(heading, "smooth");
+            setHeadingHash(heading);
+          }
           if (typeof window.setSpecSidebar === "function") window.setSpecSidebar(false);
         });
         item.appendChild(link);
@@ -213,7 +302,7 @@
           down: idleMany(4, "nah-1g", "gbe1", { title: "1G RJ45 unused", idle: true }).concat([
             P("nah-10g", "gbe10", { poe: "wan", title: "10G RJ45 WAN out · Cat6 rack patch to UDM CM adapter", child: "udm" })
           ]) },
-        { id: "udm", vlan: "management", name: "UDM-Pro-Max", loc: "Rack Cabinet", href: UI + "udm-pro-max", info: "NAH Cat6 rack patch terminates at the RJ45 face of a UACC-CM-RJ45-MG inserted in UDM WAN SFP+. LAN SFP+ connects directly to Pro XG by one DAC.",
+        { id: "udm", vlan: "management", name: "UDM-Pro-Max", loc: "Rack Cabinet", href: UI + "udm-pro-max", info: "NAH Cat6 rack patch terminates at the RJ45 face of a UACC-CM-RJ45-MG inserted in UDM-Pro-Max WAN SFP+. LAN SFP+ connects directly to USW-Pro-XG-24-PoE by one DAC.",
           embed: [
             { name: "UACC-CM-RJ45-MG · RJ45 ↔ SFP+", href: UI + "uacc-cm-rj45-mg" }
           ],
@@ -226,8 +315,8 @@
           ]) },
         { id: "xg", vlan: "management", name: "USW-Pro-XG-24-PoE", loc: "Rack Cabinet", href: UI + "usw-pro-xg-24-poe", info: "2×SFP28 + 8×2.5G PoE+++ + 16×10G PoE+++. Unused ports hollow.",
           poeBar: { modes: [
-            { label: "PoE Output Used · Garage Flex on AC", used: 463.5, cap: 720 },
-            { label: "PoE Output Used · Garage Flex on PoE+++", used: 532.9, cap: 720 }
+            { label: "PoE Output Used · USW-Flex-2.5G-8-PoE on AC", used: 463.5, cap: 720 },
+            { label: "PoE Output Used · USW-Flex-2.5G-8-PoE on PoE+++", used: 532.9, cap: 720 }
           ] },
           up: [
             P("xg-sfp", "sfp", { t: "SFP28", title: "SFP28 ← UACC-DAC-SFP10 at 10G" }),
@@ -235,26 +324,26 @@
           ],
           down: [
             P("xg-ha", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → HA", child: "ha", side: "left" }),
-            P("xg-wallpanels", "gbe2p5", { poe: "ppp", title: "3× 2.5G PoE+++ ports → Wallpanels at 1G PoE++", count: 3, child: "group-wallpanels", side: "left" }),
-            P("xg-front", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Front Mini", child: "group-main-doors", side: "left" }),
-            P("xg-mud", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Mud Mini", child: "group-main-doors", side: "left" }),
-            P("xg-din", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Dining Mini", child: "group-main-doors", side: "left" }),
-            P("xg-bsmt", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Basement Mini", child: "group-main-doors", side: "left" }),
+            P("xg-wallpanels", "gbe2p5", { poe: "ppp", title: "3× 2.5G PoE+++ ports → Home Assistant PoE Wallpanels at 1G PoE++", count: 3, child: "group-wallpanels", side: "left" }),
+            P("xg-front", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Front UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
+            P("xg-mud", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Mud UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
+            P("xg-din", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Dining UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
+            P("xg-bsmt", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Basement UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
             P("xg-aps", "gbe10", { poe: "ppp", title: "3× 10G PoE+++ → U7-Pro at 2.5G", count: 3, child: "group-aps" }),
-            P("xg-view", "gbe10", { poe: "ppp", title: "10G PoE+++ → Viewport at 1G", child: "view" }),
-            P("xg-nas", "gbe10", { poe: "ppp", title: "10G PoE+++ → NAS LACP", child: "nas" }),
-            P("xg-nas2", "gbe10", { poe: "ppp", title: "10G PoE+++ → NAS LACP", child: "nas" }),
-            P("xg-room-backup", "gbe10", { poe: "ppp", title: "5× cabinet-end backup C6A · not connected to XG", loose: true, count: 5, child: "group-room-drops" }),
-            P("xg-room-live", "gbe10", { poe: "ppp", title: "5× active XG Room Drop ports", count: 5, child: "group-room-drops" }),
-            P("xg-media-backup", "gbe10", { poe: "ppp", title: "Media Room backup C6A · cabinet end not connected to XG", loose: true, child: "drop-media" }),
+            P("xg-view", "gbe10", { poe: "ppp", title: "10G PoE+++ → UP-Viewport at 1G", child: "view" }),
+            P("xg-nas", "gbe10", { poe: "ppp", title: "10G PoE+++ → Synology FS2500 LACP", child: "nas" }),
+            P("xg-nas2", "gbe10", { poe: "ppp", title: "10G PoE+++ → Synology FS2500 LACP", child: "nas" }),
+            P("xg-room-backup", "gbe10", { poe: "ppp", title: "5× cabinet-end backup C6A · not connected to USW-Pro-XG-24-PoE", loose: true, count: 5, child: "group-room-drops" }),
+            P("xg-room-live", "gbe10", { poe: "ppp", title: "5× active USW-Pro-XG-24-PoE Room Drop ports", count: 5, child: "group-room-drops" }),
+            P("xg-media-backup", "gbe10", { poe: "ppp", title: "Media Room backup C6A · cabinet end not connected to USW-Pro-XG-24-PoE", loose: true, child: "drop-media" }),
             P("xg-media-live", "gbe10", { poe: "ppp", title: "10G PoE+++ → active Media Room C6A", child: "drop-media" }),
-            P("xg-gar-backup", "gbe10", { poe: "ppp", title: "Cabinet-end Garage backup C6A · not connected to XG", loose: true, child: "drop-gar" }),
+            P("xg-gar-backup", "gbe10", { poe: "ppp", title: "Cabinet-end Garage backup C6A · not connected to USW-Pro-XG-24-PoE", loose: true, child: "drop-gar" }),
             P("xg-gar", "gbe10", { poe: "ppp", title: "10G PoE+++ → active Garage C6A", child: "drop-gar" }),
             P("xg-spare-10g-1", "gbe10", { poe: "ppp", title: "10G PoE+++ spare", idle: true }),
             P("xg-spare-10g-2", "gbe10", { poe: "ppp", title: "10G PoE+++ spare", idle: true }),
             P("xg-spare-10g-3", "gbe10", { poe: "ppp", title: "10G PoE+++ spare", idle: true })
           ] },
-        { id: "nas", vlan: "servers", inbound: "nas-10g", name: "Synology FS2500", loc: "Rack Cabinet", href: "https://www.synology.com/en-us/products/FS2500", info: "1U all-flash · 12×2.5\" SATA SSD. 2×10G LACP to Pro XG over Cat6 rack patches; 2×1G unused. 2×USB 3.2 + Console unused.",
+        { id: "nas", vlan: "servers", inbound: "nas-10g", name: "Synology FS2500", loc: "Rack Cabinet", href: "https://www.synology.com/en-us/products/FS2500", info: "1U all-flash · 12×2.5\" SATA SSD. 2×10G LACP to USW-Pro-XG-24-PoE over Cat6 rack patches; 2×1G unused. 2×USB 3.2 + Console unused.",
           up: [
             P("nas-1g1", "gbe1", { title: "1G unused", idle: true }),
             P("nas-1g2", "gbe1", { title: "1G unused", idle: true }),
@@ -266,7 +355,7 @@
             P("nas-usb2", "other", { t: "USB-3", title: "USB 3.2 unused", idle: true }),
             P("nas-con", "other", { t: "COM", title: "Console unused", idle: true })
           ] },
-        { id: "ha", vlan: "servers", name: "ameriDroid PoE Mini PC for Home Assistant", loc: "Rack Cabinet", href: "https://ameridroid.com/products/poe-mini-pc-for-home-assistant", info: "Cat6 rack patch to XG. 4×2.5G Intel I225/I226: one PoE++ IN plus three unused NICs are shown upstream. Two nested ZBT-2 radios: Zigbee on USB-C, Thread on USB-3 via USB-A/C adapter.",
+        { id: "ha", vlan: "servers", name: "ameriDroid PoE Mini PC for Home Assistant", loc: "Rack Cabinet", href: "https://ameridroid.com/products/poe-mini-pc-for-home-assistant", info: "Cat6 rack patch to USW-Pro-XG-24-PoE. 4×2.5G Intel I225/I226: one PoE++ IN plus three unused NICs are shown upstream. Two nested ZBT-2 radios: Zigbee on USB-C, Thread on USB-3 via USB-A/C adapter.",
           embed: [
             { name: "Connect ZBT-2 · Zigbee", href: "https://www.home-assistant.io/connect/zbt-2/" },
             { name: "Connect ZBT-2 · Thread", href: "https://www.home-assistant.io/connect/zbt-2/" }
@@ -287,139 +376,139 @@
             P("ha-usb", "other", { t: "USB-C", title: "USB-C → ZBT-2 Zigbee" }),
             P("ha-com", "other", { t: "COM", title: "RS232 unused", idle: true })
           ] },
-        { id: "u7b", vlan: "management", name: "U7-Pro", loc: "Basement", href: UI + "u7-pro", info: "2.5G PoE+ from Pro XG.",
+        { id: "u7b", vlan: "management", name: "U7-Pro", loc: "Basement", href: UI + "u7-pro", info: "2.5G PoE+ from USW-Pro-XG-24-PoE.",
           poeBar: { used: 21, cap: 30 },
           up: [P("u7b-up", "gbe2p5", { poe: "plus", title: "2.5G PoE+" })], down: [] },
-        { id: "u7m", vlan: "management", name: "U7-Pro", loc: "Main", href: UI + "u7-pro", info: "2.5G PoE+ from Pro XG.",
+        { id: "u7m", vlan: "management", name: "U7-Pro", loc: "Main", href: UI + "u7-pro", info: "2.5G PoE+ from USW-Pro-XG-24-PoE.",
           poeBar: { used: 21, cap: 30 },
           up: [P("u7m-up", "gbe2p5", { poe: "plus", title: "2.5G PoE+" })], down: [] },
-        { id: "u7u", vlan: "management", name: "U7-Pro", loc: "Upper", href: UI + "u7-pro", info: "2.5G PoE+ from Pro XG.",
+        { id: "u7u", vlan: "management", name: "U7-Pro", loc: "Upper", href: UI + "u7-pro", info: "2.5G PoE+ from USW-Pro-XG-24-PoE.",
           poeBar: { used: 21, cap: 30 },
           up: [P("u7u-up", "gbe2p5", { poe: "plus", title: "2.5G PoE+" })], down: [] },
-        { id: "drop-media-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to XG.",
+        { id: "drop-media-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
           up: [P("drop-media-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
           down: [P("drop-media-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-media", name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "Active C6A home-run → Cat6 short patch → non-PoE Flex 2.5G at 10G. The second run is shown above as a separate dashed backup card.",
-          up: [P("drop-media-up", "gbe10", { poe: "ppp", title: "10G ← Pro XG" })],
-          down: [P("drop-media-dn", "gbe10", { poe: "ppp", title: "10G PoE+++ pass-through → Flex 2.5G at PoE+", child: "media-flex" })] },
-        { id: "media-flex", vlan: "management", name: "USW-Flex-2.5G-8", loc: "Basement/Media Room", href: "https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", info: "Non-PoE model. C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45/SFP+ combo uplink and PoE+ input. Eight 2.5G downlinks have no PoE output.",
+        { id: "drop-media", name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "Active C6A home-run → Cat6 short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input. The second run is shown above as a separate dashed backup card.",
+          up: [P("drop-media-up", "gbe10", { poe: "ppp", title: "10G ← USW-Pro-XG-24-PoE" })],
+          down: [P("drop-media-dn", "gbe10", { poe: "ppp", title: "10G PoE+++ pass-through → USW-Flex-2.5G-8 at PoE+", child: "media-flex" })] },
+        { id: "media-flex", vlan: "management", name: "USW-Flex-2.5G-8", loc: "Basement/Media Room", href: "https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", info: "Non-PoE model. C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45 uplink and PoE+ input. SFP+ combo left unused. Eight 2.5G downlinks have no PoE output.",
           /* No PoE output, so it reads as a plain PD: draw against its PoE+ input. */
           poeBar: { used: 14, cap: 30 },
           up: [
             P("media-flex-up", "gbe10", { poe: "plus", title: "10G RJ45 uplink · PoE+ input" }),
-            P("media-flex-sfp", "sfp", { t: "SFP+", title: "SFP+ combo alternative · unused", idle: true })
+            P("media-flex-sfp", "sfp", { t: "SFP+", title: "SFP+ combo · unused", idle: true })
           ],
           down: idleMany(8, "media-flex-lan", "gbe2p5", { title: "2.5G RJ45 · no PoE output · unused", idle: true }) },
-        { id: "drop-den-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to XG.",
+        { id: "drop-den-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
           up: [P("drop-den-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
           down: [P("drop-den-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
         { id: "drop-den", name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. 2-port plate; second jack is the backup above.",
           up: [P("drop-den-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
           down: [P("drop-den-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-master-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Master Bedroom", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to XG.",
+        { id: "drop-master-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Master Bedroom", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
           up: [P("drop-master-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
           down: [P("drop-master-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
         { id: "drop-master", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Master Bedroom", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Wall has one jack; spare is the backup above.",
           up: [P("drop-master-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
           down: [P("drop-master-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-br1-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Bedroom 1", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to XG.",
+        { id: "drop-br1-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Bedroom 1", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
           up: [P("drop-br1-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
           down: [P("drop-br1-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
         { id: "drop-br1", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Bedroom 1", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Wall has one jack; spare is the backup above.",
           up: [P("drop-br1-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
           down: [P("drop-br1-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-br2-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Bedroom 2", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to XG.",
+        { id: "drop-br2-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Bedroom 2", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
           up: [P("drop-br2-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
           down: [P("drop-br2-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
         { id: "drop-br2", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Bedroom 2", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Wall has one jack; spare is the backup above.",
           up: [P("drop-br2-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
           down: [P("drop-br2-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-seat-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Seating Area", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to XG.",
+        { id: "drop-seat-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Seating Area", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
           up: [P("drop-seat-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
           down: [P("drop-seat-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
         { id: "drop-seat", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Seating Area", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Wall has one jack; spare is the backup above.",
           up: [P("drop-seat-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
           down: [P("drop-seat-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
 
-        { id: "front-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Front Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE+ → Entry and Frontyard Turret. REX, DPS, LOCK.",
+        { id: "front-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Front Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE+ → UVC-G6-Pro-Entry and Frontyard Turret. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
           /* Datasheet limit: 45W aggregated across the hub's PoE outputs. */
           poeBar: { label: "PoE Output Used", used: 33, cap: 45 },
           up: [P("front-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
           down: [
-            P("front-mini-poe1", "gbe1", { poe: "plus", title: "PoE+ → Entry", child: "front-entry" }),
-            P("front-mini-poe2", "gbe1", { poe: "plus", title: "PoE+ → Frontyard Turret", child: "cam-fy" }),
+            P("front-mini-poe1", "gbe1", { poe: "plus", title: "PoE+ → UVC-G6-Pro-Entry", child: "front-entry" }),
+            P("front-mini-poe2", "gbe1", { poe: "plus", title: "PoE+ → Frontyard UVC-G6-Pro-Turret", child: "cam-fy" }),
             P("front-mini-rex", "other", { t: "REX", title: "REX unused", idle: true }),
-            P("front-mini-dps", "other", { t: "DPS", title: "DPS → Strike", child: "front-strike" }),
-            P("front-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "front-strike" })
+            P("front-mini-dps", "other", { t: "DPS", title: "DPS → UACC-Lock-Strike-Secure-15mm", child: "front-strike" }),
+            P("front-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → UACC-Lock-Strike-Secure-15mm", child: "front-strike" })
           ] },
-        { id: "front-entry", vlan: "security", hideLoc: true, name: "UVC-G6-Pro-Entry", loc: "Front Door", href: UI + "uvc-g6-pro-entry", info: "PoE+ from Front Mini.",
+        { id: "front-entry", vlan: "security", hideLoc: true, name: "UVC-G6-Pro-Entry", loc: "Front Door", href: UI + "uvc-g6-pro-entry", info: "PoE+ from Front UA-Hub-Door-Mini.",
           poeBar: { used: 18, cap: 30 },
           up: [P("front-entry-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
-        { id: "front-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Front Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Front Mini.",
+        { id: "front-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Front Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Front UA-Hub-Door-Mini.",
           up: [P("front-strike-dps", "other", { t: "DPS", title: "DPS" }), P("front-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
 
-        { id: "mud-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Main/Mud/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → G3 and Backyard Turret. REX, DPS, LOCK.",
+        { id: "mud-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Main/Mud/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → UA-UA-G3 and Backyard Turret. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
           poeBar: { label: "PoE Output Used", used: 20, cap: 45 },
           up: [P("mud-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
           down: [
             P("mud-mini-poe1", "gbe1", { poe: "plus", title: "1G PoE+ port → UA-G3 at 100M PoE", child: "mud-g3" }),
-            P("mud-mini-poe2", "gbe1", { poe: "plus", title: "PoE+ → Backyard Turret", child: "cam-by" }),
+            P("mud-mini-poe2", "gbe1", { poe: "plus", title: "PoE+ → Backyard UVC-G6-Pro-Turret", child: "cam-by" }),
             P("mud-mini-rex", "other", { t: "REX", title: "REX unused", idle: true }),
-            P("mud-mini-dps", "other", { t: "DPS", title: "DPS → Strike", child: "mud-strike" }),
-            P("mud-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "mud-strike" })
+            P("mud-mini-dps", "other", { t: "DPS", title: "DPS → UACC-Lock-Strike-Secure-15mm", child: "mud-strike" }),
+            P("mud-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → UACC-Lock-Strike-Secure-15mm", child: "mud-strike" })
           ] },
-        { id: "mud-g3", vlan: "security", hideLoc: true, name: "UA-G3", loc: "Main/Mud/Back Door", href: UI + "ua-g3", info: "PoE from Mud Mini.",
+        { id: "mud-g3", vlan: "security", hideLoc: true, name: "UA-G3", loc: "Main/Mud/Back Door", href: UI + "ua-g3", info: "PoE from Mud UA-Hub-Door-Mini.",
           poeBar: { used: 5, cap: 15.4 },
           up: [P("mud-g3-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
-        { id: "mud-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Main/Mud/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Mud Mini.",
+        { id: "mud-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Main/Mud/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Mud UA-Hub-Door-Mini.",
           up: [P("mud-strike-dps", "other", { t: "DPS", title: "DPS" }), P("mud-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
 
-        { id: "din-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Main/Dining/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → G3 and Walkway Bullet. REX, DPS, LOCK.",
+        { id: "din-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Main/Dining/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → UA-UA-G3 and Walkway Bullet. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
           poeBar: { label: "PoE Output Used", used: 20, cap: 45 },
           up: [P("din-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
           down: [
             P("din-mini-poe1", "gbe1", { poe: "plus", title: "1G PoE+ port → UA-G3 at 100M PoE", child: "din-g3" }),
-            P("din-mini-poe2", "gbe1", { poe: "plus", title: "PoE+ → Walkway Bullet", child: "walk" }),
+            P("din-mini-poe2", "gbe1", { poe: "plus", title: "PoE+ → Walkway UVC-G6-Pro-Bullet", child: "walk" }),
             P("din-mini-rex", "other", { t: "REX", title: "REX unused", idle: true }),
-            P("din-mini-dps", "other", { t: "DPS", title: "DPS → Strike", child: "din-strike" }),
-            P("din-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "din-strike" })
+            P("din-mini-dps", "other", { t: "DPS", title: "DPS → UACC-Lock-Strike-Secure-15mm", child: "din-strike" }),
+            P("din-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → UACC-Lock-Strike-Secure-15mm", child: "din-strike" })
           ] },
-        { id: "din-g3", vlan: "security", hideLoc: true, name: "UA-G3", loc: "Main/Dining/Back Door", href: UI + "ua-g3", info: "PoE from Dining Mini.",
+        { id: "din-g3", vlan: "security", hideLoc: true, name: "UA-G3", loc: "Main/Dining/Back Door", href: UI + "ua-g3", info: "PoE from Dining UA-Hub-Door-Mini.",
           poeBar: { used: 5, cap: 15.4 },
           up: [P("din-g3-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
-        { id: "din-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Main/Dining/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Dining Mini.",
+        { id: "din-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Main/Dining/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Dining UA-Hub-Door-Mini.",
           up: [P("din-strike-dps", "other", { t: "DPS", title: "DPS" }), P("din-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
 
-        { id: "bsmt-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Basement/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → G3 and Courtyard Turret. REX, DPS, LOCK.",
+        { id: "bsmt-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Basement/Back Door", href: UI + "ua-hub-door-mini", info: "Uplink PoE++. PoE → UA-UA-G3 and Courtyard Turret. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
           poeBar: { label: "PoE Output Used", used: 20, cap: 45 },
           up: [P("bsmt-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
           down: [
             P("bsmt-mini-poe1", "gbe1", { poe: "plus", title: "1G PoE+ port → UA-G3 at 100M PoE", child: "bsmt-g3" }),
-            P("bsmt-mini-poe2", "gbe1", { poe: "plus", title: "PoE+ → Courtyard Turret", child: "cam-ct" }),
+            P("bsmt-mini-poe2", "gbe1", { poe: "plus", title: "PoE+ → Courtyard UVC-G6-Pro-Turret", child: "cam-ct" }),
             P("bsmt-mini-rex", "other", { t: "REX", title: "REX unused", idle: true }),
-            P("bsmt-mini-dps", "other", { t: "DPS", title: "DPS → Strike", child: "bsmt-strike" }),
-            P("bsmt-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "bsmt-strike" })
+            P("bsmt-mini-dps", "other", { t: "DPS", title: "DPS → UACC-Lock-Strike-Secure-15mm", child: "bsmt-strike" }),
+            P("bsmt-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → UACC-Lock-Strike-Secure-15mm", child: "bsmt-strike" })
           ] },
-        { id: "bsmt-g3", vlan: "security", hideLoc: true, name: "UA-G3", loc: "Basement/Back Door", href: UI + "ua-g3", info: "PoE from Basement Mini.",
+        { id: "bsmt-g3", vlan: "security", hideLoc: true, name: "UA-G3", loc: "Basement/Back Door", href: UI + "ua-g3", info: "PoE from Basement UA-Hub-Door-Mini.",
           poeBar: { used: 5, cap: 15.4 },
           up: [P("bsmt-g3-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
-        { id: "bsmt-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Basement/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Basement Mini.",
+        { id: "bsmt-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Basement/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Basement UA-Hub-Door-Mini.",
           up: [P("bsmt-strike-dps", "other", { t: "DPS", title: "DPS" }), P("bsmt-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
 
-        { id: "view", vlan: "security", name: "UP-Viewport", loc: "Main/Kitchen", href: UI + "ufp-viewport", info: "1G PoE from Pro XG.",
+        { id: "view", vlan: "security", name: "UP-Viewport", loc: "Main/Kitchen", href: UI + "ufp-viewport", info: "1G PoE from USW-Pro-XG-24-PoE.",
           poeBar: { used: 9.5, cap: 15.4 },
           up: [P("view-up", "gbe1", { poe: "poe", title: "1G PoE" })], down: [] },
-        { id: "cam-fy", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Frontyard/Front Eave/North East", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Front Door Mini.",
+        { id: "cam-fy", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Frontyard/Front Eave/North East", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Front UA-Hub-Door-Mini.",
           poeBar: { used: 15, cap: 30 },
           up: [P("cam-fy-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
-        { id: "cam-by", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Backyard/Balcony Eave/South West", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Mud Door Mini.",
+        { id: "cam-by", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Backyard/Balcony Eave/South West", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Mud UA-Hub-Door-Mini.",
           poeBar: { used: 15, cap: 30 },
           up: [P("cam-by-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
-        { id: "cam-ct", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Courtyard/Eave", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Basement Door Mini.",
+        { id: "cam-ct", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Courtyard/Eave", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Basement UA-Hub-Door-Mini.",
           poeBar: { used: 15, cap: 30 },
           up: [P("cam-ct-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
 
@@ -433,13 +522,13 @@
           poeBar: { used: 60, cap: 60 },
           up: [P("wp-u-up", "gbe1", { poe: "pp", title: "1G PoE++" })], down: [] },
 
-        { id: "drop-gar-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Garage", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at both ends; cabinet end is not connected to XG.",
+        { id: "drop-gar-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Garage", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at both ends; cabinet end is not connected to USW-Pro-XG-24-PoE.",
           up: [P("drop-gar-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
           down: [P("drop-gar-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-gar", name: "UACC-Keystone-Jack-C6A", loc: "Garage", href: UI + "uacc-keystone-jack-c6a", info: "C6A home-run → Type 4 / 4PPoE Cat6 short patch → Flex 10G/PoE+++. The second wired run is shown above with a dashed device frame.",
-          up: [P("drop-gar-xg", "gbe10", { poe: "ppp", title: "10G ← Pro XG" })],
-          down: [P("drop-gar-flex", "gbe10", { poe: "ppp", title: "10G → Flex", child: "flex" })] },
-        { id: "flex", vlan: "management", name: "USW-Flex-2.5G-8-PoE", loc: "Garage", href: UI + "usw-flex-2-5g-8-poe", info: "10G/PoE+++ uplink through C6A + Type 4 / 4PPoE Cat6 short patch. SFP+ idle (combo). 8×2.5G PoE++. AC-210W nested.",
+        { id: "drop-gar", name: "UACC-Keystone-Jack-C6A", loc: "Garage", href: UI + "uacc-keystone-jack-c6a", info: "C6A home-run → Type 4 / 4PPoE Cat6 short patch → USW-Flex-2.5G-8-PoE 10G RJ45 uplink with PoE+++. The second wired run is shown above with a dashed device frame.",
+          up: [P("drop-gar-xg", "gbe10", { poe: "ppp", title: "10G ← USW-Pro-XG-24-PoE" })],
+          down: [P("drop-gar-flex", "gbe10", { poe: "ppp", title: "10G → USW-Flex-2.5G-8-PoE 10G RJ45", child: "flex" })] },
+        { id: "flex", vlan: "management", name: "USW-Flex-2.5G-8-PoE", loc: "Garage", href: UI + "usw-flex-2-5g-8-poe", info: "C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45 uplink and PoE+++ input. SFP+ combo left unused. Eight 2.5G PoE++ downlinks.",
           embed: [{ name: "UACC-Adapter-AC-210W", href: UI + "uacc-adapter-ac-210w" }],
           devicePower: { value: "17W AC / 14W PoE+++" },
           poeBar: { modes: [
@@ -447,49 +536,49 @@
             { label: "PoE Output Used · PoE+++", used: 55.4, cap: 76 }
           ] },
           up: [
-            P("flex-up", "gbe10", { poe: "ppp", title: "10G RJ45 uplink" }),
-            P("flex-sfp", "sfp", { t: "SFP+", title: "SFP+ unused · combo", idle: true })
+            P("flex-up", "gbe10", { poe: "ppp", title: "10G RJ45 uplink · PoE+++ input" }),
+            P("flex-sfp", "sfp", { t: "SFP+", title: "SFP+ combo · unused", idle: true })
           ],
           down: [
             P("flex-lite", "gbe2p5", { poe: "pp", title: "2.5G PoE++ port → U7-Lite at PoE", child: "lite" }),
             P("flex-usl", "gbe2p5", { poe: "pp", title: "2.5G PoE++ port → USL at 100M PoE", child: "usl" }),
             P("flex-tesla", "gbe2p5", { poe: "pp", title: "2.5G PoE++ port → PW3 Leader at 1G", child: "pw-lead" }),
-            P("flex-gmin", "gbe2p5", { poe: "pp", title: "2.5G PoE++ → Garage Mini", child: "group-garage-door" }),
+            P("flex-gmin", "gbe2p5", { poe: "pp", title: "2.5G PoE++ → Garage UA-Hub-Door-Mini", child: "group-garage-door" }),
             P("flex-x1", "gbe2p5", { poe: "pp", title: "2.5G PoE++ unused", idle: true }),
             P("flex-x2", "gbe2p5", { poe: "pp", title: "2.5G PoE++ unused", idle: true }),
             P("flex-x3", "gbe2p5", { poe: "pp", title: "2.5G PoE++ unused", idle: true }),
             P("flex-x4", "gbe2p5", { poe: "pp", title: "2.5G PoE++ unused", idle: true })
           ] },
-        { id: "lite", vlan: "management", name: "U7-Lite", loc: "Garage", href: UI + "u7-lite", info: "2.5G PoE from Flex.",
+        { id: "lite", vlan: "management", name: "U7-Lite", loc: "Garage", href: UI + "u7-lite", info: "2.5G PoE from USW-Flex-2.5G-8-PoE.",
           poeBar: { used: 13, cap: 15.4 },
           up: [P("lite-up", "gbe2p5", { poe: "poe", title: "2.5G PoE" })], down: [] },
-        { id: "gar-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Garage Door", href: UI + "ua-hub-door-mini", info: "Uplink from Flex. PoE → G3 and Laneway Turret. REX, DPS, LOCK.",
+        { id: "gar-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Garage Door", href: UI + "ua-hub-door-mini", info: "Uplink from USW-Flex-2.5G-8-PoE. PoE → UA-UA-G3 and Laneway Turret. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
           poeBar: { label: "PoE Output Used", used: 20, cap: 45 },
           up: [P("gar-mini-up", "gbe1", { poe: "pp", title: "1G PoE++ uplink" })],
           down: [
             P("gar-mini-poe1", "gbe1", { poe: "plus", title: "1G PoE+ port → UA-G3 at 100M PoE", child: "gar-g3" }),
-            P("gar-mini-poe2", "gbe1", { poe: "plus", title: "PoE+ → Laneway Turret", child: "lane" }),
+            P("gar-mini-poe2", "gbe1", { poe: "plus", title: "PoE+ → Laneway UVC-G6-Pro-Turret", child: "lane" }),
             P("gar-mini-rex", "other", { t: "REX", title: "REX unused", idle: true }),
-            P("gar-mini-dps", "other", { t: "DPS", title: "DPS → Strike", child: "gar-strike" }),
-            P("gar-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → Strike", child: "gar-strike" })
+            P("gar-mini-dps", "other", { t: "DPS", title: "DPS → UACC-Lock-Strike-Secure-15mm", child: "gar-strike" }),
+            P("gar-mini-lock", "other", { t: "LOCK", title: "LOCK 12V → UACC-Lock-Strike-Secure-15mm", child: "gar-strike" })
           ] },
-        { id: "gar-g3", vlan: "security", hideLoc: true, name: "UA-G3", loc: "Garage Door", href: UI + "ua-g3", info: "PoE from Garage Mini.",
+        { id: "gar-g3", vlan: "security", hideLoc: true, name: "UA-G3", loc: "Garage Door", href: UI + "ua-g3", info: "PoE from Garage UA-Hub-Door-Mini.",
           poeBar: { used: 5, cap: 15.4 },
           up: [P("gar-g3-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
-        { id: "gar-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Garage Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Garage Mini.",
+        { id: "gar-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Garage Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Garage UA-Hub-Door-Mini.",
           up: [P("gar-strike-dps", "other", { t: "DPS", title: "DPS" }), P("gar-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
-        { id: "walk", vlan: "security", name: "UVC-G6-Pro-Bullet", loc: "Walkway/Balcony Eave/South East", href: UI + "uvc-g6-pro-bullet", info: "1G PoE+ from Dining Door Mini.",
+        { id: "walk", vlan: "security", name: "UVC-G6-Pro-Bullet", loc: "Walkway/Balcony Eave/South East", href: UI + "uvc-g6-pro-bullet", info: "1G PoE+ from Dining UA-Hub-Door-Mini.",
           poeBar: { used: 15, cap: 30 },
           up: [P("walk-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
-        { id: "lane", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Laneway/Garage/South", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Garage Door Mini.",
+        { id: "lane", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Laneway/Garage/South", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Garage UA-Hub-Door-Mini.",
           poeBar: { used: 15, cap: 30 },
           up: [P("lane-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
-        { id: "usl", vlan: "iot", name: "USL-Gateway", loc: "Garage", href: UI + "usl-gateway", info: "100M PoE from Flex.",
+        { id: "usl", vlan: "iot", name: "USL-Gateway", loc: "Garage", href: UI + "usl-gateway", info: "100M PoE from USW-Flex-2.5G-8-PoE.",
           poeBar: { used: 3.4, cap: 15.4 },
           up: [P("usl-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
-        { id: "pw-lead", vlan: "iot", name: "Tesla Powerwall 3 (Leader)", loc: "Garage", href: "https://www.tesla.com/powerwall", info: "LAN from Flex. ETH → Follower. CAN → GW3.",
-          up: [P("pw-lead-lan", "gbe1", { title: "1G ← Flex" })],
+        { id: "pw-lead", vlan: "iot", name: "Tesla Powerwall 3 (Leader)", loc: "Garage", href: "https://www.tesla.com/powerwall", info: "LAN from USW-Flex-2.5G-8-PoE. ETH → Follower. CAN → GW3.",
+          up: [P("pw-lead-lan", "gbe1", { title: "1G ← USW-Flex-2.5G-8-PoE" })],
           down: [P("pw-lead-eth", "gbe1", { title: "1G → Follower", child: "pw-follow" }), P("pw-lead-can", "other", { t: "CAN", title: "CAN → GW3", child: "gw3" })] },
         { id: "pw-follow", vlan: "iot", name: "Tesla Powerwall 3 (Follower)", loc: "Garage", href: "https://www.tesla.com/powerwall", info: "Same ports as Leader: 2×ETH + CAN. Second ETH and CAN unused.",
           up: [P("pw-follow-eth", "gbe1", { title: "1G ← Leader" })],
@@ -500,24 +589,24 @@
         { id: "gw3", name: "Tesla Gateway 3", loc: "Garage", href: "https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf", info: "CAN from Leader only.",
           up: [P("gw3-can", "other", { t: "CAN", title: "CAN ← Leader" })], down: [] },
 
-        { id: "group-wallpanels", name: "Home Assistant PoE Wallpanel ×3", info: "Three identical XG-fed Wallpanel runs; locations are listed at right.",
+        { id: "group-wallpanels", name: "Home Assistant PoE Wallpanel ×3", info: "Three identical USW-Pro-XG-24-PoE-fed Wallpanel runs; locations are listed at right.",
           up: [P("wp-b-up", "gbe1", { poe: "pp", title: "1G PoE++" })], down: [],
           bundle: {
             kind: "single", count: 3, source: "wp-b",
             locations: ["Basement Wall Mount", "Main Wall Mount", "Upper Wall Mount"]
           } },
-        { id: "group-aps", name: "U7-Pro ×3", info: "Three identical XG-fed U7-Pro runs; locations are listed at right.",
+        { id: "group-aps", name: "U7-Pro ×3", info: "Three identical USW-Pro-XG-24-PoE-fed U7-Pro runs; locations are listed at right.",
           up: [P("u7b-up", "gbe2p5", { poe: "plus", title: "2.5G PoE+" })], down: [],
           bundle: {
             kind: "single", count: 3, source: "u7b",
             locations: ["Basement", "Main", "Upper"]
           } },
-        { id: "group-main-doors", name: "Main House Door Mini Subtrees ×4", info: "Four XG-fed Door Mini branches. Each row preserves its individual uplink, reader, Protect camera, strike, ports, and real SVG links.",
+        { id: "group-main-doors", name: "Main House UA-Hub-Door-Mini Subtrees ×4", info: "Four USW-Pro-XG-24-PoE-fed UA-Hub-Door-Mini branches. Each row preserves its individual uplink, reader, Protect camera, strike, ports, and real SVG links.",
           up: [
-            P("front-mini-up", "gbe1", { poe: "pp", title: "Front Mini 1G PoE++ uplink" }),
-            P("mud-mini-up", "gbe1", { poe: "pp", title: "Mud Mini 1G PoE++ uplink" }),
-            P("din-mini-up", "gbe1", { poe: "pp", title: "Dining Mini 1G PoE++ uplink" }),
-            P("bsmt-mini-up", "gbe1", { poe: "pp", title: "Basement Mini 1G PoE++ uplink" })
+            P("front-mini-up", "gbe1", { poe: "pp", title: "Front UA-Hub-Door-Mini 1G PoE++ uplink" }),
+            P("mud-mini-up", "gbe1", { poe: "pp", title: "Mud UA-Hub-Door-Mini 1G PoE++ uplink" }),
+            P("din-mini-up", "gbe1", { poe: "pp", title: "Dining UA-Hub-Door-Mini 1G PoE++ uplink" }),
+            P("bsmt-mini-up", "gbe1", { poe: "pp", title: "Basement UA-Hub-Door-Mini 1G PoE++ uplink" })
           ], down: [],
           bundle: DoorHubSubtrees([
               { mini: "front-mini", reader: "front-entry", camera: "cam-fy", strike: "front-strike" },
@@ -525,12 +614,12 @@
               { mini: "din-mini", reader: "din-g3", camera: "walk", strike: "din-strike" },
               { mini: "bsmt-mini", reader: "bsmt-g3", camera: "cam-ct", strike: "bsmt-strike" }
           ]) },
-        { id: "group-garage-door", name: "Garage Door Mini Subtree", info: "Garage Door Mini branch rendered by the shared Door Hub subtree component.",
-          up: [P("gar-mini-up", "gbe1", { poe: "pp", title: "Garage Mini 1G PoE++ uplink" })], down: [],
+        { id: "group-garage-door", name: "Garage UA-Hub-Door-Mini Subtree", info: "Garage UA-Hub-Door-Mini branch rendered by the shared UA-Hub-Door-Mini subtree component.",
+          up: [P("gar-mini-up", "gbe1", { poe: "pp", title: "Garage UA-Hub-Door-Mini 1G PoE++ uplink" })], down: [],
           bundle: DoorHubSubtrees([
             { mini: "gar-mini", reader: "gar-g3", camera: "lane", strike: "gar-strike" }
           ]) },
-        { id: "group-room-drops", name: "Room Drop + Backup ×5", info: "Five active Cat6A runs connect to XG; five terminated backup runs remain unpatched. Locations are listed at right.",
+        { id: "group-room-drops", name: "Room Drop + Backup ×5", info: "Five active Cat6A runs connect to USW-Pro-XG-24-PoE; five terminated backup runs remain unpatched. Locations are listed at right.",
           up: [P("drop-den-up", "gbe10", { poe: "ppp", title: "10G active keystone" })], down: [],
           bundle: {
             kind: "room", count: 5,
@@ -580,52 +669,52 @@
       };
 
       var links = [
-        { from: "nah", fp: "nah-10g", to: "udm", tp: "udm-wan", cable: "cat6", route: "vertical", info: "NAH 10G RJ45 → Cat6 rack patch → CM RJ45; CM SFP+ is inserted in UDM WAN." },
-        { from: "udm", fp: "udm-lan-sfp", to: "xg", tp: "xg-sfp", cable: "dac", route: "vertical", label: "UACC-DAC-SFP10", href: UI + "10gbps-direct-attach-cable", info: "One UACC-DAC-SFP10: UDM LAN SFP+ → Pro XG SFP28 at 10G." },
-        { from: "xg", fp: "xg-nas", to: "nas", tp: "nas-10g", cable: "cat6", info: "Pro XG 10G → Cat6 rack patch → NAS LACP." },
-        { from: "xg", fp: "xg-nas2", to: "nas", tp: "nas-10g2", cable: "cat6", info: "Pro XG 10G → Cat6 rack patch → NAS LACP." },
-        { from: "xg", fp: "xg-ha", to: "ha", tp: "ha-up", cable: "cat6", info: "Pro XG 2.5G PoE+++ port → Cat6 rack patch → HA Mini PC at PoE++." },
-        { from: "xg", fp: "xg-gar", to: "drop-gar", tp: "drop-gar-xg", info: "Pro XG → Garage C6A." },
-        { from: "drop-gar", fp: "drop-gar-flex", to: "flex", tp: "flex-up", cable: "cat6", info: "Garage C6A home-run → Type 4 / 4PPoE-rated 24–26AWG pure-copper Cat6 short patch → Flex 10G RJ45 / PoE+++ input." },
-        { from: "xg", fp: "xg-view", to: "view", tp: "view-up", info: "Pro XG → Viewport." },
+        { from: "nah", fp: "nah-10g", to: "udm", tp: "udm-wan", cable: "cat6", route: "vertical", info: "NAH 10G RJ45 → Cat6 rack patch → CM RJ45; CM SFP+ is inserted in UDM-Pro-Max WAN." },
+        { from: "udm", fp: "udm-lan-sfp", to: "xg", tp: "xg-sfp", cable: "dac", route: "vertical", label: "UACC-DAC-SFP10", href: UI + "10gbps-direct-attach-cable", info: "One UACC-DAC-SFP10: UDM-Pro-Max LAN SFP+ → USW-Pro-XG-24-PoE SFP28 at 10G." },
+        { from: "xg", fp: "xg-nas", to: "nas", tp: "nas-10g", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → Cat6 rack patch → Synology FS2500 LACP." },
+        { from: "xg", fp: "xg-nas2", to: "nas", tp: "nas-10g2", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → Cat6 rack patch → Synology FS2500 LACP." },
+        { from: "xg", fp: "xg-ha", to: "ha", tp: "ha-up", cable: "cat6", info: "USW-Pro-XG-24-PoE 2.5G PoE+++ port → Cat6 rack patch → ameriDroid PoE Mini PC for Home Assistant at PoE++." },
+        { from: "xg", fp: "xg-gar", to: "drop-gar", tp: "drop-gar-xg", info: "USW-Pro-XG-24-PoE → Garage C6A." },
+        { from: "drop-gar", fp: "drop-gar-flex", to: "flex", tp: "flex-up", cable: "cat6", info: "Garage C6A home-run → Type 4 / 4PPoE-rated 24–26AWG pure-copper Cat6 short patch → USW-Flex-2.5G-8-PoE 10G RJ45 / PoE+++ input." },
+        { from: "xg", fp: "xg-view", to: "view", tp: "view-up", info: "USW-Pro-XG-24-PoE → UP-Viewport." },
         { from: "flex", fp: "flex-usl", to: "usl", tp: "usl-up", info: "Flex 2.5G PoE++ port → USL-Gateway at 100M PoE." },
         { from: "flex", fp: "flex-tesla", to: "pw-lead", tp: "pw-lead-lan", info: "Flex 2.5G PoE++ port → PW3 Leader at 1G; PoE disabled at the endpoint." },
         { from: "flex", fp: "flex-lite", to: "lite", tp: "lite-up", info: "Flex 2.5G PoE++ port → U7-Lite at 2.5G PoE." },
         { from: "pw-lead", fp: "pw-lead-eth", to: "pw-follow", tp: "pw-follow-eth", info: "Leader Ethernet → Follower." },
         { from: "pw-lead", fp: "pw-lead-can", to: "gw3", tp: "gw3-can", info: "Leader CAN → Gateway 3." },
-        { from: "xg", fp: "xg-wallpanels", to: "group-wallpanels", tp: "wp-b-up", info: "3× Pro XG 2.5G PoE+++ ports → HA Wallpanels at 1G PoE++." },
-        { from: "xg", fp: "xg-aps", to: "group-aps", tp: "u7b-up", info: "3× Pro XG → U7-Pro." },
-        { from: "xg", fp: "xg-front", to: "group-main-doors", tp: "front-mini-up", info: "Pro XG → Front Mini." },
-        { from: "xg", fp: "xg-mud", to: "group-main-doors", tp: "mud-mini-up", info: "Pro XG → Mud Mini." },
-        { from: "xg", fp: "xg-din", to: "group-main-doors", tp: "din-mini-up", info: "Pro XG → Dining Mini." },
-        { from: "xg", fp: "xg-bsmt", to: "group-main-doors", tp: "bsmt-mini-up", info: "Pro XG → Basement Mini." },
-        { from: "front-mini", fp: "front-mini-poe1", to: "front-entry", tp: "front-entry-up", route: "horizontal", info: "Front Mini PoE+ → Entry." },
-        { from: "front-mini", fp: "front-mini-poe2", to: "cam-fy", tp: "cam-fy-up", cable: "cat6", route: "horizontal", info: "Front Mini PoE+ → Frontyard Turret." },
-        { from: "front-mini", fp: "front-mini-lock", to: "front-strike", tp: "front-strike-lock", route: "horizontal", info: "Front Mini LOCK → Strike." },
-        { from: "front-mini", fp: "front-mini-dps", to: "front-strike", tp: "front-strike-dps", route: "horizontal", info: "Front Mini DPS → Strike." },
-        { from: "mud-mini", fp: "mud-mini-poe1", to: "mud-g3", tp: "mud-g3-up", route: "horizontal", info: "Mud Mini 1G PoE+ port → UA-G3 at 100M PoE." },
-        { from: "mud-mini", fp: "mud-mini-poe2", to: "cam-by", tp: "cam-by-up", cable: "cat6", route: "horizontal", info: "Mud Mini PoE+ → Backyard Turret." },
-        { from: "mud-mini", fp: "mud-mini-lock", to: "mud-strike", tp: "mud-strike-lock", route: "horizontal", info: "Mud Mini LOCK → Strike." },
-        { from: "mud-mini", fp: "mud-mini-dps", to: "mud-strike", tp: "mud-strike-dps", route: "horizontal", info: "Mud Mini DPS → Strike." },
-        { from: "din-mini", fp: "din-mini-poe1", to: "din-g3", tp: "din-g3-up", route: "horizontal", info: "Dining Mini 1G PoE+ port → UA-G3 at 100M PoE." },
-        { from: "din-mini", fp: "din-mini-poe2", to: "walk", tp: "walk-up", cable: "cat6", route: "horizontal", info: "Dining Mini PoE+ → Walkway Bullet." },
-        { from: "din-mini", fp: "din-mini-lock", to: "din-strike", tp: "din-strike-lock", route: "horizontal", info: "Dining Mini LOCK → Strike." },
-        { from: "din-mini", fp: "din-mini-dps", to: "din-strike", tp: "din-strike-dps", route: "horizontal", info: "Dining Mini DPS → Strike." },
-        { from: "bsmt-mini", fp: "bsmt-mini-poe1", to: "bsmt-g3", tp: "bsmt-g3-up", route: "horizontal", info: "Basement Mini 1G PoE+ port → UA-G3 at 100M PoE." },
-        { from: "bsmt-mini", fp: "bsmt-mini-poe2", to: "cam-ct", tp: "cam-ct-up", cable: "cat6", route: "horizontal", info: "Basement Mini PoE+ → Courtyard Turret." },
-        { from: "bsmt-mini", fp: "bsmt-mini-lock", to: "bsmt-strike", tp: "bsmt-strike-lock", route: "horizontal", info: "Basement Mini LOCK → Strike." },
-        { from: "bsmt-mini", fp: "bsmt-mini-dps", to: "bsmt-strike", tp: "bsmt-strike-dps", route: "horizontal", info: "Basement Mini DPS → Strike." },
-        { from: "flex", fp: "flex-gmin", to: "group-garage-door", tp: "gar-mini-up", info: "Flex 2.5G PoE++ port → Garage Mini at 1G PoE++." },
-        { from: "gar-mini", fp: "gar-mini-poe1", to: "gar-g3", tp: "gar-g3-up", route: "horizontal", info: "Garage Mini PoE+ port → UA-G3 at 100M PoE." },
-        { from: "gar-mini", fp: "gar-mini-poe2", to: "lane", tp: "lane-up", cable: "cat6", route: "horizontal", info: "Garage Mini PoE+ → Laneway Turret." },
-        { from: "gar-mini", fp: "gar-mini-lock", to: "gar-strike", tp: "gar-strike-lock", route: "horizontal", info: "Garage Mini LOCK → Strike." },
-        { from: "gar-mini", fp: "gar-mini-dps", to: "gar-strike", tp: "gar-strike-dps", route: "horizontal", info: "Garage Mini DPS → Strike." },
-        { from: "xg", fp: "xg-room-backup", to: "group-room-drops", tp: "drop-den-bak-up", info: "5× wired backup Room Drops → loose cabinet ends; not connected to XG." },
-        { from: "xg", fp: "xg-room-live", to: "group-room-drops", tp: "drop-den-up", info: "5× Pro XG → active Room Drop." },
-        { from: "xg", fp: "xg-media-backup", to: "drop-media-bak", tp: "drop-media-bak-up", info: "Wired Media Room backup → loose cabinet end; not connected to XG." },
-        { from: "xg", fp: "xg-media-live", to: "drop-media", tp: "drop-media-up", info: "Pro XG 10G PoE+++ port → active Media Room Drop." },
-        { from: "drop-media", fp: "drop-media-dn", to: "media-flex", tp: "media-flex-up", cable: "cat6", route: "horizontal", info: "Media Room C6A wall jack → Cat6 short patch → non-PoE Flex 2.5G at 10G with PoE+ input." },
-        { from: "xg", fp: "xg-gar-backup", to: "drop-gar-bak", tp: "drop-gar-bak-up", info: "Wired Garage backup Room Drop → loose cabinet end; not connected to XG." }
+        { from: "xg", fp: "xg-wallpanels", to: "group-wallpanels", tp: "wp-b-up", info: "3× USW-Pro-XG-24-PoE 2.5G PoE+++ ports → Home Assistant PoE Wallpanels at 1G PoE++." },
+        { from: "xg", fp: "xg-aps", to: "group-aps", tp: "u7b-up", info: "3× USW-Pro-XG-24-PoE → U7-Pro." },
+        { from: "xg", fp: "xg-front", to: "group-main-doors", tp: "front-mini-up", info: "USW-Pro-XG-24-PoE → Front UA-Hub-Door-Mini." },
+        { from: "xg", fp: "xg-mud", to: "group-main-doors", tp: "mud-mini-up", info: "USW-Pro-XG-24-PoE → Mud UA-Hub-Door-Mini." },
+        { from: "xg", fp: "xg-din", to: "group-main-doors", tp: "din-mini-up", info: "USW-Pro-XG-24-PoE → Dining UA-Hub-Door-Mini." },
+        { from: "xg", fp: "xg-bsmt", to: "group-main-doors", tp: "bsmt-mini-up", info: "USW-Pro-XG-24-PoE → Basement UA-Hub-Door-Mini." },
+        { from: "front-mini", fp: "front-mini-poe1", to: "front-entry", tp: "front-entry-up", route: "horizontal", info: "Front UA-Hub-Door-Mini PoE+ → UVC-G6-Pro-Entry." },
+        { from: "front-mini", fp: "front-mini-poe2", to: "cam-fy", tp: "cam-fy-up", cable: "cat6", route: "horizontal", info: "Front UA-Hub-Door-Mini PoE+ → Frontyard UVC-G6-Pro-Turret." },
+        { from: "front-mini", fp: "front-mini-lock", to: "front-strike", tp: "front-strike-lock", route: "horizontal", info: "Front UA-Hub-Door-Mini LOCK → UACC-Lock-Strike-Secure-15mm." },
+        { from: "front-mini", fp: "front-mini-dps", to: "front-strike", tp: "front-strike-dps", route: "horizontal", info: "Front UA-Hub-Door-Mini DPS → UACC-Lock-Strike-Secure-15mm." },
+        { from: "mud-mini", fp: "mud-mini-poe1", to: "mud-g3", tp: "mud-g3-up", route: "horizontal", info: "Mud UA-Hub-Door-Mini 1G PoE+ port → UA-G3 at 100M PoE." },
+        { from: "mud-mini", fp: "mud-mini-poe2", to: "cam-by", tp: "cam-by-up", cable: "cat6", route: "horizontal", info: "Mud UA-Hub-Door-Mini PoE+ → Backyard UVC-G6-Pro-Turret." },
+        { from: "mud-mini", fp: "mud-mini-lock", to: "mud-strike", tp: "mud-strike-lock", route: "horizontal", info: "Mud UA-Hub-Door-Mini LOCK → UACC-Lock-Strike-Secure-15mm." },
+        { from: "mud-mini", fp: "mud-mini-dps", to: "mud-strike", tp: "mud-strike-dps", route: "horizontal", info: "Mud UA-Hub-Door-Mini DPS → UACC-Lock-Strike-Secure-15mm." },
+        { from: "din-mini", fp: "din-mini-poe1", to: "din-g3", tp: "din-g3-up", route: "horizontal", info: "Dining UA-Hub-Door-Mini 1G PoE+ port → UA-G3 at 100M PoE." },
+        { from: "din-mini", fp: "din-mini-poe2", to: "walk", tp: "walk-up", cable: "cat6", route: "horizontal", info: "Dining UA-Hub-Door-Mini PoE+ → Walkway UVC-G6-Pro-Bullet." },
+        { from: "din-mini", fp: "din-mini-lock", to: "din-strike", tp: "din-strike-lock", route: "horizontal", info: "Dining UA-Hub-Door-Mini LOCK → UACC-Lock-Strike-Secure-15mm." },
+        { from: "din-mini", fp: "din-mini-dps", to: "din-strike", tp: "din-strike-dps", route: "horizontal", info: "Dining UA-Hub-Door-Mini DPS → UACC-Lock-Strike-Secure-15mm." },
+        { from: "bsmt-mini", fp: "bsmt-mini-poe1", to: "bsmt-g3", tp: "bsmt-g3-up", route: "horizontal", info: "Basement UA-Hub-Door-Mini 1G PoE+ port → UA-G3 at 100M PoE." },
+        { from: "bsmt-mini", fp: "bsmt-mini-poe2", to: "cam-ct", tp: "cam-ct-up", cable: "cat6", route: "horizontal", info: "Basement UA-Hub-Door-Mini PoE+ → Courtyard UVC-G6-Pro-Turret." },
+        { from: "bsmt-mini", fp: "bsmt-mini-lock", to: "bsmt-strike", tp: "bsmt-strike-lock", route: "horizontal", info: "Basement UA-Hub-Door-Mini LOCK → UACC-Lock-Strike-Secure-15mm." },
+        { from: "bsmt-mini", fp: "bsmt-mini-dps", to: "bsmt-strike", tp: "bsmt-strike-dps", route: "horizontal", info: "Basement UA-Hub-Door-Mini DPS → UACC-Lock-Strike-Secure-15mm." },
+        { from: "flex", fp: "flex-gmin", to: "group-garage-door", tp: "gar-mini-up", info: "Flex 2.5G PoE++ port → Garage UA-Hub-Door-Mini at 1G PoE++." },
+        { from: "gar-mini", fp: "gar-mini-poe1", to: "gar-g3", tp: "gar-g3-up", route: "horizontal", info: "Garage UA-Hub-Door-Mini PoE+ port → UA-G3 at 100M PoE." },
+        { from: "gar-mini", fp: "gar-mini-poe2", to: "lane", tp: "lane-up", cable: "cat6", route: "horizontal", info: "Garage UA-Hub-Door-Mini PoE+ → Laneway UVC-G6-Pro-Turret." },
+        { from: "gar-mini", fp: "gar-mini-lock", to: "gar-strike", tp: "gar-strike-lock", route: "horizontal", info: "Garage UA-Hub-Door-Mini LOCK → UACC-Lock-Strike-Secure-15mm." },
+        { from: "gar-mini", fp: "gar-mini-dps", to: "gar-strike", tp: "gar-strike-dps", route: "horizontal", info: "Garage UA-Hub-Door-Mini DPS → UACC-Lock-Strike-Secure-15mm." },
+        { from: "xg", fp: "xg-room-backup", to: "group-room-drops", tp: "drop-den-bak-up", info: "5× wired backup Room Drops → loose cabinet ends; not connected to USW-Pro-XG-24-PoE." },
+        { from: "xg", fp: "xg-room-live", to: "group-room-drops", tp: "drop-den-up", info: "5× USW-Pro-XG-24-PoE → active Room Drop." },
+        { from: "xg", fp: "xg-media-backup", to: "drop-media-bak", tp: "drop-media-bak-up", info: "Wired Media Room backup → loose cabinet end; not connected to USW-Pro-XG-24-PoE." },
+        { from: "xg", fp: "xg-media-live", to: "drop-media", tp: "drop-media-up", info: "USW-Pro-XG-24-PoE 10G PoE+++ port → active Media Room Drop." },
+        { from: "drop-media", fp: "drop-media-dn", to: "media-flex", tp: "media-flex-up", cable: "cat6", route: "horizontal", info: "Media Room C6A wall jack → Cat6 short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input." },
+        { from: "xg", fp: "xg-gar-backup", to: "drop-gar-bak", tp: "drop-gar-bak-up", info: "Wired Garage backup Room Drop → loose cabinet end; not connected to USW-Pro-XG-24-PoE." }
       ];
 
       var byId = {};
@@ -2494,8 +2583,8 @@
       var brand = document.querySelector("a.brand[data-tab]");
       var known = { topology: true, spec: true };
 
-      function show(id) {
-        var key = known[id] ? id : "topology";
+      function showTab(key, hash) {
+        if (!known[key]) key = "spec";
         Array.prototype.forEach.call(tabs, function (t) {
           t.classList.toggle("is-on", t.getAttribute("data-tab") === key);
         });
@@ -2505,7 +2594,7 @@
         document.body.classList.toggle("tab-spec", key === "spec");
         document.body.classList.toggle("tab-topology", key === "topology");
         if (typeof window.setSpecSidebar === "function") window.setSpecSidebar(false);
-        if (history.replaceState) history.replaceState(null, "", "#" + key);
+        if (history.replaceState) history.replaceState(null, "", "#" + (hash || key));
         if (key === "topology" && typeof window.relayoutTopo === "function") {
           requestAnimationFrame(function () {
             window.relayoutTopo();
@@ -2514,17 +2603,54 @@
         }
       }
 
+      function applyLocationHash(rawHash, scrollBehavior) {
+        var id = (rawHash || "").replace(/^#/, "");
+        try { id = decodeURIComponent(id); } catch (err) { /* keep raw id */ }
+        if (id === "topology") {
+          showTab("topology");
+          return;
+        }
+        if (!id || id === "spec") {
+          showTab("spec");
+          return;
+        }
+        var heading = typeof window.specHeadingById === "function" ? window.specHeadingById(id) : null;
+        if (!heading) {
+          var el = document.getElementById(id);
+          if (el && document.querySelector("#tab-spec .spa-article") &&
+              document.querySelector("#tab-spec .spa-article").contains(el)) {
+            heading = el;
+          }
+        }
+        showTab("spec", heading ? heading.id : "spec");
+        if (heading && typeof window.scrollSpecHeading === "function") {
+          var behavior = scrollBehavior || "auto";
+          var go = function () { window.scrollSpecHeading(heading, behavior); };
+          requestAnimationFrame(function () {
+            go();
+            requestAnimationFrame(go);
+          });
+          /* Spec pane may still be measuring after the tab turns on. */
+          if (behavior === "auto") setTimeout(go, 80);
+        }
+      }
+
+      window.applyLocationHash = applyLocationHash;
+
       Array.prototype.forEach.call(buttons, function (b) {
-        b.addEventListener("click", function () { show(b.getAttribute("data-tab")); });
+        b.addEventListener("click", function () { showTab(b.getAttribute("data-tab")); });
       });
       if (brand) {
         brand.addEventListener("click", function (event) {
           event.preventDefault();
-          show(brand.getAttribute("data-tab") || "spec");
+          showTab(brand.getAttribute("data-tab") || "spec");
         });
       }
 
-      var initial = (location.hash || "").replace("#", "");
-      show(initial || "spec");
+      window.addEventListener("hashchange", function () {
+        applyLocationHash(location.hash, "smooth");
+      });
+
+      applyLocationHash(location.hash, "auto");
     })();
 })();
