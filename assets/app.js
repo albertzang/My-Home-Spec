@@ -218,6 +218,65 @@
       links.forEach(function (item) { observer.observe(item.heading); });
     })();
 
+    /* §1.4 PoE tree: span-row handles collapse their descendant levels.
+       Collapse a handle also collapses nested handles. Expand a handle
+       shows its subtree with nested handles left collapsed. */
+    (function () {
+      var table = document.querySelector("#tab-spec table.power-tree");
+      if (!table) return;
+      var rows = Array.prototype.slice.call(table.querySelectorAll("tbody > tr[data-level]"));
+
+      function collapseDescendantHandles(handle) {
+        var level = Number(handle.getAttribute("data-level"));
+        var idx = rows.indexOf(handle);
+        for (var i = idx + 1; i < rows.length; i += 1) {
+          var row = rows[i];
+          var rowLevel = Number(row.getAttribute("data-level"));
+          if (rowLevel <= level) break;
+          if (row.classList.contains("power-tree-handle")) {
+            row.setAttribute("aria-expanded", "false");
+          }
+        }
+      }
+
+      function applyPowerTreeVisibility() {
+        var collapsedDepth = Infinity;
+        rows.forEach(function (row) {
+          var level = Number(row.getAttribute("data-level"));
+          if (level <= collapsedDepth) collapsedDepth = Infinity;
+          var hiddenByAncestor = level > collapsedDepth;
+          row.hidden = hiddenByAncestor;
+          if (
+            !hiddenByAncestor &&
+            row.classList.contains("power-tree-handle") &&
+            row.getAttribute("aria-expanded") === "false"
+          ) {
+            collapsedDepth = level;
+          }
+        });
+      }
+
+      rows.forEach(function (row) {
+        if (!row.classList.contains("power-tree-handle")) return;
+        if (!row.hasAttribute("tabindex")) row.setAttribute("tabindex", "0");
+        if (!row.hasAttribute("role")) row.setAttribute("role", "button");
+        row.addEventListener("click", function (event) {
+          if (event.target.closest && event.target.closest("a")) return;
+          var open = row.getAttribute("aria-expanded") !== "false";
+          row.setAttribute("aria-expanded", open ? "false" : "true");
+          collapseDescendantHandles(row);
+          applyPowerTreeVisibility();
+        });
+        row.addEventListener("keydown", function (event) {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          row.click();
+        });
+      });
+
+      applyPowerTreeVisibility();
+    })();
+
 (function () {
       var canvas = document.getElementById("topo-canvas");
       if (!canvas) return;
@@ -314,10 +373,7 @@
             P("udm-lan-sfp", "sfp", { t: "SFP+", title: "LAN SFP+ → UACC-DAC-SFP10", child: "xg" })
           ]) },
         { id: "xg", vlan: "management", name: "USW-Pro-XG-24-PoE", loc: "Rack Cabinet", href: UI + "usw-pro-xg-24-poe", info: "2×SFP28 + 8×2.5G PoE+++ + 16×10G PoE+++. Unused ports hollow.",
-          poeBar: { modes: [
-            { label: "PoE Output Used · USW-Flex-2.5G-8-PoE on AC", used: 463.5, cap: 720 },
-            { label: "PoE Output Used · USW-Flex-2.5G-8-PoE on PoE+++", used: 532.9, cap: 720 }
-          ] },
+          poeBar: { label: "PoE Output Used", used: 534.9, cap: 720 },
           up: [
             P("xg-sfp", "sfp", { t: "SFP28", title: "SFP28 ← UACC-DAC-SFP10 at 10G" }),
             P("xg-sfp2", "sfp", { t: "SFP28", title: "SFP28 unused", idle: true })
@@ -391,7 +447,7 @@
         { id: "drop-media", name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "Active C6A home-run on a single-port plate → Cat6 short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input. The second run is shown above as a separate dashed backup card.",
           up: [P("drop-media-up", "gbe10", { poe: "ppp", title: "10G ← USW-Pro-XG-24-PoE" })],
           down: [P("drop-media-dn", "gbe10", { poe: "ppp", title: "10G PoE+++ pass-through → USW-Flex-2.5G-8 at PoE+", child: "media-flex" })] },
-        { id: "media-flex", vlan: "management", name: "USW-Flex-2.5G-8", loc: "Basement/Media Room", href: "https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", info: "Non-PoE model. C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45 uplink and PoE+ input. SFP+ combo left unused. Eight 2.5G downlinks have no PoE output.",
+        { id: "media-flex", vlan: "management", name: "USW-Flex-2.5G-8", loc: "Basement/Media Room", href: "https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", info: "Non-PoE model. C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45 uplink and PoE+ input from USW-Pro-XG-24-PoE. No AC / USB-C supply. SFP+ combo left unused. Eight 2.5G downlinks have no PoE output.",
           /* No PoE output, so it reads as a plain PD: draw against its PoE+ input. */
           poeBar: { used: 14, cap: 30 },
           up: [
@@ -528,13 +584,9 @@
         { id: "drop-gar", name: "UACC-Keystone-Jack-C6A", loc: "Garage", href: UI + "uacc-keystone-jack-c6a", info: "C6A home-run → Type 4 / 4PPoE Cat6 short patch → USW-Flex-2.5G-8-PoE 10G RJ45 uplink with PoE+++. The second wired run is shown above with a dashed device frame.",
           up: [P("drop-gar-xg", "gbe10", { poe: "ppp", title: "10G ← USW-Pro-XG-24-PoE" })],
           down: [P("drop-gar-flex", "gbe10", { poe: "ppp", title: "10G → USW-Flex-2.5G-8-PoE 10G RJ45", child: "flex" })] },
-        { id: "flex", vlan: "management", name: "USW-Flex-2.5G-8-PoE", loc: "Garage", href: UI + "usw-flex-2-5g-8-poe", info: "C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45 uplink and PoE+++ input. SFP+ combo left unused. Eight 2.5G PoE++ downlinks.",
-          embed: [{ name: "UACC-Adapter-AC-210W", href: UI + "uacc-adapter-ac-210w" }],
-          devicePower: { value: "17W AC / 14W PoE+++" },
-          poeBar: { modes: [
-            { label: "PoE Output Used · AC", used: 55.4, cap: 196 },
-            { label: "PoE Output Used · PoE+++", used: 55.4, cap: 76 }
-          ] },
+        { id: "flex", vlan: "management", name: "USW-Flex-2.5G-8-PoE", loc: "Garage", href: UI + "usw-flex-2-5g-8-poe", info: "C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45 uplink and PoE+++ input from USW-Pro-XG-24-PoE. No AC adapter. SFP+ combo left unused. Eight 2.5G PoE++ downlinks.",
+          devicePower: { value: "14W" },
+          poeBar: { label: "PoE Output Used", used: 55.4, cap: 76 },
           up: [
             P("flex-up", "gbe10", { poe: "ppp", title: "10G RJ45 uplink · PoE+++ input" }),
             P("flex-sfp", "sfp", { t: "SFP+", title: "SFP+ combo · unused", idle: true })

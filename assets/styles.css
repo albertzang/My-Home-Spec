@@ -222,6 +222,7 @@
     .spa-spec .spa-article .table-scroll,
     .spa-spec .spa-article .design-devices-wrap,
     .spa-spec .spa-article .power-table-wrap,
+    .spa-spec .spa-article .power-tree-wrap,
     .spa-spec .spa-article .appliances-wrap {
       max-width: 100%;
       overflow-x: auto;
@@ -230,8 +231,31 @@
       margin: 0.75rem 0 1.4rem;
     }
 
-    .spa-spec .spa-article .power-table-wrap {
+    .spa-spec .spa-article .power-table-wrap,
+    .spa-spec .spa-article .power-tree-wrap {
       margin: 0.65rem 0 1rem;
+    }
+
+    /* Fit the reading column — never grow past the pane or scroll sideways. */
+    .spa-spec .spa-article .power-tree-wrap {
+      overflow-x: hidden;
+    }
+
+    .spa-spec .spa-article table.power-tree {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      table-layout: fixed;
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-handle > td {
+      white-space: normal;
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-leaf > td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .appliances-table {
@@ -429,6 +453,45 @@
       white-space: normal;
     }
 
+    .spa-spec .spa-article table.door-access-compare {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      table-layout: auto;
+    }
+
+    .spa-spec .spa-article table.door-access-compare th,
+    .spa-spec .spa-article table.door-access-compare td {
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    .spa-spec .spa-article table.door-access-compare td[rowspan] {
+      vertical-align: middle;
+    }
+
+    .spa-spec .spa-article table.door-access-compare .cell-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.12rem;
+    }
+
+    .spa-spec .spa-article table.door-access-compare .cell-door {
+      color: var(--ink);
+      font-weight: 650;
+      font-size: 1em;
+      line-height: 1.3;
+      white-space: nowrap;
+    }
+
+    .spa-spec .spa-article table.door-access-compare .cell-meta {
+      font-size: 0.82em;
+      line-height: 1.3;
+      color: #555;
+      white-space: nowrap;
+    }
+
     h1 {
       margin-bottom: 0.5rem;
     }
@@ -558,13 +621,16 @@
       gap: 0.45rem 0.5rem;
     }
 
-    /* Count beside the port so every port group has the same height. */
+    /*
+     * Count sits under the chip but stays out of flow so the port square
+     * keeps the same height as bare chips and stays vertically centered.
+     */
     .udc-port-wrap {
+      position: relative;
       display: inline-flex;
       flex-direction: row;
       align-items: center;
       justify-content: center;
-      gap: 0.18rem;
     }
 
     .udc-count {
@@ -573,6 +639,14 @@
       color: #555;
       font-variant-numeric: tabular-nums;
       text-align: center;
+    }
+
+    .udc-port-wrap > .udc-count {
+      position: absolute;
+      top: calc(100% + 0.1rem);
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
     }
 
     .udc-port {
@@ -1632,35 +1706,29 @@
       white-space: nowrap;
     }
 
-    .spa-spec .power-summary {
-      gap: 0.65rem;
-    }
-
-    .power-summary {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.8rem;
-      margin: 1rem 0 1.35rem;
-    }
-
     .power-card {
       min-width: 0;
       padding: 0.85rem 0.9rem;
-      border: 1px solid #d4d4d4;
+      border: 1px solid #cfcfcf;
       border-radius: 0.45rem;
-      background: #fafafa;
+      background: #f3f3f3;
+    }
+
+    .power-card-wide {
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .power-card-title {
       margin: 0;
       color: #555;
-      font-size: 0.75rem;
+      font-size: 0.82rem;
       font-weight: 650;
     }
 
     .power-card-value {
       margin: 0.14rem 0 0.55rem;
-      font-size: 1.35rem;
+      font-size: 1.45rem;
       font-weight: 700;
       line-height: 1.2;
       font-variant-numeric: tabular-nums;
@@ -1676,7 +1744,7 @@
       height: 0.38rem;
       overflow: hidden;
       border-radius: 999px;
-      background: #e5e5e5;
+      background: rgba(0, 0, 0, 0.08);
     }
 
     .power-meter > span {
@@ -1686,21 +1754,14 @@
       background: #18b86a;
     }
 
-    .power-card-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 0.5rem;
-      margin-top: 0.35rem;
-      color: #666;
-      font-size: 0.68rem;
-    }
-
     .power-callout {
-      margin: 1rem 0 1.4rem;
-      padding: 0.65rem 0.8rem;
+      margin: 0.65rem 0 0;
+      padding: 0.55rem 0.7rem;
       border-left: 3px solid #d98b16;
       background: #fff8e8;
       color: #4a3a20;
+      font-size: 0.82rem;
+      line-height: 1.45;
     }
 
     .power-callout p {
@@ -1712,26 +1773,125 @@
     }
 
     .power-formula {
-      margin: 0.45rem 0 0.85rem;
+      margin: 0.5rem 0 0;
       color: #555;
       font-size: 0.82rem;
     }
 
-    table.power-table td.num,
-    table.power-table th.num {
+    .power-card > .power-formula:first-of-type {
+      margin-top: 0.55rem;
+    }
+
+    table.power-tree {
+      border-collapse: collapse;
+    }
+
+    table.power-tree .power-tree-col-load {
+      width: 22%;
+    }
+
+    table.power-tree .power-tree-col-power {
+      width: 6%;
+    }
+
+    table.power-tree .power-tree-col-pd {
+      width: 22%;
+    }
+
+    table.power-tree .power-tree-col-pse {
+      width: 28%;
+    }
+
+    table.power-tree .power-tree-col-notes {
+      width: 22%;
+    }
+
+    table.power-tree td {
+      padding: 0.38rem 0.3rem;
+      vertical-align: middle;
+      border-top: 1px solid #e5e5e5;
+      font-size: 0.76rem;
+      line-height: 1.3;
+    }
+
+    table.power-tree td.num {
       text-align: right;
       font-variant-numeric: tabular-nums;
+      white-space: nowrap;
     }
 
-    table.power-table tbody tr:nth-child(even) {
+    table.power-tree .power-formula,
+    table.power-tree .power-formula code {
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    table.power-tree .power-callout {
+      white-space: normal;
+    }
+
+    /* Hierarchy via card fills — span row itself stays clear. */
+    table.power-tree tr.power-tree-handle {
+      cursor: pointer;
+    }
+
+    table.power-tree tr.power-tree-handle > td {
+      padding: 0.55rem 0.65rem;
+      border-top: 1px solid #e5e5e5;
+      background: transparent;
+    }
+
+    table.power-tree tr.power-tree-handle:hover > td {
+      background: transparent;
+    }
+
+    table.power-tree tr.power-tree-handle:focus-visible .power-card {
+      outline: 2px solid #2f6fed;
+      outline-offset: 2px;
+    }
+
+    .power-tree-handle-body {
+      min-width: 0;
+    }
+
+    /*
+     * Same cool steel family, stepped hue/value so nesting reads at a glance.
+     * Level 0 denser slate-blue; level 1 softer sky; level 2 pale ice.
+     */
+    table.power-tree tr.power-tree-handle[data-level="0"] .power-card {
+      background: #b9c8db;
+      border-color: #8fa3bc;
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="1"] .power-card {
+      background: #d2e2f0;
+      border-color: #a7bdd2;
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="2"] .power-card {
+      background: #e8f1f8;
+      border-color: #c3d4e4;
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="0"]:hover .power-card {
+      background: #aebfd5;
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="1"]:hover .power-card {
+      background: #c6d9eb;
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="2"]:hover .power-card {
+      background: #dce8f3;
+    }
+
+    table.power-tree tr.power-tree-leaf {
+      background: #fff;
+    }
+
+    table.power-tree tr.power-tree-leaf:nth-child(even) {
       background: #fafafa;
     }
-
-    .power-footnote {
-      color: #666;
-      font-size: 0.78rem;
-    }
-
 
     #export-root {
       position: absolute;
@@ -1972,9 +2132,6 @@
         height: auto;
       }
 
-      .power-summary {
-        grid-template-columns: 1fr;
-      }
     }
 
     /* Phone / narrow: off-canvas Contents drawer, matching Corporate Governance. */
@@ -2062,9 +2219,6 @@
         padding-right: max(0.9rem, env(safe-area-inset-right));
       }
 
-      .power-summary {
-        grid-template-columns: 1fr;
-      }
     }
 
     @media (prefers-reduced-motion: reduce) {

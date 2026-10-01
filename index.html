@@ -130,8 +130,178 @@
   </ul>
 
   <h3>1.2 Protect &amp; Access</h3>
-  <p class="lede">按门位列出 Hub、读头、Strike 与下挂 Protect 摄像头的型号与 PoE 接口。连线落点见 <a href="#topology" class="page-ref">Topology</a>；功率预算见 <a href="#1.4" class="page-ref">§1.4</a>。</p>
-  <p>五扇人行门共用同一模式：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 作就地汇聚——上行 PoE++，两个 PoE+ 口分别给读头与一台摄像头，LOCK（Wet 12V）+ DPS 接 <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>；REX 本宅空闲。接受 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 重启时该门口摄像头短暂同离线。<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a> 是 Protect 监视器，直连交换，不挂在 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 下。门锁 Access Status 五扇共用：一律接 LOCK 与 DPS，App 状态由这两路组合；无 DPS 时只能显示 Locked / Unlocked。</p>
+  <p class="lede">户外人行门禁、Protect 监视、车道门与 SuperLink 传感。连线落点见 <a href="#topology" class="page-ref">Topology</a>；功率预算见 <a href="#1.4" class="page-ref">§1.4</a>。</p>
+
+  <h4>1.2.1 Exterior Door</h4>
+  <p>五扇户外人行门共用同一模式：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 作就地汇聚——上行 PoE++，两个 PoE+ 口分别给读头与一台摄像头，LOCK（Wet 12V）+ DPS 接 <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>；REX 本宅空闲。接受 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 重启时该门口摄像头短暂同离线。</p>
+
+  <table class="door-access-compare">
+    <thead>
+      <tr>
+        <th><a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></th>
+        <th>Reader / Camera / Lock</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="3">
+          <div class="cell-stack">
+            <span class="cell-door">Front Door</span>
+            <span class="cell-meta">上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></span>
+          </div>
+        </td>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/uvc-g6-pro-entry" target="_blank" rel="noopener noreferrer">G6 Pro Entry</a>
+            <span class="cell-meta">本机 1G PoE+ · 上行 Door Hub Mini PoE+ · 前门独有</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>
+            <span class="cell-meta">Frontyard / Front Eave / North East</span>
+            <span class="cell-meta">本机 1G PoE+ · 上行 Door Hub Mini PoE+</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>
+            <span class="cell-meta">LOCK + DPS</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td rowspan="3">
+          <div class="cell-stack">
+            <span class="cell-door">Mud Door</span>
+            <span class="cell-meta">上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></span>
+          </div>
+        </td>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>
+            <span class="cell-meta">本机 100M PoE · 上行 Door Hub Mini PoE+</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>
+            <span class="cell-meta">Backyard / Balcony Eave / South West</span>
+            <span class="cell-meta">本机 1G PoE+ · 上行 Door Hub Mini PoE+</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>
+            <span class="cell-meta">LOCK + DPS</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td rowspan="3">
+          <div class="cell-stack">
+            <span class="cell-door">Dining Door</span>
+            <span class="cell-meta">上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></span>
+          </div>
+        </td>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>
+            <span class="cell-meta">本机 100M PoE · 上行 Door Hub Mini PoE+</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/uvc-g6-pro-bullet" target="_blank" rel="noopener noreferrer">G6 Pro Bullet</a>
+            <span class="cell-meta">Walkway / Balcony Eave / South East</span>
+            <span class="cell-meta">本机 1G PoE+ · 上行 Door Hub Mini PoE+</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>
+            <span class="cell-meta">LOCK + DPS</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td rowspan="3">
+          <div class="cell-stack">
+            <span class="cell-door">Basement Door</span>
+            <span class="cell-meta">上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></span>
+          </div>
+        </td>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>
+            <span class="cell-meta">本机 100M PoE · 上行 Door Hub Mini PoE+</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>
+            <span class="cell-meta">Courtyard / Eave</span>
+            <span class="cell-meta">本机 1G PoE+ · 上行 Door Hub Mini PoE+</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>
+            <span class="cell-meta">LOCK + DPS</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td rowspan="3">
+          <div class="cell-stack">
+            <span class="cell-door">Garage Door</span>
+            <span class="cell-meta">上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a></span>
+          </div>
+        </td>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>
+            <span class="cell-meta">本机 100M PoE · 上行 Door Hub Mini PoE+</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>
+            <span class="cell-meta">Laneway / Garage / South</span>
+            <span class="cell-meta">本机 1G PoE+ · 上行 Door Hub Mini PoE+</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="cell-stack">
+            <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>
+            <span class="cell-meta">LOCK + DPS</span>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>门锁 Access Status 五扇共用：一律接 LOCK 与 DPS，App 状态由这两路组合；无 DPS 时只能显示 Locked / Unlocked。</p>
   <div class="table-scroll">
   <table>
     <thead>
@@ -171,50 +341,23 @@
   </table>
   </div>
 
-  <h4>1.2.1 Front Door</h4>
+  <h4>1.2.2 Security CCTV</h4>
+  <p>门口摄像头挂在各门 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 下（见 <a href="#1.2.1" class="page-ref">Exterior Door</a>）。墙端 Protect 监视与通用显示器选型分开：监视走 UniFi Protect 专用机，不用电脑显示器 + 第三方 App 充当常驻预览。</p>
   <ul>
-    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
-    <li>读头 / 摄像一体：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-entry" target="_blank" rel="noopener noreferrer">G6 Pro Entry</a>——前门独有，占 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 一个 PoE+ 口。</li>
-    <li>外景摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>（Frontyard / Front Eave / North East）占另一 PoE+ 口。</li>
-    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。</li>
+    <li>监视器：<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a>
+      <ul>
+        <li>位置 Main / Kitchen</li>
+        <li>本机 1G PoE（约 9.5W）</li>
+        <li>上行 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 直供，不经过 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></li>
+      </ul>
+    </li>
+    <li>用途：实时预览与门口操作；录像仍由 UniFi Protect（<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>）承担，不以 HA 或通用显示器取代 NVR。</li>
   </ul>
 
-  <h4>1.2.2 Mud Door</h4>
-  <ul>
-    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
-    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>（100M PoE）。</li>
-    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>（Backyard / Balcony Eave / South West）。</li>
-    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。</li>
-  </ul>
-
-  <h4>1.2.3 Dining Door</h4>
-  <ul>
-    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
-    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>（100M PoE）。</li>
-    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-bullet" target="_blank" rel="noopener noreferrer">G6 Pro Bullet</a>（Walkway / Balcony Eave / South East）。</li>
-    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。</li>
-  </ul>
-
-  <h4>1.2.4 Basement Door</h4>
-  <ul>
-    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（上行 PoE++ 自 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
-    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>（100M PoE）。</li>
-    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>（Courtyard / Eave）。</li>
-    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。</li>
-  </ul>
-
-  <h4>1.2.5 Garage Door</h4>
-  <ul>
-    <li>Hub：<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（上行自 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 的 PoE++ 口，不是 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
-    <li>读头：<a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a>（100M PoE）。</li>
-    <li>摄像：<a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>（Laneway / Garage / South）。</li>
-    <li>锁：<a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（LOCK + DPS）。</li>
-  </ul>
-
-  <h4>1.2.6 Garage Gate</h4>
+  <h4>1.2.3 Garage Gate</h4>
   <p>车道大门 / 电动门禁位，与 Garage Door（车库行人/车门）分开记账。控制与读头型号待定；选定前不占用 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 端口，也不并入现有五套 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 子树。选型时须单独定：是否需要 Access Hub、锁体/电机干接点、读头 PoE 接口等级，以及上联落在 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 还是日后 Utility Switch。</p>
 
-  <h4>1.2.7 USL</h4>
+  <h4>1.2.4 USL</h4>
   <p><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a> 是 SuperLink / BLE 网关，不是传感器：100M PoE，由 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 直供，不经过 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>。</p>
   <ul>
     <li>传感器：<a href="https://store.ui.com/us/en/products/usl-environmental" target="_blank" rel="noopener noreferrer">Environmental Sensor</a> 电池供电，测漏水 / 温湿度 / 环境光，经 SuperLink（北美约 915 MHz）回 Gateway，无需 Ethernet。</li>
@@ -458,22 +601,6 @@
       <tr>
         <td>
           <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/4169e695-52be-466d-af67-4f258887ea6c/009b4172-ae10-45e5-a793-8d668561b4e1.png" alt="">
-            <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a> <span class="udc-count">×5</span></span>
-              <span class="udc-sku">UACC-Lock-Strike-Secure-15mm</span>
-            </span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="Strike · LOCK + DPS">
-              <span class="udc-port other" title="Lock relay">LOCK</span>
-              <span class="udc-port other" title="Door Position Sensor">DPS</span>
-            </span></td>
-        <td class="port-cell">-</td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/26e646b0-09d9-4f83-b9a2-398f55f31f28/959cdb9c-6699-4be9-b445-a8f7bd6d3e7f.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a> <span class="udc-count">×4</span></span>
@@ -495,6 +622,22 @@
           </span>
         </td>
         <td class="port-cell"><span class="udc-ports" title="1G RJ45, PoE+"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span></td>
+        <td class="port-cell">-</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/4169e695-52be-466d-af67-4f258887ea6c/009b4172-ae10-45e5-a793-8d668561b4e1.png" alt="">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a> <span class="udc-count">×5</span></span>
+              <span class="udc-sku">UACC-Lock-Strike-Secure-15mm</span>
+            </span>
+          </span>
+        </td>
+        <td class="port-cell"><span class="udc-ports" title="Strike · LOCK + DPS">
+              <span class="udc-port other" title="Lock relay">LOCK</span>
+              <span class="udc-port other" title="Door Position Sensor">DPS</span>
+            </span></td>
         <td class="port-cell">-</td>
       </tr>
       <tr>
@@ -563,221 +706,255 @@
 
 <h3>1.4 PoE Power Breakdown</h3>
 
-  <p class="lede">按当前设备规格与预留值核算，不是 UniFi 实时遥测。PoE Power Used 只计算对应 PSE 的输出负载；PoE 中继设备的 Device Power 单独列出，并在上一级供电源中合并一次。<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 常态按 PoE+++ 计入 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>；下方同时保留 AC 热备的卡片与分表，供以后对照，不表示 AC 仍是必装电源。</p>
+  <p class="lede">按当前设备规格与预留值核算 PoE 输出负载，不是 UniFi 实时遥测。两台 Flex 上联均由 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 经 Room Drop 以 PoE+++ 口供电：Media <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 按 PoE+ PD 约 14W；Garage <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 按 PoE+++ 整支约 69.4W（上一级只记这一次，不再另加下游 55.4W）。PoE Power Used / PoE Output Used 只计对应 PSE 的输出；有下游供电的设备在下方按子树展开，上一级只记整支一次。<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 有 19W（无 PoE 输出）与 50W（有 PoE 输出）两种整机上限，支路按 19W + 实际输出估算且不超过 50W。两台 Flex 硬件均可改接 AC 适配器，本宅不采用。</p>
 
-  <h5><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 供电结论</h5>
-  <div class="power-callout">
-    常态：<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> PoE+++ 供电。210W AC 降为可选热备，不从设计里删除。
-    <p>IEEE 802.3bt Type 4 Class 8 的 71.3W 是最坏 100m 通道后到达 PD 输入端的保证，不是 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 还能给下游吐出 71W。PSE 仍约送 90W，差额是线损。UniFi「PoE+++ 输入 → 76W 下游可用」再加自身约 14W，接近 90W，是短线 / 理想通道的厂商值；官方也写实际可用功率随输入线长和线材变化。若真按 100m、71.3W 进电再扣 14W，留给下游大约 57W，和当前 55.4W 贴脸，不能当作保证。</p>
-    <p>本宅已实测 Garage C6A 远小于 100m，实际更接近 76W 输出；车库也明确不再增加 PoE 设备（四个闲置 PoE++ 口保持空闲）。因此当前负载可以只靠 PoE+++：下游 55.4 / 76W（72.9%，理论余量 20.6W），<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 自身 14W，上游 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 口 69.4 / 90W（77.1%）。<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 运行合计按 534.9 / 720W。</p>
-    <p><a href="https://store.ui.com/us/en/products/uacc-adapter-ac-210w" target="_blank" rel="noopener noreferrer">AC Adapter 210W</a> 仍保留为可选热备（196W 输出、约 140.6W 余量；车库 AC 受 Powerwall 备电）。需要扩容、更换长跳、或实测 PoE+++ 裕量不够时再接入。下面的 AC 卡片与「<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 使用 AC」分表不参与常态合计，只作未来参考。</p>
-  </div>
-
-  <div class="power-summary">
-    <section class="power-card">
-      <p class="power-card-title"><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> · <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> on PoE+++（常态）</p>
-      <p class="power-card-value">534.9 / 720W <small>74.3%</small></p>
-      <div class="power-meter" aria-label="USW-Pro-XG-24-PoE 534.9 of 720 watts"><span style="width:74.292%"></span></div>
-      <div class="power-card-meta"><span>PoE Power Used</span><span>185.1W headroom</span></div>
-    </section>
-    <section class="power-card">
-      <p class="power-card-title"><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> · <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> on AC（参考）</p>
-      <p class="power-card-value">465.5 / 720W <small>64.7%</small></p>
-      <div class="power-meter" aria-label="USW-Pro-XG-24-PoE 465.5 of 720 watts"><span style="width:64.653%"></span></div>
-      <div class="power-card-meta"><span>PoE Power Used · 热备对照</span><span>254.5W headroom</span></div>
-    </section>
-    <section class="power-card">
-      <p class="power-card-title"><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> · AC mode（参考）</p>
-      <p class="power-card-value">55.4 / 196W <small>28.3%</small></p>
-      <div class="power-meter" aria-label="USW-Flex-2.5G-8-PoE 55.4 of 196 watts"><span style="width:28.265%"></span></div>
-      <div class="power-card-meta"><span>PoE output · 140.6W headroom</span><span>17 + 55.4 = 72.4W device-side</span></div>
-    </section>
-  </div>
-
-  <h5><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> · 465.5W → 534.9W</h5>
-  <p>从「<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 走 AC、C6A 只传数据」的 465.5W 基线，把整条车库 PoE 分支加回 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>，得到常态合计 534.9W。AC 基线本身见 <a href="#usw-pro-xg-24-poe-usw-flex-2-5g-8-poe-使用-ac-参考" class="page-ref">下方 AC 热备分表</a>，仅作对照。</p>
-  <p class="power-formula"><code>465.5 + (55.4 + 14) = 465.5 + 69.4 = 534.9W</code></p>
-  <div class="power-table-wrap">
-  <table class="power-table">
-    <thead>
-      <tr>
-        <th>Step</th>
-        <th class="num">Added Load</th>
-        <th class="num"><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> Running Total</th>
-        <th>Reason</th>
-      </tr>
-    </thead>
+  <div class="power-tree-wrap">
+  <table class="power-tree">
+    <colgroup>
+      <col class="power-tree-col-load" />
+      <col class="power-tree-col-power" />
+      <col class="power-tree-col-pd" />
+      <col class="power-tree-col-pse" />
+      <col class="power-tree-col-notes" />
+    </colgroup>
     <tbody>
-      <tr>
-        <td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 使用 AC</td>
-        <td class="num">—</td>
-        <td class="num">465.5W</td>
-        <td>Garage C6A 只传输数据，<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 不从 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 取电</td>
+      <tr class="power-tree-handle" data-level="0" aria-expanded="true">
+        <td colspan="5">
+          <div class="power-tree-handle-body">
+            <div class="power-card power-card-wide">
+              <p class="power-card-title"><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></p>
+              <p class="power-card-value">534.9 / 720W <small>74.3%</small></p>
+              <div class="power-meter" aria-label="USW-Pro-XG-24-PoE 534.9 of 720 watts"><span style="width:74.292%"></span></div>
+              <p class="power-formula"><code>30 + 60 + 60 + 60 + 21 + 22 + 22 + 9.5 + 14 + 50 + 39 + 39 + 39 + 69.4 = 534.9W</code></p>
+            </div>
+          </div></td>
       </tr>
-      <tr>
-        <td>加入 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 下游 PoE 输出</td>
-        <td class="num">+55.4W</td>
-        <td class="num">520.9W</td>
-        <td><a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a>、Garage <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 子树与 <a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a></td>
+
+      <tr class="power-tree-leaf" data-level="1">
+        <td><a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid</a> + <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>×2</td>
+        <td class="num">30W</td>
+        <td>2.5G PoE++ ≤60W</td>
+        <td>XG 2.5G PoE+++ ≤90W</td>
+        <td>含 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>×2</td>
       </tr>
-      <tr>
-        <td>加入 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 自身功耗</td>
-        <td class="num">+14W</td>
-        <td class="num">534.9W</td>
-        <td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 改由 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 PoE+++ 端口供电</td>
+      <tr class="power-tree-leaf" data-level="1">
+        <td>HA PoE Wallpanel</td>
+        <td class="num">60W</td>
+        <td>1G PoE++ ≤60W</td>
+        <td>XG 2.5G PoE+++ ≤90W</td>
+        <td>—</td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="1">
+        <td>HA PoE Wallpanel</td>
+        <td class="num">60W</td>
+        <td>1G PoE++ ≤60W</td>
+        <td>XG 2.5G PoE+++ ≤90W</td>
+        <td>—</td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="1">
+        <td>HA PoE Wallpanel</td>
+        <td class="num">60W</td>
+        <td>1G PoE++ ≤60W</td>
+        <td>XG 2.5G PoE+++ ≤90W</td>
+        <td>—</td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="1">
+        <td><a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7 Pro</a></td>
+        <td class="num">21W</td>
+        <td>2.5G PoE+ ≤30W</td>
+        <td>XG 10G PoE+++ ≤90W</td>
+        <td>Main</td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="1">
+        <td><a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a></td>
+        <td class="num">22W</td>
+        <td>2.5G PoE+ ≤30W</td>
+        <td>XG 10G PoE+++ ≤90W</td>
+        <td>Basement</td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="1">
+        <td><a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a></td>
+        <td class="num">22W</td>
+        <td>2.5G PoE+ ≤30W</td>
+        <td>XG 10G PoE+++ ≤90W</td>
+        <td>Upper</td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="1">
+        <td><a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a></td>
+        <td class="num">9.5W</td>
+        <td>1G PoE ≤15.4W</td>
+        <td>XG 10G PoE+++ ≤90W</td>
+        <td>—</td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="1">
+        <td><a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> · Media</td>
+        <td class="num">14W</td>
+        <td>10G PoE+ ≤30W</td>
+        <td>XG 10G PoE+++ ≤90W</td>
+        <td>无下游输出</td>
+      </tr>
+
+      <tr class="power-tree-handle" data-level="1" aria-expanded="false">
+        <td colspan="5">
+          <div class="power-tree-handle-body">
+            <div class="power-card power-card-wide">
+              <p class="power-card-title">Front <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></p>
+              <p class="power-card-value">33 / 45W <small>73.3%</small></p>
+              <div class="power-meter" aria-label="Front Door Hub Mini PoE Output Used 33 of 45 watts"><span style="width:73.333%"></span></div>
+              <p class="power-formula"><code>Device 19W · PoE Output 18 + 15 = 33W · Upstream 50W cap</code></p>
+            </div>
+          </div></td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="2">
+        <td><a href="https://store.ui.com/us/en/products/uvc-g6-pro-entry" target="_blank" rel="noopener noreferrer">G6 Pro Entry</a></td>
+        <td class="num">18W</td>
+        <td>1G PoE+ ≤30W</td>
+        <td>Hub 1G PoE+ ≤30W</td>
+        <td>读头/摄像</td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="2">
+        <td><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a></td>
+        <td class="num">15W</td>
+        <td>1G PoE+ ≤30W</td>
+        <td>Hub 1G PoE+ ≤30W</td>
+        <td>Frontyard</td>
+      </tr>
+
+      <tr class="power-tree-handle" data-level="1" aria-expanded="false">
+        <td colspan="5">
+          <div class="power-tree-handle-body">
+            <div class="power-card power-card-wide">
+              <p class="power-card-title">Mud <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></p>
+              <p class="power-card-value">20 / 45W <small>44.4%</small></p>
+              <div class="power-meter" aria-label="Mud Door Hub Mini PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
+              <p class="power-formula"><code>Device 19W · PoE Output 5 + 15 = 20W · Upstream 39W</code></p>
+            </div>
+          </div></td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="2">
+        <td><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a></td>
+        <td class="num">5W</td>
+        <td>100M PoE ≤15.4W</td>
+        <td>Hub 1G PoE+ ≤30W</td>
+        <td>—</td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="2">
+        <td><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a></td>
+        <td class="num">15W</td>
+        <td>1G PoE+ ≤30W</td>
+        <td>Hub 1G PoE+ ≤30W</td>
+        <td>Backyard</td>
+      </tr>
+
+      <tr class="power-tree-handle" data-level="1" aria-expanded="false">
+        <td colspan="5">
+          <div class="power-tree-handle-body">
+            <div class="power-card power-card-wide">
+              <p class="power-card-title">Dining <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></p>
+              <p class="power-card-value">20 / 45W <small>44.4%</small></p>
+              <div class="power-meter" aria-label="Dining Door Hub Mini PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
+              <p class="power-formula"><code>Device 19W · PoE Output 5 + 15 = 20W · Upstream 39W</code></p>
+            </div>
+          </div></td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="2">
+        <td><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a></td>
+        <td class="num">5W</td>
+        <td>100M PoE ≤15.4W</td>
+        <td>Hub 1G PoE+ ≤30W</td>
+        <td>—</td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="2">
+        <td><a href="https://store.ui.com/us/en/products/uvc-g6-pro-bullet" target="_blank" rel="noopener noreferrer">G6 Pro Bullet</a></td>
+        <td class="num">15W</td>
+        <td>1G PoE+ ≤30W</td>
+        <td>Hub 1G PoE+ ≤30W</td>
+        <td>Walkway</td>
+      </tr>
+
+      <tr class="power-tree-handle" data-level="1" aria-expanded="false">
+        <td colspan="5">
+          <div class="power-tree-handle-body">
+            <div class="power-card power-card-wide">
+              <p class="power-card-title">Basement <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></p>
+              <p class="power-card-value">20 / 45W <small>44.4%</small></p>
+              <div class="power-meter" aria-label="Basement Door Hub Mini PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
+              <p class="power-formula"><code>Device 19W · PoE Output 5 + 15 = 20W · Upstream 39W</code></p>
+            </div>
+          </div></td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="2">
+        <td><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a></td>
+        <td class="num">5W</td>
+        <td>100M PoE ≤15.4W</td>
+        <td>Hub 1G PoE+ ≤30W</td>
+        <td>—</td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="2">
+        <td><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a></td>
+        <td class="num">15W</td>
+        <td>1G PoE+ ≤30W</td>
+        <td>Hub 1G PoE+ ≤30W</td>
+        <td>Courtyard</td>
+      </tr>
+
+      <tr class="power-tree-handle" data-level="1" aria-expanded="false">
+        <td colspan="5">
+          <div class="power-tree-handle-body">
+            <div class="power-card power-card-wide">
+              <p class="power-card-title"><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> · Garage</p>
+              <p class="power-card-value">55.4 / 76W <small>72.9%</small></p>
+              <div class="power-meter" aria-label="USW-Flex-2.5G-8-PoE 55.4 of 76 watts"><span style="width:72.895%"></span></div>
+              <p class="power-formula"><code>Device 14W · PoE Output 13 + 39 + 3.4 = 55.4W · Upstream 69.4W</code></p>
+              <div class="power-callout">
+                Garage C6A 远短于 100m，按 UniFi「PoE+++ 输入 → 约 76W 下游可用」计。IEEE 802.3bt Class 8 在 100m 最坏通道只保证约 71.3W 进 PD，不能当作本宅短线保证。车库四个闲置 PoE++ 口保持空闲。
+              </div>
+            </div>
+          </div></td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="2">
+        <td><a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a></td>
+        <td class="num">13W</td>
+        <td>2.5G PoE ≤15.4W</td>
+        <td>Flex 2.5G PoE++ ≤60W</td>
+        <td>—</td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="2">
+        <td><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a></td>
+        <td class="num">3.4W</td>
+        <td>100M PoE ≤15.4W</td>
+        <td>Flex 2.5G PoE++ ≤60W</td>
+        <td>—</td>
+      </tr>
+
+      <tr class="power-tree-handle" data-level="2" aria-expanded="false">
+        <td colspan="5">
+          <div class="power-tree-handle-body">
+            <div class="power-card power-card-wide">
+              <p class="power-card-title">Garage <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></p>
+              <p class="power-card-value">20 / 45W <small>44.4%</small></p>
+              <div class="power-meter" aria-label="Garage Door Hub Mini PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
+              <p class="power-formula"><code>Device 19W · PoE Output 5 + 15 = 20W · Upstream 39W</code></p>
+            </div>
+          </div></td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="3">
+        <td><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a></td>
+        <td class="num">5W</td>
+        <td>100M PoE ≤15.4W</td>
+        <td>Hub 1G PoE+ ≤30W</td>
+        <td>—</td>
+      </tr>
+      <tr class="power-tree-leaf" data-level="3">
+        <td><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a></td>
+        <td class="num">15W</td>
+        <td>1G PoE+ ≤30W</td>
+        <td>Hub 1G PoE+ ≤30W</td>
+        <td>Laneway</td>
       </tr>
     </tbody>
   </table>
   </div>
-
-  <h5><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> · <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 使用 AC（参考）</h5>
-  <p>可选热备账：Garage C6A 只传输数据，<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 不从 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 取电。不计入当前 534.9W 常态合计。</p>
-  <p class="power-formula"><code>30 + 180 + 65 + 9.5 + 14 + 50 + 117 = 465.5W</code></p>
-  <div class="power-table-wrap">
-    <table class="power-table">
-      <thead>
-        <tr>
-          <th>Load</th>
-          <th class="num">Qty</th>
-          <th class="num">Per Unit / Branch</th>
-          <th class="num">Subtotal</th>
-          <th>Basis</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC</a> + <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> ×2</td>
-          <td class="num">1</td>
-          <td class="num">30W</td>
-          <td class="num">30W</td>
-          <td>Mini PC 简化按 30W；两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 包含在该预留内</td>
-        </tr>
-        <tr>
-          <td>Home Assistant PoE Wallpanel</td>
-          <td class="num">3</td>
-          <td class="num">60W</td>
-          <td class="num">180W</td>
-          <td>机型未定，每路按设备侧 PoE++ 上限预留；<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 端口仍保留 PoE+++ 能力</td>
-        </tr>
-        <tr>
-          <td><a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7 Pro</a></td>
-          <td class="num">1</td>
-          <td class="num">21W</td>
-          <td class="num">21W</td>
-          <td>Main</td>
-        </tr>
-        <tr>
-          <td><a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a></td>
-          <td class="num">2</td>
-          <td class="num">22W</td>
-          <td class="num">44W</td>
-          <td>Basement / Upper</td>
-        </tr>
-        <tr>
-          <td><a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a></td>
-          <td class="num">1</td>
-          <td class="num">9.5W</td>
-          <td class="num">9.5W</td>
-          <td><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 直供</td>
-        </tr>
-        <tr>
-          <td><a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> · non-PoE</td>
-          <td class="num">1</td>
-          <td class="num">14W</td>
-          <td class="num">14W</td>
-          <td>Media Room active C6A carries 10G + PoE+ input；八个 2.5G 下联口不输出 PoE</td>
-        </tr>
-        <tr>
-          <td>Front <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> subtree</td>
-          <td class="num">1</td>
-          <td class="num">50W rated cap</td>
-          <td class="num">50W</td>
-          <td>Entry 18W + Turret 15W 在 45W 输出预算内；整条支路按 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 官方 “with PoE output” 50W 上限计</td>
-        </tr>
-        <tr>
-          <td>Mud / Dining / Basement <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> subtrees</td>
-          <td class="num">3</td>
-          <td class="num">19W + 5W + 15W</td>
-          <td class="num">117W</td>
-          <td>每路 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>（含 Wet 锁）+ <a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a> + 对应 Protect 摄像头 = 39W</td>
-        </tr>
-        <tr>
-          <td><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> subtotal</td>
-          <td class="num">—</td>
-          <td class="num">—</td>
-          <td class="num">465.5W</td>
-          <td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 走 AC 热备时的 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 合计；Media Room <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 仍由 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> PoE+ 供电。本行不作为常态。</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h5><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> · 下游 PoE 输出</h5>
-  <p class="power-formula"><code>13 + 39 + 3.4 = 55.4W</code></p>
-  <div class="power-table-wrap">
-  <table class="power-table">
-    <thead>
-      <tr>
-        <th>Load</th>
-        <th class="num">Power</th>
-        <th>Basis</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td><a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a></td><td class="num">13W</td><td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 直供</td></tr>
-      <tr><td>Garage <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> subtree</td><td class="num">39W</td><td><a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 19W（含 Wet 锁）+ <a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a> 5W + Laneway Turret 15W</td></tr>
-      <tr><td><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a></td><td class="num">3.4W</td><td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 直供</td></tr>
-      <tr><td>Tesla Powerwall branch</td><td class="num">0W</td><td>仅数据，不由 PoE 供电</td></tr>
-      <tr><td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> PoE output subtotal</td><td class="num">55.4W</td><td>不含 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 自身功耗</td></tr>
-    </tbody>
-  </table>
-  </div>
-
-  <h5>PoE 中继设备自身功耗</h5>
-  <div class="power-table-wrap">
-  <table class="power-table">
-    <thead>
-      <tr>
-        <th>Relay Device</th>
-        <th class="num">Device Power<br>(w/o output)</th>
-        <th class="num">PoE Output</th>
-        <th class="num">Upstream Draw</th>
-        <th>Accounting</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>Front <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></td><td class="num">19W</td><td class="num">33W</td><td class="num">50W cap</td><td>19W 与 50W 是官方无 / 有 PoE 输出两种整机上限，不直接相加；33W 输出低于 Σ45W</td></tr>
-      <tr><td>Mud <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></td><td class="num">19W</td><td class="num">20W</td><td class="num">39W</td><td><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a> 5W + Backyard Turret 15W</td></tr>
-      <tr><td>Dining <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></td><td class="num">19W</td><td class="num">20W</td><td class="num">39W</td><td><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a> 5W + Walkway Bullet 15W</td></tr>
-      <tr><td>Basement <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></td><td class="num">19W</td><td class="num">20W</td><td class="num">39W</td><td><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a> 5W + Courtyard Turret 15W</td></tr>
-      <tr><td>Garage <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></td><td class="num">19W</td><td class="num">20W</td><td class="num">39W</td><td><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a> 5W + Laneway Turret 15W；计入 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a></td></tr>
-      <tr><td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> · AC mode</td><td class="num">17W</td><td class="num">55.4W</td><td class="num">72.4W + loss</td><td>可选热备；自身功耗来自 AC，不进入 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 常态合计</td></tr>
-      <tr><td><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> · PoE+++ mode</td><td class="num">14W</td><td class="num">55.4W</td><td class="num">69.4W</td><td>整条 Garage 分支计入 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></td></tr>
-    </tbody>
-  </table>
-  </div>
-
-  <h5>不计入 PoE 合计的设备</h5>
-  <div class="power-table-wrap">
-  <table class="power-table">
-    <thead>
-      <tr><th>Device / Group</th><th>Treatment</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>TELUS 光终端（XS-250X-A 或 NAH）</td><td>市电供电；当前 Spec 未列自身功耗</td></tr>
-      <tr><td><a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a></td><td>市电供电；自身功耗不属于 PoE 输出预算</td></tr>
-      <tr><td><a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a></td><td>由 SFP 主机供电；当前未单独计值</td></tr>
-      <tr><td><a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">10G Direct Attach Cable</a></td><td>不分配 PoE 功率</td></tr>
-      <tr><td><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></td><td>市电供电；720W 是 PoE 输出预算，不是交换机墙端功耗</td></tr>
-      <tr><td><a href="https://store.ui.com/us/en/products/uacc-adapter-ac-210w" target="_blank" rel="noopener noreferrer">AC Adapter 210W</a></td><td>可选热备，不是常态供电源；若接入，196W 是 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 可用 PoE 输出预算</td></tr>
-      <tr><td>Room drops / keystones / wall plates</td><td>被动器件，0W</td></tr>
-      <tr><td><a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a></td><td>市电供电，不从 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 获取 PoE；官网 Access ≈74.83W</td></tr>
-      <tr><td>Tesla Powerwall / <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a></td><td>设备自身系统供电；Ethernet / CAN 仅传输数据</td></tr>
-    </tbody>
-  </table>
-  </div>
-
-  <p class="power-footnote">避免重复计算：叶节点只在直接供电它的 PSE 下计一次。Media Room <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 仅计自身 14W，没有下游 PoE 输出。<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 的 19W（without PoE output）与 50W（with PoE output）是两种整机上限；一般支路以 19W + 实际输出估算，但不得超过 50W。<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 使用 PoE+++ 时，<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 只加入整条 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 上游功耗 69.4W，不再额外重复加入 55.4W。</p>
 
 <h2>2. Home Assistant System</h2>
   <p class="lede">本地智能家居控制面：HA 主机、Wallpanel、Zigbee / Thread，以及与其它子系统的联动边界。</p>
