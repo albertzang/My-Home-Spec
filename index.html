@@ -960,67 +960,14 @@
   <p class="lede">本地智能家居控制面：机柜 Hub、墙面 Wallpanel、射频协议与家居设备清单。录像 / 门禁仍归 <a href="#1.2" class="page-ref">§1.2</a> UniFi Protect / Access；HA 只做联动，不取代 NVR 或 Access 逻辑。</p>
 
   <h3>2.1 Hub</h3>
-  <p>机柜里的 HA 主机跑 Home Assistant OS，挂全部集成、自动化、Add-on，以及 <a href="#2.3" class="page-ref">§2.3</a> 的射频棒。候选只剩两台：<a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a>（Intel N100）与 <a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi 5</a>。对比前提是本宅已定稿的 UniFi 机柜（<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 多口 PoE+++、Protect / Access 已占控制面）以及 Home Office（Den <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> + 机柜 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">FS2500</a>）——HA 必须是独立、低功耗、可 PoE 上电的第三台常驻机器，不能挤 Studio 或 NAS。</p>
-
-  <div class="design-devices-wrap">
-  <table class="devices-table">
-    <thead>
-      <tr>
-        <th>维度</th>
-        <th><a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC</a></th>
-        <th><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi 5</a></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>算力 / 内存</td>
-        <td>N100 四核 x86；单条 SODIMM 最高 32 GB DDR4；跑 HAOS + Z-Wave JS + Matter + Mosquitto + 若干 Add-on 仍有余量</td>
-        <td>Cortex-A76 四核；常见 2–8 GB LPDDR4X；轻量 HAOS 够用，Add-on / 录像辅助 / 大型数据库更容易顶满</td>
-      </tr>
-      <tr>
-        <td>存储</td>
-        <td>M.2 SATA + 可选 2.5″ SATA；适合 24/7 主机盘</td>
-        <td>microSD 起步，稳妥方案仍要另加 NVMe HAT；与墙面三套 Pi 再抢同一配件生态</td>
-      </tr>
-      <tr>
-        <td>有线网络</td>
-        <td>4×2.5 GbE（一口 PoE++ IN）；可把 HA 单独挂 IoT VLAN 口，或日后拆第二口做实验网，不必再买网卡</td>
-        <td>1×1 GbE；多网段要 USB 网卡或依赖 VLAN 子接口，机柜里不如原生多口干净</td>
-      </tr>
-      <tr>
-        <td>供电</td>
-        <td>原生 802.3at/bt PoE++ IN（厂商要求 ≥30 W）+ 随附 12 V DC；直接吃 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 2.5G PoE+++ 口，与本宅「固定设备走 PoE」一致</td>
-        <td>默认可 5 V USB-C；机柜 PoE 必须再叠 PoE HAT，功耗与散热要按 HAT + 棒一起算</td>
-      </tr>
-      <tr>
-        <td>USB / 射频</td>
-        <td>USB-C + USB-A 足够同时挂 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>×2 + <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a>；金属机箱 + 天线延长出柜</td>
-        <td>USB 口同样能挂三根棒，但整机更吃 GPIO / HAT 层叠；金属柜衰减问题两边一样要延长天线</td>
-      </tr>
-      <tr>
-        <td>与本宅其它角色冲突</td>
-        <td>专用 HA 主机；不碰 Mac Studio / NAS 算力</td>
-        <td><a href="#2.2" class="page-ref">§2.2 Wallpanel</a> 已锁定 Pi 5 + Touch Display 2——主机再上 Pi 5 等于机柜与墙面同架构抢配件、同质化故障面</td>
-      </tr>
-      <tr>
-        <td>HAOS 支持</td>
-        <td>Generic x86-64，官方一等公民；ameriDroid 面向 HA 预调 BIOS（Wake-on-LAN、掉电自启等）</td>
-        <td>官方 Raspberry Pi 镜像成熟，社区资料最多</td>
-      </tr>
-      <tr>
-        <td>典型功耗 / 预算</td>
-        <td>整机常见约 6–15 W；Spec / 拓扑按 30 W PoE++ 预留（含两根 ZBT-2）</td>
-        <td>板级更低，但加 PoE HAT + 三棒后机柜预算仍要按 PoE+ 级预留，优势不明显</td>
-      </tr>
-    </tbody>
-  </table>
-  </div>
-
-  <p><strong>定稿：Hub 用 ameriDroid PoE Mini PC。</strong>理由收束成三条：① 机柜已有富裕的 2.5G PoE+++，原生 PoE++ 进线比「Pi 5 + HAT」更干净；② N100 / 多 2.5G / SSD 给 Add-on 与日后扩展留头寸，而 Den 的 Mac Studio 与机柜 NAS 不应兼 HA；③ Pi 5 产能与配件留给三套 Wallpanel（10″ Touch Display 2 只认 Pi 5）。Pi 5 仍是优秀的 HA 入门主机，只是不适合本宅机柜角色。</p>
+  <p>机柜 HA 主机定为 <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a>（Intel N100）。跑 Home Assistant OS，挂全部集成、自动化、Add-on，以及 <a href="#2.3" class="page-ref">§2.3</a> 的射频棒。它是独立于 Den <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> 与机柜 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">FS2500</a> 的第三台常驻机器：低功耗、原生 PoE 上电，与本宅 UniFi 机柜（<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）和「固定设备走 PoE」一致。</p>
   <ul>
-    <li>上联：Mini PC 的 PoE IN 口 → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++；功耗预留见 <a href="#1.4" class="page-ref">§1.4</a>。</li>
-    <li>射频：<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>×2 + <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a>×1 插 Mini PC USB，天线延长出金属柜（细节 <a href="#2.3" class="page-ref">§2.3</a>）。</li>
-    <li>不做：HA 装进 NAS 虚拟机当唯一主机、HA 装进 Mac Studio、机柜再用一台 Pi 5 当 Hub。</li>
+    <li>算力 / 内存：N100 四核 x86；单条 SODIMM 最高 32 GB DDR4；HAOS + Z-Wave JS + Matter + Mosquitto 及若干 Add-on 仍有余量。</li>
+    <li>存储：M.2 SATA，可选 2.5″ SATA；按 24/7 主机盘配置。</li>
+    <li>网络：4×2.5 GbE（一口为 PoE++ IN）。上联用 PoE IN 口进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 2.5G PoE+++；其余口可留给 IoT VLAN 或日后实验网，不必另加网卡。</li>
+    <li>供电：原生 802.3at/bt PoE++ IN（厂商要求 ≥30 W），随附 12 V DC 仅作装机 / 排错。Spec / 拓扑按 30 W 预留（含两根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>），见 <a href="#1.4" class="page-ref">§1.4</a>；整机常见约 6–15 W。</li>
+    <li>USB / 射频：1× USB-C + 1× USB 3.0-A + 4× USB 2.0-A。<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>×2 与 <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a>×1 用原装 USB-C→USB-A 线插 USB-A（优先 USB 2.0）；天线座用延长线出金属柜，彼此约 0.5–1 m（细节 <a href="#2.3" class="page-ref">§2.3</a>）。</li>
+    <li>系统：Generic x86-64 HAOS；厂商预调 BIOS（掉电自启、Wake-on-LAN、PXE 等）。金属机箱，附 VESA 安装件。</li>
   </ul>
 
   <h3>2.2 Wallpanel</h3>
