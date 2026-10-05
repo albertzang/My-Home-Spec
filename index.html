@@ -112,7 +112,7 @@
   <h4>1.1.5 Room Drops</h4>
   <p>七个房间（Media / Den / Master / BR1 / BR2 / Seating / Garage）各拉两根 Cat6A 实心铜 home-run 到机柜配线架，完整通道按 Type 4 / 4PPoE 选材，全部终结、认证、贴标。除 Den 外每间只启用一根；备用线占配线架，不占交换机口。Den 两根全开、各占一口。Media 与 Garage 的在用口在远端接边缘 Flex，再经该 Room Drop 回到机柜 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>——不是另拉一条「交换机上联」进柜。</p>
   <ul>
-    <li>Den：墙面双口 plate，两根均启用。一口接 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（机身 10GbE），配线架 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 10G 口；另一口接 <a href="#2.1" class="page-ref">§2.1</a> HA Hub（ameriDroid PoE Mini PC），配线架 patch 进同一交换机的 2.5G PoE+++ 口（机身 PoE++ IN）。拓扑图暂未改，以本 Spec 为准。</li>
+    <li>Den：墙面双口 plate，两根均启用。一口接 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（机身 10GbE），配线架 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 10G 口；另一口接 <a href="#2.1" class="page-ref">§2.1</a> HA Hub（ameriDroid PoE Mini PC），配线架 patch 进同一交换机的 2.5G PoE+++ 口（机身 PoE++ IN）。同室长期桌测 Wallpanel（第四套）<strong>不</strong>另占 Room Drop、也<strong>不</strong>上 Den Flex：数据走 Hub 空闲 2.5G，供电走桌面 PoE+ 注入器（见 <a href="#2.2" class="page-ref">§2.2</a>）。拓扑图暂未改，以本 Spec 为准。</li>
     <li>Media / Garage：墙面单口。Media 在用口经短跳接 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 的 10G RJ45 上联；Garage 在用口经短跳接 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 的 10G RJ45 上联。第二根留在墙盒 / 配线架作冗余，不做出第二插口以免误插。</li>
     <li>其余四间（Master / BR1 / BR2 / Seating）：墙面单口；第二根同样只留在墙盒 / 配线架。</li>
     <li>面板采购：横向双口一包（Den）、纵向单口两包（其余六间墙面 + 余量；官网每包 4 只）；keystone 用 <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack, 12-Pack</a>。</li>
@@ -738,25 +738,25 @@
         <td>Den Room Drop · 含 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>×2 + <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a></td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
-        <td>HA PoE Wallpanel</td>
+        <td>HA PoE Wallpanel · Basement</td>
         <td class="num">60W</td>
         <td>1G PoE++ ≤60W</td>
         <td>XG 2.5G PoE+++ ≤90W</td>
-        <td>—</td>
+        <td>墙装；Den 桌测第四套不入此账（桌面注入器）</td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
-        <td>HA PoE Wallpanel</td>
+        <td>HA PoE Wallpanel · Main</td>
         <td class="num">60W</td>
         <td>1G PoE++ ≤60W</td>
         <td>XG 2.5G PoE+++ ≤90W</td>
-        <td>—</td>
+        <td>墙装</td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
-        <td>HA PoE Wallpanel</td>
+        <td>HA PoE Wallpanel · Upper</td>
         <td class="num">60W</td>
         <td>1G PoE++ ≤60W</td>
         <td>XG 2.5G PoE+++ ≤90W</td>
-        <td>—</td>
+        <td>墙装</td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
         <td><a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7 Pro</a></td>
@@ -957,7 +957,7 @@
   </div>
 
 <h2>2. Home Assistant System</h2>
-  <p class="lede">本地智能家居控制面：Den Hub、墙面 Wallpanel、射频协议与家居设备清单。录像 / 门禁仍归 <a href="#1.2" class="page-ref">§1.2</a> UniFi Protect / Access；HA 只做联动，不取代 NVR 或 Access 逻辑。</p>
+  <p class="lede">本地智能家居控制面：Den Hub、墙面 Wallpanel（×3）+ Den 长期桌测一套、射频协议与家居设备清单。录像 / 门禁仍归 <a href="#1.2" class="page-ref">§1.2</a> UniFi Protect / Access；HA 只做联动，不取代 NVR 或 Access 逻辑。</p>
 
   <h3>2.1 Hub</h3>
   <ul>
@@ -966,7 +966,7 @@
         <li>安装：放在 <strong>Den</strong>，与 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> 同室、分机独立；不进设备间机柜。金属机箱，附 VESA（可挂桌下 / 墙面）。三根 Connect 棒的天线座用原装线放到 Den 开阔处，彼此约 0.5–1 m，远离 USB 3、SSD、显示器电源与最近的 AP；不要塞进封闭金属腔。</li>
         <li>系统与算力：Generic x86-64 Home Assistant OS（厂商预调 BIOS：掉电自启等）；CPU 为 Intel N100 四核。</li>
         <li>内存与存储：定型 <strong>16 GB DDR4 + 256 GB M.2 2280 SATA</strong>。不选 8 GB（跑 HAOS + 协议栈偏紧）或 32 GB（本机不做 Frigate / 大模型）；不选 128 GB（备份 / recorder 易满）或更大盘 / 2.5″（影音与长备份进 NAS）。下单「Custom build」点名 16 GB / 256 GB。</li>
-        <li>网络与供电：PoE++ IN → Den 第二根 Room Drop → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++（见 <a href="#1.1.5" class="page-ref">§1.1.5</a>）；Studio 独占 10G Drop。4×2.5 GbE 其余口可留作日后用。供电按 ≥30 W PoE++ 预留（见 <a href="#1.4" class="page-ref">§1.4</a>），12 V DC 仅装机 / 排错。机身 USB：1× USB-C + 1× USB 3.0-A + 4× USB 2.0-A；三根棒分插三只 USB 2.0-A（射频噪声更小），USB-C / USB 3.0-A 留作他用。</li>
+        <li>网络与供电：PoE++ IN → Den 第二根 Room Drop → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++（见 <a href="#1.1.5" class="page-ref">§1.1.5</a>）；Studio 独占 10G Drop。一口空闲 2.5G 短跳 → Den 桌测 Wallpanel 的 PoE+ 注入器 DATA IN（见 <a href="#2.2" class="page-ref">§2.2</a>）；其余 2.5G 口可留作日后用。供电按 ≥30 W PoE++ 预留（见 <a href="#1.4" class="page-ref">§1.4</a>），12 V DC 仅装机 / 排错；<strong>不</strong>用机身 USB‑C 给桌测 panel 供电。机身 USB：1× USB-C + 1× USB 3.0-A + 4× USB 2.0-A；三根棒分插三只 USB 2.0-A（射频噪声更小），USB-C / USB 3.0-A 留作他用。</li>
         <li><a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZWA-2</a>（Z-Wave）
           <ul>
             <li>接线：原装 USB-C→USB-A 插一只 USB 2.0-A；天线见上方安装总则。</li>
@@ -990,9 +990,10 @@
   </ul>
 
   <h3>2.2 Wallpanel</h3>
-  <p>三套墙面 Dashboard（Basement / Main / Upper）共用同一硬件栈：官方 10″ Touch Display 2 + Pi 5（2 GB）+ Bumper + Active Cooler + <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> + 官方 2230 NVMe。交换机侧按每路 1G 设备 / 2.5G PoE+++ 口、60 W 预留记账（见 <a href="#1.4" class="page-ref">§1.4</a>）。10″ TD2 <strong>无</strong>同时覆盖「Pi 5 + Active Cooler + HAT (C)」的量产墙装壳；不采用 Waveshare <a href="https://www.waveshare.com/pi5-case-td2.htm" target="_blank" rel="noopener noreferrer">PI5-CASE-TD2</a>（仅 7″）。</p>
+  <p>全宅 <strong>四套</strong>同款核心栈：官方 10″ Touch Display 2 + Pi 5（2 GB）+ Bumper + Active Cooler + <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> + 官方 2230 NVMe。其中 <strong>三套墙装</strong>（Basement / Main / Upper）：每层一根 Cat6A home-run → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++，按每路 60 W 预留记账（见 <a href="#1.4" class="page-ref">§1.4</a>）；墙装后壳见 <a href="#2.2.2" class="page-ref">§2.2.2</a>。<strong>一套长期桌测</strong>留在 Den：与墙机同走 HAT (C) PoE 路径以便老化，但不占第三根 Room Drop、也<strong>不上 Den Flex</strong>——数据接 <a href="#2.1" class="page-ref">§2.1</a> Hub 空闲 2.5G，供电用桌面 PoE+ 注入器；外壳用 Pibow，不用墙装后壳。10″ TD2 <strong>无</strong>同时覆盖「Pi 5 + Active Cooler + HAT (C)」的量产墙装壳；不采用 Waveshare <a href="https://www.waveshare.com/pi5-case-td2.htm" target="_blank" rel="noopener noreferrer">PI5-CASE-TD2</a>（仅 7″）。</p>
 
-  <h4>2.2.1 物料清单（单套；全宅 ×3）</h4>
+  <h4>2.2.1 物料清单</h4>
+  <p>核心硬件下单 <strong>×4</strong>（三墙 + Den 桌测）。墙装专配与桌测专配分行备注。</p>
   <div class="design-devices-wrap">
   <table class="devices-table">
     <thead>
@@ -1004,46 +1005,54 @@
     <tbody>
       <tr>
         <td><a href="https://www.raspberrypi.com/products/touch-display-2/?variant=touch-display-2-10-inch-portrait" target="_blank" rel="noopener noreferrer">Raspberry Pi Touch Display 2 — 10″ Portrait</a></td>
-        <td>含 DSI 线、GPIO 供电线、M2.5 螺丝；仅 Pi 5 / CM</td>
+        <td>核心 ×4；含 DSI 线、GPIO 供电线、M2.5 螺丝；仅 Pi 5 / CM</td>
       </tr>
       <tr>
         <td><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi 5 — 2 GB RAM</a></td>
-        <td>Dashboard 常驻 kiosk；2 GB 足够</td>
+        <td>核心 ×4；Dashboard 常驻 kiosk；2 GB 足够</td>
       </tr>
       <tr>
         <td><a href="https://www.raspberrypi.com/products/raspberry-pi-bumper/" target="_blank" rel="noopener noreferrer">Raspberry Pi Bumper</a></td>
-        <td>与 Active Cooler 同用</td>
+        <td>核心 ×4；与 Active Cooler 同用</td>
       </tr>
       <tr>
         <td><a href="https://www.raspberrypi.com/products/active-cooler/" target="_blank" rel="noopener noreferrer">Raspberry Pi Active Cooler</a></td>
-        <td>PoE HAT 须兼容此件（定稿 HAT (C)）</td>
+        <td>核心 ×4；PoE HAT 须兼容此件（定稿 HAT (C)）</td>
       </tr>
       <tr>
         <td><a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a></td>
-        <td>802.3af/at；2230 / 2242 NVMe；墙面 24/7 从 SSD 启动</td>
+        <td>核心 ×4；802.3af/at；2230 / 2242 NVMe；从 SSD 启动</td>
       </tr>
       <tr>
         <td><a href="https://www.raspberrypi.com/products/ssd/?variant=ssd-256" target="_blank" rel="noopener noreferrer">Raspberry Pi SSD — 256 GB</a></td>
-        <td>官方 M.2 2230；三套同款便于克隆</td>
-      </tr>
-      <tr>
-        <td><a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a></td>
-        <td>桌测 / 老化用；非墙装后壳</td>
+        <td>核心 ×4；官方 M.2 2230；同款便于克隆</td>
       </tr>
       <tr>
         <td>墙装后壳（3D 打印或钣金，二选一）</td>
-        <td>须让出 Active Cooler 与 HAT (C) / RJ45；见 <a href="#2.2.2" class="page-ref">§2.2.2</a></td>
+        <td>仅墙装 ×3；须让出 Active Cooler 与 HAT (C) / RJ45；见 <a href="#2.2.2" class="page-ref">§2.2.2</a></td>
+      </tr>
+      <tr>
+        <td><a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a></td>
+        <td>仅 Den 桌测 ×1；桌面背板 / 老化，非墙装后壳</td>
+      </tr>
+      <tr>
+        <td><a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W）或同等 802.3at 注入器</td>
+        <td>仅 Den 桌测 ×1；模拟墙机单线 PoE 进 HAT (C)；墙装三套不需要</td>
       </tr>
       <tr>
         <td>microSD 救急卡（可选）</td>
-        <td>日常从 NVMe 启动；卡上留最小可引导镜像</td>
+        <td>按需；日常从 NVMe 启动</td>
       </tr>
     </tbody>
   </table>
   </div>
+  <ul>
+    <li><strong>墙装 ×3</strong>：Cat6A home-run → 配线架 → XG 2.5G PoE+++ → HAT (C) RJ45。无 Pibow、无注入器。</li>
+    <li><strong>Den 桌测 ×1</strong>：Hub 空闲 2.5G → 短跳 → 注入器 DATA IN；墙插 AC → 注入器；注入器 DATA+PoE OUT → HAT (C) RJ45。电走 HAT，与墙机同路径；<strong>不用</strong> Hub USB‑C 供电，也<strong>不上</strong> Den Flex / 第三根 Drop。</li>
+  </ul>
 
   <h4>2.2.2 墙装后壳落地（3D 打印 / 钣金）</h4>
-  <p>先 Pibow / 裸板 PoE 老化，再上墙。官方 10″ 全包墙壳<strong>无量产货号</strong>；下列 STL 为社区起点，<strong>均未在本宅堆叠（TD2 10″ + Pi 5 + Active Cooler + HAT (C) + 2230）上实机验收</strong>——到手后须试配，必要时改深度 / 开孔。可组合：全包后壳背面留 VESA + 市售臂。</p>
+  <p>仅墙装三套。Den 桌测用 Pibow，不打本款墙壳。上墙前用 Den 桌测套（注入器 PoE）完成老化与镜像克隆。官方 10″ 全包墙壳<strong>无量产货号</strong>；下列 STL 为社区起点，<strong>均未在本宅堆叠（TD2 10″ + Pi 5 + Active Cooler + HAT (C) + 2230）上实机验收</strong>——到手后须试配，必要时改深度 / 开孔。可组合：全包后壳背面留 VESA + 市售臂。</p>
   <ul>
     <li><strong>3D 打印（现成图样）</strong>
       <ul>
@@ -1060,10 +1069,10 @@
 
   <h4>2.2.3 软件</h4>
   <ul>
-    <li>系统：Raspberry Pi OS（或轻量镜像）从 NVMe 启动；kiosk 全屏打开 HA Dashboard（<a href="https://www.home-assistant.io/integrations/companion/" target="_blank" rel="noopener noreferrer">Home Assistant Companion</a> 作 Home App，或 Fully Kiosk 等浏览器壳）。</li>
-    <li>账号：每块墙板独立 panel 用户，权限只覆盖该层 Dashboard。</li>
-    <li>亮屏：人近亮屏 / 人走降亮可用板载相机或房间存在传感器（与 HA 自动化联动）。</li>
-    <li>施工顺序：每层一根 home-run 到机柜、口上 PoE+/++；桌面 PoE 老化通过后再开孔上墙。</li>
+    <li>系统：Raspberry Pi OS（或轻量镜像）从 NVMe 启动；kiosk 全屏打开 HA Dashboard（<a href="https://www.home-assistant.io/integrations/companion/" target="_blank" rel="noopener noreferrer">Home Assistant Companion</a> 作 Home App，或 Fully Kiosk 等浏览器壳）。四套同镜像基线；墙装三套按楼层切 Dashboard，Den 桌测可切任意层做预览。</li>
+    <li>账号：每块板独立 panel 用户；墙装权限只覆盖该层 Dashboard，桌测账号可放宽便于调试。</li>
+    <li>亮屏：墙装用人近亮屏 / 人走降亮（板载相机或房间存在传感器）；桌测可常亮或同策略。</li>
+    <li>施工顺序：先在 Den 用注入器 PoE 老化并克隆镜像 → 三套开孔上墙、口上 PoE+++；桌测套长期留 Den，接线见上方。</li>
   </ul>
 
   <h3>2.3 Protocols</h3>
@@ -1300,7 +1309,7 @@
   </ul>
 
 <h2>3. Home Office Setup</h2>
-  <p class="lede"><a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（Den）与机柜 NAS 的算力 / 存储分工，以及书房桌面显示器与外设。Den 两根 Room Drop（Studio 10G + HA Hub 2.5G）见 <a href="#1.1.5" class="page-ref">§1.1.5</a>；NAS / Studio 在拓扑上的落点见 <a href="#topology" class="page-ref">Topology</a>（图暂未改）。</p>
+  <p class="lede"><a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（Den）与机柜 NAS 的算力 / 存储分工，以及书房桌面显示器与外设。Den 两根 Room Drop（Studio 10G + HA Hub 2.5G）见 <a href="#1.1.5" class="page-ref">§1.1.5</a>；同室桌测 Wallpanel 挂 Hub 下联 + 桌面 PoE+，见 <a href="#2.2" class="page-ref">§2.2</a>。NAS / Studio 在拓扑上的落点见 <a href="#topology" class="page-ref">Topology</a>（图暂未改）。</p>
 
   <h4>3.1 NAS · <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a></h4>
   <p class="lede">机柜 NAS 端口一览。同型号合并一行，数量写 <code>×n</code>（×1 省略）。</p>
@@ -1454,7 +1463,7 @@
   <td>7.7 × 3.7 × 7.7 in</td>
   <td></td>
   <td></td>
-  <td>1×10Gb RJ45；经 Den 一根 Room Drop（10G）上联 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>。同室另一根 Drop（2.5G PoE+++）接 <a href="#2.1" class="page-ref">§2.1</a> HA Hub（见 <a href="#1.1.5" class="page-ref">§1.1.5</a>）。与机柜 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">FS2500</a> 同交换域；算力在此，存储见上方 <a href="#3.1" class="page-ref">NAS</a>。</td>
+  <td>1×10Gb RJ45；经 Den 一根 Room Drop（10G）上联 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>。同室另一根 Drop（2.5G PoE+++）接 <a href="#2.1" class="page-ref">§2.1</a> HA Hub（见 <a href="#1.1.5" class="page-ref">§1.1.5</a>）；Hub 空闲口再经桌面 <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a> 喂 Den 桌测 Wallpanel（见 <a href="#2.2" class="page-ref">§2.2</a>）。与机柜 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">FS2500</a> 同交换域；算力在此，存储见上方 <a href="#3.1" class="page-ref">NAS</a>。</td>
 </tr>
 <tr>
   <td>打印机</td>
