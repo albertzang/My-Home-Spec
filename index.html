@@ -960,110 +960,110 @@
   <p class="lede">本地智能家居控制面：Den Hub、墙面 Wallpanel、射频协议与家居设备清单。录像 / 门禁仍归 <a href="#1.2" class="page-ref">§1.2</a> UniFi Protect / Access；HA 只做联动，不取代 NVR 或 Access 逻辑。</p>
 
   <h3>2.1 Hub</h3>
-  <p>HA 主机定为 <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a>（Intel N100），安装在 <strong>Den</strong>，与 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> 同室、分机独立。跑 Home Assistant OS，挂全部集成、自动化、Add-on 与下方射频棒。不进设备间机柜，也不挤 Studio / 机柜 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">FS2500</a>。上联走 Den 第二根 Room Drop，吃 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 2.5G PoE+++（见 <a href="#1.1.5" class="page-ref">§1.1.5</a>）；Studio 独占另一根 10G Drop。</p>
   <ul>
-    <li>算力 / 内存：N100 四核 x86；单条 SODIMM 最高 32 GB DDR4；HAOS + Z-Wave JS + Matter + Mosquitto 及若干 Add-on 仍有余量。</li>
-    <li>存储：M.2 SATA，可选 2.5″ SATA；按 24/7 主机盘配置。</li>
-    <li>网络：4×2.5 GbE（一口为 PoE++ IN）。PoE IN 口经 Den 墙面短跳 → Room Drop → 配线架 → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++；其余口可留给 IoT VLAN 或日后实验网，不必另加网卡。</li>
-    <li>供电：原生 802.3at/bt PoE++ IN（厂商要求 ≥30 W），随附 12 V DC 仅作装机 / 排错。Spec / 拓扑按 30 W 预留（含射频棒），见 <a href="#1.4" class="page-ref">§1.4</a>；整机常见约 6–15 W。</li>
-    <li>系统：Generic x86-64 HAOS；厂商预调 BIOS（掉电自启、Wake-on-LAN、PXE 等）。金属机箱，附 VESA 安装件（可挂 Den 桌下 / 墙面）。</li>
-  </ul>
-  <h4>2.1.1 射频棒</h4>
-  <p>三根官方 Connect 棒都插本机 USB，随 Hub 放在 Den；协议角色见 <a href="#2.3" class="page-ref">§2.3</a>。</p>
-  <ul>
-    <li>2× <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a>——一根固定 Zigbee（推荐 ZHA），一根固定 Thread（HA Border Router）。官方不推荐 MultiPAN；一根棒不要同时扛 Zigbee + Thread。</li>
-    <li>1× <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZWA-2</a>——Z-Wave / Z-Wave Long Range（北美频段），经 Z-Wave JS 进 HA。</li>
-    <li>接线：机身 1× USB-C + 1× USB 3.0-A + 4× USB 2.0-A。三根均用原装 USB-C→USB-A 线插 USB-A（优先 USB 2.0，射频噪声更小）；USB-C 口留给其它用途。</li>
-    <li>天线：用原装线把天线座放到 Den 开阔处，彼此约 0.5–1 m，远离 USB 3、SSD、显示器电源与最近的 AP；不要塞进封闭金属腔。</li>
+    <li><a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a>
+      <ul>
+        <li>安装：放在 <strong>Den</strong>，与 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> 同室、分机独立；不进设备间机柜。金属机箱，附 VESA（可挂桌下 / 墙面）。三根 Connect 棒的天线座用原装线放到 Den 开阔处，彼此约 0.5–1 m，远离 USB 3、SSD、显示器电源与最近的 AP；不要塞进封闭金属腔。</li>
+        <li>系统与算力：Generic x86-64 Home Assistant OS（厂商预调 BIOS：掉电自启等）；CPU 为 Intel N100 四核。</li>
+        <li>内存与存储：定型 <strong>16 GB DDR4 + 256 GB M.2 2280 SATA</strong>。不选 8 GB（跑 HAOS + 协议栈偏紧）或 32 GB（本机不做 Frigate / 大模型）；不选 128 GB（备份 / recorder 易满）或更大盘 / 2.5″（影音与长备份进 NAS）。下单「Custom build」点名 16 GB / 256 GB。</li>
+        <li>网络与供电：PoE++ IN → Den 第二根 Room Drop → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++（见 <a href="#1.1.5" class="page-ref">§1.1.5</a>）；Studio 独占 10G Drop。4×2.5 GbE 其余口可留作日后用。供电按 ≥30 W PoE++ 预留（见 <a href="#1.4" class="page-ref">§1.4</a>），12 V DC 仅装机 / 排错。机身 USB：1× USB-C + 1× USB 3.0-A + 4× USB 2.0-A；三根棒分插三只 USB 2.0-A（射频噪声更小），USB-C / USB 3.0-A 留作他用。</li>
+        <li><a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZWA-2</a>（Z-Wave）
+          <ul>
+            <li>接线：原装 USB-C→USB-A 插一只 USB 2.0-A；天线见上方安装总则。</li>
+            <li>本宅用途：Z-Wave / Z-Wave Long Range（北美），经 Z-Wave JS 进 HA；门锁与关键控制骨干。协议细节见 <a href="#2.3.2" class="page-ref">§2.3.2</a>。</li>
+          </ul>
+        </li>
+        <li><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a>（Zigbee）
+          <ul>
+            <li>接线：原装 USB-C→USB-A 插一只 USB 2.0-A；天线见上方安装总则。</li>
+            <li>本宅用途：固定 Zigbee + ZHA（不兼 Thread；官方不推荐 MultiPAN）；传感器 / 灯 / 开关 / 插座主干。协议细节见 <a href="#2.3.3" class="page-ref">§2.3.3</a>。</li>
+          </ul>
+        </li>
+        <li><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a>（Thread）
+          <ul>
+            <li>接线：原装 USB-C→USB-A 插一只 USB 2.0-A；天线见上方安装总则。</li>
+            <li>本宅用途：固定 Thread，作 HA Border Router（不兼 Zigbee；不依赖 HomePod / Nest）；Matter-over-Thread 传输。协议细节见 <a href="#2.3.4" class="page-ref">§2.3.4</a>。</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
   </ul>
 
   <h3>2.2 Wallpanel</h3>
-  <p>三套墙面 Dashboard（Basement / Main / Upper）共用同一硬件栈：官方 10″ 触控屏 + Pi 5 薄配 + 主动散热 + PoE 供电 + 背面防护。交换机侧仍按每路 1G 设备 / 2.5G PoE+++ 口、60 W 预留记账（见 <a href="#1.4" class="page-ref">§1.4</a>）；定型后若实测远低于此，再回填实际功耗，不在选型阶段先砍预算。</p>
+  <p>三套墙面 Dashboard（Basement / Main / Upper）共用同一硬件栈：官方 10″ Touch Display 2 + Pi 5（2 GB）+ Bumper + Active Cooler + <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> + 官方 2230 NVMe。交换机侧按每路 1G 设备 / 2.5G PoE+++ 口、60 W 预留记账（见 <a href="#1.4" class="page-ref">§1.4</a>）。10″ TD2 <strong>无</strong>同时覆盖「Pi 5 + Active Cooler + HAT (C)」的量产墙装壳；不采用 Waveshare <a href="https://www.waveshare.com/pi5-case-td2.htm" target="_blank" rel="noopener noreferrer">PI5-CASE-TD2</a>（仅 7″）。</p>
 
-  <h4>2.2.1 选型结论</h4>
-  <ul>
-    <li>显示与主板：<a href="https://www.raspberrypi.com/products/touch-display-2/?variant=touch-display-2-10-inch-portrait" target="_blank" rel="noopener noreferrer">Raspberry Pi Touch Display 2 — 10″ Portrait</a> + <a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi 5（2 GB）</a>。10″ 仅兼容 Pi 5 / CM；Dashboard 常驻用 2 GB 足够，把 4/8 GB 留给日后真有需要的节点。</li>
-    <li>板级附件：<a href="https://www.raspberrypi.com/products/raspberry-pi-bumper/" target="_blank" rel="noopener noreferrer">Raspberry Pi Bumper</a>（板边防护）+ <a href="https://www.raspberrypi.com/products/active-cooler/" target="_blank" rel="noopener noreferrer">Raspberry Pi Active Cooler</a>（官方主动散热）。</li>
-    <li>PoE HAT（定稿）：<a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a>。兼容官方 Active Cooler；IEEE 802.3af/at；GPIO 5 V / 5 A；平面变压器、板长约 66 mm，比 (B) 更矮，适合墙面后壳。M.2 支持 2230 / 2242 NVMe（本宅用官方 2230 SSD），墙面 24/7 从 SSD 启动。</li>
-    <li>Back case：10″ Touch Display 2 <strong>无</strong>官方后壳，也无同时覆盖「TD2 10″ + Pi 5 + Active Cooler + PoE HAT (C)」的量产墙装壳。<a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame（10.1″）</a>仅作桌测 / 背面防护。墙装后壳走 <a href="#2.2.3" class="page-ref">§2.2.3</a> 两条路径之一。不采用：Waveshare <a href="https://www.waveshare.com/pi5-case-td2.htm" target="_blank" rel="noopener noreferrer">PI5-CASE-TD2</a>（仅 7″）；Argon Industria HMI 10″（自带另一块屏，换掉官方 TD2）。</li>
-  </ul>
-
-  <h4>2.2.2 物料清单（单套；全宅 ×3）</h4>
+  <h4>2.2.1 物料清单（单套；全宅 ×3）</h4>
   <div class="design-devices-wrap">
   <table class="devices-table">
     <thead>
       <tr>
-        <th>数量 / 套</th>
         <th>物料</th>
-        <th>链接</th>
         <th>备注</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>×1</td>
-        <td>Raspberry Pi Touch Display 2 — 10″ Portrait</td>
-        <td><a href="https://www.raspberrypi.com/products/touch-display-2/?variant=touch-display-2-10-inch-portrait" target="_blank" rel="noopener noreferrer">raspberrypi.com</a></td>
+        <td><a href="https://www.raspberrypi.com/products/touch-display-2/?variant=touch-display-2-10-inch-portrait" target="_blank" rel="noopener noreferrer">Raspberry Pi Touch Display 2 — 10″ Portrait</a></td>
         <td>含 DSI 线、GPIO 供电线、M2.5 螺丝；仅 Pi 5 / CM</td>
       </tr>
       <tr>
-        <td>×1</td>
-        <td>Raspberry Pi 5 — 2 GB RAM</td>
-        <td><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">raspberrypi.com</a></td>
-        <td>墙面 kiosk；OS 用 Raspberry Pi OS 或轻量浏览器镜向 HA</td>
+        <td><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi 5 — 2 GB RAM</a></td>
+        <td>Dashboard 常驻 kiosk；2 GB 足够</td>
       </tr>
       <tr>
-        <td>×1</td>
-        <td>Raspberry Pi Bumper</td>
-        <td><a href="https://www.raspberrypi.com/products/raspberry-pi-bumper/" target="_blank" rel="noopener noreferrer">raspberrypi.com</a></td>
-        <td>板边橡胶防护；与 Active Cooler 同用</td>
+        <td><a href="https://www.raspberrypi.com/products/raspberry-pi-bumper/" target="_blank" rel="noopener noreferrer">Raspberry Pi Bumper</a></td>
+        <td>与 Active Cooler 同用</td>
       </tr>
       <tr>
-        <td>×1</td>
-        <td>Raspberry Pi Active Cooler</td>
-        <td><a href="https://www.raspberrypi.com/products/active-cooler/" target="_blank" rel="noopener noreferrer">raspberrypi.com</a></td>
-        <td>官方主动散热；PoE HAT 必须选兼容此件的型号</td>
+        <td><a href="https://www.raspberrypi.com/products/active-cooler/" target="_blank" rel="noopener noreferrer">Raspberry Pi Active Cooler</a></td>
+        <td>PoE HAT 须兼容此件（定稿 HAT (C)）</td>
       </tr>
       <tr>
-        <td>×1</td>
-        <td>Waveshare PoE M.2 HAT+ (C)</td>
-        <td><a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">waveshare.com</a></td>
-        <td>802.3af/at；兼容 Active Cooler；2230 / 2242 NVMe</td>
+        <td><a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a></td>
+        <td>802.3af/at；2230 / 2242 NVMe；墙面 24/7 从 SSD 启动</td>
       </tr>
       <tr>
-        <td>×1</td>
-        <td>Raspberry Pi SSD — 256 GB</td>
-        <td><a href="https://www.raspberrypi.com/products/ssd/?variant=ssd-256" target="_blank" rel="noopener noreferrer">raspberrypi.com</a></td>
-        <td>官方 M.2 2230 NVMe；三套同款便于克隆；microSD 仅作救急</td>
+        <td><a href="https://www.raspberrypi.com/products/ssd/?variant=ssd-256" target="_blank" rel="noopener noreferrer">Raspberry Pi SSD — 256 GB</a></td>
+        <td>官方 M.2 2230；三套同款便于克隆</td>
       </tr>
       <tr>
-        <td>×1</td>
-        <td>Pimoroni Pibow Frame — Touch Display 2 10.1″</td>
-        <td><a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">shop.pimoroni.com</a></td>
-        <td>桌测老化用；墙装后壳见 <a href="#2.2.3" class="page-ref">§2.2.3</a></td>
+        <td><a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a></td>
+        <td>桌测 / 老化用；非墙装后壳</td>
       </tr>
       <tr>
-        <td>×1</td>
         <td>墙装后壳（3D 打印或钣金，二选一）</td>
-        <td>—</td>
-        <td>须让出 Active Cooler 出风与 PoE HAT / RJ45；可选背后 VESA；落地见 <a href="#2.2.3" class="page-ref">§2.2.3</a></td>
+        <td>须让出 Active Cooler 与 HAT (C) / RJ45；见 <a href="#2.2.2" class="page-ref">§2.2.2</a></td>
       </tr>
       <tr>
-        <td>×1（可选）</td>
-        <td>microSD 救急卡</td>
-        <td>—</td>
-        <td>日常从 NVMe 启动；卡上留最小可引导镜像作回退</td>
+        <td>microSD 救急卡（可选）</td>
+        <td>日常从 NVMe 启动；卡上留最小可引导镜像</td>
       </tr>
     </tbody>
   </table>
   </div>
-  <p>软件侧（不进硬件 BOM）：每块板用独立 panel 用户 + 全屏 Dashboard（Companion 作 Home App，或 Fully Kiosk）；人近亮屏 / 人走降亮可用板载相机或房间存在传感器。施工：每层一根 home-run 到机柜，口上 PoE+/++；先桌面 PoE 老化再开孔上墙。</p>
 
-  <h4>2.2.3 墙装后壳落地（3D 打印 / 钣金）</h4>
-  <p>官方 10″ TD2 → VESA / 全包后壳目前<strong>无量产件</strong>可买；通用 VESA 臂有货，但屏背 M2.5 → 75/100 适配板仍须自制。先 Pibow / 裸板 PoE 老化，再上墙壳。两条路径任选（可组合：后壳背面留 VESA + 市售臂）。</p>
+  <h4>2.2.2 墙装后壳落地（3D 打印 / 钣金）</h4>
+  <p>先 Pibow / 裸板 PoE 老化，再上墙。官方 10″ 全包墙壳<strong>无量产货号</strong>；下列 STL 为社区起点，<strong>均未在本宅堆叠（TD2 10″ + Pi 5 + Active Cooler + HAT (C) + 2230）上实机验收</strong>——到手后须试配，必要时改深度 / 开孔。可组合：全包后壳背面留 VESA + 市售臂。</p>
   <ul>
-    <li><strong>3D 打印</strong>：用社区 STL（如 MakerWorld 10″ 后壳、CNX <a href="https://github.com/cnxsoft/vesa-adapter-pi-touch-display-10" target="_blank" rel="noopener noreferrer">VESA 适配</a>）或按实物堆叠改一版；自打或外包打印均可。落地快、改尺寸便宜；注意 Active Cooler 出风、HAT (C) / RJ45 净空与 PLA 耐热。适合先装三套、等量产壳再换。</li>
-    <li><strong>钣金</strong>：画 STEP（外形贴 TD2、内腔让出 Cooler + HAT (C) + 2230 SSD、开 RJ45 / 散热 / 可选 VESA 孔）→ 上传 SendCutSend 一类平台或本地钣金店激光切 + 折弯（铝 1.0–1.5 mm 常见）；需要再喷粉 / 阳极。强度与观感更好、单件贵于打印；三套同款均摊后可接受。无现成货号，必须出图下单。</li>
+    <li><strong>3D 打印（现成图样）</strong>
+      <ul>
+        <li><a href="https://makerworld.com/en/models/3116241-raspberry-pi-10-touch-display-2-case" target="_blank" rel="noopener noreferrer">MakerWorld · Raspberry Pi 10.1″ Touch Display 2 Case</a>（CreationThroughChaos）— 针对<strong> 10″ TD2</strong>；当前以桌面 / 导轨为主，作者称墙装支架仍在开发；Pi 位与屏脚位因公差可能需微调。</li>
+        <li><a href="https://www.printables.com/model/1202915-raspberry-pi-touch-display-2-wall-mount-case" target="_blank" rel="noopener noreferrer">Printables · Touch Display 2 wall mount case</a>（fbm3334）— <strong>墙装</strong>；thick 约 60 mm 预留 HAT、可选散热孔，附 OpenSCAD 源文件。社区多用于 7″ TD2；上 10″ 须按 167×248 mm 外廓重参或试打改模。</li>
+        <li><a href="https://github.com/cnxsoft/vesa-adapter-pi-touch-display-10" target="_blank" rel="noopener noreferrer">GitHub · cnxsoft VESA adapter（10″ TD2）</a> — 屏背 M2.5 → VESA；配合市售 VESA 臂上墙。不包 Pi / HAT，堆叠需另做罩壳或开放安装。</li>
+        <li><a href="https://www.printables.com/model/1214965-raspberry-pi-touch-display-2-wallmount-case-for-ra" target="_blank" rel="noopener noreferrer">Printables · Frank Delporte wallmount（PoE / HAT 加高）</a> — 网口与散热开孔设计可参考；模型基于<strong> 7″ TD2</strong>，10″ 不可直接套用。</li>
+        <li><a href="https://learn.adafruit.com/pi-wall-mount" target="_blank" rel="noopener noreferrer">Adafruit · Articulated Pi Display V2 Mount</a> — 教程含 Pi 5 + Active Cooler + M.2 HAT+ 层叠；ST 默认 <strong>7″ TD2</strong>，10″ 无同款，仅结构参考。</li>
+      </ul>
+    </li>
+    <li><strong>3D 打印（自改）</strong>：以实机堆叠尺寸为准，在 OpenSCAD / CAD 里加深内腔（Cooler 出风 + HAT (C) + 2230 + RJ45）；PETG / ABS 优于 PLA 贴墙温升。打印后壳时注意 Active Cooler 出风、HAT (C) / RJ45 净空。</li>
+    <li><strong>钣金</strong>：画 STEP（外形贴 TD2、内腔让出 Cooler + HAT (C) + 2230、开 RJ45 / 散热 / 可选 VESA 孔）→ SendCutSend 或本地激光 + 折弯（铝 1.0–1.5 mm）；喷粉 / 阳极。无现成货号，必须出图下单。</li>
+  </ul>
+
+  <h4>2.2.3 软件</h4>
+  <ul>
+    <li>系统：Raspberry Pi OS（或轻量镜像）从 NVMe 启动；kiosk 全屏打开 HA Dashboard（<a href="https://www.home-assistant.io/integrations/companion/" target="_blank" rel="noopener noreferrer">Home Assistant Companion</a> 作 Home App，或 Fully Kiosk 等浏览器壳）。</li>
+    <li>账号：每块墙板独立 panel 用户，权限只覆盖该层 Dashboard。</li>
+    <li>亮屏：人近亮屏 / 人走降亮可用板载相机或房间存在传感器（与 HA 自动化联动）。</li>
+    <li>施工顺序：每层一根 home-run 到机柜、口上 PoE+/++；桌面 PoE 老化通过后再开孔上墙。</li>
   </ul>
 
   <h3>2.3 Protocols</h3>
