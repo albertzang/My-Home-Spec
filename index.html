@@ -115,7 +115,7 @@
     <li>Den：墙面双口 plate，两根均启用。一口接 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（机身 10GbE），配线架 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 10G 口；另一口接 <a href="#2.1" class="page-ref">§2.1</a> HA Hub（ameriDroid PoE Mini PC），配线架 patch 进同一交换机的 2.5G PoE+++ 口（机身 PoE++ IN）。同室长期桌测 Wallpanel（第四套）<strong>不</strong>另占 Room Drop、也<strong>不</strong>上 Den Flex：数据走 Hub 空闲 2.5G，供电走桌面 PoE+ 注入器（见 <a href="#2.2" class="page-ref">§2.2</a>）。拓扑图暂未改，以本 Spec 为准。</li>
     <li>Media / Garage：墙面单口。Media 在用口经短跳接 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 的 10G RJ45 上联；Garage 在用口经短跳接 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 的 10G RJ45 上联。第二根留在墙盒 / 配线架作冗余，不做出第二插口以免误插。</li>
     <li>其余四间（Master / BR1 / BR2 / Seating）：墙面单口；第二根同样只留在墙盒 / 配线架。</li>
-    <li>面板采购：横向双口一包（Den）、纵向单口两包（其余六间墙面 + 余量；官网每包 4 只）；keystone 用 <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack, 12-Pack</a>。</li>
+    <li>面板采购：横向双口一包（Den）、纵向单口两包（其余六间墙面 + 余量；官网每包 4 只）；keystone 用 <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack, 12-Pack</a>。机柜端用 <a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a>（1U / 19″，开放架即可，不依赖 UniFi 机柜）。</li>
     <li>扩展路线（按需升级，不提前每间装交换机）：① AP + 1×C6A → ② 该 C6A 上联房间交换机 → ③ 两根都进同一交换机时必须 LACP 或 STP，禁止随手双接成环（Den 已是两台不同终端各占一口，不是双接成环）。其它房间若以后要双口，再换面板。</li>
     <li>Mechanical Room：机柜已在本室，不再做「卧室式 Room Drop」。需要时从配线架就地短跳到 HVAC / 热水 / 集水坑控制区（默认不 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
   </ul>
@@ -684,7 +684,7 @@
         <td class="price-cell">CA$227.36</td>
       </tr>
       <tr>
-        <td rowspan="9">Accessories</td>
+        <td rowspan="10">Accessories</td>
         <td class="device-cell is-purchased">
           <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/dacb316d-b254-40a0-8994-04bbf39bbddf/11c64b84-8bd1-43d1-b2dd-899305d8bb96.png" alt="">
@@ -731,6 +731,20 @@
         </td>
         <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++ pass-through"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
         <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++ pass-through"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-pending">
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/6ab1a848-c395-4ba6-8295-5caf711dd19e/9fafb528-3340-4789-a24a-b1c83a009c22.png" alt="">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a></span>
+              <span class="udc-sku">UACC-Rack-Panel-Patch-Blank-24</span>
+            </span>
+          </span>
+        </td>
+        <td class="port-cell">-</td>
+        <td class="port-cell">-</td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
@@ -1074,7 +1088,7 @@
   </div>
 
 <h2>2. Home Assistant System</h2>
-  <p class="lede">本地智能家居控制面：Den Hub、墙面 Wallpanel（×3）+ Den 长期桌测一套、射频协议与家居设备清单。录像 / 门禁仍归 <a href="#1.2" class="page-ref">§1.2</a> UniFi Protect / Access；HA 只做联动，不取代 NVR 或 Access 逻辑。</p>
+  <p class="lede">本地智能家居控制面：Den Hub、墙面 Wallpanel（×3）+ Den 长期桌测一套、<a href="#2.3" class="page-ref">§2.3</a> Device List 与 <a href="#2.4" class="page-ref">§2.4</a> 协议层。录像 / 门禁仍归 <a href="#1.2" class="page-ref">§1.2</a> UniFi Protect / Access；HA 只做联动，不取代 NVR 或 Access 逻辑。</p>
 
   <h3>2.1 Hub</h3>
   <ul>
@@ -1087,19 +1101,19 @@
         <li><a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZWA-2</a>（Z-Wave）
           <ul>
             <li>接线：原装 USB-C→USB-A 插一只 USB 2.0-A；天线见上方安装总则。</li>
-            <li>本宅用途：Z-Wave / Z-Wave Long Range（北美），经 Z-Wave JS 进 HA；门锁与关键控制骨干。协议细节见 <a href="#2.3.2" class="page-ref">§2.3.2</a>。</li>
+            <li>本宅用途：Z-Wave / Z-Wave Long Range（北美），经 Z-Wave JS 进 HA；门锁与关键控制骨干。协议细节见 <a href="#2.4.2" class="page-ref">§2.4.2</a>。</li>
           </ul>
         </li>
         <li><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a>（Zigbee）
           <ul>
             <li>接线：原装 USB-C→USB-A 插一只 USB 2.0-A；天线见上方安装总则。</li>
-            <li>本宅用途：固定 Zigbee + ZHA（不兼 Thread；官方不推荐 MultiPAN）；传感器 / 灯 / 开关 / 插座主干。协议细节见 <a href="#2.3.3" class="page-ref">§2.3.3</a>。</li>
+            <li>本宅用途：固定 Zigbee + ZHA（不兼 Thread；官方不推荐 MultiPAN）；传感器 / 灯 / 开关 / 插座主干。协议细节见 <a href="#2.4.3" class="page-ref">§2.4.3</a>。</li>
           </ul>
         </li>
         <li><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a>（Thread）
           <ul>
             <li>接线：原装 USB-C→USB-A 插一只 USB 2.0-A；天线见上方安装总则。</li>
-            <li>本宅用途：固定 Thread，作 HA Border Router（不兼 Zigbee；不依赖 HomePod / Nest）；Matter-over-Thread 传输。协议细节见 <a href="#2.3.4" class="page-ref">§2.3.4</a>。</li>
+            <li>本宅用途：固定 Thread，作 HA Border Router（不兼 Zigbee；不依赖 HomePod / Nest）；Matter-over-Thread 传输。协议细节见 <a href="#2.4.4" class="page-ref">§2.4.4</a>。</li>
           </ul>
         </li>
       </ul>
@@ -1107,77 +1121,21 @@
   </ul>
 
   <h3>2.2 Wallpanel</h3>
-  <p>全宅四套同款核心栈：官方 10″ Touch Display 2 + Pi 5（2 GB）+ Bumper + Active Cooler + <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> + 官方 2230 NVMe。其中三套墙装（Basement / Main / Upper）：每层一根 Cat6A home-run → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++，按每路 60 W 预留记账（见 <a href="#1.4" class="page-ref">§1.4</a>）；墙装后壳思路见 <a href="#2.2.2" class="page-ref">§2.2.2</a>（未进 BOM）。一套长期桌测留在 Den：与墙机同走 HAT (C) PoE 路径以便老化，但不占第三根 Room Drop、也不上 Den Flex——数据接 <a href="#2.1" class="page-ref">§2.1</a> Hub 空闲 2.5G，供电用桌面 <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）；支架用 Amazon.ca / Best Buy 任意可调 10″ 平板 / 菜谱架（约 CA$15–30，未进 BOM），夹或托屏边、竖持，背面 Cooler / HAT (C) 全露，不挡屏下缘排线；备选 <a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a>（PiShop.ca 仅 7″；英站机身约 £14.50，运费+关税落地可超 CA$80，且闭环亚克力难让本宅 Cooler / HAT 堆叠）。10″ TD2 无同时覆盖本宅堆叠的量产墙装壳；不采用 Waveshare <a href="https://www.waveshare.com/pi5-case-td2.htm" target="_blank" rel="noopener noreferrer">PI5-CASE-TD2</a>（仅 7″）。</p>
-
-  <h4>2.2.1 物料清单</h4>
-  <p>核心硬件规划×4（三墙 + Den 桌测）。墙装专配与桌测专配分行备注。Device 列底色同 <a href="#1.3" class="page-ref">§1.3</a>：<span class="device-legend is-purchased">已购</span> / <span class="device-legend is-pending">未购</span>；Price 为该行货价实付（含行税等），<strong>不含</strong>订单级运费；未购标「-」。订单级费用见 <a href="#appendix-order-fees-running-total" class="page-ref">Appendix. Order Fees Running Total</a>。来源：CanaKit / Waveshare / UniFi 结款单。</p>
-  <div class="design-devices-wrap">
-  <table class="devices-table">
-    <thead>
-      <tr>
-        <th>Device</th>
-        <th>Price</th>
-        <th>Notes</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/touch-display-2/?variant=touch-display-2-10-inch-portrait" target="_blank" rel="noopener noreferrer">Raspberry Pi Touch Display 2 — 10″ Portrait</a></td>
-        <td class="price-cell">CA$128.75</td>
-        <td>核心 ×4（已购 ×1）；含 DSI 线、GPIO 供电线、M2.5 螺丝；仅 Pi 5 / CM</td>
-      </tr>
-      <tr>
-        <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi 5 — 2 GB RAM</a></td>
-        <td class="price-cell">CA$123.15</td>
-        <td>核心 ×4（已购 ×1）；Dashboard 常驻 kiosk；2 GB 足够</td>
-      </tr>
-      <tr>
-        <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/bumper/" target="_blank" rel="noopener noreferrer">Raspberry Pi Bumper</a></td>
-        <td class="price-cell">CA$5.03</td>
-        <td>核心 ×4（已购 ×1）；与 Active Cooler 同用</td>
-      </tr>
-      <tr>
-        <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/active-cooler/" target="_blank" rel="noopener noreferrer">Raspberry Pi Active Cooler</a></td>
-        <td class="price-cell">CA$7.79</td>
-        <td>核心 ×4（已购 ×1）；PoE HAT 须兼容此件（定稿 HAT (C)）</td>
-      </tr>
-      <tr>
-        <td class="device-cell is-purchased"><a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a></td>
-        <td class="price-cell">US$94.52</td>
-        <td>核心 ×4（已购 ×4）；802.3af/at；2230 / 2242 NVMe；从 SSD 启动</td>
-      </tr>
-      <tr>
-        <td class="device-cell is-pending"><a href="https://www.raspberrypi.com/products/ssd/?variant=ssd-256" target="_blank" rel="noopener noreferrer">Raspberry Pi SSD — 256 GB</a></td>
-        <td class="price-cell">-</td>
-        <td>核心 ×4；官方 M.2 2230；同款便于克隆；<span class="stock-out">缺货</span></td>
-      </tr>
-      <tr>
-        <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/sd-cards/" target="_blank" rel="noopener noreferrer">Raspberry Pi SD Card — 32 GB</a></td>
-        <td class="price-cell">CA$39.15</td>
-        <td>核心 ×4（已购 ×1）；救急启动；日常从 NVMe 启动</td>
-      </tr>
-      <tr>
-        <td class="device-cell is-purchased"><a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）</td>
-        <td class="price-cell">CA$22.40</td>
-        <td>仅 Den 桌测 ×1（已购）；802.3at 注入；Hub 空闲 2.5G → DATA IN，墙插 AC → 注入器，PoE+ OUT → HAT (C) RJ45；Pi 5 / HAT 口速 1G，勿选 <a href="https://techspecs.ui.com/unifi/accessories/uacc-poe-plus-2-5g" target="_blank" rel="noopener noreferrer">2.5G PoE+ Adapter</a>；墙装三套不需要</td>
-      </tr>
-    </tbody>
-  </table>
-  </div>
+  <p>全宅四套同款核心栈：官方 10″ Touch Display 2 + Pi 5（2 GB）+ Bumper + Active Cooler + <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> + 官方 2230 NVMe。其中三套墙装（Basement / Main / Upper）：每层一根 Cat6A home-run → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++，按每路 60 W 预留记账（见 <a href="#1.4" class="page-ref">§1.4</a>）；墙装后壳思路见 <a href="#2.2.1" class="page-ref">§2.2.1</a>（未进 <a href="#2.3" class="page-ref">§2.3</a> Device List）。一套长期桌测留在 Den：与墙机同走 HAT (C) PoE 路径以便老化，但不占第三根 Room Drop、也不上 Den Flex——数据接 <a href="#2.1" class="page-ref">§2.1</a> Hub 空闲 2.5G，供电用桌面 <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）；桌测支架定稿 <a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a>（采购见 <a href="#2.3" class="page-ref">§2.3</a>）。10″ TD2 无同时覆盖本宅堆叠的量产墙装壳；不采用 Waveshare <a href="https://www.waveshare.com/pi5-case-td2.htm" target="_blank" rel="noopener noreferrer">PI5-CASE-TD2</a>（仅 7″）。</p>
 
   <ul>
-    <li>墙装 ×3：Cat6A home-run → 配线架 → XG 2.5G PoE+++ → HAT (C) RJ45。无桌测支架、无注入器。</li>
-    <li>Den 桌测 ×1：Hub 空闲 2.5G → 短跳 → <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）DATA IN；墙插 AC → 注入器；注入器 DATA+PoE OUT → HAT (C) RJ45。电走 HAT，与墙机同路径；链路协商 1G（Pi 5 板载千兆）。不用 Hub USB‑C 供电，也不上 Den Flex / 第三根 Drop。支架见上方正文。</li>
+    <li>墙装 ×3：Cat6A home-run → 配线架 → XG 2.5G PoE+++ → HAT (C) RJ45。无 Pibow、无注入器。</li>
+    <li>Den 桌测 ×1：Hub 空闲 2.5G → 短跳 → <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）DATA IN；墙插 AC → 注入器；注入器 DATA+PoE OUT → HAT (C) RJ45。电走 HAT，与墙机同路径；链路协商 1G（Pi 5 板载千兆）。不用 Hub USB‑C 供电，也不上 Den Flex / 第三根 Drop。支架用 Pibow（见 <a href="#2.3" class="page-ref">§2.3</a>）。</li>
   </ul>
 
-  <h4>2.2.2 墙装后壳落地（3D 打印 / 钣金）</h4>
-  <p>仅墙装三套的远期方案，未列入 <a href="#2.2.1" class="page-ref">§2.2.1</a> BOM。Den 桌测用市售平板架夹屏边，不打本款墙壳、也不为桌测单独 3D 打印。上墙前用 Den 桌测套（注入器 PoE）完成老化与镜像克隆。官方 10″ 全包墙壳无量产货号；下列 STL 为社区起点，均未在本宅堆叠（TD2 10″ + Pi 5 + Active Cooler + HAT (C) + 2230）上实机验收——到手后须试配，必要时改深度 / 开孔。可组合：全包后壳背面留 VESA + 市售臂。</p>
+  <h4>2.2.1 墙装后壳落地（3D 打印 / 钣金）</h4>
+  <p>仅墙装三套的远期方案，未列入 <a href="#2.3" class="page-ref">§2.3</a> Device List。Den 桌测用 Pibow，不打本款墙壳。上墙前用 Den 桌测套（注入器 PoE）完成老化与镜像克隆。官方 10″ 全包墙壳无量产货号；下列 STL 为社区起点，均未在本宅堆叠（TD2 10″ + Pi 5 + Active Cooler + HAT (C) + 2230）上实机验收——到手后须试配，必要时改深度 / 开孔。可组合：全包后壳背面留 VESA + 市售臂。</p>
   <ul>
     <li>3D 打印（现成图样）
       <ul>
         <li><a href="https://makerworld.com/en/models/3116241-raspberry-pi-10-touch-display-2-case" target="_blank" rel="noopener noreferrer">MakerWorld · Raspberry Pi 10.1″ Touch Display 2 Case</a>（CreationThroughChaos）— 针对 10″ TD2；当前以桌面 / 导轨为主，作者称墙装支架仍在开发；Pi 位与屏脚位因公差可能需微调。</li>
         <li><a href="https://www.printables.com/model/1202915-raspberry-pi-touch-display-2-wall-mount-case" target="_blank" rel="noopener noreferrer">Printables · Touch Display 2 wall mount case</a>（fbm3334）—墙装；thick 约 60 mm 预留 HAT、可选散热孔，附 OpenSCAD 源文件。社区多用于 7″ TD2；上 10″ 须按 167×248 mm 外廓重参或试打改模。</li>
-        <li><a href="https://github.com/cnxsoft/vesa-adapter-pi-touch-display-10" target="_blank" rel="noopener noreferrer">GitHub · cnxsoft VESA adapter（10″ TD2）</a> — 屏背 M2.5 → 100×100 VESA；可选日后配市售臂上墙。Den 桌测不必走这条（平板架即可）。不包 Pi / HAT，开背正好让 Cooler / HAT (C)。</li>
+        <li><a href="https://github.com/cnxsoft/vesa-adapter-pi-touch-display-10" target="_blank" rel="noopener noreferrer">GitHub · cnxsoft VESA adapter（10″ TD2）</a> — 屏背 M2.5 → 100×100 VESA；可选日后配市售臂上墙。Den 桌测已定 Pibow，不必走这条。不包 Pi / HAT，开背正好让 Cooler / HAT (C)。</li>
         <li><a href="https://www.printables.com/model/1214965-raspberry-pi-touch-display-2-wallmount-case-for-ra" target="_blank" rel="noopener noreferrer">Printables · Frank Delporte wallmount（PoE / HAT 加高）</a> — 网口与散热开孔设计可参考；模型基于 7″ TD2，10″ 不可直接套用。</li>
         <li><a href="https://learn.adafruit.com/pi-wall-mount" target="_blank" rel="noopener noreferrer">Adafruit · Articulated Pi Display V2 Mount</a> — 教程含 Pi 5 + Active Cooler + M.2 HAT+ 层叠；ST 默认 7″ TD2，10″ 无同款，仅结构参考。</li>
       </ul>
@@ -1186,7 +1144,7 @@
     <li>钣金：画 STEP（外形贴 TD2、内腔让出 Cooler + HAT (C) + 2230、开 RJ45 / 散热 / 可选 VESA 孔）→ SendCutSend 或本地激光 + 折弯（铝 1.0–1.5 mm）；喷粉 / 阳极。无现成货号，必须出图下单。</li>
   </ul>
 
-  <h4>2.2.3 软件</h4>
+  <h4>2.2.2 软件</h4>
   <ul>
     <li>系统：Raspberry Pi OS（或轻量镜像）从 NVMe 启动；kiosk 全屏打开 HA Dashboard（<a href="https://www.home-assistant.io/integrations/companion/" target="_blank" rel="noopener noreferrer">Home Assistant Companion</a> 作 Home App，或 Fully Kiosk 等浏览器壳）。四套同镜像基线；墙装三套按楼层切 Dashboard，Den 桌测可切任意层做预览。</li>
     <li>账号：每块板独立 panel 用户；墙装权限只覆盖该层 Dashboard，桌测账号可放宽便于调试。</li>
@@ -1194,10 +1152,146 @@
     <li>施工顺序：先在 Den 用注入器 PoE 老化并克隆镜像 → 三套开孔上墙、口上 PoE+++；桌测套长期留 Den，接线见上方。</li>
   </ul>
 
-  <h3>2.3 Protocols</h3>
+  <h3>2.3 Device List</h3>
+  <p class="lede">设备清单。Device 列底色区分采购状态：<span class="device-legend is-purchased">已购</span> / <span class="device-legend is-pending">未购</span>。Price 为该行货价实付（含行税 / Memory Surcharge 等），<strong>不含</strong>订单级运费；未购标「-」。订单级费用见 <a href="#appendix-order-fees-running-total" class="page-ref">Appendix. Order Fees Running Total</a>。来源：<code>orders/</code>。</p>
+<div class="design-devices-wrap">
+  <table class="devices-table">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Device</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="3">Hub</td>
+        <td class="device-cell is-purchased"><a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a></td>
+        <td class="price-cell">US$499.95</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-purchased"><a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZWA-2</a></td>
+        <td class="price-cell">US$68.95</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-purchased"><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a> <span class="udc-count">×2</span></td>
+        <td class="price-cell">US$97.90</td>
+      </tr>
+      <tr>
+        <td rowspan="9">Wallpanel</td>
+        <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/touch-display-2/?variant=touch-display-2-10-inch-portrait" target="_blank" rel="noopener noreferrer">Raspberry Pi Touch Display 2 — 10″ Portrait</a> <span class="udc-count">×4</span></td>
+        <td class="price-cell">CA$128.75</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi 5 — 2 GB RAM</a> <span class="udc-count">×4</span></td>
+        <td class="price-cell">CA$123.15</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/bumper/" target="_blank" rel="noopener noreferrer">Raspberry Pi Bumper</a> <span class="udc-count">×4</span></td>
+        <td class="price-cell">CA$5.03</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/active-cooler/" target="_blank" rel="noopener noreferrer">Raspberry Pi Active Cooler</a> <span class="udc-count">×4</span></td>
+        <td class="price-cell">CA$7.79</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-purchased"><a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> <span class="udc-count">×4</span></td>
+        <td class="price-cell">US$94.52</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-pending"><a href="https://www.raspberrypi.com/products/ssd/?variant=ssd-256" target="_blank" rel="noopener noreferrer">Raspberry Pi SSD — 256 GB</a> <span class="udc-count">×4</span> <span class="stock-out">缺货</span></td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/sd-cards/" target="_blank" rel="noopener noreferrer">Raspberry Pi SD Card — 32 GB</a> <span class="udc-count">×4</span></td>
+        <td class="price-cell">CA$39.15</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-purchased"><a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a></td>
+        <td class="price-cell">US$20.00</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-purchased"><a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）</td>
+        <td class="price-cell">CA$22.40</td>
+      </tr>
+      <tr>
+        <td>Lighting</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>Switch</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>HVAC</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>Shades &amp; Blinds</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>Sensors</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>Energy &amp; Power</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>Presence &amp; Occupancy</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>Locks &amp; Access Integration</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>Media &amp; AV</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>Irrigation &amp; Outdoor</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>Water Safety</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>Voice &amp; Assist Satellites</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>Buttons &amp; Scene Controllers</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>Fans &amp; Air Quality</td>
+        <td class="device-cell is-pending">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>2.4 Protocols</h3>
   <p>协议层决定设备怎么进 HA、掉线时从哪一层查。射频硬件（<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>×2 + <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a>）落在 <a href="#2.1" class="page-ref">§2.1</a> Den Hub；本节只写各协议角色。IP 侧（Wi‑Fi / MQTT / Matter-over-Wi‑Fi）不另买棒。</p>
 
-  <h4>2.3.1 建议追加（按需，非 Day-1）</h4>
+  <h4>2.4.1 建议追加（按需，非 Day-1）</h4>
   <ul>
     <li><strong>ESPHome Bluetooth Proxy（Ethernet / PoE）</strong>：即使 Hub 在 Den，全屋 BLE 仍靠房间级 Proxy。按楼层放 1–2 台以太网 ESP32（优先外置天线，如 Olimex ESP32-PoE-ISO-EA 一类），专做 BLE 广告与短连接；不要拿 ZWA-2 兼 BLE 主力。</li>
     <li><strong>厂商 Bridge（有才买）</strong>：Lutron Caseta / RadioRA、部分窗帘与红外空调仍要自家网桥或 IR blaster；通用 802.15.4 棒吃不下私有射频。</li>
@@ -1205,7 +1299,7 @@
     <li>不需要：第二套 Zigbee 协调器、Hub 上再插 USB Wi‑Fi 棒、Thread 再买第三根 ZBT-2（除非日后要独立实验室网络）。</li>
   </ul>
 
-  <h4>2.3.2 Z-Wave</h4>
+  <h4>2.4.2 Z-Wave</h4>
   <p><strong>角色：</strong>门锁、部分墙开 / 插座、对穿透与干扰更敏感的「关键控制」设备的主射频之一；与 2.4 GHz 家用 Wi‑Fi 错开（Sub‑GHz）。本宅用 <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a> + Z-Wave JS。</p>
   <ul>
     <li>优点：墙体穿透通常好于 2.4 GHz mesh；认证设备互操作规范；LR 适合大宅庭院距离；不占 Wi‑Fi airtime。</li>
@@ -1214,7 +1308,7 @@
     <li>地位：与 Zigbee 并列的「本地控制」骨干，不互相替代；门锁优先看 Z-Wave / 已有 UniFi Access，不优先 Wi‑Fi 云锁。</li>
   </ul>
 
-  <h4>2.3.3 Zigbee</h4>
+  <h4>2.4.3 Zigbee</h4>
   <p><strong>角色：</strong>传感器、灯泡、开关、插座数量最大的本地 mesh；第一根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> + ZHA（日后若兼容性逼仄再评估 Zigbee2MQTT）。</p>
   <ul>
     <li>优点：设备便宜、选型多；有电路由节点一开，电池末端跟网；不进家用 Wi‑Fi；ZHA 零基础路径短。</li>
@@ -1223,7 +1317,7 @@
     <li>地位：默认「小数目常在线设备」首选；能 Zigbee 就不要堆 Wi‑Fi IoT。</li>
   </ul>
 
-  <h4>2.3.4 Thread</h4>
+  <h4>2.4.4 Thread</h4>
   <p><strong>角色：</strong>低功耗 IPv6 mesh 传输层，主要承载 Matter-over-Thread 设备；第二根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 做 HA 自有 Border Router，不依赖 HomePod / Nest 是否在线。</p>
   <ul>
     <li>优点：为电池设备优化；IP 地址可直达（经 Border Router）；Matter 生态主推路径之一；多 Border Router 时可提升冗余（日后 Apple TV / Nest 可作辅，但本宅以 HA 棒为准）。</li>
@@ -1232,7 +1326,7 @@
     <li>地位：新买电池类 Matter 设备的传输首选；不取代现有 Zigbee 库存。</li>
   </ul>
 
-  <h4>2.3.5 Wi‑Fi</h4>
+  <h4>2.4.5 Wi‑Fi</h4>
   <p><strong>角色：</strong>高带宽或厂商只给了 Wi‑Fi 的设备（部分摄像头配件、电器、Matter-over-Wi‑Fi）；本宅无线由 UniFi AP 承担，HA 不另建 Wi‑Fi。</p>
   <ul>
     <li>优点：人人会配；吞吐高；Matter-over-Wi‑Fi / 局域网 HTTP 集成简单。</li>
@@ -1241,7 +1335,7 @@
     <li>地位：补充通道，不是传感器主干；IoT SSID / VLAN 可后续拆，Day-1 以少而稳为先。</li>
   </ul>
 
-  <h4>2.3.6 Bluetooth（含 BLE）</h4>
+  <h4>2.4.6 Bluetooth（含 BLE）</h4>
   <p><strong>角色：</strong>短距传感器、部分体脂秤 / 温湿度 / BTHome 设备、手机存在探测的辅助；靠房间级 Bluetooth Proxy 延伸，不靠 Hub 机身 BLE。</p>
   <ul>
     <li>优点：设备门槛低；BLE 广告传感功耗极低；ESPHome Proxy 与 HA 集成成熟。</li>
@@ -1250,7 +1344,7 @@
     <li>地位：有则用之的边缘协议；不与 Z-Wave / Zigbee 抢门锁与墙开。</li>
   </ul>
 
-  <h4>2.3.7 MQTT</h4>
+  <h4>2.4.7 MQTT</h4>
   <p><strong>角色：</strong>软件消息总线，不是无线制式。跑在 Ethernet / Wi‑Fi / IP 上；本宅在 Hub 上按需装 Mosquitto。Tasmota / ESPHome、部分墙面或 DIY 设备、以及日后 Zigbee2MQTT 都经它进 HA。</p>
   <ul>
     <li>优点：解耦生产者 / 消费者；保留历史状态与桥接老设备极灵活；局域网可完全本地。</li>
@@ -1259,7 +1353,7 @@
     <li>地位：集成胶水层。ZHA 直连 Zigbee 时不必为 Zigbee 而装 MQTT；只有 Zigbee2MQTT / 大量 ESP 设备时才升格为基础设施。</li>
   </ul>
 
-  <h4>2.3.8 Matter</h4>
+  <h4>2.4.8 Matter</h4>
   <p><strong>角色：</strong>应用层互联标准（可跑在 Thread 或 Wi‑Fi / Ethernet 上）。HA 用 Matter Server 做本地控制器；Thread 设备经本宅 Border Router，Wi‑Fi Matter 设备经局域网委托。</p>
   <ul>
     <li>优点：多生态本地控制的长期方向；减少「每家一个桥」；与 HA 官方路径对齐。</li>
@@ -1268,7 +1362,7 @@
     <li>地位：新设备采购的加分项，不是把现有稳定 Zigbee / Z-Wave 网推倒重来的理由。Matter-over-Thread 用第二根 ZBT-2；Matter-over-Wi‑Fi 不占用该棒。</li>
   </ul>
 
-  <h4>2.3.9 对照与注意事项</h4>
+  <h4>2.4.9 对照与注意事项</h4>
   <div class="design-devices-wrap">
   <table class="devices-table">
     <thead>
@@ -1340,94 +1434,7 @@
     <li>买设备前先查 HA Integrations / 社区兼容表；优先本地控制，云只作后备。</li>
   </ul>
 
-  <h3>2.4 Devices</h3>
-  <p>按子类别列出值得纳入 HA 的家居设备清单。每个子类先写边界与选型态度，选品表留 placeholder，后续按子类单独敲定型号。录像机与门禁读头不在本章展开（见 <a href="#1.2" class="page-ref">§1.2</a>）；此处只保留「进 HA 联动」的接口意识。</p>
-
-  <h4>2.4.1 Lighting</h4>
-  <p>灯具与光源：球泡、灯带、筒灯、橱柜灯等。优先 Zigbee / Matter-over-Thread 的本地灯；高功率或特殊光谱再看专用驱动。与墙开策略一起设计，避免「智能灯 + 断电墙开」死锁。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-  <h4>2.4.2 Switch</h4>
-  <p>墙开、场景开关、智能继电器 / 开关模组。决定「谁切火线、谁走智能」：保留机械过载与 triple-click 等手感时，常要开关模组 + 普通面板，或认证智能墙开。Z-Wave / Zigbee 为主，避开纯云开关。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-  <h4>2.4.3 HVAC</h4>
-  <p>温控、新风 / 排风、地暖或热泵接口、分室温控。恒温器要本地 API 或官方 HA 集成；红外空调仅作过渡。与机械室传感、电力负荷（Powerwall / 电价）联动预留接口，但不在 HA 里重写厂家安全逻辑。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-  <h4>2.4.4 Shades &amp; Blinds</h4>
-  <p>窗帘、百叶、遮阳。优先支持本地的电机生态（Zigbee / Z-Wave / Matter / 局域网桥）；量窗与供电（电池 / 有线 / 太阳能）和开合噪音一并选型。与光照传感、温度自动化强相关。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-  <h4>2.4.5 Sensors</h4>
-  <p>环境与状态传感：温湿度、门窗磁、水浸、烟雾 / CO（注意：生命安全报警器以本地法规与独立报警为准，HA 只做通知备份）、照度、粉尘等。电池设备优先 Zigbee / Thread；重要告警设备看是否要主电 + 电池备份。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-  <h4>2.4.6 Energy &amp; Power</h4>
-  <p>电能监测：整屋 CT、回路级监测、智能插座功率、EVSE 负荷视角（与 <a href="#4" class="page-ref">§4</a> 能源章节交叉）。HA 做可视化与自动化阈值；计费级精度不要指望消费级插座。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-  <h4>2.4.7 Presence &amp; Occupancy</h4>
-  <p>人在 / 房间占用：mmWave、PIR、房间级存在传感器、手机 / BLE 辅助。灯控与 HVAC 的主信号应来自房间存在，而不是仅靠手机连 Wi‑Fi。与 Wallpanel 亮屏策略共用同一存在源更干净。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-  <h4>2.4.8 Locks &amp; Access Integration</h4>
-  <p>锁体与门禁联动。外门主路径是 UniFi Access（<a href="#1.2.1" class="page-ref">§1.2.1</a>）；HA 侧只做「开门 → 灯 / 撤防 / 通知」类自动化。若另有内门锁 / 柜锁，再在 Z-Wave / Matter 里单列，避免两套门禁逻辑并行写锁。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-  <h4>2.4.9 Media &amp; AV</h4>
-  <p>电视、流媒体盒、功放、HDMI 矩阵 / CEC、音箱。能局域网控制的进 HA 做场景（观影模式）；语音与高码率播放仍交给专用设备。不在 HA 里重做 NVR 或整套影音接线。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-  <h4>2.4.10 Irrigation &amp; Outdoor</h4>
-  <p>灌溉阀、庭院插座、户外灯、车库外设备。优先本地控制器；纳入雨量 / 湿度跳过浇灌等自动化。户外设备的防水、供电与冬季策略写进选品备注。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-  <h4>2.4.11 Water Safety</h4>
-  <p>漏水监测、自动截断阀、水泵 / 集水坑液位（与机械室相关）。告警要本地响 + 手机推送；截断阀选型看失效模式（断电开 / 关）是否可接受。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-  <h4>2.4.12 Voice &amp; Assist Satellites</h4>
-  <p>本地语音卫星（Home Assistant Voice / ESPHome Assists 等）。与云音箱分工：隐私指令走本地，音乐娱乐可仍用消费音箱。卫星布置避开机柜风机噪声。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-  <h4>2.4.13 Buttons &amp; Scene Controllers</h4>
-  <p>无线按钮、旋钮、遥控、床头场景键。补墙开覆盖不到的「一键场景」；协议与家里主流 mesh 一致，减少又一套网关。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-  <h4>2.4.14 Fans &amp; Air Quality</h4>
-  <p>吊扇、排气扇、空气净化器、CO₂ / PM 监测联动。风扇控制与 HVAC 设定点分开，避免两套逻辑抢执行器。</p>
-  <ul>
-    <li>选品清单：<em>placeholder（后续探讨）</em></li>
-  </ul>
-
-<h2>3. Home Office Setup</h2>
+  <h2>3. Home Office Setup</h2>
   <p class="lede"><a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（Den）与机柜 NAS 的算力 / 存储分工，以及书房桌面显示器与外设。Den 两根 Room Drop（Studio 10G + HA Hub 2.5G）见 <a href="#1.1.5" class="page-ref">§1.1.5</a>；同室桌测 Wallpanel 挂 Hub 下联 + 桌面 PoE+，见 <a href="#2.2" class="page-ref">§2.2</a>。NAS / Studio 在拓扑上的落点见 <a href="#topology" class="page-ref">Topology</a>（图暂未改）。</p>
 
   <h4>3.1 NAS · <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a></h4>
@@ -2153,7 +2160,7 @@
   <p>待补全。网络机柜与铜缆见 <a href="#1.1" class="page-ref">§1.1</a>。</p>
 
   <h2>Appendix. Order Fees Running Total</h2>
-  <p class="lede">订单级费用（Shipping / Handling 及摊在运费上的税），<strong>不</strong>摊入 <a href="#1.3" class="page-ref">§1.3</a> / <a href="#2.2.1" class="page-ref">§2.2.1</a> 的 Device Price。按结款单整单记账；新单只追加本表。结款 PDF 在 <code>orders/</code>。</p>
+  <p class="lede">订单级费用（Shipping / Handling 及摊在运费上的税），<strong>不</strong>摊入 <a href="#1.3" class="page-ref">§1.3</a> / <a href="#2.3" class="page-ref">§2.3</a> 的 Device Price。按结款单整单记账；新单只追加本表。结款 PDF 在 <code>orders/</code>。</p>
   <div class="design-devices-wrap">
   <table class="devices-table order-fees-table">
     <thead>
@@ -2179,13 +2186,28 @@
         <td class="price-cell">US$41.70</td>
         <td>Shipping &amp; Handling</td>
       </tr>
+      <tr>
+        <td><a href="orders/ameriDroid%20-%20Order%20%23%20A136752.pdf" target="_blank" rel="noopener noreferrer">ameriDroid <code>A136752</code></a></td>
+        <td class="price-cell">US$21.78</td>
+        <td>Shipping（PoE Mini PC）</td>
+      </tr>
+      <tr>
+        <td><a href="orders/ameriDroid%20-%20Order%20%23%20A136769.pdf" target="_blank" rel="noopener noreferrer">ameriDroid <code>A136769</code></a></td>
+        <td class="price-cell">US$8.22</td>
+        <td>Shipping（ZWA-2 + ZBT-2×2）</td>
+      </tr>
+      <tr>
+        <td><a href="orders/Pimoroni%20-%20Order%20%23%20PI803622.pdf" target="_blank" rel="noopener noreferrer">Pimoroni <code>PI803622</code></a></td>
+        <td class="price-cell">US$18.91</td>
+        <td>Royal Mail T&amp;S US$13.28 + Import duties + fees US$5.63</td>
+      </tr>
     </tbody>
     <tfoot>
       <tr class="order-fees-sum">
         <th scope="row">Running Total</th>
         <td class="price-cell">
           <span class="order-fees-ccy">CA$29.06</span>
-          <span class="order-fees-ccy">US$41.70</span>
+          <span class="order-fees-ccy">US$90.61</span>
         </td>
         <td>分币种合计；不换算</td>
       </tr>
