@@ -791,8 +791,44 @@
       width: max-content;
     }
 
-    .design-devices-wrap .devices-table > tbody > tr > td:last-child {
+    .design-devices-wrap .devices-table > tbody > tr > td.price-cell {
       vertical-align: middle;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      color: var(--ink-soft);
+    }
+
+    .devices-table td.device-cell {
+      vertical-align: middle;
+    }
+
+    .devices-table td.device-cell.is-pending {
+      background: #eef2f6;
+    }
+
+    .devices-table td.device-cell.is-purchased {
+      background: #e6f4ea;
+    }
+
+    .device-legend {
+      display: inline-block;
+      padding: 0.05rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.92em;
+    }
+
+    .device-legend.is-pending {
+      background: #eef2f6;
+    }
+
+    .device-legend.is-purchased {
+      background: #e6f4ea;
+    }
+
+    .stock-out {
+      color: #c0392b;
+      font-weight: 600;
     }
 
     .poe-val {
