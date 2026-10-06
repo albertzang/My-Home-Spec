@@ -826,6 +826,25 @@
       background: #e6f4ea;
     }
 
+    .order-fees-table td:first-child,
+    .order-fees-table th:first-child {
+      white-space: nowrap;
+    }
+
+    .order-fees-table tfoot .order-fees-sum th,
+    .order-fees-table tfoot .order-fees-sum td {
+      font-weight: 700;
+      border-top: 1px solid var(--line);
+      padding-top: 0.65rem;
+      vertical-align: top;
+    }
+
+    .order-fees-ccy {
+      display: block;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.35;
+    }
+
     .stock-out {
       color: #c0392b;
       font-weight: 600;

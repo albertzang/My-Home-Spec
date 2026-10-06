@@ -406,7 +406,7 @@
   </ul>
 
   <h3>1.3 Device List</h3>
-  <p class="lede">设备清单与端口能力。Device 列底色区分采购状态：<span class="device-legend is-purchased">已购</span> / <span class="device-legend is-pending">未购</span>。Price 为结款单实付（含税 / 运费 / Handling / Memory Surcharge 等）；未购标「-」。来源：<code>orders/</code> 内 UniFi CA6335578 等。</p>
+  <p class="lede">设备清单与端口能力。Device 列底色区分采购状态：<span class="device-legend is-purchased">已购</span> / <span class="device-legend is-pending">未购</span>。Price 为该行货价实付（含行税 / Memory Surcharge 等），<strong>不含</strong>订单级运费；未购标「-」。订单级费用见 <a href="#appendix-order-fees-running-total" class="page-ref">Appendix. Order Fees Running Total</a>。来源：<code>orders/</code>。</p>
 <div class="design-devices-wrap">
   <table class="devices-table">
     <thead>
@@ -1107,86 +1107,77 @@
   </ul>
 
   <h3>2.2 Wallpanel</h3>
-  <p>全宅四套同款核心栈：官方 10″ Touch Display 2 + Pi 5（2 GB）+ Bumper + Active Cooler + <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> + 官方 2230 NVMe。其中三套墙装（Basement / Main / Upper）：每层一根 Cat6A home-run → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++，按每路 60 W 预留记账（见 <a href="#1.4" class="page-ref">§1.4</a>）；墙装后壳见 <a href="#2.2.2" class="page-ref">§2.2.2</a>。一套长期桌测留在 Den：与墙机同走 HAT (C) PoE 路径以便老化，但不占第三根 Room Drop、也不上 Den Flex——数据接 <a href="#2.1" class="page-ref">§2.1</a> Hub 空闲 2.5G，供电用桌面 <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）；外壳用 Pibow，不用墙装后壳。10″ TD2 无同时覆盖「Pi 5 + Active Cooler + HAT (C)」的量产墙装壳；不采用 Waveshare <a href="https://www.waveshare.com/pi5-case-td2.htm" target="_blank" rel="noopener noreferrer">PI5-CASE-TD2</a>（仅 7″）。</p>
+  <p>全宅四套同款核心栈：官方 10″ Touch Display 2 + Pi 5（2 GB）+ Bumper + Active Cooler + <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> + 官方 2230 NVMe。其中三套墙装（Basement / Main / Upper）：每层一根 Cat6A home-run → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++，按每路 60 W 预留记账（见 <a href="#1.4" class="page-ref">§1.4</a>）；墙装后壳思路见 <a href="#2.2.2" class="page-ref">§2.2.2</a>（未进 BOM）。一套长期桌测留在 Den：与墙机同走 HAT (C) PoE 路径以便老化，但不占第三根 Room Drop、也不上 Den Flex——数据接 <a href="#2.1" class="page-ref">§2.1</a> Hub 空闲 2.5G，供电用桌面 <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）；支架用 Amazon.ca / Best Buy 任意可调 10″ 平板 / 菜谱架（约 CA$15–30，未进 BOM），夹或托屏边、竖持，背面 Cooler / HAT (C) 全露，不挡屏下缘排线；备选 <a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a>（PiShop.ca 仅 7″；英站机身约 £14.50，运费+关税落地可超 CA$80，且闭环亚克力难让本宅 Cooler / HAT 堆叠）。10″ TD2 无同时覆盖本宅堆叠的量产墙装壳；不采用 Waveshare <a href="https://www.waveshare.com/pi5-case-td2.htm" target="_blank" rel="noopener noreferrer">PI5-CASE-TD2</a>（仅 7″）。</p>
 
   <h4>2.2.1 物料清单</h4>
-  <p>核心硬件规划×4（三墙 + Den 桌测）。墙装专配与桌测专配分行备注。物料列底色同 <a href="#1.3" class="page-ref">§1.3</a>：<span class="device-legend is-purchased">已购</span> / <span class="device-legend is-pending">未购</span>；Price 为结款单实付（含税 / 运费 / Handling 等），未购标「-」。来源：CanaKit W100518020664、Waveshare 261006-010726-E0、UniFi CA6335578。</p>
+  <p>核心硬件规划×4（三墙 + Den 桌测）。墙装专配与桌测专配分行备注。Device 列底色同 <a href="#1.3" class="page-ref">§1.3</a>：<span class="device-legend is-purchased">已购</span> / <span class="device-legend is-pending">未购</span>；Price 为该行货价实付（含行税等），<strong>不含</strong>订单级运费；未购标「-」。订单级费用见 <a href="#appendix-order-fees-running-total" class="page-ref">Appendix. Order Fees Running Total</a>。来源：CanaKit / Waveshare / UniFi 结款单。</p>
   <div class="design-devices-wrap">
   <table class="devices-table">
     <thead>
       <tr>
-        <th>物料</th>
-        <th>备注</th>
+        <th>Device</th>
         <th>Price</th>
+        <th>Notes</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/touch-display-2/?variant=touch-display-2-10-inch-portrait" target="_blank" rel="noopener noreferrer">Raspberry Pi Touch Display 2 — 10″ Portrait</a></td>
+        <td class="price-cell">CA$128.75</td>
         <td>核心 ×4（已购 ×1）；含 DSI 线、GPIO 供电线、M2.5 螺丝；仅 Pi 5 / CM</td>
-        <td class="price-cell">CA$141.07</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi 5 — 2 GB RAM</a></td>
+        <td class="price-cell">CA$123.15</td>
         <td>核心 ×4（已购 ×1）；Dashboard 常驻 kiosk；2 GB 足够</td>
-        <td class="price-cell">CA$134.93</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/bumper/" target="_blank" rel="noopener noreferrer">Raspberry Pi Bumper</a></td>
+        <td class="price-cell">CA$5.03</td>
         <td>核心 ×4（已购 ×1）；与 Active Cooler 同用</td>
-        <td class="price-cell">CA$5.51</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/active-cooler/" target="_blank" rel="noopener noreferrer">Raspberry Pi Active Cooler</a></td>
+        <td class="price-cell">CA$7.79</td>
         <td>核心 ×4（已购 ×1）；PoE HAT 须兼容此件（定稿 HAT (C)）</td>
-        <td class="price-cell">CA$8.53</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a></td>
+        <td class="price-cell">US$94.52</td>
         <td>核心 ×4（已购 ×4）；802.3af/at；2230 / 2242 NVMe；从 SSD 启动</td>
-        <td class="price-cell">US$136.22</td>
       </tr>
       <tr>
         <td class="device-cell is-pending"><a href="https://www.raspberrypi.com/products/ssd/?variant=ssd-256" target="_blank" rel="noopener noreferrer">Raspberry Pi SSD — 256 GB</a></td>
-        <td>核心 ×4；官方 M.2 2230；同款便于克隆；<span class="stock-out">缺货</span></td>
         <td class="price-cell">-</td>
+        <td>核心 ×4；官方 M.2 2230；同款便于克隆；<span class="stock-out">缺货</span></td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/sd-cards/" target="_blank" rel="noopener noreferrer">Raspberry Pi SD Card — 32 GB</a></td>
+        <td class="price-cell">CA$39.15</td>
         <td>核心 ×4（已购 ×1）；救急启动；日常从 NVMe 启动</td>
-        <td class="price-cell">CA$42.89</td>
-      </tr>
-      <tr>
-        <td class="device-cell is-pending">墙装后壳（3D 打印或钣金，二选一）</td>
-        <td>仅墙装 ×3；须让出 Active Cooler 与 HAT (C) / RJ45；见 <a href="#2.2.2" class="page-ref">§2.2.2</a></td>
-        <td class="price-cell">-</td>
-      </tr>
-      <tr>
-        <td class="device-cell is-pending"><a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a></td>
-        <td>仅 Den 桌测 ×1；桌面背板 / 老化，非墙装后壳</td>
-        <td class="price-cell">-</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）</td>
-        <td>仅 Den 桌测 ×1（已购）；802.3at 注入；Hub 空闲 2.5G → DATA IN，墙插 AC → 注入器，PoE+ OUT → HAT (C) RJ45；Pi 5 / HAT 口速 1G，勿选 <a href="https://techspecs.ui.com/unifi/accessories/uacc-poe-plus-2-5g" target="_blank" rel="noopener noreferrer">2.5G PoE+ Adapter</a>；墙装三套不需要</td>
         <td class="price-cell">CA$22.40</td>
+        <td>仅 Den 桌测 ×1（已购）；802.3at 注入；Hub 空闲 2.5G → DATA IN，墙插 AC → 注入器，PoE+ OUT → HAT (C) RJ45；Pi 5 / HAT 口速 1G，勿选 <a href="https://techspecs.ui.com/unifi/accessories/uacc-poe-plus-2-5g" target="_blank" rel="noopener noreferrer">2.5G PoE+ Adapter</a>；墙装三套不需要</td>
       </tr>
     </tbody>
   </table>
   </div>
+
   <ul>
-    <li>墙装 ×3：Cat6A home-run → 配线架 → XG 2.5G PoE+++ → HAT (C) RJ45。无 Pibow、无注入器。</li>
-    <li>Den 桌测 ×1：Hub 空闲 2.5G → 短跳 → <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）DATA IN；墙插 AC → 注入器；注入器 DATA+PoE OUT → HAT (C) RJ45。电走 HAT，与墙机同路径；链路协商 1G（Pi 5 板载千兆）。不用 Hub USB‑C 供电，也不上 Den Flex / 第三根 Drop。</li>
+    <li>墙装 ×3：Cat6A home-run → 配线架 → XG 2.5G PoE+++ → HAT (C) RJ45。无桌测支架、无注入器。</li>
+    <li>Den 桌测 ×1：Hub 空闲 2.5G → 短跳 → <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）DATA IN；墙插 AC → 注入器；注入器 DATA+PoE OUT → HAT (C) RJ45。电走 HAT，与墙机同路径；链路协商 1G（Pi 5 板载千兆）。不用 Hub USB‑C 供电，也不上 Den Flex / 第三根 Drop。支架见上方正文。</li>
   </ul>
 
   <h4>2.2.2 墙装后壳落地（3D 打印 / 钣金）</h4>
-  <p>仅墙装三套。Den 桌测用 Pibow，不打本款墙壳。上墙前用 Den 桌测套（注入器 PoE）完成老化与镜像克隆。官方 10″ 全包墙壳无量产货号；下列 STL 为社区起点，均未在本宅堆叠（TD2 10″ + Pi 5 + Active Cooler + HAT (C) + 2230）上实机验收——到手后须试配，必要时改深度 / 开孔。可组合：全包后壳背面留 VESA + 市售臂。</p>
+  <p>仅墙装三套的远期方案，未列入 <a href="#2.2.1" class="page-ref">§2.2.1</a> BOM。Den 桌测用市售平板架夹屏边，不打本款墙壳、也不为桌测单独 3D 打印。上墙前用 Den 桌测套（注入器 PoE）完成老化与镜像克隆。官方 10″ 全包墙壳无量产货号；下列 STL 为社区起点，均未在本宅堆叠（TD2 10″ + Pi 5 + Active Cooler + HAT (C) + 2230）上实机验收——到手后须试配，必要时改深度 / 开孔。可组合：全包后壳背面留 VESA + 市售臂。</p>
   <ul>
     <li>3D 打印（现成图样）
       <ul>
         <li><a href="https://makerworld.com/en/models/3116241-raspberry-pi-10-touch-display-2-case" target="_blank" rel="noopener noreferrer">MakerWorld · Raspberry Pi 10.1″ Touch Display 2 Case</a>（CreationThroughChaos）— 针对 10″ TD2；当前以桌面 / 导轨为主，作者称墙装支架仍在开发；Pi 位与屏脚位因公差可能需微调。</li>
         <li><a href="https://www.printables.com/model/1202915-raspberry-pi-touch-display-2-wall-mount-case" target="_blank" rel="noopener noreferrer">Printables · Touch Display 2 wall mount case</a>（fbm3334）—墙装；thick 约 60 mm 预留 HAT、可选散热孔，附 OpenSCAD 源文件。社区多用于 7″ TD2；上 10″ 须按 167×248 mm 外廓重参或试打改模。</li>
-        <li><a href="https://github.com/cnxsoft/vesa-adapter-pi-touch-display-10" target="_blank" rel="noopener noreferrer">GitHub · cnxsoft VESA adapter（10″ TD2）</a> — 屏背 M2.5 → VESA；配合市售 VESA 臂上墙。不包 Pi / HAT，堆叠需另做罩壳或开放安装。</li>
+        <li><a href="https://github.com/cnxsoft/vesa-adapter-pi-touch-display-10" target="_blank" rel="noopener noreferrer">GitHub · cnxsoft VESA adapter（10″ TD2）</a> — 屏背 M2.5 → 100×100 VESA；可选日后配市售臂上墙。Den 桌测不必走这条（平板架即可）。不包 Pi / HAT，开背正好让 Cooler / HAT (C)。</li>
         <li><a href="https://www.printables.com/model/1214965-raspberry-pi-touch-display-2-wallmount-case-for-ra" target="_blank" rel="noopener noreferrer">Printables · Frank Delporte wallmount（PoE / HAT 加高）</a> — 网口与散热开孔设计可参考；模型基于 7″ TD2，10″ 不可直接套用。</li>
         <li><a href="https://learn.adafruit.com/pi-wall-mount" target="_blank" rel="noopener noreferrer">Adafruit · Articulated Pi Display V2 Mount</a> — 教程含 Pi 5 + Active Cooler + M.2 HAT+ 层叠；ST 默认 7″ TD2，10″ 无同款，仅结构参考。</li>
       </ul>
@@ -2160,6 +2151,47 @@
 </div>
   <h3>5.11 Mechanical</h3>
   <p>待补全。网络机柜与铜缆见 <a href="#1.1" class="page-ref">§1.1</a>。</p>
+
+  <h2>Appendix. Order Fees Running Total</h2>
+  <p class="lede">订单级费用（Shipping / Handling 及摊在运费上的税），<strong>不</strong>摊入 <a href="#1.3" class="page-ref">§1.3</a> / <a href="#2.2.1" class="page-ref">§2.2.1</a> 的 Device Price。按结款单整单记账；新单只追加本表。结款 PDF 在 <code>orders/</code>。</p>
+  <div class="design-devices-wrap">
+  <table class="devices-table order-fees-table">
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>Fees</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="orders/Ubiquiti%20-%20Order%20%23%20CA6335578.pdf" target="_blank" rel="noopener noreferrer">UniFi <code>CA6335578</code></a></td>
+        <td class="price-cell">CA$0.00</td>
+        <td>Free Shipping</td>
+      </tr>
+      <tr>
+        <td><a href="orders/CanaKit%20-%20Order%20%23%20W100518020664.pdf" target="_blank" rel="noopener noreferrer">CanaKit <code>W100518020664</code></a></td>
+        <td class="price-cell">CA$29.06</td>
+        <td>Shipping CA$25.95 + 运费 GST/PST CA$3.11</td>
+      </tr>
+      <tr>
+        <td><a href="orders/Waveshare%20-%20Order%20%23%20261006-010726-E0.pdf" target="_blank" rel="noopener noreferrer">Waveshare <code>261006-010726-E0</code></a></td>
+        <td class="price-cell">US$41.70</td>
+        <td>Shipping &amp; Handling</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr class="order-fees-sum">
+        <th scope="row">Running Total</th>
+        <td class="price-cell">
+          <span class="order-fees-ccy">CA$29.06</span>
+          <span class="order-fees-ccy">US$41.70</span>
+        </td>
+        <td>分币种合计；不换算</td>
+      </tr>
+    </tfoot>
+  </table>
+  </div>
 </article>
   </div>
   </section>
