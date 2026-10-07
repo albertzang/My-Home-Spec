@@ -265,6 +265,37 @@
       vertical-align: top;
     }
 
+    .spa-spec .spa-article .appliances-wrap .appliances-table td.device-cell {
+      vertical-align: middle;
+    }
+
+    .spa-spec .spa-article .appliances-wrap .appliances-table th.brand-cell,
+    .spa-spec .spa-article .appliances-wrap .appliances-table td.brand-cell {
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    .spa-spec .spa-article .appliances-wrap .appliances-table .brand-logo-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      line-height: 0;
+    }
+
+    .spa-spec .spa-article .appliances-wrap .appliances-table .brand-logo {
+      height: 28px;
+      width: auto;
+      max-width: 7.5rem;
+      object-fit: contain;
+      display: block;
+      margin-inline: auto;
+    }
+
+    .appliances-table .udc-device:not(:has(img)) {
+      align-items: flex-start;
+    }
+
     .appliances-table .num {
       font-variant-numeric: tabular-nums;
       text-align: right;
@@ -789,6 +820,12 @@
     td.port-cell > .udc-ports {
       display: flex;
       width: max-content;
+    }
+
+    .design-devices-wrap .devices-table > tbody > tr > td.protocol-cell {
+      vertical-align: middle;
+      white-space: nowrap;
+      color: var(--ink-soft);
     }
 
     .design-devices-wrap .devices-table > tbody > tr > td.price-cell {

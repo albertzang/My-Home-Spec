@@ -19,6 +19,8 @@ class NoCacheHandler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     os.chdir(Path(__file__).resolve().parent.parent)
-    server = ThreadingHTTPServer(("127.0.0.1", 8000), NoCacheHandler)
+    # Bind all interfaces so Cloud Agent / remote port-forward can reach :8000.
+    # Still open http://127.0.0.1:8000/ in the browser.
+    server = ThreadingHTTPServer(("0.0.0.0", 8000), NoCacheHandler)
     print("Serving /workspace at http://127.0.0.1:8000/ (Cache-Control: no-cache)")
     server.serve_forever()

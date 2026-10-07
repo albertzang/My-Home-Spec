@@ -373,14 +373,14 @@
             P("udm-lan-sfp", "sfp", { t: "SFP+", title: "LAN SFP+ → UACC-DAC-SFP10", child: "xg" })
           ]) },
         { id: "xg", vlan: "management", name: "USW-Pro-XG-24-PoE", loc: "Rack Cabinet", href: UI + "usw-pro-xg-24-poe", info: "2×SFP28 + 8×2.5G PoE+++ + 16×10G PoE+++. Unused ports hollow.",
-          poeBar: { label: "PoE Output Used", used: 534.9, cap: 720 },
+          poeBar: { label: "PoE Output Used", used: 445.9, cap: 720 },
           up: [
             P("xg-sfp", "sfp", { t: "SFP28", title: "SFP28 ← UACC-DAC-SFP10 at 10G" }),
             P("xg-sfp2", "sfp", { t: "SFP28", title: "SFP28 unused", idle: true })
           ],
           down: [
             P("xg-ha", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → HA", child: "ha", side: "left" }),
-            P("xg-wallpanels", "gbe2p5", { poe: "ppp", title: "3× 2.5G PoE+++ ports → Home Assistant PoE Wallpanels at 1G PoE++", count: 3, child: "group-wallpanels", side: "left" }),
+            P("xg-wallpanels", "gbe2p5", { poe: "ppp", title: "3× 2.5G PoE+++ ports → Home Assistant PoE Wallpanels at 1G PoE+", count: 3, child: "group-wallpanels", side: "left" }),
             P("xg-front", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Front UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
             P("xg-mud", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Mud UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
             P("xg-din", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Dining UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
@@ -568,15 +568,15 @@
           poeBar: { used: 15, cap: 30 },
           up: [P("cam-ct-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
 
-        { id: "wp-b", vlan: "iot", name: "Home Assistant PoE Wallpanel", loc: "Basement Wall Mount", info: "Placeholder. 1G PoE++ uplink · 60W reserved.",
-          poeBar: { used: 60, cap: 60 },
-          up: [P("wp-b-up", "gbe1", { poe: "pp", title: "1G PoE++" })], down: [] },
-        { id: "wp-m", vlan: "iot", name: "Home Assistant PoE Wallpanel", loc: "Main Wall Mount", info: "Placeholder. 1G PoE++ uplink · 60W reserved.",
-          poeBar: { used: 60, cap: 60 },
-          up: [P("wp-m-up", "gbe1", { poe: "pp", title: "1G PoE++" })], down: [] },
-        { id: "wp-u", vlan: "iot", name: "Home Assistant PoE Wallpanel", loc: "Upper Wall Mount", info: "Placeholder. 1G PoE++ uplink · 60W reserved.",
-          poeBar: { used: 60, cap: 60 },
-          up: [P("wp-u-up", "gbe1", { poe: "pp", title: "1G PoE++" })], down: [] },
+        { id: "wp-b", vlan: "iot", name: "Home Assistant PoE Wallpanel", loc: "Basement Wall Mount", info: "1G PoE+ uplink · 30W reserved (HAT (C) IEEE 802.3at max).",
+          poeBar: { used: 30, cap: 30 },
+          up: [P("wp-b-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
+        { id: "wp-m", vlan: "iot", name: "Home Assistant PoE Wallpanel", loc: "Main Wall Mount", info: "1G PoE+ uplink · 30W reserved (HAT (C) IEEE 802.3at max).",
+          poeBar: { used: 30, cap: 30 },
+          up: [P("wp-m-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
+        { id: "wp-u", vlan: "iot", name: "Home Assistant PoE Wallpanel", loc: "Upper Wall Mount", info: "1G PoE+ uplink · 30W reserved (HAT (C) IEEE 802.3at max).",
+          poeBar: { used: 30, cap: 30 },
+          up: [P("wp-u-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
 
         { id: "drop-gar-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Garage", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at both ends; cabinet end is not connected to USW-Pro-XG-24-PoE.",
           up: [P("drop-gar-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
@@ -641,8 +641,8 @@
         { id: "gw3", name: "Tesla Gateway 3", loc: "Garage", href: "https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf", info: "CAN from Leader only.",
           up: [P("gw3-can", "other", { t: "CAN", title: "CAN ← Leader" })], down: [] },
 
-        { id: "group-wallpanels", name: "Home Assistant PoE Wallpanel ×3", info: "Three identical USW-Pro-XG-24-PoE-fed Wallpanel runs; locations are listed at right.",
-          up: [P("wp-b-up", "gbe1", { poe: "pp", title: "1G PoE++" })], down: [],
+        { id: "group-wallpanels", name: "Home Assistant PoE Wallpanel ×3", info: "Three identical USW-Pro-XG-24-PoE-fed Wallpanel runs at 1G PoE+ · 30W (HAT (C) IEEE 802.3at max); locations are listed at right.",
+          up: [P("wp-b-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [],
           bundle: {
             kind: "single", count: 3, source: "wp-b",
             locations: ["Basement Wall Mount", "Main Wall Mount", "Upper Wall Mount"]
@@ -734,7 +734,7 @@
         { from: "flex", fp: "flex-lite", to: "lite", tp: "lite-up", info: "Flex 2.5G PoE++ port → U7-Lite at 2.5G PoE." },
         { from: "pw-lead", fp: "pw-lead-eth", to: "pw-follow", tp: "pw-follow-eth", info: "Leader Ethernet → Follower." },
         { from: "pw-lead", fp: "pw-lead-can", to: "gw3", tp: "gw3-can", info: "Leader CAN → Gateway 3." },
-        { from: "xg", fp: "xg-wallpanels", to: "group-wallpanels", tp: "wp-b-up", info: "3× USW-Pro-XG-24-PoE 2.5G PoE+++ ports → Home Assistant PoE Wallpanels at 1G PoE++." },
+        { from: "xg", fp: "xg-wallpanels", to: "group-wallpanels", tp: "wp-b-up", info: "3× USW-Pro-XG-24-PoE 2.5G PoE+++ ports → Home Assistant PoE Wallpanels at 1G PoE+." },
         { from: "xg", fp: "xg-aps", to: "group-aps", tp: "u7b-up", info: "3× USW-Pro-XG-24-PoE → U7-Pro." },
         { from: "xg", fp: "xg-front", to: "group-main-doors", tp: "front-mini-up", info: "USW-Pro-XG-24-PoE → Front UA-Hub-Door-Mini." },
         { from: "xg", fp: "xg-mud", to: "group-main-doors", tp: "mud-mini-up", info: "USW-Pro-XG-24-PoE → Mud UA-Hub-Door-Mini." },

@@ -854,9 +854,9 @@
           <div class="power-tree-handle-body">
             <div class="power-card power-card-wide">
               <p class="power-card-title"><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></p>
-              <p class="power-card-value">535.9 / 720W <small>74.4%</small></p>
-              <div class="power-meter" aria-label="USW-Pro-XG-24-PoE 535.9 of 720 watts"><span style="width:74.431%"></span></div>
-              <p class="power-formula"><code>30 + 60 + 60 + 60 + 22 + 22 + 22 + 9.5 + 14 + 50 + 39 + 39 + 39 + 69.4 = 535.9W</code></p>
+              <p class="power-card-value">445.9 / 720W <small>61.9%</small></p>
+              <div class="power-meter" aria-label="USW-Pro-XG-24-PoE 445.9 of 720 watts"><span style="width:61.931%"></span></div>
+              <p class="power-formula"><code>30 + 30 + 30 + 30 + 22 + 22 + 22 + 9.5 + 14 + 50 + 39 + 39 + 39 + 69.4 = 445.9W</code></p>
             </div>
           </div></td>
       </tr>
@@ -870,24 +870,24 @@
       </tr>
       <tr class="power-tree-leaf" data-level="1">
         <td>HA PoE Wallpanel · Basement</td>
-        <td class="num">60W</td>
-        <td>1G PoE++ ≤60W</td>
+        <td class="num">30W</td>
+        <td>1G PoE+ ≤30W</td>
         <td>XG 2.5G PoE+++ ≤90W</td>
-        <td>墙装；Den 桌测第四套不入此账（桌面注入器）</td>
+        <td>墙装；HAT (C) IEEE 802.3at 上限；Den 桌测第四套走桌面注入器，另账</td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
         <td>HA PoE Wallpanel · Main</td>
-        <td class="num">60W</td>
-        <td>1G PoE++ ≤60W</td>
+        <td class="num">30W</td>
+        <td>1G PoE+ ≤30W</td>
         <td>XG 2.5G PoE+++ ≤90W</td>
-        <td>墙装</td>
+        <td>墙装；HAT (C) IEEE 802.3at 上限</td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
         <td>HA PoE Wallpanel · Upper</td>
-        <td class="num">60W</td>
-        <td>1G PoE++ ≤60W</td>
+        <td class="num">30W</td>
+        <td>1G PoE+ ≤30W</td>
         <td>XG 2.5G PoE+++ ≤90W</td>
-        <td>墙装</td>
+        <td>墙装；HAT (C) IEEE 802.3at 上限</td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
         <td><a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a></td>
@@ -1088,32 +1088,43 @@
   </div>
 
 <h2>2. Home Assistant System</h2>
-  <p class="lede">本地智能家居控制面：Den Hub、墙面 Wallpanel（×3）+ Den 长期桌测一套、<a href="#2.3" class="page-ref">§2.3</a> Device List 与 <a href="#2.4" class="page-ref">§2.4</a> 协议层。录像 / 门禁仍归 <a href="#1.2" class="page-ref">§1.2</a> UniFi Protect / Access；HA 只做联动，不取代 NVR 或 Access 逻辑。</p>
+  <p class="lede">本地智能家居控制面：Den Hub、墙面 Wallpanel（×3）+ Den 长期桌测一套，与 <a href="#2.3" class="page-ref">§2.3</a> Device List。射频硬件（<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>×2 + <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a>）落在 <a href="#2.1" class="page-ref">§2.1</a>；IP 侧（Wi‑Fi / MQTT / Matter-over-Wi‑Fi）不另买棒。录像 / 门禁仍归 <a href="#1.2" class="page-ref">§1.2</a> UniFi Protect / Access；HA 只做联动，不取代 NVR 或 Access 逻辑。买设备前先查 <a href="https://www.home-assistant.io/integrations/" target="_blank" rel="noopener noreferrer">HA Integrations</a> / 社区兼容表；优先本地控制，云只作后备。</p>
+
+  <p><strong>Bluetooth / BLE：</strong>日常说的「蓝牙」常混用两套：<strong>Bluetooth Classic</strong>（音响、旧串口等）与 <strong>Bluetooth Low Energy（BLE）</strong>（低功耗广播与短连接）。Home Assistant 的 <a href="https://www.home-assistant.io/integrations/bluetooth/" target="_blank" rel="noopener noreferrer">Bluetooth</a> 集成<strong>只支持 BLE</strong>，不支持 Classic。本宅短距传感（BTHome 温湿度等）、部分体脂秤与辅助存在探测走 BLE；墙体衰减大、无 mesh，不靠 Hub 机身蓝牙，而靠房间级 <a href="https://www.home-assistant.io/integrations/bluetooth/#remote-adapters-bluetooth-proxies" target="_blank" rel="noopener noreferrer">Bluetooth Proxy（remote adapter）</a>。按需、非 Day‑1：每层 1–2 台以太网 / PoE ESP32（优先外置天线，如 Olimex ESP32-PoE-ISO-EA）刷 <a href="https://esphome.io/components/bluetooth_proxy/" target="_blank" rel="noopener noreferrer">ESPHome Bluetooth Proxy</a>，专做 BLE 广告与短连接；Proxy 板本身走有线，避免再打 Wi‑Fi 与 BLE 抢射频。不拿 ZWA-2 兼 BLE 主力。厂商私有桥（Lutron Caseta 等）与红外-only 设备的 IR blaster 有才买；重要安防不单靠手机蓝牙存在。</p>
+
+  <p><strong>Wi‑Fi：</strong>高带宽或厂商只给了 Wi‑Fi 的设备（部分电器、Matter-over-Wi‑Fi、少数 IoT）走本宅 UniFi AP；HA 不另建 Wi‑Fi，也不在 Hub 上插 USB Wi‑Fi 棒。吞吐高、配网熟，但占 AP airtime、云依赖机型断云即残，且 2.4 GHz 与 Zigbee / Thread 互害。本地 API 清晰的品牌可用；能有线（Room Drop）的固定设备走有线。补充通道，不是传感器主干。</p>
+
+  <p><strong>MQTT：</strong>软件消息总线，不是无线制式；跑在 Ethernet / Wi‑Fi / IP 上。本宅在 Hub 上按需装 Mosquitto，供 Tasmota / ESPHome、部分 DIY、以及日后若上 Zigbee2MQTT 时进 HA。解耦灵活、可全本地；要自管 Broker 与发现约定。ZHA 直连 Zigbee 时不必为 Zigbee 而装 MQTT；大量 ESP 或改 Z2M 时再升格为基础设施。</p>
+
+  <p><strong>Matter：</strong>应用层互联标准，可跑在 Thread 或 Wi‑Fi / Ethernet 上。HA 用 Matter Server 做本地控制器；Matter-over-Thread 经 <a href="#2.1" class="page-ref">§2.1</a> 第二根 ZBT-2 Border Router，Matter-over-Wi‑Fi 经局域网、不占该棒。多生态本地控制的长期方向，不是把现有稳定 Zigbee / Z-Wave 网推倒重来的理由。Thread / Matter 对 IPv6 与 mDNS 敏感，防火墙未放行前不要先拆 VLAN。</p>
 
   <h3>2.1 Hub</h3>
   <ul>
     <li><a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a>
       <ul>
-        <li>安装：放在 Den，与 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> 同室、分机独立；不进设备间机柜。金属机箱，附 VESA（可挂桌下 / 墙面）。三根 Connect 棒的天线座用原装线放到 Den 开阔处，彼此约 0.5–1 m，远离 USB 3、SSD、显示器电源与最近的 AP；不要塞进封闭金属腔。</li>
+        <li>安装：放在 Den，与 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> 同室、分机独立；不进设备间机柜。金属机箱，附 VESA（可挂桌下 / 墙面）。三根 Connect 棒的天线座用原装线放到 Den 开阔处，彼此约 0.5–1 m，远离 USB 3、SSD、显示器电源与最近的 AP；不要塞进封闭金属腔。2.4 GHz 上 AP / Zigbee / Thread 并存时，靠拉开天线座与频谱规划共存。</li>
         <li>系统与算力：Generic x86-64 Home Assistant OS（厂商预调 BIOS：掉电自启等）；CPU 为 Intel N100 四核。</li>
         <li>内存与存储：定型 16 GB DDR4 + 256 GB M.2 2280 SATA。不选 8 GB（跑 HAOS + 协议栈偏紧）或 32 GB（本机不做 Frigate / 大模型）；不选 128 GB（备份 / recorder 易满）或更大盘 / 2.5″（影音与长备份进 NAS）。下单「Custom build」点名 16 GB / 256 GB。</li>
-        <li>网络与供电：PoE++ IN → Den 第二根 Room Drop → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++（见 <a href="#1.1.5" class="page-ref">§1.1.5</a>）；Studio 独占 10G Drop。一口空闲 2.5G 短跳 → Den 桌测 Wallpanel 的 PoE+ 注入器 DATA IN（见 <a href="#2.2" class="page-ref">§2.2</a>）；其余 2.5G 口可留作日后用。供电按 ≥30 W PoE++ 预留（见 <a href="#1.4" class="page-ref">§1.4</a>），12 V DC 仅装机 / 排错；不用机身 USB‑C 给桌测 panel 供电。机身 USB：1× USB-C + 1× USB 3.0-A + 4× USB 2.0-A；三根棒分插三只 USB 2.0-A（射频噪声更小），USB-C / USB 3.0-A 留作他用。</li>
+        <li>网络与供电：PoE++ IN → Den 第二根 Room Drop → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++（见 <a href="#1.1.5" class="page-ref">§1.1.5</a>）；Studio 独占 10G Drop。一口空闲 2.5G 短跳 → Den 桌测 Wallpanel 的 PoE+ 注入器 DATA IN（见 <a href="#2.2" class="page-ref">§2.2</a>）；其余 2.5G 口可留作日后用。供电按 ≥30 W PoE++ 预留（见 <a href="#1.4" class="page-ref">§1.4</a>），12 V DC 仅装机 / 排错。机身 USB：1× USB-C + 1× USB 3.0-A + 4× USB 2.0-A；三根棒分插三只 USB 2.0-A（射频噪声更小），USB-C / USB 3.0-A 留作他用。</li>
         <li><a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZWA-2</a>（Z-Wave）
           <ul>
             <li>接线：原装 USB-C→USB-A 插一只 USB 2.0-A；天线见上方安装总则。</li>
-            <li>本宅用途：Z-Wave / Z-Wave Long Range（北美），经 Z-Wave JS 进 HA；门锁与关键控制骨干。协议细节见 <a href="#2.4.2" class="page-ref">§2.4.2</a>。</li>
+            <li>角色：门锁、部分墙开 / 插座、对穿透与干扰更敏感的关键控制骨干；Sub‑GHz，与 2.4 GHz Wi‑Fi 错开。经 Z-Wave JS 进 HA；Z-Wave / Z-Wave Long Range（北美）。与 Zigbee 并列本地控制骨干，不互相替代；门锁优先 Z-Wave / 已有 UniFi Access，不优先 Wi‑Fi 云锁。</li>
+            <li>取舍：墙体穿透通常好于 2.4 GHz mesh，LR 适合庭院距离，不占 Wi‑Fi airtime；北美 / 欧频不通用，生态与价格逊于 Zigbee，mesh 仍依赖插电路由节点。掉线先查天线是否开阔、路由节点是否被拔、是否混入错频设备、控制器旁 USB 3 噪声。认证锁与老牌墙开（Zooz / Inovelli / Yale 等）更稳。</li>
           </ul>
         </li>
         <li><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a>（Zigbee）
           <ul>
             <li>接线：原装 USB-C→USB-A 插一只 USB 2.0-A；天线见上方安装总则。</li>
-            <li>本宅用途：固定 Zigbee + ZHA（不兼 Thread；官方不推荐 MultiPAN）；传感器 / 灯 / 开关 / 插座主干。协议细节见 <a href="#2.4.3" class="page-ref">§2.4.3</a>。</li>
+            <li>角色：传感器、灯泡、开关、插座数量最大的本地 mesh；固定 Zigbee + ZHA（不兼 Thread；官方不推荐 MultiPAN）。不另买第二套 Zigbee 协调器。硬件与 Thread 棒相近，网络不互通。默认「小数目常在线设备」首选；能 Zigbee 就少堆 Wi‑Fi IoT。</li>
+            <li>取舍：设备便宜、有电路由一开则电池末端跟网、ZHA 路径短；与 Wi‑Fi / Thread 同处 2.4 GHz 须规划信道，部分 Tuya 私有 cluster 在 ZHA 上残缺，mesh 质量取决于插电节点密度而非协调器标称距离。IKEA / Hue / Aqara（注意桥与直连）/ Sonoff 官方线更稳；白牌电池传感先用插座 / 灯铺路由骨架。天线勿塞封闭金属腔。</li>
           </ul>
         </li>
         <li><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a>（Thread）
           <ul>
             <li>接线：原装 USB-C→USB-A 插一只 USB 2.0-A；天线见上方安装总则。</li>
-            <li>本宅用途：固定 Thread，作 HA Border Router（不兼 Zigbee；不依赖 HomePod / Nest）；Matter-over-Thread 传输。协议细节见 <a href="#2.4.4" class="page-ref">§2.4.4</a>。</li>
+            <li>角色：低功耗 IPv6 mesh 传输层，主要承载 Matter-over-Thread；本棒固定作 HA Border Router（不兼 Zigbee；不依赖 HomePod / Nest）。不另买第三根 Thread 棒（除非日后独立实验室网）。新买电池类 Matter 的传输首选；不取代现有 Zigbee 库存。</li>
+            <li>取舍：为电池设备优化，经 BR 可 IP 直达；Thread 本身不是应用层——无 Matter / 厂商应用则「裸 Thread」无意义；前期设备贵、与 Zigbee 同频要分开天线与信道。掉线常见于 BR 断电、IPv6 / mDNS 被 VLAN 误伤、单 BR 位置极差。日后 Apple TV / Nest 可作辅 BR，本宅以 HA 棒为准。</li>
           </ul>
         </li>
       </ul>
@@ -1121,27 +1132,27 @@
   </ul>
 
   <h3>2.2 Wallpanel</h3>
-  <p>全宅四套同款核心栈：官方 10″ Touch Display 2 + Pi 5（2 GB）+ Bumper + Active Cooler + <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> + 官方 2230 NVMe。其中三套墙装（Basement / Main / Upper）：每层一根 Cat6A home-run → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++，按每路 60 W 预留记账（见 <a href="#1.4" class="page-ref">§1.4</a>）；墙装后壳思路见 <a href="#2.2.1" class="page-ref">§2.2.1</a>（未进 <a href="#2.3" class="page-ref">§2.3</a> Device List）。一套长期桌测留在 Den：与墙机同走 HAT (C) PoE 路径以便老化，但不占第三根 Room Drop、也不上 Den Flex——数据接 <a href="#2.1" class="page-ref">§2.1</a> Hub 空闲 2.5G，供电用桌面 <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）；桌测支架定稿 <a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a>（采购见 <a href="#2.3" class="page-ref">§2.3</a>）。10″ TD2 无同时覆盖本宅堆叠的量产墙装壳；不采用 Waveshare <a href="https://www.waveshare.com/pi5-case-td2.htm" target="_blank" rel="noopener noreferrer">PI5-CASE-TD2</a>（仅 7″）。</p>
+  <p>全宅四套同款核心栈见 <a href="#2.3" class="page-ref">§2.3</a>：三套墙装（Basement / Main / Upper）+ Den 长期桌测一套。墙装每路按 <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> IEEE 802.3at 上限 30 W 预留记账（见 <a href="#1.4" class="page-ref">§1.4</a>）；桌测支架定稿 <a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a>（采购见 <a href="#2.3" class="page-ref">§2.3</a>）；墙装后壳见 <a href="#2.2.1" class="page-ref">§2.2.1</a>。</p>
 
   <ul>
-    <li>墙装 ×3：Cat6A home-run → 配线架 → XG 2.5G PoE+++ → HAT (C) RJ45。无 Pibow、无注入器。</li>
-    <li>Den 桌测 ×1：Hub 空闲 2.5G → 短跳 → <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）DATA IN；墙插 AC → 注入器；注入器 DATA+PoE OUT → HAT (C) RJ45。电走 HAT，与墙机同路径；链路协商 1G（Pi 5 板载千兆）。不用 Hub USB‑C 供电，也不上 Den Flex / 第三根 Drop。支架用 Pibow（见 <a href="#2.3" class="page-ref">§2.3</a>）。</li>
+    <li>墙装 ×3：Cat6A home-run → 配线架 → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++ → HAT (C) RJ45。</li>
+    <li>Den 桌测 ×1：<a href="#2.1" class="page-ref">§2.1</a> Hub 空闲 2.5G → 短跳 → <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）DATA IN；墙插 AC → 注入器；注入器 DATA+PoE OUT → HAT (C) RJ45。电走 HAT，与墙机同路径；链路协商 1G（Pi 5 板载千兆）。</li>
   </ul>
 
   <h4>2.2.1 墙装后壳落地（3D 打印 / 钣金）</h4>
-  <p>仅墙装三套的远期方案，未列入 <a href="#2.3" class="page-ref">§2.3</a> Device List。Den 桌测用 Pibow，不打本款墙壳。上墙前用 Den 桌测套（注入器 PoE）完成老化与镜像克隆。官方 10″ 全包墙壳无量产货号；下列 STL 为社区起点，均未在本宅堆叠（TD2 10″ + Pi 5 + Active Cooler + HAT (C) + 2230）上实机验收——到手后须试配，必要时改深度 / 开孔。可组合：全包后壳背面留 VESA + 市售臂。</p>
+  <p>仅墙装三套。下列 STL 为社区起点，均未在本宅核心栈（见 <a href="#2.3" class="page-ref">§2.3</a>）上实机验收——到手后须试配，必要时改深度 / 开孔。可组合：全包后壳背面留 VESA + 市售臂。</p>
   <ul>
     <li>3D 打印（现成图样）
       <ul>
         <li><a href="https://makerworld.com/en/models/3116241-raspberry-pi-10-touch-display-2-case" target="_blank" rel="noopener noreferrer">MakerWorld · Raspberry Pi 10.1″ Touch Display 2 Case</a>（CreationThroughChaos）— 针对 10″ TD2；当前以桌面 / 导轨为主，作者称墙装支架仍在开发；Pi 位与屏脚位因公差可能需微调。</li>
         <li><a href="https://www.printables.com/model/1202915-raspberry-pi-touch-display-2-wall-mount-case" target="_blank" rel="noopener noreferrer">Printables · Touch Display 2 wall mount case</a>（fbm3334）—墙装；thick 约 60 mm 预留 HAT、可选散热孔，附 OpenSCAD 源文件。社区多用于 7″ TD2；上 10″ 须按 167×248 mm 外廓重参或试打改模。</li>
-        <li><a href="https://github.com/cnxsoft/vesa-adapter-pi-touch-display-10" target="_blank" rel="noopener noreferrer">GitHub · cnxsoft VESA adapter（10″ TD2）</a> — 屏背 M2.5 → 100×100 VESA；可选日后配市售臂上墙。Den 桌测已定 Pibow，不必走这条。不包 Pi / HAT，开背正好让 Cooler / HAT (C)。</li>
-        <li><a href="https://www.printables.com/model/1214965-raspberry-pi-touch-display-2-wallmount-case-for-ra" target="_blank" rel="noopener noreferrer">Printables · Frank Delporte wallmount（PoE / HAT 加高）</a> — 网口与散热开孔设计可参考；模型基于 7″ TD2，10″ 不可直接套用。</li>
-        <li><a href="https://learn.adafruit.com/pi-wall-mount" target="_blank" rel="noopener noreferrer">Adafruit · Articulated Pi Display V2 Mount</a> — 教程含 Pi 5 + Active Cooler + M.2 HAT+ 层叠；ST 默认 7″ TD2，10″ 无同款，仅结构参考。</li>
+        <li><a href="https://github.com/cnxsoft/vesa-adapter-pi-touch-display-10" target="_blank" rel="noopener noreferrer">GitHub · cnxsoft VESA adapter（10″ TD2）</a> — 屏背 M2.5 → 100×100 VESA；可选日后配市售臂上墙。不包 Pi / HAT，开背正好让 Cooler / HAT (C)。</li>
+        <li><a href="https://www.printables.com/model/1214965-raspberry-pi-touch-display-2-wallmount-case-for-ra" target="_blank" rel="noopener noreferrer">Printables · Frank Delporte wallmount（PoE / HAT 加高）</a> — 网口与散热开孔设计可参考；模型基于 7″ TD2，10″ 须按外廓改模。</li>
+        <li><a href="https://learn.adafruit.com/pi-wall-mount" target="_blank" rel="noopener noreferrer">Adafruit · Articulated Pi Display V2 Mount</a> — 教程含 Pi 5 + Active Cooler + M.2 HAT+ 层叠；ST 默认 7″ TD2，10″ 作结构参考。</li>
       </ul>
     </li>
     <li>3D 打印（自改）：以实机堆叠尺寸为准，在 OpenSCAD / CAD 里加深内腔（Cooler 出风 + HAT (C) + 2230 + RJ45）；PETG / ABS 优于 PLA 贴墙温升。打印后壳时注意 Active Cooler 出风、HAT (C) / RJ45 净空。</li>
-    <li>钣金：画 STEP（外形贴 TD2、内腔让出 Cooler + HAT (C) + 2230、开 RJ45 / 散热 / 可选 VESA 孔）→ SendCutSend 或本地激光 + 折弯（铝 1.0–1.5 mm）；喷粉 / 阳极。无现成货号，必须出图下单。</li>
+    <li>钣金：画 STEP（外形贴 TD2、内腔让出 Cooler + HAT (C) + 2230、开 RJ45 / 散热 / 可选 VESA 孔）→ SendCutSend 或本地激光 + 折弯（铝 1.0–1.5 mm）；喷粉 / 阳极。须出图下单。</li>
   </ul>
 
   <h4>2.2.2 软件</h4>
@@ -1153,13 +1164,14 @@
   </ul>
 
   <h3>2.3 Device List</h3>
-  <p class="lede">设备清单。Device 列底色区分采购状态：<span class="device-legend is-purchased">已购</span> / <span class="device-legend is-pending">未购</span>。Price 为该行货价实付（含行税 / Memory Surcharge 等），<strong>不含</strong>订单级运费；未购标「-」。订单级费用见 <a href="#appendix-order-fees-running-total" class="page-ref">Appendix. Order Fees Running Total</a>。来源：<code>orders/</code>。</p>
+  <p class="lede">设备清单。Device 列底色区分采购状态：<span class="device-legend is-purchased">已购</span> / <span class="device-legend is-pending">未购</span>。Protocol 为无线制式（Z-Wave / Zigbee / Thread / Wi‑Fi / Bluetooth 等；BLE 归入 Bluetooth），暂留空。Price 为该行货价实付（含行税 / Memory Surcharge 等），<strong>不含</strong>订单级运费；未购标「-」。订单级费用见 <a href="#appendix-order-fees-running-total" class="page-ref">Appendix. Order Fees Running Total</a>。来源：<code>orders/</code>。</p>
 <div class="design-devices-wrap">
   <table class="devices-table">
     <thead>
       <tr>
         <th>Category</th>
         <th>Device</th>
+        <th>Protocol</th>
         <th>Price</th>
       </tr>
     </thead>
@@ -1167,272 +1179,152 @@
       <tr>
         <td rowspan="3">Hub</td>
         <td class="device-cell is-purchased"><a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a></td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">US$499.95</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZWA-2</a></td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">US$68.95</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a> <span class="udc-count">×2</span></td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">US$97.90</td>
       </tr>
       <tr>
         <td rowspan="9">Wallpanel</td>
         <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/touch-display-2/?variant=touch-display-2-10-inch-portrait" target="_blank" rel="noopener noreferrer">Raspberry Pi Touch Display 2 — 10″ Portrait</a> <span class="udc-count">×4</span></td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">CA$128.75</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener noreferrer">Raspberry Pi 5 — 2 GB RAM</a> <span class="udc-count">×4</span></td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">CA$123.15</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/bumper/" target="_blank" rel="noopener noreferrer">Raspberry Pi Bumper</a> <span class="udc-count">×4</span></td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">CA$5.03</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/active-cooler/" target="_blank" rel="noopener noreferrer">Raspberry Pi Active Cooler</a> <span class="udc-count">×4</span></td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">CA$7.79</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> <span class="udc-count">×4</span></td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">US$94.52</td>
       </tr>
       <tr>
         <td class="device-cell is-pending"><a href="https://www.raspberrypi.com/products/ssd/?variant=ssd-256" target="_blank" rel="noopener noreferrer">Raspberry Pi SSD — 256 GB</a> <span class="udc-count">×4</span> <span class="stock-out">缺货</span></td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://www.raspberrypi.com/products/sd-cards/" target="_blank" rel="noopener noreferrer">Raspberry Pi SD Card — 32 GB</a> <span class="udc-count">×4</span></td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">CA$39.15</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a></td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">US$20.00</td>
       </tr>
       <tr>
         <td class="device-cell is-purchased"><a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">CA$22.40</td>
       </tr>
       <tr>
         <td>Lighting</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td>Switch</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td>HVAC</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td>Shades &amp; Blinds</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td>Sensors</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td>Energy &amp; Power</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td>Presence &amp; Occupancy</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td>Locks &amp; Access Integration</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td>Media &amp; AV</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td>Irrigation &amp; Outdoor</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td>Water Safety</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td>Voice &amp; Assist Satellites</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td>Buttons &amp; Scene Controllers</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
       <tr>
         <td>Fans &amp; Air Quality</td>
         <td class="device-cell is-pending">-</td>
+        <td class="protocol-cell"></td>
         <td class="price-cell">-</td>
       </tr>
     </tbody>
   </table>
   </div>
-
-  <h3>2.4 Protocols</h3>
-  <p>协议层决定设备怎么进 HA、掉线时从哪一层查。射频硬件（<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>×2 + <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a>）落在 <a href="#2.1" class="page-ref">§2.1</a> Den Hub；本节只写各协议角色。IP 侧（Wi‑Fi / MQTT / Matter-over-Wi‑Fi）不另买棒。</p>
-
-  <h4>2.4.1 建议追加（按需，非 Day-1）</h4>
-  <ul>
-    <li><strong>ESPHome Bluetooth Proxy（Ethernet / PoE）</strong>：即使 Hub 在 Den，全屋 BLE 仍靠房间级 Proxy。按楼层放 1–2 台以太网 ESP32（优先外置天线，如 Olimex ESP32-PoE-ISO-EA 一类），专做 BLE 广告与短连接；不要拿 ZWA-2 兼 BLE 主力。</li>
-    <li><strong>厂商 Bridge（有才买）</strong>：Lutron Caseta / RadioRA、部分窗帘与红外空调仍要自家网桥或 IR blaster；通用 802.15.4 棒吃不下私有射频。</li>
-    <li><strong>IR blaster（ESPHome / Broadlink 等）</strong>：仅当一楼仍有大量红外-only 空调 / 音响、且无云控本地方案时再补；优先买原生局域网 / Matter / Zigbee 设备。</li>
-    <li>不需要：第二套 Zigbee 协调器、Hub 上再插 USB Wi‑Fi 棒、Thread 再买第三根 ZBT-2（除非日后要独立实验室网络）。</li>
-  </ul>
-
-  <h4>2.4.2 Z-Wave</h4>
-  <p><strong>角色：</strong>门锁、部分墙开 / 插座、对穿透与干扰更敏感的「关键控制」设备的主射频之一；与 2.4 GHz 家用 Wi‑Fi 错开（Sub‑GHz）。本宅用 <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a> + Z-Wave JS。</p>
-  <ul>
-    <li>优点：墙体穿透通常好于 2.4 GHz mesh；认证设备互操作规范；LR 适合大宅庭院距离；不占 Wi‑Fi airtime。</li>
-    <li>缺点：北美 / 欧频不通用，出国淘货易买错频；生态体量小于 Zigbee；新设备价格偏高；mesh 仍依赖插电路由节点。</li>
-    <li>品质与掉线：认证锁与老牌墙开（Zooz / Inovelli / Yale 等社区口碑线）稳定；杂牌「名义 Z-Wave」固件差会导致莫名离线。掉线优先查：天线座是否开阔、路由节点是否被拔掉、是否混入错误频段设备、控制器附近 USB 3 噪声。</li>
-    <li>地位：与 Zigbee 并列的「本地控制」骨干，不互相替代；门锁优先看 Z-Wave / 已有 UniFi Access，不优先 Wi‑Fi 云锁。</li>
-  </ul>
-
-  <h4>2.4.3 Zigbee</h4>
-  <p><strong>角色：</strong>传感器、灯泡、开关、插座数量最大的本地 mesh；第一根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> + ZHA（日后若兼容性逼仄再评估 Zigbee2MQTT）。</p>
-  <ul>
-    <li>优点：设备便宜、选型多；有电路由节点一开，电池末端跟网；不进家用 Wi‑Fi；ZHA 零基础路径短。</li>
-    <li>缺点：与 Wi‑Fi / Thread 同处 2.4 GHz，信道要规划；厂商私有 cluster（部分 Tuya）在 ZHA 上功能残缺；mesh 质量取决于「家里插电 Zigbee 设备密度」，不是协调器标称距离。</li>
-    <li>品质与掉线：IKEA / Hue / Aqara（注意桥与直连差异）/ Sonoff 官方 Zigbee 等主流线更稳；白牌电池传感省电激进、隔墙掉线常见——用插座 / 灯作路由骨架后再放末端。协调器天线塞进封闭金属腔是最需要避免的人为掉线。</li>
-    <li>地位：默认「小数目常在线设备」首选；能 Zigbee 就不要堆 Wi‑Fi IoT。</li>
-  </ul>
-
-  <h4>2.4.4 Thread</h4>
-  <p><strong>角色：</strong>低功耗 IPv6 mesh 传输层，主要承载 Matter-over-Thread 设备；第二根 <a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> 做 HA 自有 Border Router，不依赖 HomePod / Nest 是否在线。</p>
-  <ul>
-    <li>优点：为电池设备优化；IP 地址可直达（经 Border Router）；Matter 生态主推路径之一；多 Border Router 时可提升冗余（日后 Apple TV / Nest 可作辅，但本宅以 HA 棒为准）。</li>
-    <li>缺点：Thread 本身不是应用层——没有 Matter / 厂商应用就「裸 Thread」对用户无意义；前期设备贵、调试信息少；与 Zigbee 同频干扰要分开天线与信道策略。</li>
-    <li>品质与掉线：Matter 认证电池设备近年明显好转，但仍见固件入网失败、迁移网络后变砖；掉线常见于 Border Router 断电、IPv6 / mDNS 被 VLAN 防火墙误伤、只用一根 BR 且位置极差。</li>
-    <li>地位：新买电池类 Matter 设备的传输首选；不取代现有 Zigbee 库存。</li>
-  </ul>
-
-  <h4>2.4.5 Wi‑Fi</h4>
-  <p><strong>角色：</strong>高带宽或厂商只给了 Wi‑Fi 的设备（部分摄像头配件、电器、Matter-over-Wi‑Fi）；本宅无线由 UniFi AP 承担，HA 不另建 Wi‑Fi。</p>
-  <ul>
-    <li>优点：人人会配；吞吐高；Matter-over-Wi‑Fi / 局域网 HTTP 集成简单。</li>
-    <li>缺点：占 AP airtime；每台设备一个 DHCP / 固件攻击面；云依赖机型断云即残；2.4 GHz 拥堵时与 Zigbee / Thread 互害。</li>
-    <li>品质与掉线：本地 API 清晰的品牌（部分 ESPHome 刷机设备、严谨局域网家电）可用；Tuya 云灯 / 杂牌插座是掉线与隐私重灾区。能有线（Room Drop）的固定设备不要走 Wi‑Fi。</li>
-    <li>地位：补充通道，不是传感器主干；IoT SSID / VLAN 可后续拆，Day-1 以少而稳为先。</li>
-  </ul>
-
-  <h4>2.4.6 Bluetooth（含 BLE）</h4>
-  <p><strong>角色：</strong>短距传感器、部分体脂秤 / 温湿度 / BTHome 设备、手机存在探测的辅助；靠房间级 Bluetooth Proxy 延伸，不靠 Hub 机身 BLE。</p>
-  <ul>
-    <li>优点：设备门槛低；BLE 广告传感功耗极低；ESPHome Proxy 与 HA 集成成熟。</li>
-    <li>缺点：墙体衰减狠、无 mesh；活跃连接数有限；与 2.4 GHz 其它射频共存压力大；安全配对体验参差。</li>
-    <li>品质与掉线：BTHome / 开放协议传感尚可；强依赖手机蓝牙的「在家检测」误报多，重要安防不要只靠它。Proxy 请用以太网供电板，避免 Proxy 自己还去打 Wi‑Fi。</li>
-    <li>地位：有则用之的边缘协议；不与 Z-Wave / Zigbee 抢门锁与墙开。</li>
-  </ul>
-
-  <h4>2.4.7 MQTT</h4>
-  <p><strong>角色：</strong>软件消息总线，不是无线制式。跑在 Ethernet / Wi‑Fi / IP 上；本宅在 Hub 上按需装 Mosquitto。Tasmota / ESPHome、部分墙面或 DIY 设备、以及日后 Zigbee2MQTT 都经它进 HA。</p>
-  <ul>
-    <li>优点：解耦生产者 / 消费者；保留历史状态与桥接老设备极灵活；局域网可完全本地。</li>
-    <li>缺点：要自己管 Broker 账号、ACL 与发现约定（或依赖 HA 发现）；配置出错时「设备在线但 HA 无实体」难查；不是 end-user 产品协议。</li>
-    <li>品质与掉线：Broker 与 HA 同机或同 VLAN 时极稳；跨 VLAN 忘放行 1883/8883、或设备 Wi‑Fi 本身漂，才会表现为 MQTT 掉线。</li>
-    <li>地位：集成胶水层。ZHA 直连 Zigbee 时不必为 Zigbee 而装 MQTT；只有 Zigbee2MQTT / 大量 ESP 设备时才升格为基础设施。</li>
-  </ul>
-
-  <h4>2.4.8 Matter</h4>
-  <p><strong>角色：</strong>应用层互联标准（可跑在 Thread 或 Wi‑Fi / Ethernet 上）。HA 用 Matter Server 做本地控制器；Thread 设备经本宅 Border Router，Wi‑Fi Matter 设备经局域网委托。</p>
-  <ul>
-    <li>优点：多生态本地控制的长期方向；减少「每家一个桥」；与 HA 官方路径对齐。</li>
-    <li>缺点：标准仍在猛迭代，真实设备质量两极；入网 / 共享 / OTA 失败故事仍多；「Matter」贴纸不保证好用——要看传输是 Thread 还是 Wi‑Fi、以及厂商固件态度。</li>
-    <li>品质与掉线：认证灯泡 / 插座近年可用；复杂门锁、桥接器式「把旧射频包装成 Matter」的产品仍是重灾区。出问题先分清是 Thread 网、Wi‑Fi、还是 Matter 委托失败。</li>
-    <li>地位：新设备采购的加分项，不是把现有稳定 Zigbee / Z-Wave 网推倒重来的理由。Matter-over-Thread 用第二根 ZBT-2；Matter-over-Wi‑Fi 不占用该棒。</li>
-  </ul>
-
-  <h4>2.4.9 对照与注意事项</h4>
-  <div class="design-devices-wrap">
-  <table class="devices-table">
-    <thead>
-      <tr>
-        <th>名称</th>
-        <th>层</th>
-        <th>本宅载体</th>
-        <th>典型设备</th>
-        <th>优先场景</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Z-Wave</td>
-        <td>射频 mesh（Sub‑GHz）</td>
-        <td>ZWA-2</td>
-        <td>锁、墙开、部分插座</td>
-        <td>穿透 / 关键控制</td>
-      </tr>
-      <tr>
-        <td>Zigbee</td>
-        <td>射频 mesh（2.4 GHz）</td>
-        <td>ZBT-2 #1 · ZHA</td>
-        <td>灯、传感、开关、插座</td>
-        <td>数量大的本地设备</td>
-      </tr>
-      <tr>
-        <td>Thread</td>
-        <td>IPv6 mesh 传输</td>
-        <td>ZBT-2 #2 · BR</td>
-        <td>Matter 电池设备</td>
-        <td>新一代低功耗 Matter</td>
-      </tr>
-      <tr>
-        <td>Wi‑Fi</td>
-        <td>IP / AP</td>
-        <td>UniFi AP</td>
-        <td>电器、Matter-Wi‑Fi、少数 IoT</td>
-        <td>高带宽或无其它选项</td>
-      </tr>
-      <tr>
-        <td>Bluetooth</td>
-        <td>短距 BLE</td>
-        <td>ESPHome Proxy</td>
-        <td>BLE 传感、辅助存在</td>
-        <td>房间级短距</td>
-      </tr>
-      <tr>
-        <td>MQTT</td>
-        <td>IP 消息总线</td>
-        <td>Mosquitto on Hub</td>
-        <td>ESPHome / Tasmota / Z2M</td>
-        <td>DIY 与桥接</td>
-      </tr>
-      <tr>
-        <td>Matter</td>
-        <td>应用标准</td>
-        <td>HA Matter Server</td>
-        <td>Thread 或 Wi‑Fi 设备</td>
-        <td>多生态本地控制</td>
-      </tr>
-    </tbody>
-  </table>
-  </div>
-  <ul>
-    <li>Zigbee 与 Thread 硬件相近、网络不互通；MQTT 与两者无绑定。</li>
-    <li>2.4 GHz：AP 信道、Zigbee 信道、Thread 并存时拉开空间与频谱；天线座放 Den 开阔处是刚需。</li>
-    <li>VLAN：Matter / Thread 对 IPv6 与 mDNS 敏感，防火墙未放行前不要先拆网段。</li>
-    <li>买设备前先查 HA Integrations / 社区兼容表；优先本地控制，云只作后备。</li>
-  </ul>
 
   <h2>3. Home Office Setup</h2>
   <p class="lede"><a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（Den）与机柜 NAS 的算力 / 存储分工，以及书房桌面显示器与外设。Den 两根 Room Drop（Studio 10G + HA Hub 2.5G）见 <a href="#1.1.5" class="page-ref">§1.1.5</a>；同室桌测 Wallpanel 挂 Hub 下联 + 桌面 PoE+，见 <a href="#2.2" class="page-ref">§2.2</a>。NAS / Studio 在拓扑上的落点见 <a href="#topology" class="page-ref">Topology</a>（图暂未改）。</p>
@@ -1674,20 +1566,20 @@
   <ul>
     <li>先确认机柜回路在 whole-home backup 范围内，并做一次离网切换测试。</li>
     <li>若 TELUS 光终端、<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>、<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>、NAS、HA 均不重启，可以不装 UPS。</li>
-    <li>若摄像、门禁、HA、上网不能接受哪怕数秒中断，再加一台只桥接数分钟的小型 UPS，负荷按 UniFi 遥测和墙端实耗选，不要按含 180W Wallpanel 占位的规划总数选。</li>
+    <li>若摄像、门禁、HA、上网不能接受哪怕数秒中断，再加一台只桥接数分钟的小型 UPS，负荷按 UniFi 遥测和墙端实耗选（三路墙装 Wallpanel 规划占位合计 90W，见 <a href="#1.4" class="page-ref">§1.4</a>）。</li>
     <li>UPS 须能接受 Powerwall 离网时的电压/频率窗口；装完再测一次切换。</li>
   </ul>
   <p>结论：双 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> 前提下，UPS 从「强烈需要」降为「连续性保险」。参考 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3 Datasheet</a>。</p>
 
-  <h2>5. Whole Home Appliances &amp; Furnitures</h2>
-  <p class="lede">全屋电器与家具按功能区划分。下表来自已定选型清单：Category 只保留品类；安装与接口说明进 Notes；原 Budget 列中的标价与购买链接已拆成 Budget（CAD）与 Purchase。Mechanical Room 网络机柜见 <a href="#1.1" class="page-ref">§1.1</a>；Den 见 <a href="#3" class="page-ref">§3</a>。</p>
-  <h3>5.1 Kitchen</h3>
-  <p class="lede">Main Kitchen。过滤水系统可参考 <a href="https://barflybymercer.com/" target="_blank" rel="noopener noreferrer">Barfly by Mercer</a> · <a href="https://rhinocoffeegear.com/" target="_blank" rel="noopener noreferrer">Rhino Coffee Gear</a>。</p>
+    <h2>5. Whole Home Appliances &amp; Furnitures</h2>
+  <p class="lede">全屋电器与家具按房间选型；下表为已定型号。安装与接口说明进 Notes；Budget（CAD）与 Purchase 分列。网络机柜见 <a href="#1.1" class="page-ref">§1.1</a>；Den 见 <a href="#3" class="page-ref">§3</a>。Ensuite / Bath 1–2 / Powder、Bedroom、Dining、Living、Mechanical 待补。</p>
+  <p>Kitchen / Wet Bar：调酒工具参考 <a href="https://barflybymercer.com/" target="_blank" rel="noopener noreferrer">Barfly by Mercer</a>；咖啡吧台配件（敲粉槽、布巾等）参考 <a href="https://rhinocoffeegear.com/" target="_blank" rel="noopener noreferrer">Rhino Coffee Gear</a>。</p>
+  <p>过滤水三层：入户 sediment + catalytic carbon 处理氯胺 / 泥沙（<a href="https://www.aquasana.com/whole-house-water-filters" target="_blank" rel="noopener noreferrer">Aquasana</a> 整屋系列或 <a href="https://www.pentair.com/en-us/products/residential.html" target="_blank" rel="noopener noreferrer">Pentair</a> 住宅过滤一类）；饮水 / 烹饪点柜下 RO（NSF/ANSI 58，可加矿化）；Kitchen <a href="https://www.lamarzocco.com/ca/en/home-products/espresso-machines/gs3/" target="_blank" rel="noopener noreferrer">La Marzocco GS3</a> 单独接咖啡降硬滤头（<a href="https://www.bwt.com/en/products/" target="_blank" rel="noopener noreferrer">BWT bestmax</a> 或 <a href="https://www.everpure.com/en/products/water-filters/claris/" target="_blank" rel="noopener noreferrer">Everpure Claris</a>）。</p>
 <div class="design-devices-wrap appliances-wrap">
 <table class="appliances-table">
 <thead>
 <tr>
-  <th>Category</th>
+  <th>Room</th>
   <th>Brand</th>
   <th>Product</th>
   <th>Spec</th>
@@ -1699,9 +1591,16 @@
 </thead>
 <tbody>
 <tr>
-  <td>工作站水槽</td>
-  <td><a href="https://www.blanco.com/can-en/" target="_blank" rel="noopener noreferrer">Blanco</a></td>
-  <td><a href="https://www.blanco.com/can-en/sinks/inteos/blancointeos45-u_276.731/403906" target="_blank" rel="noopener noreferrer">INTEOS 45-U SILGRANIT</a></td>
+  <td rowspan="6">Kitchen</td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.blanco.com/can-en/" target="_blank" rel="noopener noreferrer" title="Blanco"><img class="brand-logo" src="assets/brands/blanco.svg" alt="Blanco"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.blanco.com/can-en/sinks/inteos/blancointeos45-u_276.731/403906" target="_blank" rel="noopener noreferrer">INTEOS 45-U SILGRANIT</a></span>
+              <span class="udc-sku">403906</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://cdn.blanco.com/assets/hlr-system/TKD/PDF-Dokumente/209119_MPGH_INTEOS_U_Silgranit.pdf" target="_blank" rel="noopener noreferrer">Cutout / install PDF</a></td>
   <td>Bowl ~41¾ × 15¾ × 9 in；min cabinet 48 in</td>
   <td></td>
@@ -1709,29 +1608,47 @@
   <td>另存 Drive 规格：<a href="https://drive.google.com/file/d/16oJ4yvJ_PdwYejYQCYqznkVcHIEwCnn5/view?usp=drive_link" target="_blank" rel="noopener noreferrer">INTEOS Spec</a></td>
 </tr>
 <tr>
-  <td>嵌入式冰箱</td>
-  <td><a href="https://ca.subzero-wolf.com/en/home" target="_blank" rel="noopener noreferrer">Sub-Zero</a></td>
-  <td><a href="https://ca.subzero-wolf.com/en/products/sub-zero/full-size-refrigeration/builtin-refrigerators/cl4850sid/48-inch-built-in-side-by-side-refrigerator-freezer-internal-dispenser-panel-ready" target="_blank" rel="noopener noreferrer">CL4850SID/O</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://ca.subzero-wolf.com/en/home" target="_blank" rel="noopener noreferrer" title="Sub-Zero"><img class="brand-logo" src="assets/brands/sub-zero.png" alt="Sub-Zero"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://ca.subzero-wolf.com/en/products/sub-zero/full-size-refrigeration/builtin-refrigerators/cl4850sid/48-inch-built-in-side-by-side-refrigerator-freezer-internal-dispenser-panel-ready" target="_blank" rel="noopener noreferrer">48″ Built-In Side-by-Side Refrigerator/Freezer</a></span>
+              <span class="udc-sku">CL4850SID/O</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://ca.subzero-wolf.com/trade-resources/product-specifications/product-specifications-detail/48-inch-built-in-side-by-side-refrigerator-freezer-internal-dispenser-panel-ready" target="_blank" rel="noopener noreferrer">Trade Specs</a></td>
   <td></td>
   <td></td>
   <td><a href="https://www.trailappliances.com/bc/products/cl4850sids1o-d2/sub-zero-28-2-cu-ft-built-in/cl4850sids1o/panel-ready" target="_blank" rel="noopener noreferrer">Trail Appliances</a></td>
-  <td>48&quot; side-by-side；internal dispenser；panel-ready / overlay。</td>
+  <td>Internal dispenser；panel-ready / overlay。</td>
 </tr>
 <tr>
-  <td>意式咖啡机</td>
-  <td><a href="https://www.lamarzocco.com/ca/en/" target="_blank" rel="noopener noreferrer">La Marzocco</a></td>
-  <td><a href="https://www.lamarzocco.com/ca/en/home-products/espresso-machines/gs3/" target="_blank" rel="noopener noreferrer">GS3</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.lamarzocco.com/ca/en/" target="_blank" rel="noopener noreferrer" title="La Marzocco"><img class="brand-logo" src="assets/brands/lamarzocco.svg" alt="La Marzocco"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.lamarzocco.com/ca/en/home-products/espresso-machines/gs3/" target="_blank" rel="noopener noreferrer">GS3</a></span>
+              <span class="udc-sku">GS3</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://drive.google.com/file/d/1tK80O-DTym3n8KJnzc6KHEM11DkSAND7/view?usp=drive_link" target="_blank" rel="noopener noreferrer">Spec (Drive)</a></td>
   <td></td>
   <td></td>
   <td></td>
-  <td>需接通上下水；置于 Kitchen 水槽左侧。官方无单独北美 Spec 落地页时保留 Drive 规格。</td>
+  <td>需接通上下水；置于 Kitchen 水槽左侧。官方无单独北美 Spec 落地页时保留 Drive 规格。进水须经咖啡专用滤头（见章首过滤水）。</td>
 </tr>
 <tr>
-  <td>蒸烤箱</td>
-  <td><a href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer">Miele</a></td>
-  <td><a href="https://www.mieleusa.com/product/11876580/compact-combi-steam-oven-24-width-with-directwater-plus-dgc-7845-am-stainless-steel-clean-touch-steel" target="_blank" rel="noopener noreferrer">DGC 7845 AM</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer" title="Miele"><img class="brand-logo" src="assets/brands/miele.svg" alt="Miele"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.mieleusa.com/product/11876580/compact-combi-steam-oven-24-width-with-directwater-plus-dgc-7845-am-stainless-steel-clean-touch-steel" target="_blank" rel="noopener noreferrer">Compact Combi-Steam Oven</a></span>
+              <span class="udc-sku">DGC 7845 AM</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://media.miele.com/downloads/n-/us/FS_11876580_USE_US-en-US.pdf" target="_blank" rel="noopener noreferrer">Datasheet PDF</a></td>
   <td>23½ × 18 × 22½ in</td>
   <td></td>
@@ -1739,9 +1656,15 @@
   <td>Clean Touch Steel；DirectWater Plus。加拿大站对应页以经销商为准。</td>
 </tr>
 <tr>
-  <td>微波炉 / Speed Oven</td>
-  <td><a href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer">Miele</a></td>
-  <td><a href="https://www.mieleusa.com/product/11804640/24-compact-speed-oven-h-7840-bm-am-stainless-steel-clean-touch-steel" target="_blank" rel="noopener noreferrer">H 7840 BM AM</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer" title="Miele"><img class="brand-logo" src="assets/brands/miele.svg" alt="Miele"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.mieleusa.com/product/11804640/24-compact-speed-oven-h-7840-bm-am-stainless-steel-clean-touch-steel" target="_blank" rel="noopener noreferrer">Compact Speed Oven</a></span>
+              <span class="udc-sku">H 7840 BM AM</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://media.miele.com/downloads/n-/us/FS_11804640_USE_US-en-US.pdf" target="_blank" rel="noopener noreferrer">Datasheet PDF</a></td>
   <td>23⅜ × 18 × 22½ in</td>
   <td></td>
@@ -1749,39 +1672,32 @@
   <td>加拿大官网在售以 H 7640 为主；需向 Miele Canada Vancouver Experience Centre 确认能否从美国 special order 7840。</td>
 </tr>
 <tr>
-  <td>洗碗机</td>
-  <td><a href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer">Miele</a></td>
-  <td><a href="https://www.miele.ca/en/Shop/products/detail/fully-integrated-dishwashers-g-7986-scvi-autodos-k2o-12497340-p" target="_blank" rel="noopener noreferrer">G 7986 SCVi AutoDos K2O</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer" title="Miele"><img class="brand-logo" src="assets/brands/miele.svg" alt="Miele"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.miele.ca/en/Shop/products/detail/fully-integrated-dishwashers-g-7986-scvi-autodos-k2o-12497340-p" target="_blank" rel="noopener noreferrer">Fully Integrated Dishwasher AutoDos</a></span>
+              <span class="udc-sku">G 7986 SCVi AutoDos K2O</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://drive.google.com/file/d/1lq5SHzWH0J9nDm6TZX7DkG1ssrIW4gIK/view?usp=drive_link" target="_blank" rel="noopener noreferrer">Spec (Drive)</a></td>
   <td></td>
   <td></td>
   <td><a href="https://www.miele.ca/en/Shop/products/detail/fully-integrated-dishwashers-g-7986-scvi-autodos-k2o-12497340-p" target="_blank" rel="noopener noreferrer">Miele Canada</a></td>
   <td>Fully integrated；AutoDos。</td>
 </tr>
-</tbody>
-</table>
-</div>
-  <h3>5.2 Wok</h3>
-  <p class="lede">Wok Kitchen 烹饪区设备。</p>
-<div class="design-devices-wrap appliances-wrap">
-<table class="appliances-table">
-<thead>
 <tr>
-  <th>Category</th>
-  <th>Brand</th>
-  <th>Product</th>
-  <th>Spec</th>
-  <th>Dimensions<br>W×H×D</th>
-  <th>Budget</th>
-  <th>Purchase</th>
-  <th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>工作站水槽</td>
-  <td><a href="https://www.blanco.com/can-en/" target="_blank" rel="noopener noreferrer">Blanco</a></td>
-  <td><a href="https://www.blanco.com/can-en/sinks/inteos/blancointeos30-u_276.728/403882" target="_blank" rel="noopener noreferrer">INTEOS 30-U SILGRANIT</a></td>
+  <td rowspan="4">Wok</td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.blanco.com/can-en/" target="_blank" rel="noopener noreferrer" title="Blanco"><img class="brand-logo" src="assets/brands/blanco.svg" alt="Blanco"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.blanco.com/can-en/sinks/inteos/blancointeos30-u_276.728/403882" target="_blank" rel="noopener noreferrer">INTEOS 30-U SILGRANIT</a></span>
+              <span class="udc-sku">403882</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://cdn.blanco.com/assets/hlr-system/TKD/PDF-Dokumente/209119_MPGH_INTEOS_U_Silgranit.pdf" target="_blank" rel="noopener noreferrer">Cutout / install PDF</a></td>
   <td>Bowl ~26¾ × 15¾ × 9 in；min cabinet 33 in</td>
   <td></td>
@@ -1789,9 +1705,15 @@
   <td>与 Wet Bar 同款。Drive：<a href="https://drive.google.com/file/d/16oJ4yvJ_PdwYejYQCYqznkVcHIEwCnn5/view?usp=drive_link" target="_blank" rel="noopener noreferrer">INTEOS Spec</a></td>
 </tr>
 <tr>
-  <td>洗碗机</td>
-  <td><a href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer">Miele</a></td>
-  <td><a href="https://www.miele.ca/en/Shop/products/detail/fully-integrated-dishwashers-g-7986-scvi-autodos-k2o-12497340-p" target="_blank" rel="noopener noreferrer">G 7986 SCVi AutoDos K2O</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer" title="Miele"><img class="brand-logo" src="assets/brands/miele.svg" alt="Miele"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.miele.ca/en/Shop/products/detail/fully-integrated-dishwashers-g-7986-scvi-autodos-k2o-12497340-p" target="_blank" rel="noopener noreferrer">Fully Integrated Dishwasher AutoDos</a></span>
+              <span class="udc-sku">G 7986 SCVi AutoDos K2O</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://drive.google.com/file/d/1lq5SHzWH0J9nDm6TZX7DkG1ssrIW4gIK/view?usp=drive_link" target="_blank" rel="noopener noreferrer">Spec (Drive)</a></td>
   <td></td>
   <td></td>
@@ -1799,49 +1721,48 @@
   <td>与 Main Kitchen 同款。</td>
 </tr>
 <tr>
-  <td>灶台烤箱一体</td>
-  <td><a href="https://ca.subzero-wolf.com/en/home" target="_blank" rel="noopener noreferrer">Wolf</a></td>
-  <td><a href="https://ca.subzero-wolf.com/en/products/wolf/ranges/dual-fuel/df3650/36-inch-dual-fuel-range-6-burners" target="_blank" rel="noopener noreferrer">DF36650/S/P</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://ca.subzero-wolf.com/en/home" target="_blank" rel="noopener noreferrer" title="Wolf"><img class="brand-logo" src="assets/brands/wolf.png" alt="Wolf"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://ca.subzero-wolf.com/en/products/wolf/ranges/dual-fuel/df3650/36-inch-dual-fuel-range-6-burners" target="_blank" rel="noopener noreferrer">36″ Dual-Fuel Range · 6 Burners</a></span>
+              <span class="udc-sku">DF36650/S/P</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://ca.subzero-wolf.com/trade-resources/product-specifications/product-specifications-detail/36-inch-dual-fuel-range-6-burners" target="_blank" rel="noopener noreferrer">Trade Specs</a></td>
   <td>35⅞ × 36½ × 29½ in</td>
   <td></td>
   <td><a href="https://www.trailappliances.com/bc/products/df36650s1ss1d1/wolf-36-inch-single-oven-dual/df36650s1ss1p/stainless-steel" target="_blank" rel="noopener noreferrer">Trail Appliances</a></td>
-  <td>36&quot; dual-fuel，6 burners；QR：<a href="https://ca.subzero-wolf.com/en/products/assets/wolf/dual-fuel-ranges/qr-sheets/df36/wolf-qr-sheet-df36650.pdf" target="_blank" rel="noopener noreferrer">DF36650 PDF</a></td>
+  <td>QR：<a href="https://ca.subzero-wolf.com/en/products/assets/wolf/dual-fuel-ranges/qr-sheets/df36/wolf-qr-sheet-df36650.pdf" target="_blank" rel="noopener noreferrer">DF36650 PDF</a></td>
 </tr>
 <tr>
-  <td>油烟机</td>
-  <td><a href="https://ca.fotileglobal.com/" target="_blank" rel="noopener noreferrer">Fotile</a></td>
-  <td><a href="https://ca.fotileglobal.com/products/jqg7515-jqg9015" target="_blank" rel="noopener noreferrer">JQG9015</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://ca.fotileglobal.com/" target="_blank" rel="noopener noreferrer" title="Fotile"><img class="brand-logo" src="assets/brands/fotile.png" alt="Fotile"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://ca.fotileglobal.com/products/jqg7515-jqg9015" target="_blank" rel="noopener noreferrer">Range Hood</a></span>
+              <span class="udc-sku">JQG9015</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://drive.google.com/file/d/14VsISaqKtgmyWFAz9ZaEwGoJvQTm7AxG/view?usp=drive_link" target="_blank" rel="noopener noreferrer">Spec (Drive)</a></td>
   <td></td>
   <td></td>
   <td></td>
   <td>官方产品页为 JQG7515 / JQG9015 系列合页；单独北美 Spec 页未见时保留 Drive 规格。</td>
 </tr>
-</tbody>
-</table>
-</div>
-  <h3>5.3 Wet Bar</h3>
-  <p class="lede">Wet Bar / 过滤水相关吧台设备。过滤水系统可参考 <a href="https://barflybymercer.com/" target="_blank" rel="noopener noreferrer">Barfly by Mercer</a> · <a href="https://rhinocoffeegear.com/" target="_blank" rel="noopener noreferrer">Rhino Coffee Gear</a>。</p>
-<div class="design-devices-wrap appliances-wrap">
-<table class="appliances-table">
-<thead>
 <tr>
-  <th>Category</th>
-  <th>Brand</th>
-  <th>Product</th>
-  <th>Spec</th>
-  <th>Dimensions<br>W×H×D</th>
-  <th>Budget</th>
-  <th>Purchase</th>
-  <th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>工作站水槽</td>
-  <td><a href="https://www.blanco.com/can-en/" target="_blank" rel="noopener noreferrer">Blanco</a></td>
-  <td><a href="https://www.blanco.com/can-en/sinks/inteos/blancointeos30-u_276.728/403882" target="_blank" rel="noopener noreferrer">INTEOS 30-U SILGRANIT</a></td>
+  <td rowspan="5">Wet Bar</td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.blanco.com/can-en/" target="_blank" rel="noopener noreferrer" title="Blanco"><img class="brand-logo" src="assets/brands/blanco.svg" alt="Blanco"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.blanco.com/can-en/sinks/inteos/blancointeos30-u_276.728/403882" target="_blank" rel="noopener noreferrer">INTEOS 30-U SILGRANIT</a></span>
+              <span class="udc-sku">403882</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://cdn.blanco.com/assets/hlr-system/TKD/PDF-Dokumente/209119_MPGH_INTEOS_U_Silgranit.pdf" target="_blank" rel="noopener noreferrer">Cutout / install PDF</a></td>
   <td>Bowl ~26¾ × 15¾ × 9 in；min cabinet 33 in</td>
   <td></td>
@@ -1849,9 +1770,15 @@
   <td>另存 Drive 规格：<a href="https://drive.google.com/file/d/16oJ4yvJ_PdwYejYQCYqznkVcHIEwCnn5/view?usp=drive_link" target="_blank" rel="noopener noreferrer">INTEOS Spec</a></td>
 </tr>
 <tr>
-  <td>嵌板制冰机</td>
-  <td><a href="https://ca.subzero-wolf.com/en/home" target="_blank" rel="noopener noreferrer">Sub-Zero</a></td>
-  <td><a href="https://ca.subzero-wolf.com/en/products/sub-zero/undercounter-refrigeration/counter-refrigerator/deu1550ip/15-inch-ice-maker-with-pump-panel-ready" target="_blank" rel="noopener noreferrer">DEU1550IP</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://ca.subzero-wolf.com/en/home" target="_blank" rel="noopener noreferrer" title="Sub-Zero"><img class="brand-logo" src="assets/brands/sub-zero.png" alt="Sub-Zero"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://ca.subzero-wolf.com/en/products/sub-zero/undercounter-refrigeration/counter-refrigerator/deu1550ip/15-inch-ice-maker-with-pump-panel-ready" target="_blank" rel="noopener noreferrer">15″ Ice Maker with Pump</a></span>
+              <span class="udc-sku">DEU1550IP</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://ca.subzero-wolf.com/trade-resources/product-specifications/product-specifications-detail/15-inch-ice-maker-with-pump-panel-ready" target="_blank" rel="noopener noreferrer">Trade Specs</a></td>
   <td></td>
   <td></td>
@@ -1859,9 +1786,15 @@
   <td>Panel-ready。补充资料：<a href="https://drive.google.com/drive/folders/1XJfH4aPMCjWymMJwu_LeoJKg9nxWVEQg?usp=drive_link" target="_blank" rel="noopener noreferrer">Drive folder</a></td>
 </tr>
 <tr>
-  <td>嵌板冷藏（Beverage）</td>
-  <td><a href="https://ca.subzero-wolf.com/en/home" target="_blank" rel="noopener noreferrer">Sub-Zero</a></td>
-  <td><a href="https://ca.subzero-wolf.com/en/products/sub-zero/undercounter-refrigeration/counter-refrigerator/deu1550bg/15-designer-undercounter-beverage-center-panel-ready" target="_blank" rel="noopener noreferrer">DEU1550BG</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://ca.subzero-wolf.com/en/home" target="_blank" rel="noopener noreferrer" title="Sub-Zero"><img class="brand-logo" src="assets/brands/sub-zero.png" alt="Sub-Zero"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://ca.subzero-wolf.com/en/products/sub-zero/undercounter-refrigeration/counter-refrigerator/deu1550bg/15-designer-undercounter-beverage-center-panel-ready" target="_blank" rel="noopener noreferrer">15″ Designer Undercounter Beverage Center</a></span>
+              <span class="udc-sku">DEU1550BG</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://ca.subzero-wolf.com/trade-resources/product-specifications/product-specifications-detail/15-designer-undercounter-beverage-center-panel-ready" target="_blank" rel="noopener noreferrer">Trade Specs</a></td>
   <td></td>
   <td></td>
@@ -1869,9 +1802,15 @@
   <td>Panel-ready beverage center。</td>
 </tr>
 <tr>
-  <td>嵌板冷藏冷冻</td>
-  <td><a href="https://ca.subzero-wolf.com/en/home" target="_blank" rel="noopener noreferrer">Sub-Zero</a></td>
-  <td><a href="https://ca.subzero-wolf.com/en/products/sub-zero/undercounter-refrigeration/counter-refrigerator/deu2450ci/24-inch-undercounter-refrigerator-freezer-ice-maker-panel-ready" target="_blank" rel="noopener noreferrer">DEU2450CI</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://ca.subzero-wolf.com/en/home" target="_blank" rel="noopener noreferrer" title="Sub-Zero"><img class="brand-logo" src="assets/brands/sub-zero.png" alt="Sub-Zero"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://ca.subzero-wolf.com/en/products/sub-zero/undercounter-refrigeration/counter-refrigerator/deu2450ci/24-inch-undercounter-refrigerator-freezer-ice-maker-panel-ready" target="_blank" rel="noopener noreferrer">24″ Undercounter Refrigerator/Freezer with Ice Maker</a></span>
+              <span class="udc-sku">DEU2450CI</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://ca.subzero-wolf.com/trade-resources/product-specifications/product-specifications-detail/24-inch-undercounter-refrigerator-freezer-ice-maker-panel-ready" target="_blank" rel="noopener noreferrer">Trade Specs</a></td>
   <td></td>
   <td></td>
@@ -1879,39 +1818,32 @@
   <td>Panel-ready；含制冰。</td>
 </tr>
 <tr>
-  <td>嵌板酒柜</td>
-  <td><a href="https://ca.subzero-wolf.com/en/home" target="_blank" rel="noopener noreferrer">Sub-Zero</a></td>
-  <td><a href="https://ca.subzero-wolf.com/en/products/sub-zero/wine-storage/wine-cooler/deu2450w/24-inch-built-in-wine-storage-panel-ready" target="_blank" rel="noopener noreferrer">DEU2450W</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://ca.subzero-wolf.com/en/home" target="_blank" rel="noopener noreferrer" title="Sub-Zero"><img class="brand-logo" src="assets/brands/sub-zero.png" alt="Sub-Zero"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://ca.subzero-wolf.com/en/products/sub-zero/wine-storage/wine-cooler/deu2450w/24-inch-built-in-wine-storage-panel-ready" target="_blank" rel="noopener noreferrer">24″ Built-In Wine Storage</a></span>
+              <span class="udc-sku">DEU2450W</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://ca.subzero-wolf.com/trade-resources/product-specifications/product-specifications-detail/24-inch-built-in-wine-storage-panel-ready" target="_blank" rel="noopener noreferrer">Trade Specs</a></td>
   <td></td>
   <td></td>
   <td><a href="https://www.trailappliances.com/bc/products/deu2450w-s1d1/sub-zero-built-in-24-inch/deu2450ws1l/panel-ready" target="_blank" rel="noopener noreferrer">Trail Appliances</a></td>
   <td>Panel-ready wine storage。</td>
 </tr>
-</tbody>
-</table>
-</div>
-  <h3>5.4 Home Theatre</h3>
-  <p class="lede">影音、座椅与卡拉 OK 设备。</p>
-<div class="design-devices-wrap appliances-wrap">
-<table class="appliances-table">
-<thead>
 <tr>
-  <th>Category</th>
-  <th>Brand</th>
-  <th>Product</th>
-  <th>Spec</th>
-  <th>Dimensions<br>W×H×D</th>
-  <th>Budget</th>
-  <th>Purchase</th>
-  <th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>电视</td>
-  <td><a href="https://www.sony.ca/en" target="_blank" rel="noopener noreferrer">Sony</a></td>
-  <td><a href="https://www.sony.ca/en/tv-video/televisions/all-tvs/p/k115xr90m2" target="_blank" rel="noopener noreferrer">BRAVIA 9 II K-115XR90M2</a></td>
+  <td rowspan="11">Home Theatre</td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.sony.ca/en" target="_blank" rel="noopener noreferrer" title="Sony"><img class="brand-logo" src="assets/brands/sony.svg" alt="Sony"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.sony.ca/en/tv-video/televisions/all-tvs/p/k115xr90m2" target="_blank" rel="noopener noreferrer">BRAVIA 9 II</a></span>
+              <span class="udc-sku">K-115XR90M2</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://www.sony.jp/bravia/tvsize/pdfs/xr90m2/K-115XR90M2.pdf" target="_blank" rel="noopener noreferrer">Support / size PDF</a></td>
   <td>101 × 57¾ × 2½ in（无底座）</td>
   <td class="num">$42,000.00</td>
@@ -1919,29 +1851,47 @@
   <td>115&quot; 壁挂；中心点离地 4&#39;；视距 9&#39;6&quot;。加拿大官网产品页已核验；独立 Spec 落地页常被跳转，另附尺寸 PDF。</td>
 </tr>
 <tr>
-  <td>无线环绕扬声器 ×4</td>
-  <td><a href="https://www.sony.ca/en" target="_blank" rel="noopener noreferrer">Sony</a></td>
-  <td><a href="https://www.sony.ca/en/audio/soundbars/a-series-soundbars/p/hta9m2" target="_blank" rel="noopener noreferrer">BRAVIA Theatre Quad HT-A9M2</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.sony.ca/en" target="_blank" rel="noopener noreferrer" title="Sony"><img class="brand-logo" src="assets/brands/sony.svg" alt="Sony"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.sony.ca/en/audio/soundbars/a-series-soundbars/p/hta9m2" target="_blank" rel="noopener noreferrer">BRAVIA Theatre Quad</a></span>
+              <span class="udc-sku">HT-A9M2</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://www.sony.ca/en/electronics/support/sound-bars-home-theater-systems-sound-bars-surround-speakers/ht-a9m2/specifications" target="_blank" rel="noopener noreferrer">Specifications</a></td>
   <td>11½ × 11 × 2⅞ in（含壁挂件）；Control Box 6⅜ × 2¼ × 6⅜ in</td>
   <td class="num">$3,000.00</td>
   <td></td>
-  <td>壁挂：电视墙左右中心距电视中心 5&#39;、离地 4&#39;；侧后环绕在视距基础上再向后 3&#39;、离地 5&#39;。<em>下一代约 2027 春发布，可再等等。</em>旧 marketing URL 会跳到本页。</td>
+  <td>壁挂：电视墙左右中心距电视中心 5&#39;、离地 4&#39;；侧后环绕在视距基础上再向后 3&#39;、离地 5&#39;。<em>下一代约 2027 春发布，可再等等。</em>旧 marketing URL 会跳到本页。×4。</td>
 </tr>
 <tr>
-  <td>无线低音炮 ×2</td>
-  <td><a href="https://www.sony.ca/en" target="_blank" rel="noopener noreferrer">Sony</a></td>
-  <td><a href="https://www.sony.ca/en/audio/soundbars/all-soundbars/p/sasw9" target="_blank" rel="noopener noreferrer">BRAVIA Theatre Sub 9 (SA-SW9)</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.sony.ca/en" target="_blank" rel="noopener noreferrer" title="Sony"><img class="brand-logo" src="assets/brands/sony.svg" alt="Sony"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.sony.ca/en/audio/soundbars/all-soundbars/p/sasw9" target="_blank" rel="noopener noreferrer">BRAVIA Theatre Sub 9</a></span>
+              <span class="udc-sku">SA-SW9</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://www.sony.ca/en/audio/soundbars/all-soundbars/p/sasw9" target="_blank" rel="noopener noreferrer">Product page</a></td>
   <td>390 × 400 × 350 mm</td>
   <td class="num">$1,900.00</td>
   <td></td>
-  <td>电视下方电视柜两侧落地；与 Theatre Quad 配对。旧 /spec URL 会跳回首页，故 Spec 列指向现行产品页。</td>
+  <td>电视下方电视柜两侧落地；与 Theatre Quad 配对。旧 /spec URL 会跳回首页，故 Spec 列指向现行产品页。×2。</td>
 </tr>
 <tr>
-  <td>游戏主机</td>
-  <td><a href="https://www.playstation.com/en-ca/" target="_blank" rel="noopener noreferrer">Sony</a></td>
-  <td><a href="https://www.playstation.com/en-ca/ps5/ps5-pro/" target="_blank" rel="noopener noreferrer">PlayStation 5 Pro</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.playstation.com/en-ca/" target="_blank" rel="noopener noreferrer" title="PlayStation"><img class="brand-logo" src="assets/brands/playstation.svg" alt="PlayStation"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.playstation.com/en-ca/ps5/ps5-pro/" target="_blank" rel="noopener noreferrer">PlayStation 5 Pro</a></span>
+              <span class="udc-sku">-</span>
+            </span>
+          </span>
+        </td>
   <td></td>
   <td></td>
   <td class="num">$1,100.00</td>
@@ -1949,9 +1899,15 @@
   <td>电视柜。官方未单独提供规格 PDF；有线为 1GbE（非 10Gb）。</td>
 </tr>
 <tr>
-  <td>游戏主机</td>
-  <td><a href="https://www.nintendo.com/en-ca/" target="_blank" rel="noopener noreferrer">Nintendo</a></td>
-  <td><a href="https://www.nintendo.com/en-ca/store/products/nintendo-switch-oled-model-neon-blue-neon-red-set/" target="_blank" rel="noopener noreferrer">Nintendo Switch OLED Model</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.nintendo.com/en-ca/" target="_blank" rel="noopener noreferrer" title="Nintendo"><img class="brand-logo" src="assets/brands/nintendo.svg" alt="Nintendo"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.nintendo.com/en-ca/store/products/nintendo-switch-oled-model-neon-blue-neon-red-set/" target="_blank" rel="noopener noreferrer">Nintendo Switch OLED Model</a></span>
+              <span class="udc-sku">HEG-001</span>
+            </span>
+          </span>
+        </td>
   <td></td>
   <td></td>
   <td class="num">$500.00</td>
@@ -1959,9 +1915,15 @@
   <td>电视柜。机身无 RJ45；有线需 USB 以太网适配器。</td>
 </tr>
 <tr>
-  <td>影院座椅</td>
-  <td><a href="https://ca.valenciatheaterseating.com/" target="_blank" rel="noopener noreferrer">Valencia Theater Seating</a></td>
-  <td><a href="https://ca.valenciatheaterseating.com/products/valencia-barcelona-grand-ultimate-luxury-edition?variant=45294951497922" target="_blank" rel="noopener noreferrer">Barcelona Grand Ultimate</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://ca.valenciatheaterseating.com/" target="_blank" rel="noopener noreferrer" title="Valencia Theater Seating"><img class="brand-logo" src="assets/brands/valencia.png" alt="Valencia Theater Seating"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://ca.valenciatheaterseating.com/products/valencia-barcelona-grand-ultimate-luxury-edition?variant=45294951497922" target="_blank" rel="noopener noreferrer">Barcelona Grand Ultimate</a></span>
+              <span class="udc-sku">Barcelona Grand Ultimate</span>
+            </span>
+          </span>
+        </td>
   <td></td>
   <td>整排 142 × 35.5 × 41 in；单座 26½ × 20 × 24 in</td>
   <td class="num">$12,000.00</td>
@@ -1969,9 +1931,15 @@
   <td>单排 4 座；Loveseat Center，中间两座无间隔扶手。无单独 Spec 页。</td>
 </tr>
 <tr>
-  <td>卡拉OK前级混音</td>
-  <td><a href="https://www.bmb.com/product/professional/" target="_blank" rel="noopener noreferrer">BMB</a></td>
-  <td><a href="https://www.bmb.com/product/professional/ksp/" target="_blank" rel="noopener noreferrer">KSP-100</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.bmb.com/" target="_blank" rel="noopener noreferrer" title="BMB"><img class="brand-logo" src="assets/brands/bmb.png" alt="BMB"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.bmb.com/product/professional/ksp/" target="_blank" rel="noopener noreferrer">Karaoke Sound Processor</a></span>
+              <span class="udc-sku">KSP-100</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://www.bmb.com/product/professional/ksp/" target="_blank" rel="noopener noreferrer">Product page</a></td>
   <td>420 × 44 × 167 mm</td>
   <td></td>
@@ -1979,69 +1947,80 @@
   <td>电视柜；官方以产品页作规格说明。</td>
 </tr>
 <tr>
-  <td>卡拉OK后级功放 ×2</td>
-  <td><a href="https://www.bmb.com/product/professional/" target="_blank" rel="noopener noreferrer">BMB</a></td>
-  <td><a href="https://www.bmb.com/product/professional/dad/" target="_blank" rel="noopener noreferrer">DAD-500</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.bmb.com/" target="_blank" rel="noopener noreferrer" title="BMB"><img class="brand-logo" src="assets/brands/bmb.png" alt="BMB"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.bmb.com/product/professional/dad/" target="_blank" rel="noopener noreferrer">Digital Power Amplifier</a></span>
+              <span class="udc-sku">DAD-500</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://www.bmb.com/product/professional/dad/" target="_blank" rel="noopener noreferrer">Product page</a></td>
   <td>482 × 89 × 423 mm</td>
   <td></td>
   <td></td>
-  <td>左右各一，分别负责左右音响与低音；左右音响柜中部机柜式安装。</td>
+  <td>左右各一，分别负责左右音响与低音；左右音响柜中部机柜式安装。×2。</td>
 </tr>
 <tr>
-  <td>卡拉OK音响 ×2</td>
-  <td><a href="https://www.bmb.com/product/professional/" target="_blank" rel="noopener noreferrer">BMB</a></td>
-  <td><a href="https://www.bmb.com/product/professional/css/" target="_blank" rel="noopener noreferrer">CSS-8010 II</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.bmb.com/" target="_blank" rel="noopener noreferrer" title="BMB"><img class="brand-logo" src="assets/brands/bmb.png" alt="BMB"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.bmb.com/product/professional/css/" target="_blank" rel="noopener noreferrer">Karaoke Speaker</a></span>
+              <span class="udc-sku">CSS-8010 II</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://www.bmb.com/product/professional/css/" target="_blank" rel="noopener noreferrer">Product page</a></td>
   <td>314 × 520 × 345 mm</td>
   <td></td>
   <td></td>
-  <td>左右音响柜顶部壁挂。已改用英文产品页（原 /cn/ 链同系列）。</td>
+  <td>左右音响柜顶部壁挂。已改用英文产品页（原 /cn/ 链同系列）。×2。</td>
 </tr>
 <tr>
-  <td>卡拉OK低音炮 ×2</td>
-  <td><a href="https://www.bmb.com/product/professional/" target="_blank" rel="noopener noreferrer">BMB</a></td>
-  <td><a href="https://www.bmb.com/product/professional/csw/" target="_blank" rel="noopener noreferrer">CSW-115</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.bmb.com/" target="_blank" rel="noopener noreferrer" title="BMB"><img class="brand-logo" src="assets/brands/bmb.png" alt="BMB"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.bmb.com/product/professional/csw/" target="_blank" rel="noopener noreferrer">Karaoke Subwoofer</a></span>
+              <span class="udc-sku">CSW-115</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://www.bmb.com/product/professional/csw/" target="_blank" rel="noopener noreferrer">Product page</a></td>
   <td>580 × 465 × 488 mm</td>
   <td></td>
   <td></td>
-  <td>左右音响柜内落地。</td>
+  <td>左右音响柜内落地。×2。</td>
 </tr>
 <tr>
-  <td>卡拉OK麦克风 ×2</td>
-  <td><a href="https://www.shure.com/en-US" target="_blank" rel="noopener noreferrer">Shure</a></td>
-  <td>待定</td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.shure.com/en-US" target="_blank" rel="noopener noreferrer" title="Shure"><img class="brand-logo" src="assets/brands/shure.png" alt="Shure"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title">待定</span>
+              <span class="udc-sku">-</span>
+            </span>
+          </span>
+        </td>
   <td></td>
   <td></td>
   <td></td>
   <td></td>
-  <td>品牌已定，具体型号未定。</td>
+  <td>品牌已定，具体型号未定。×2。</td>
 </tr>
-</tbody>
-</table>
-</div>
-  <h3>5.5 Laundry</h3>
-  <p class="lede">主洗衣间专业洗烘与水槽。</p>
-<div class="design-devices-wrap appliances-wrap">
-<table class="appliances-table">
-<thead>
 <tr>
-  <th>Category</th>
-  <th>Brand</th>
-  <th>Product</th>
-  <th>Spec</th>
-  <th>Dimensions<br>W×H×D</th>
-  <th>Budget</th>
-  <th>Purchase</th>
-  <th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>洗衣水槽</td>
-  <td><a href="https://www.blanco.com/can-en/" target="_blank" rel="noopener noreferrer">Blanco</a></td>
-  <td><a href="https://www.blanco.com/can-en/sinks/liven/livenlaundry_58.513/402919" target="_blank" rel="noopener noreferrer">LIVEN Laundry</a></td>
+  <td rowspan="3">Laundry</td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.blanco.com/can-en/" target="_blank" rel="noopener noreferrer" title="Blanco"><img class="brand-logo" src="assets/brands/blanco.svg" alt="Blanco"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.blanco.com/can-en/sinks/liven/livenlaundry_58.513/402919" target="_blank" rel="noopener noreferrer">LIVEN Laundry</a></span>
+              <span class="udc-sku">402919</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://www.blanco.com/can-en/sinks/liven/livenlaundry_58.513/402919" target="_blank" rel="noopener noreferrer">Product page</a></td>
   <td>min cabinet 27 in</td>
   <td></td>
@@ -2049,9 +2028,15 @@
   <td>官方产品页含规划尺寸；北美独立 Spec PDF 链接不稳定时以产品页为准。</td>
 </tr>
 <tr>
-  <td>专业洗衣机</td>
-  <td><a href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer">Miele</a></td>
-  <td><a href="https://www.miele.ca/en/Shop/products/detail/professional-laundry-pwm-908-%5Bel-dp%5D-11204470-p" target="_blank" rel="noopener noreferrer">PWM 908 [EL DP]</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer" title="Miele"><img class="brand-logo" src="assets/brands/miele.svg" alt="Miele"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.miele.ca/en/Shop/products/detail/professional-laundry-pwm-908-%5Bel-dp%5D-11204470-p" target="_blank" rel="noopener noreferrer">Professional Washing Machine</a></span>
+              <span class="udc-sku">PWM 908 [EL DP]</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://media.miele.com/downloads/n-/us/FS_11204470_USE_US-en-US.pdf" target="_blank" rel="noopener noreferrer">Datasheet PDF</a></td>
   <td>23⅞ × 33½ × 28⅛ in</td>
   <td></td>
@@ -2059,46 +2044,32 @@
   <td>Professional；208/240V；电加热 + drain pump。</td>
 </tr>
 <tr>
-  <td>专业热泵烘干机</td>
-  <td><a href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer">Miele</a></td>
-  <td><a href="https://www.miele.ca/en/Shop/products/detail/professional-laundry-pdr-908-hp-%5Bel%5D-11204490-p" target="_blank" rel="noopener noreferrer">PDR 908 HP [EL]</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer" title="Miele"><img class="brand-logo" src="assets/brands/miele.svg" alt="Miele"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.miele.ca/en/Shop/products/detail/professional-laundry-pdr-908-hp-%5Bel%5D-11204490-p" target="_blank" rel="noopener noreferrer">Professional Heat-Pump Dryer</a></span>
+              <span class="udc-sku">PDR 908 HP [EL]</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://media.miele.com/downloads/n-/us/FS_11204490_USE_US-en-US.pdf" target="_blank" rel="noopener noreferrer">Datasheet PDF</a></td>
   <td>23⅞ × 33½ × 30⅝ in</td>
   <td></td>
   <td></td>
   <td>Professional heat-pump；208/240V。</td>
 </tr>
-</tbody>
-</table>
-</div>
-  <h3>5.6 Bath</h3>
-  <h4>5.6.1 Ensuite</h4>
-  <p>待补全。</p>
-  <h4>5.6.2 Bath 1</h4>
-  <p>待补全。</p>
-  <h4>5.6.3 Bath 2</h4>
-  <p>待补全。</p>
-  <h4>5.6.4 Bath 3</h4>
-  <p class="lede">家用洗烘叠放。</p>
-<div class="design-devices-wrap appliances-wrap">
-<table class="appliances-table">
-<thead>
 <tr>
-  <th>Category</th>
-  <th>Brand</th>
-  <th>Product</th>
-  <th>Spec</th>
-  <th>Dimensions<br>W×H×D</th>
-  <th>Budget</th>
-  <th>Purchase</th>
-  <th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>洗衣机</td>
-  <td><a href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer">Miele</a></td>
-  <td><a href="https://www.miele.ca/en/Shop/products/detail/washing-machines-wxr960-wcs-tdos&amp;intensewash-12864100-p" target="_blank" rel="noopener noreferrer">WXR960</a></td>
+  <td rowspan="2">Bath 3</td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer" title="Miele"><img class="brand-logo" src="assets/brands/miele.svg" alt="Miele"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.miele.ca/en/Shop/products/detail/washing-machines-wxr960-wcs-tdos&amp;intensewash-12864100-p" target="_blank" rel="noopener noreferrer">Washing Machine</a></span>
+              <span class="udc-sku">WXR960</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://media.miele.com/downloads/n-/us/FS_12864100_USE_US-en-US.pdf" target="_blank" rel="noopener noreferrer">Datasheet PDF</a></td>
   <td></td>
   <td></td>
@@ -2106,60 +2077,43 @@
   <td>与 TXR960 叠放；Purchase 列为 Miele Washer-Dryer Stacking Kit with Built-In Drawer（WTV 512）。</td>
 </tr>
 <tr>
-  <td>烘干机</td>
-  <td><a href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer">Miele</a></td>
-  <td><a href="https://www.miele.ca/en/Shop/products/detail/tumble-dryers-txr960wp-eco&amp;steam-12864160-p" target="_blank" rel="noopener noreferrer">TXR960</a></td>
+  <td class="brand-cell"><a class="brand-logo-link" href="https://www.miele.ca/en" target="_blank" rel="noopener noreferrer" title="Miele"><img class="brand-logo" src="assets/brands/miele.svg" alt="Miele"></a></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.miele.ca/en/Shop/products/detail/tumble-dryers-txr960wp-eco&amp;steam-12864160-p" target="_blank" rel="noopener noreferrer">Tumble Dryer</a></span>
+              <span class="udc-sku">TXR960</span>
+            </span>
+          </span>
+        </td>
   <td><a href="https://media.miele.com/downloads/n-/us/FS_12864160_USE_US-en-US.pdf" target="_blank" rel="noopener noreferrer">Datasheet PDF</a></td>
   <td></td>
   <td></td>
   <td></td>
   <td>与 WXR960 配对叠放。</td>
 </tr>
-</tbody>
-</table>
-</div>
-  <h4>5.6.5 Powder</h4>
-  <p>待补全。</p>
-  <h3>5.7 Bedroom</h3>
-  <p>待补全。</p>
-  <h3>5.8 Dining</h3>
-  <p>待补全。</p>
-  <h3>5.9 Living</h3>
-  <p>待补全。</p>
-  <h3>5.10 Courtyard</h3>
-  <p class="lede">庭院相关设备。</p>
-<div class="design-devices-wrap appliances-wrap">
-<table class="appliances-table">
-<thead>
 <tr>
-  <th>Category</th>
-  <th>Brand</th>
-  <th>Product</th>
-  <th>Spec</th>
-  <th>Dimensions<br>W×H×D</th>
-  <th>Budget</th>
-  <th>Purchase</th>
-  <th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>宠物 grooming tub</td>
-  <td></td>
-  <td>待定</td>
+  <td>Courtyard</td>
+  <td class="brand-cell"></td>
+  <td class="device-cell">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title">待定</span>
+              <span class="udc-sku">-</span>
+            </span>
+          </span>
+        </td>
   <td></td>
   <td></td>
   <td></td>
   <td></td>
-  <td>Courtyard；型号未定。</td>
+  <td>宠物 grooming tub；型号未定。</td>
 </tr>
 </tbody>
 </table>
 </div>
-  <h3>5.11 Mechanical</h3>
-  <p>待补全。网络机柜与铜缆见 <a href="#1.1" class="page-ref">§1.1</a>。</p>
 
-  <h2>Appendix. Order Fees Running Total</h2>
+<h2>Appendix. Order Fees Running Total</h2>
   <p class="lede">订单级费用（Shipping / Handling 及摊在运费上的税），<strong>不</strong>摊入 <a href="#1.3" class="page-ref">§1.3</a> / <a href="#2.3" class="page-ref">§2.3</a> 的 Device Price。按结款单整单记账；新单只追加本表。结款 PDF 在 <code>orders/</code>。</p>
   <div class="design-devices-wrap">
   <table class="devices-table order-fees-table">
