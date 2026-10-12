@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Home Spec Split View",
+  "version": "1.0.0",
+  "description": "Open Spec document links in Chrome Split View beside the Spec tab (local review only).",
+  "permissions": ["tabs"],
+  "host_permissions": [
+    "http://127.0.0.1:8000/*",
+    "http://localhost:8000/*",
+    "https://albertzang.github.io/My-Home-Spec/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://127.0.0.1:8000/*",
+        "http://localhost:8000/*",
+        "https://albertzang.github.io/My-Home-Spec/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
