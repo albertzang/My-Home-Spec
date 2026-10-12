@@ -62,71 +62,53 @@
   <article class="spa-article">
   <h2>1. UniFi Networking System</h2>
   <h3>1.1 Ethernet Infrastructure</h3>
-  <p class="lede">WAN、网关、交换、Wi‑Fi、Room Drop 与线材的选型与适配。端口落点与连线见 <a href="#topology" class="page-ref">Topology</a>；本节只写型号能力与适配性。</p>
+  <p class="lede">WAN、网关、交换、Wi‑Fi、Room Drop 与线材的选型与适配。</p>
 
   <h4>1.1.1 ISP</h4>
-  <p>正式套餐为 Telus PureFibre 5 Gig（标称 5 Gbps）。入户是一根光纤；机柜里只要一台运营商光终端，把光信号转成一根 10G 网线进 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>，本宅不另买光电转换盒。客户侧这条网线必须能跑到 5G 或 10G，否则套餐会被口速卡死。</p>
-  <p>多千兆 PureFibre 用的是较新的 XGS-PON（对称约 10 Gbps 级的光纤接入）。旧套餐常见 GPON（约千兆级）。机柜极简优先要独立 ONT；默认发给用户的往往是更胖的 <a href="https://www.telus.com/en/bc/internet" target="_blank" rel="noopener noreferrer">Network Access Hub</a>（NAH）——两者怎么取舍见下方。</p>
+  <p>Telus PureFibre 5 Gig（标称 5 Gbps，XGS-PON）。链路：运营商光纤 → TELUS ONT (Optical Network Terminal) → 柜内短 Cat6 → <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> SFP+ WAN（插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a>）。ONT 只做光纤→网线；路由、防火墙、VPN、UniFi 全部交给 UDM，公网一般由 UDM DHCP 取得。以下为 ONT 选型。</p>
   <ul>
-    <li>机柜定稿（极简优先）：开通 / 上门时点名要独立 <strong>Nokia XS-250X-A</strong>（XGS-PON ONT：无 Wi‑Fi，常见 1×10G + 4×1G 电口；本宅只用 10G）。光纤进 ONT，10G 口短跳 Cat6 → UDM。订单备注写清「standalone Nokia XS-250X-A bridge ONT / enterprise firewall」；库存与技师意愿不保证，拿不到再退回 NAH。</li>
-    <li>回退：若只装到 NAH（常见 NH20A / NH20T），开 <strong>Port 10G Bridge</strong>，同样 10G 短跳进 UDM。功能上与独立 ONT 等价，只是机柜多一台更占位的盒子。不要 ONT 与 NAH 叠两台（有 Optik / 座机时技师有时会这么装）——本宅不依赖运营商电视 / 电话进机柜时，坚持只要一台光终端。</li>
-    <li>链路（ONT 或桥接后的 NAH 相同）：运营商光纤 → TELUS 光终端 → 柜内短 Cat6 → <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> 的 SFP+ WAN。SFP+ 是可插拔模块槽；这里插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a>（把槽变成 1/2.5/5/10G 电口）。光终端对外是 10G 电口（RJ45）；柜内短跳不会降速。WAN = 外网侧；LAN = 家里内网侧。</li>
-    <li>不要把光终端的 10G 网线直插 UDM 面板上那个 2.5G WAN 铜口——只会协商到 2.5 Gbps，5 Gig 吃不满。必须走 SFP+ WAN + 多速率模块。</li>
-    <li>能否把光纤直接插进 UDM、干掉所有 TELUS 盒子：旧 GPON 上有时可行（笼子里的模块本身是已登记 ONT）。本宅 5 Gig 是 XGS-PON：局端（OLT）认证的是运营商光终端整机序列号，笼子里的模块多半只是光口零件。客服 / 技师也不能把 UDM 机箱序列号登记进 OLT——局端认的是 PON ONT 身份，UDM 不会说 PON。第三方仿冒 ONT 不受支持，本 Spec 不做。机柜极简的上限是「一台 TELUS 光终端 + UDM」，不是零运营商设备。</li>
-    <li>若落到 NAH，模式怎么选：
+    <li>定稿：开通 / 上门点名独立 <strong>Nokia XS-250X-A</strong>（XGS-PON ONT：无 Wi‑Fi，常见 1×10G + 4×1G；本宅只用 10G）。光纤进 ONT，10G 口短跳 Cat6 → UDM。订单备注「standalone Nokia XS-250X-A bridge ONT / enterprise firewall」；库存与技师意愿不保证。</li>
+    <li>回退：NAH（常见 NH20A / NH20T），开桥接，同样 10G 短跳进 UDM。功能与独立 ONT 等价，机柜多一台更占位的盒子。
       <ul>
-        <li><strong>Router（路由）</strong>：默认。NAH 自做 NAT / DHCP / 防火墙；后面再挂 UDM = 双 NAT。不要。</li>
-        <li><strong>Port 10G Bridge</strong>：只把 10G 口透传成 WAN，公网落到 UDM。回退定稿。</li>
-        <li><strong>Port 1 Bridge</strong>：桥的是 1G 口，不够 5 Gig。</li>
-        <li><strong>Full Bridge</strong>：所有口暴露给运营商侧；家用动态公网 IP 少，且下游都要自己扛防火墙。本宅只需一条进 UDM 的 WAN。</li>
+        <li>Router：默认。NAH 自做 NAT / DHCP / 防火墙；再挂 UDM = 双 NAT。</li>
+        <li><strong>Port 10G Bridge：10G 口透传成 WAN，公网落到 UDM。</strong></li>
+        <li>Port 1 Bridge：桥 1G 口，不够 5 Gig。</li>
+        <li>Full Bridge：所有口暴露给运营商侧；家用动态公网少，下游自扛防火墙。</li>
       </ul>
     </li>
-    <li>分工：光终端（XS-250X-A，或桥接后的 NAH）只做光纤→网线；路由、防火墙、VPN、UniFi 全部交给 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>。公网地址一般由 UDM 用 DHCP 取得（少数地区 PPPoE，按开通单）。后级交换与 Wi‑Fi 见 <a href="#1.1.2" class="page-ref">Gateway</a> / <a href="#1.1.3" class="page-ref">Switching</a> / <a href="#1.1.4" class="page-ref">WiFi</a>。</li>
   </ul>
 
   <h4>1.1.2 Gateway</h4>
-  <p>机柜网关定为 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>：UniFi OS 一体机，承担路由、威胁管理、统一控制面，并内建 Protect / Access / Network 应用托管。</p>
-  <ul>
-    <li>WAN：SFP+ 插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a> 接 TELUS 光终端（优先 XS-250X-A；回退为桥接 NAH），对齐 PureFibre 5 Gig；勿用 2.5G 铜 WAN。</li>
-    <li>LAN：<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> LAN SFP+ ↔ <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> SFP28，机柜内用 <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">10G Direct Attach Cable</a>（10G DAC）。短、稳、不占铜口。</li>
-    <li>为何是 Pro Max：需要同时扛多应用（Network + Protect 录像调度 + Access）与 10G WAN/LAN；家用一体机里口速与应用密度匹配本宅，不必再拆独立安全设备。</li>
-    <li>供电：市电；不占 PoE 预算。机柜回路应在 Powerwall whole-home backup 内（备电策略见 <a href="#4" class="page-ref">§4</a>）。</li>
-  </ul>
-  <p>机柜 NAS（<a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a>）见 <a href="#3" class="page-ref">§3 Home Office Setup</a>；交换侧仅预留其 2×10G LACP 上联。</p>
+  <p>机柜网关定为 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>：UniFi OS 一体机，承担路由、威胁管理、统一控制面，并内建 Protect / Access / Network。链路：TELUS ONT → 柜内短 Cat6 → UDM SFP+ WAN（插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a>），不走面板 2.5G 铜 WAN；LAN SFP+ ↔ <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> SFP28，机柜内 <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">10G Direct Attach Cable</a>。机柜 NAS（<a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a>）见 <a href="#3" class="page-ref">§3</a>；交换侧预留 2×10G LACP 上联。</p>
 
   <h4>1.1.3 Switching</h4>
-  <p>有线核心是一台机柜汇聚 + 两台房间/车库边缘交换机。两台边缘交换机都不直连机柜铜口：各自走本室 Room Drop（Media / Garage）home-run 到配线架，再 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>；墙口再用短跳接到 Flex 的 10G RJ45 上联口。两台 Flex 上联均只用 10G RJ45（不用 combo 上的 SFP+），并由该口经 PoE 供电；不接墙端 AC、不装随附 / 可选 AC 适配器。选型看口速、PoE 等级与是否需要下游供电，端口表见 <a href="#topology" class="page-ref">Topology</a> / <a href="#1.3" class="page-ref">§1.3</a>。</p>
+  <p>有线核心：机柜一台 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 汇聚 + Media / Garage 各一台边缘 Flex。边缘不直连机柜铜口：经本室 Room Drop home-run 到配线架，再 patch 进 XG；墙口短跳接 Flex 的 10G RJ45 上联（不用 combo 上的 SFP+）；不接墙端 AC。以下为交换机选型。</p>
   <ul>
-    <li><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>：16×10G + 8×2.5G，铜口均可 PoE+++（802.3bt Type 4），交换侧 PoE 预算 720W；另有 SFP28 上联（接 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>）。负责 AP、门禁上行、HA / Wallpanel、各 Room Drop（其中 Media / Garage 两路在远端喂两台边缘 Flex 并为其供电）与 NAS LACP。市电供电，720W 是输出预算不是墙端功耗。</li>
-    <li><a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a>（Media，非 PoE 输出）：经 Media Room Drop 接到机柜 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>。上联仅用 10G RJ45（SFP+ combo 口空闲），并由该口吃 PoE+ input（整机最大约 14W）；不接随附 5V USB-C，不接 AC。八个 2.5G 下联口只传数据、不供电。Media 室需要多口有线但不需要边缘 PoE，因此明确不用 PoE 输出版。</li>
-    <li><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a>（Garage）：经 Garage Room Drop 接到机柜 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>。上联仅用 10G RJ45（SFP+ combo 口空闲），并由该口吃 PoE+++ 供电（短线厂商可用下游约 76W）；不接 <a href="https://store.ui.com/us/en/products/uacc-adapter-ac-210w" target="_blank" rel="noopener noreferrer">AC Adapter 210W</a>，不接墙端 AC。八个 2.5G 下联可 PoE。车库边缘有 <a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a>、<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>、<a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a> 等 PoE 负载，故必须用 PoE 版。</li>
+    <li><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>：16×10G + 8×2.5G，另有 SFP28 上联（接 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>）。负责 AP、门禁上行、HA / Wallpanel、各 Room Drop（Media / Garage 两路远端接边缘 Flex）与 NAS LACP。</li>
+    <li><a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a>（Media）：八个 2.5G 下联只传数据。Media 要多口有线、不要边缘供电输出。</li>
+    <li><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a>（Garage）：八个 2.5G 下联可供电。车库边缘有 <a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a>、<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>、<a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a> 等负载。</li>
   </ul>
 
   <h4>1.1.4 WiFi</h4>
-  <p>主屋覆盖：Basement / Main / Upper 三层墙面 <a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> ×3（配 <a href="https://store.ui.com/us/en/products/uacc-u7-pro-wall-fm" target="_blank" rel="noopener noreferrer">U7 Pro Wall Paintable Flush Mount</a>）；车库一台 <a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a>。<a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> 以 2.5G / PoE+ 级口速与 Wi‑Fi 7 能力服务主屋；<a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a> 覆盖车库与车道侧，功耗与口速更低，适合挂在 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 下。</p>
-  <ul>
-    <li>固定终端原则：有网口、固定位置、在意延迟或 NAS 大流量 → Ethernet（Room Drop / 房间交换机）；手机、平板、笔记本、多数 IoT → Wi‑Fi。把电视墙、游戏机、<a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> 挪出无线后，airtime 留给移动设备。</li>
-    <li>适配性：三层主屋统一墙面 <a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a>（Flush Mount）；车库单独 <a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a>，避免用主屋 AP 硬打穿混凝土/金属门。</li>
-  </ul>
+  <p>主屋：Basement / Main / Upper 三层墙面 <a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> ×3（配 <a href="https://store.ui.com/us/en/products/uacc-u7-pro-wall-fm" target="_blank" rel="noopener noreferrer">U7 Pro Wall Paintable Flush Mount</a>），2.5G / Wi‑Fi 7。车库：<a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a>（仅车库）。</p>
 
   <h4>1.1.5 Room Drops</h4>
-  <p>七个房间（Media / Den / Master / BR1 / BR2 / Seating / Garage）各拉两根 Cat6A 实心铜 home-run 到机柜配线架，完整通道按 Type 4 / 4PPoE 选材，全部终结、认证、贴标。除 Den 外每间只启用一根；备用线占配线架，不占交换机口。Den 两根全开、各占一口。Media 与 Garage 的在用口在远端接边缘 Flex，再经该 Room Drop 回到机柜 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>——不是另拉一条「交换机上联」进柜。</p>
+  <p>七个房间（Media / Den / Master / BR1 / BR2 / Seating / Garage）各拉两根 Cat6A 实心铜 home-run 到机柜配线架，完整通道按 Type 4 / 4PPoE 选材，全部终结、认证、贴标。除 Den 外每间只启用一根；备用线占配线架，不占交换机口。Den 两根全开、各占一口。Media 与 Garage 的在用口在远端接边缘 Flex，再经该 Room Drop 回到机柜 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>。</p>
   <ul>
-    <li>Den：墙面双口 plate，两根均启用。一口接 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（机身 10GbE），配线架 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 10G 口；另一口接 <a href="#2.1" class="page-ref">§2.1</a> HA Hub（ameriDroid PoE Mini PC），配线架 patch 进同一交换机的 2.5G PoE+++ 口（机身 PoE++ IN）。同室长期桌测 Wallpanel（第四套）<strong>不</strong>另占 Room Drop、也<strong>不</strong>上 Den Flex：数据走 Hub 空闲 2.5G，供电走桌面 PoE+ 注入器（见 <a href="#2.2" class="page-ref">§2.2</a>）。拓扑图暂未改，以本 Spec 为准。</li>
-    <li>Media / Garage：墙面单口。Media 在用口经短跳接 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 的 10G RJ45 上联；Garage 在用口经短跳接 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 的 10G RJ45 上联。第二根留在墙盒 / 配线架作冗余，不做出第二插口以免误插。</li>
-    <li>其余四间（Master / BR1 / BR2 / Seating）：墙面单口；第二根同样只留在墙盒 / 配线架。</li>
-    <li>面板采购：横向双口一包（Den）、纵向单口两包（其余六间墙面 + 余量；官网每包 4 只）；keystone 用 <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack, 12-Pack</a>。机柜端用 <a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a>（1U / 19″，开放架即可，不依赖 UniFi 机柜）。</li>
-    <li>扩展路线（按需升级，不提前每间装交换机）：① AP + 1×C6A → ② 该 C6A 上联房间交换机 → ③ 两根都进同一交换机时必须 LACP 或 STP，禁止随手双接成环（Den 已是两台不同终端各占一口，不是双接成环）。其它房间若以后要双口，再换面板。</li>
-    <li>Mechanical Room：机柜已在本室，不再做「卧室式 Room Drop」。需要时从配线架就地短跳到 HVAC / 热水 / 集水坑控制区（默认不 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
+    <li>Den：墙面双口 plate，两根均启用。一口接 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（机身 10GbE），配线架 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 10G 口；另一口接 <a href="#2.1" class="page-ref">§2.1</a> HA Hub（ameriDroid PoE Mini PC），配线架 patch 进同一交换机的 2.5G 口。同室桌测 Wallpanel（第四套）不另占 Room Drop、不上 Den Flex（见 <a href="#2.2" class="page-ref">§2.2</a>）。</li>
+    <li>非 Den：墙面单口；第二根只留墙盒 / 配线架。Media / Garage 在用口经短跳接各自 Flex 的 10G RJ45 上联。</li>
+    <li>面板采购：横向双口一包（Den）、纵向单口两包（其余六间墙面 + 余量；官网每包 4 只）；keystone 用 <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack, 12-Pack</a>。机柜端用 <a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a>（1U / 19″）。</li>
+    <li>其它房间日后要双口再换面板；同交换双上联须 LACP / STP。</li>
+    <li>Mechanical Room：机柜已在本室，不做卧室式 Room Drop；需要时从配线架就地短跳到 HVAC / 热水 / 集水坑控制区（默认不 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
   </ul>
 
   <h4>1.1.6 Cables</h4>
-  <p>全项目铜缆统一按 IEEE 802.3bt Type 4 / 4PPoE 完整通道选材与验收（线缆、跳线、keystone、配线架、端接）。Type 4 是供电承载能力，不改变 Cat6 / Cat6A 的数据类别；无 PoE 或低功率口仍只按设备协商，不会被强制送 90W。</p>
+  <p>全项目铜缆统一按 IEEE 802.3bt Type 4 / 4PPoE 完整通道选材与验收（线缆、跳线、keystone、配线架、端接）。Type 4 是供电承载能力，不改变 Cat6 / Cat6A 的数据类别；无 PoE / 低功率口按协商。</p>
   <ul>
     <li>Cat6A 实心铜：永久入墙 / home-run（Room Drop、主屋 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>、AP、Wallpanel、<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a>、Garage Room Drop 等），保证百米级 10G 与余量。</li>
-    <li>Cat6 短跳：柜内 TELUS 光终端→<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>、<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>→HA / NAS、墙口→<a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> / <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a>、<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>→读头/摄像头、<a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> / <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 下联、Tesla 以太网等短距离；短跳不限速这些链路，但须为纯铜、24–26 AWG、Type 4 额定。禁用 CCA / 未标定细径线。</li>
+    <li>Cat6 短跳：柜内 / 墙口短跳为纯铜、24–26 AWG、Type 4 额定；禁用 CCA / 未标定细径线。</li>
     <li>光 / DAC：<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>↔<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 用 <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">10G Direct Attach Cable</a>。</li>
-    <li>非以太网：门锁 LOCK 为 Wet 12V 控制线；DPS 为干接点门磁（本宅 <a href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a>）；Tesla 控制为 CAN——不要用网线标准去套这几类。</li>
+    <li>非以太网：门锁 LOCK 为 Wet 12V 控制线；DPS 为干接点门磁（本宅 <a href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a>）；Tesla 控制为 CAN。LOCK / DPS / Tesla CAN 不按以太网线规。</li>
   </ul>
 
   <h3>1.2 Protect &amp; Access</h3>
@@ -1565,7 +1547,7 @@
   <p>两台并联 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 解决的是全屋持续供电。机柜不再需要一台大容量 UPS 来撑整晚。UPS 只补两个缺口：Gateway 切换虽标 seamless，Tesla 没有承诺 UPS 级零中断，部分交换机 / NAS / 光猫可能在切换瞬间重启；以及 Powerwall 维护、故障或电量耗尽时，给 NAS 一个正常关机窗口。</p>
   <ul>
     <li>先确认机柜回路在 whole-home backup 范围内，并做一次离网切换测试。</li>
-    <li>若 TELUS 光终端、<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>、<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>、NAS、HA 均不重启，可以不装 UPS。</li>
+    <li>若 TELUS ONT、<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>、<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>、NAS、HA 均不重启，可以不装 UPS。</li>
     <li>若摄像、门禁、HA、上网不能接受哪怕数秒中断，再加一台只桥接数分钟的小型 UPS，负荷按 UniFi 遥测和墙端实耗选（三路墙装 Wallpanel 规划占位合计 90W，见 <a href="#1.4" class="page-ref">§1.4</a>）。</li>
     <li>UPS 须能接受 Powerwall 离网时的电压/频率窗口；装完再测一次切换。</li>
   </ul>
