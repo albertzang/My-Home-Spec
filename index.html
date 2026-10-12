@@ -65,9 +65,9 @@
   <p class="lede">WAN、网关、交换、Wi‑Fi、Room Drop 与线材的选型与适配。</p>
 
   <h4>1.1.1 ISP</h4>
-  <p>Telus PureFibre 5 Gig（标称 5 Gbps，XGS-PON）。链路：运营商光纤 → TELUS ONT (Optical Network Terminal) → 柜内短 Cat6 → <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> SFP+ WAN（插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a>）。ONT 只做光纤→网线；路由、防火墙、VPN、UniFi 全部交给 UDM，公网一般由 UDM DHCP 取得。以下为 ONT 选型。</p>
+  <p><a href="https://www.telus.com/en/internet/fibre/5-gigabit" target="_blank" rel="noopener noreferrer">Telus PureFibre 5 Gigabit</a>：运营商光纤 → TELUS ONT (Optical Network Terminal) → 柜内短 Cat6 → <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> SFP+ WAN（插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a>）。ONT 只做光纤→网线；路由、防火墙、VPN、UniFi 全部交给 UDM，公网一般由 UDM DHCP 取得。以下为 ONT 选型。</p>
   <ul>
-    <li>定稿：开通 / 上门点名独立 <strong>Nokia XS-250X-A</strong>（XGS-PON ONT：无 Wi‑Fi，常见 1×10G + 4×1G；本宅只用 10G）。光纤进 ONT，10G 口短跳 Cat6 → UDM。订单备注「standalone Nokia XS-250X-A bridge ONT / enterprise firewall」；库存与技师意愿不保证。</li>
+    <li>定稿：开通 / 上门点名独立 Nokia <a href="https://www.nokia.com/asset/210704/" target="_blank" rel="noopener noreferrer">XS-010X-Q</a>（优先；XGS-PON SFU：无 Wi‑Fi，1×100M/1/2.5/5/10G）或 Nokia <a href="https://www.nokia.com/broadband-access/in-home-connectivity/fiber-ont/" target="_blank" rel="noopener noreferrer">XS-250X-A</a>（次选；无 Wi‑Fi，常见 1×10G + 4×1G；Telus 实装更常见）。本宅只用 10G：光纤进 ONT，10G 口短跳 Cat6 → UDM。订单备注「standalone Nokia XS-010X-Q / XS-250X-A bridge ONT / enterprise firewall」；优先机库存与技师意愿不保证。</li>
     <li>回退：NAH（常见 NH20A / NH20T），开桥接，同样 10G 短跳进 UDM。功能与独立 ONT 等价，机柜多一台更占位的盒子。
       <ul>
         <li>Router：默认。NAH 自做 NAT / DHCP / 防火墙；再挂 UDM = 双 NAT。</li>
