@@ -62,13 +62,13 @@
   <article class="spa-article">
   <h2>1. UniFi Networking System</h2>
   <h3>1.1 Ethernet Infrastructure</h3>
-  <p class="lede">WAN、网关、交换、Wi‑Fi、Room Drop 与线材的选型与适配。</p>
+  <p class="lede">WAN、网关、交换、Wi‑Fi、Room Drop、线材与机柜的选型与适配。</p>
 
   <h4>1.1.1 ISP</h4>
-  <p><a href="https://www.telus.com/en/internet/fibre/5-gigabit" target="_blank" rel="noopener noreferrer">Telus PureFibre 5 Gigabit</a>：运营商光纤 → TELUS ONT (Optical Network Terminal) → 柜内短 Cat6 → <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> SFP+ WAN（插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a>）。ONT 只做光纤→网线；路由、防火墙、VPN、UniFi 全部交给 UDM，公网一般由 UDM DHCP 取得。以下为 ONT 选型。</p>
+  <p><a href="https://www.telus.com/en/internet/fibre/5-gigabit" target="_blank" rel="noopener noreferrer">Telus PureFibre 5 Gigabit</a>：运营商光纤 → TELUS ONT (Optical Network Terminal) → 柜内短 Cat6 → <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> SFP+ WAN（插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a>）。ONT 只做光纤→网线；路由、防火墙、VPN、UniFi 全部交给 UDM，公网一般由 UDM DHCP 取得。</p>
   <ul>
-    <li>定稿：开通 / 上门点名独立 Nokia <a href="https://www.nokia.com/asset/210704/" target="_blank" rel="noopener noreferrer">XS-010X-Q</a>（优先；XGS-PON SFU：无 Wi‑Fi，1×100M/1/2.5/5/10G）或 Nokia <a href="https://www.nokia.com/broadband-access/in-home-connectivity/fiber-ont/" target="_blank" rel="noopener noreferrer">XS-250X-A</a>（次选；无 Wi‑Fi，常见 1×10G + 4×1G；Telus 实装更常见）。本宅只用 10G：光纤进 ONT，10G 口短跳 Cat6 → UDM。订单备注「standalone Nokia XS-010X-Q / XS-250X-A bridge ONT / enterprise firewall」；优先机库存与技师意愿不保证。</li>
-    <li>回退：NAH（常见 NH20A / NH20T），开桥接，同样 10G 短跳进 UDM。功能与独立 ONT 等价，机柜多一台更占位的盒子。
+    <li>定稿：Nokia <a href="https://www.nokia.com/asset/210704/" target="_blank" rel="noopener noreferrer">XS-010X-Q</a>（优先；XGS-PON SFU：无 Wi‑Fi，1×100M/1/2.5/5/10G）或 Nokia <a href="https://www.nokia.com/broadband-access/in-home-connectivity/fiber-ont/" target="_blank" rel="noopener noreferrer">XS-250X-A</a>（次选；无 Wi‑Fi，常见 1×10G + 4×1G；Telus 实装更常见）。本宅只用 10G 口。优先机库存与技师意愿不保证。</li>
+    <li>回退：Telus NAH（常见 NH20A / NH20T），开桥接，同样 10G 短跳进 UDM。
       <ul>
         <li>Router：默认。NAH 自做 NAT / DHCP / 防火墙；再挂 UDM = 双 NAT。</li>
         <li><strong>Port 10G Bridge：10G 口透传成 WAN，公网落到 UDM。</strong></li>
@@ -79,37 +79,128 @@
   </ul>
 
   <h4>1.1.2 Gateway</h4>
-  <p>机柜网关定为 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>：UniFi OS 一体机，承担路由、威胁管理、统一控制面，并内建 Protect / Access / Network。链路：TELUS ONT → 柜内短 Cat6 → UDM SFP+ WAN（插 <a href="https://store.ui.com/us/en/products/uacc-cm-rj45-mg" target="_blank" rel="noopener noreferrer">SFP+ to RJ45 Adapter</a>），不走面板 2.5G 铜 WAN；LAN SFP+ ↔ <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> SFP28，机柜内 <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">10G Direct Attach Cable</a>。机柜 NAS（<a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a>）见 <a href="#3" class="page-ref">§3</a>；交换侧预留 2×10G LACP 上联。</p>
+  <p>机柜网关定为 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>：UniFi OS 一体机，承担路由、威胁管理、统一控制面，并内建 Protect / Access / Network。不走面板 2.5G 铜 WAN；LAN SFP+ ↔ <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> SFP28，机柜内 <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">10G Direct Attach Cable</a>。</p>
 
   <h4>1.1.3 Switching</h4>
-  <p>有线核心：机柜一台 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 汇聚 + Media / Garage 各一台边缘 Flex。边缘不直连机柜铜口：经本室 Room Drop home-run 到配线架，再 patch 进 XG；墙口短跳接 Flex 的 10G RJ45 上联（不用 combo 上的 SFP+）；不接墙端 AC。以下为交换机选型。</p>
+  <p>有线核心：机柜一台 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 汇聚 + Media / Garage 各一台边缘 Flex。边缘不直连机柜铜口：经本室 Room Drop home-run 到配线架（见 <a href="#1.1.5" class="page-ref">§1.1.5</a>），再短跳进 XG；墙口短跳接 Flex 的 10G RJ45 上联（不用 combo 上的 SFP+）；不接墙端 AC。</p>
   <ul>
-    <li><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>：16×10G + 8×2.5G，另有 SFP28 上联（接 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>）。负责 AP、门禁上行、HA / Wallpanel、各 Room Drop（Media / Garage 两路远端接边缘 Flex）与 NAS LACP。</li>
-    <li><a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a>（Media）：八个 2.5G 下联只传数据。Media 要多口有线、不要边缘供电输出。</li>
+    <li><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>：16×10G + 8×2.5G，另有 SFP28 上联接 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>。负责 AP、门禁上行、HA / Wallpanel、各 Room Drop（Media / Garage 两路远端接边缘 Flex）。机柜 NAS（<a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a>，见 <a href="#3" class="page-ref">§3</a>）预留 2×10G LACP。</li>
+    <li><a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a>（Media）：八个 2.5G 下联只传数据。Media 要多口有线。</li>
     <li><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a>（Garage）：八个 2.5G 下联可供电。车库边缘有 <a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a>、<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>、<a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a> 等负载。</li>
   </ul>
 
-  <h4>1.1.4 WiFi</h4>
-  <p>主屋：Basement / Main / Upper 三层墙面 <a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> ×3（配 <a href="https://store.ui.com/us/en/products/uacc-u7-pro-wall-fm" target="_blank" rel="noopener noreferrer">U7 Pro Wall Paintable Flush Mount</a>），2.5G / Wi‑Fi 7。车库：<a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a>（仅车库）。</p>
+  <h4>1.1.4 Wi‑Fi</h4>
+  <ul>
+    <li>主屋：Basement / Main / Upper 三层墙面 <a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> ×3（配 <a href="https://store.ui.com/us/en/products/uacc-u7-pro-wall-fm" target="_blank" rel="noopener noreferrer">U7 Pro Wall Paintable Flush Mount</a>），2.5G / Wi‑Fi 7。</li>
+    <li>车库：<a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a>。</li>
+  </ul>
 
   <h4>1.1.5 Room Drops</h4>
-  <p>七个房间（Media / Den / Master / BR1 / BR2 / Seating / Garage）各拉两根 Cat6A 实心铜 home-run 到机柜配线架，完整通道按 Type 4 / 4PPoE 选材，全部终结、认证、贴标。除 Den 外每间只启用一根；备用线占配线架，不占交换机口。Den 两根全开、各占一口。Media 与 Garage 的在用口在远端接边缘 Flex，再经该 Room Drop 回到机柜 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>。</p>
+  <p>七个房间（Media / Den / Master / BR1 / BR2 / Seating / Garage）各拉两根 Cat6A 实心铜 home-run 到机柜配线架（<a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a>），完整通道按 Type 4 / 4PPoE 选材，全部终结、认证、贴标。除 Den 外每间只启用一根；备用线占配线架，不占交换机口。Den 两根全开、各占一口。Media 与 Garage 的在用口在远端接边缘 Flex，机柜端从这块配线架短跳进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>。</p>
   <ul>
-    <li>Den：墙面双口 plate，两根均启用。一口接 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（机身 10GbE），配线架 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 10G 口；另一口接 <a href="#2.1" class="page-ref">§2.1</a> HA Hub（ameriDroid PoE Mini PC），配线架 patch 进同一交换机的 2.5G 口。同室桌测 Wallpanel（第四套）不另占 Room Drop、不上 Den Flex（见 <a href="#2.2" class="page-ref">§2.2</a>）。</li>
-    <li>非 Den：墙面单口；第二根只留墙盒 / 配线架。Media / Garage 在用口经短跳接各自 Flex 的 10G RJ45 上联。</li>
-    <li>面板采购：横向双口一包（Den）、纵向单口两包（其余六间墙面 + 余量；官网每包 4 只）；keystone 用 <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack, 12-Pack</a>。机柜端用 <a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a>（1U / 19″）。</li>
-    <li>其它房间日后要双口再换面板；同交换双上联须 LACP / STP。</li>
-    <li>Mechanical Room：机柜已在本室，不做卧室式 Room Drop；需要时从配线架就地短跳到 HVAC / 热水 / 集水坑控制区（默认不 patch 进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>）。</li>
+    <li>Den：墙面 <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-2p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a>（H-2P 横向双口）。一口接 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（机身 10GbE），配线架短跳进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 10G 口；另一口接 <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a>（见 <a href="#2.1" class="page-ref">§2.1</a>），配线架短跳进同一交换机的 2.5G 口。</li>
+    <li>非 Den：墙面 <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-1p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a>（V-1P 纵向单口）。Media / Garage 在用口经短跳接各自 Flex 的 10G RJ45 上联。</li>
+    <li>面板采购：<a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-2p" target="_blank" rel="noopener noreferrer">H-2P</a> 一包、<a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-1p" target="_blank" rel="noopener noreferrer">V-1P</a> 两包；keystone 用 <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack, 12-Pack</a>。机柜端用 <a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a>（1U / 19″）。</li>
+    <li>Mechanical Room：按需部署一台 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a>，收拢设备房内各类设备；其上联短跳进 <a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a>。</li>
   </ul>
 
   <h4>1.1.6 Cables</h4>
   <p>全项目铜缆统一按 IEEE 802.3bt Type 4 / 4PPoE 完整通道选材与验收（线缆、跳线、keystone、配线架、端接）。Type 4 是供电承载能力，不改变 Cat6 / Cat6A 的数据类别；无 PoE / 低功率口按协商。</p>
   <ul>
-    <li>Cat6A 实心铜：永久入墙 / home-run（Room Drop、主屋 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>、AP、Wallpanel、<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a>、Garage Room Drop 等），保证百米级 10G 与余量。</li>
+    <li>Cat6A 实心铜：永久入墙 / home-run（Room Drop、主屋 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>、AP、Wallpanel、<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a>、Garage Room Drop 等）。</li>
     <li>Cat6 短跳：柜内 / 墙口短跳为纯铜、24–26 AWG、Type 4 额定；禁用 CCA / 未标定细径线。</li>
     <li>光 / DAC：<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>↔<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 用 <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">10G Direct Attach Cable</a>。</li>
     <li>非以太网：门锁 LOCK 为 Wet 12V 控制线；DPS 为干接点门磁（本宅 <a href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a>）；Tesla 控制为 CAN。LOCK / DPS / Tesla CAN 不按以太网线规。</li>
   </ul>
+
+  <h4>1.1.7 Server Rack</h4>
+  <p>Mechanical Room 落地四柱开放架：StarTech <a href="https://www.startech.com/en-ca/server-management/4postrack12u" target="_blank" rel="noopener noreferrer">4POSTRACK12U</a> / <a href="https://www.startech.com/en-ca/server-management/4postrack15u" target="_blank" rel="noopener noreferrer">4POSTRACK15U</a> / <a href="https://www.startech.com/en-ca/server-management/4postrack18u" target="_blank" rel="noopener noreferrer">4POSTRACK18U</a> 三选一（见 <a href="#1.3" class="page-ref">§1.3</a>），高度未定。导轨深度 22″–40″ 可调，装时调到约 31–32″（≈800 mm），兼容 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 与 <a href="https://www.synology.com/en-us/products/RKS-01" target="_blank" rel="noopener noreferrer">RKS-01</a>（见 <a href="#3.1" class="page-ref">§3.1</a>）。机柜 UPS 定为 <a href="https://store.ui.com/us/en/products/ups-2u-pro-us" target="_blank" rel="noopener noreferrer">UPS 2U Pro</a>（见 <a href="#4.2" class="page-ref">§4.2</a>），2U，置于架底；ONT / NAH 用搁板，紧挨 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>。理线占 1U，夹在配线架与 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 之间；<a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a> 紧挨配线架。网关与交换机之间、NAS 与 UPS 2U Pro 之间各留 1U 通风。</p>
+  <p>机柜正面，自上而下，每一行 1U（编号自架底起）。重的在下。此排布共 10U。12U / 15U / 18U 多出的空位留在顶部。</p>
+  <div class="table-scroll">
+  <table class="rack-face">
+    <thead>
+      <tr>
+        <th class="rack-u">U</th>
+        <th>Device</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row" class="rack-u">10</th>
+        <td>
+          <span class="rack-slot">
+            <span class="rack-name">ONT / NAH shelf</span>
+            <span class="rack-note">搁板</span>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" class="rack-u">9</th>
+        <td>
+          <span class="rack-slot">
+            <span class="rack-name"><a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a></span>
+          </span>
+        </td>
+      </tr>
+      <tr class="rack-gap">
+        <th scope="row" class="rack-u">8</th>
+        <td><span class="rack-slot"><span class="rack-note">通风</span></span></td>
+      </tr>
+      <tr>
+        <th scope="row" class="rack-u">7</th>
+        <td>
+          <span class="rack-slot">
+            <span class="rack-name"><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></span>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" class="rack-u">6</th>
+        <td>
+          <span class="rack-slot">
+            <span class="rack-name">Cable management</span>
+            <span class="rack-note">水平理线</span>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" class="rack-u">5</th>
+        <td>
+          <span class="rack-slot">
+            <span class="rack-name"><a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a></span>
+            <span class="rack-note">Room Drop 终结</span>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" class="rack-u">4</th>
+        <td>
+          <span class="rack-slot">
+            <span class="rack-name"><a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a></span>
+            <span class="rack-note"><a href="https://www.synology.com/en-us/products/RKS-01" target="_blank" rel="noopener noreferrer">RKS-01</a></span>
+          </span>
+        </td>
+      </tr>
+      <tr class="rack-gap">
+        <th scope="row" class="rack-u">3</th>
+        <td><span class="rack-slot"><span class="rack-note">通风</span></span></td>
+      </tr>
+      <tr>
+        <th scope="row" class="rack-u">2</th>
+        <td rowspan="2">
+          <span class="rack-slot">
+            <span class="rack-name"><a href="https://store.ui.com/us/en/products/ups-2u-pro-us" target="_blank" rel="noopener noreferrer">UPS 2U Pro</a></span>
+            <span class="rack-note">UPS-2U-Pro · NEMA 5-20P</span>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row" class="rack-u">1</th>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p>不进本柜：Media / Garage <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex</a>、Den <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a> / <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>、各 AP 与门禁边缘设备。</p>
 
   <h3>1.2 Protect &amp; Access</h3>
   <p class="lede">户外人行门禁、Protect 监视、车道门与 SuperLink 传感。连线落点见 <a href="#topology" class="page-ref">Topology</a>；功率预算见 <a href="#1.4" class="page-ref">§1.4</a>。</p>
@@ -364,7 +455,7 @@
   </div>
 
   <h4>1.2.2 Security CCTV</h4>
-  <p>门口摄像头挂在各门 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 下（见 <a href="#1.2.1" class="page-ref">Exterior Door</a>）。墙端 Protect 监视与通用显示器选型分开：监视走 UniFi Protect 专用机，不用电脑显示器 + 第三方 App 充当常驻预览。</p>
+  <p>门口摄像头挂在各门 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 下（见 <a href="#1.2.1" class="page-ref">Exterior Door</a>）。墙端监视用 <a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a>。</p>
   <ul>
     <li>监视器：<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a>
       <ul>
@@ -373,19 +464,14 @@
         <li>上行 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 直供，不经过 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></li>
       </ul>
     </li>
-    <li>用途：实时预览与门口操作；录像仍由 UniFi Protect（<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>）承担，不以 HA 或通用显示器取代 NVR。</li>
+    <li>用途：实时预览与门口操作；录像仍由 UniFi Protect（<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>）承担。</li>
   </ul>
 
   <h4>1.2.3 Garage Gate</h4>
-  <p>车道大门 / 电动门禁位，与 Garage Door（车库行人/车门）分开记账。控制与读头型号待定；选定前不占用 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 端口，也不并入现有五套 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 子树。选型时须单独定：是否需要 Access Hub、锁体/电机干接点、读头 PoE 接口等级，以及上联落在 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 还是日后 Utility Switch。</p>
+  <p>车道大门 / 电动门禁位，与 Garage Door（车库行人/车门）分开记账。控制与读头型号待定，不占现有五套 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>。</p>
 
   <h4>1.2.4 USL</h4>
-  <p><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a> 是 SuperLink / BLE 网关，不是传感器：100M PoE，由 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 直供，不经过 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>。</p>
-  <ul>
-    <li>传感器：<a href="https://store.ui.com/us/en/products/usl-environmental" target="_blank" rel="noopener noreferrer">Environmental Sensor</a> 电池供电，测漏水 / 温湿度 / 环境光，经 SuperLink（北美约 915 MHz）回 Gateway，无需 Ethernet。</li>
-    <li>布置：Gateway 挂车库半高墙、避大金属面；Environmental 放集水坑、热水器、冷热水汇管附近即可。</li>
-    <li>覆盖：地下室混凝土与炉体可能衰减 915 MHz。若 Protect 里传感器不稳，再在 Mechanical Room 加第二台 <a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a>（同样 100M PoE），就地短跳，仍不要经 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>。</li>
-  </ul>
+  <p><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a>：100M PoE，由 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 直供，挂车库半高墙、避大金属面。传感器选型待定。</p>
 
   <h3>1.3 Device List</h3>
   <p class="lede">设备清单与端口能力。Device 列底色区分采购状态：<span class="device-legend is-purchased">已购</span> / <span class="device-legend is-pending">未购</span>。Price 为该行货价实付（含行税 / Memory Surcharge 等），<strong>不含</strong>订单级运费；未购标「-」。订单级费用见 <a href="#appendix-order-fees-running-total" class="page-ref">Appendix. Order Fees Running Total</a>。来源：<code>orders/</code>。</p>
@@ -408,6 +494,7 @@
         <td rowspan="3">Rack</td>
         <td class="device-cell is-pending">
           <span class="udc-device">
+            <img src="https://media.startech.com/cms/products/thumb/4postrack12u.main.jpg" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://www.startech.com/en-ca/server-management/4postrack12u" target="_blank" rel="noopener noreferrer">12U 4-Post Open Frame Rack</a></span>
               <span class="udc-sku">4POSTRACK12U · Floor Mount · 22"-40" Adjustable Depth</span>
@@ -421,6 +508,7 @@
       <tr>
         <td class="device-cell is-pending">
           <span class="udc-device">
+            <img src="https://media.startech.com/cms/products/thumb/4postrack15u.main.jpg" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://www.startech.com/en-ca/server-management/4postrack15u" target="_blank" rel="noopener noreferrer">15U 4-Post Open Frame Rack</a></span>
               <span class="udc-sku">4POSTRACK15U · Floor Mount · 22"-40" Adjustable Depth</span>
@@ -434,9 +522,25 @@
       <tr>
         <td class="device-cell is-pending">
           <span class="udc-device">
+            <img src="https://media.startech.com/cms/products/thumb/4postrack18_main_eg.jpg" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://www.startech.com/en-ca/server-management/4postrack18u" target="_blank" rel="noopener noreferrer">18U 4-Post Open Frame Rack</a></span>
               <span class="udc-sku">4POSTRACK18U · Floor Mount · 22"-40" Adjustable Depth</span>
+            </span>
+          </span>
+        </td>
+        <td class="port-cell">-</td>
+        <td class="port-cell">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td>Power</td>
+        <td class="device-cell is-pending">
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/bd1e065b-9ed7-4753-ac94-b4c0b06bb173/d2bea2d1-57e3-45c8-b5bd-a061d67e94d9.png" alt="">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/ups-2u-pro-us" target="_blank" rel="noopener noreferrer">UPS 2U Pro</a></span>
+              <span class="udc-sku">UPS-2U-Pro · 2U · NEMA 5-20P</span>
             </span>
           </span>
         </td>
@@ -665,6 +769,7 @@
       <tr>
         <td class="device-cell is-pending">
           <span class="udc-device">
+            <img src="https://www.securitron.com/content/dam/assa-abloy/americas/ems/securitron/image/AADSS1191317.jpg.thumb.319.319.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a> <span class="udc-count">×5</span></span>
               <span class="udc-sku">DPS-W / DPS-M</span>
@@ -1398,7 +1503,7 @@
 
   <p>机柜存储正式选型 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a>（曾对照 <a href="https://www.synology.com/en-global/products/RS1626xs+" target="_blank" rel="noopener noreferrer">RS1626xs+</a> 后改回）。与 Den 的 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> 是一套分工：Studio 是算力主机（本地 LLM 推理、重视频等）；NAS 是家庭多负载存储与轻服务层（模型库、安防录像、影音、文件、Web），不算力、不做主推理。</p>
   <ul>
-    <li>硬性门槛：官方 DSM；19&quot; 机柜式（1U），进 Mechanical Room 机柜（见 <a href="#1.3" class="page-ref">§1.3</a>）。</li>
+    <li>硬性门槛：官方 DSM；19&quot; 机柜式（1U），进 Mechanical Room 机柜（见 <a href="#1.1.7" class="page-ref">§1.1.7</a>）。</li>
     <li>装架：四柱 + <a href="https://www.synology.com/en-us/products/RKS-01" target="_blank" rel="noopener noreferrer">Synology Rail Kit RKS-01</a>（导轨深度 553–834 mm；另购）。</li>
     <li>网络：内建 2×10GbE，机柜内 Cat6 短跳做 LACP → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>（口位见上方设备表 / <a href="#topology" class="page-ref">Topology</a>）；另有 2×1G。Studio 经 Den 10G Drop 同交换域，大文件 / 模型搬运走有线，不走 Wi‑Fi。</li>
     <li>存储：12×2.5&quot; SSD all-flash（不能插 HDD）；用多 Storage Pool / Volume 按录像、影音、文件、模型库分池。容量经济学非优先。内存建议升到 16–32 GB（上限 32 GB）。</li>
@@ -1520,7 +1625,7 @@
 </table>
 </div>
   <h2>4. Tesla Energy System</h2>
-  <p class="lede"><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a>、<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 与车库侧数据链；全屋备电策略及机柜 UPS 取舍。</p>
+  <p class="lede"><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a>、<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 与车库侧数据链；全屋备电策略及机柜 <a href="https://store.ui.com/us/en/products/ups-2u-pro-us" target="_blank" rel="noopener noreferrer">UPS 2U Pro</a>。</p>
   <h4>4.1 Tesla 链</h4>
   <p class="lede">车库 Powerwall / Gateway 端口一览。同型号合并一行，数量写 <code>×n</code>（×1 省略）。</p>
 <div class="design-devices-wrap">
@@ -1584,15 +1689,14 @@
               │
               └── CAN / 12V ──► <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a></pre>
 
-  <h4>4.2 备电与机柜 UPS</h4>
-  <p>两台并联 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 解决的是全屋持续供电。机柜不再需要一台大容量 UPS 来撑整晚。UPS 只补两个缺口：Gateway 切换虽标 seamless，Tesla 没有承诺 UPS 级零中断，部分交换机 / NAS / 光猫可能在切换瞬间重启；以及 Powerwall 维护、故障或电量耗尽时，给 NAS 一个正常关机窗口。</p>
+  <h4>4.2 UPS 2U Pro</h4>
+  <p>两台并联 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 承担全屋持续供电。机柜 UPS 定为 <a href="https://store.ui.com/us/en/products/ups-2u-pro-us" target="_blank" rel="noopener noreferrer">UPS 2U Pro</a>：2U，机身深 630 mm，置于架底（见 <a href="#1.1.7" class="page-ref">§1.1.7</a>）。1920VA / 1920W，线路互动，电池端纯正弦；8 个 NEMA 5-20R 均带电池。输入 NEMA 5-20P，机柜回路用 20A，并纳入 whole-home backup。</p>
+  <p>电池口接 TELUS ONT、<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>、<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>，以及 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a> 的两路电源。Powerwall 维护、故障或电量耗尽时，经 NUT 关 NAS。</p>
   <ul>
-    <li>先确认机柜回路在 whole-home backup 范围内，并做一次离网切换测试。</li>
-    <li>若 TELUS ONT、<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>、<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>、NAS、HA 均不重启，可以不装 UPS。</li>
-    <li>若摄像、门禁、HA、上网不能接受哪怕数秒中断，再加一台只桥接数分钟的小型 UPS，负荷按 UniFi 遥测和墙端实耗选（三路墙装 Wallpanel 规划占位合计 90W，见 <a href="#1.4" class="page-ref">§1.4</a>）。</li>
-    <li>UPS 须能接受 Powerwall 离网时的电压/频率窗口；装完再测一次切换。</li>
+    <li>交流输入频率窗口 60 Hz ±5 Hz（55–65 Hz）。<a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 离网抬频最高 65.2 Hz；安装时把 Maximum Frequency Shift 设为不超过 5 Hz。</li>
+    <li>切换时间典型 6 ms、最长 10 ms。装完做一次离网切换测试。</li>
   </ul>
-  <p>结论：双 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> 前提下，UPS 从「强烈需要」降为「连续性保险」。参考 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3 Datasheet</a>。</p>
+  <p>参考 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3 Datasheet</a>。</p>
 
     <h2>5. Whole Home Appliances &amp; Furnitures</h2>
   <p class="lede">全屋电器与家具按房间选型；下表为已定型号。安装与接口说明进 Notes；Budget（CAD）与 Purchase 分列。网络机柜见 <a href="#1.1" class="page-ref">§1.1</a>；Den 见 <a href="#3" class="page-ref">§3</a>。Ensuite / Bath 1–2 / Powder、Bedroom、Dining、Living、Mechanical 待补。</p>

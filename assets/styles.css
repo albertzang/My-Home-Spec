@@ -523,6 +523,59 @@
       white-space: nowrap;
     }
 
+    .spa-spec .spa-article table.rack-face {
+      width: max-content;
+      min-width: 22rem;
+      max-width: none;
+      table-layout: auto;
+    }
+
+    .spa-spec .spa-article table.rack-face th,
+    .spa-spec .spa-article table.rack-face td {
+      padding: 0.35rem 0.75rem;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-u {
+      width: 3rem;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      color: var(--ink-soft);
+    }
+
+    .spa-spec .spa-article table.rack-face tbody .rack-u {
+      font-weight: 500;
+    }
+
+    .spa-spec .spa-article table.rack-face tbody tr {
+      height: 3.6rem;
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 0.12rem;
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-name {
+      color: var(--ink);
+      font-weight: 650;
+      line-height: 1.3;
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-note {
+      font-size: 0.82em;
+      line-height: 1.3;
+      color: #777;
+    }
+
+    .spa-spec .spa-article table.rack-face tr.rack-gap td {
+      background: #f8fafc;
+    }
+
     h1 {
       margin-bottom: 0.5rem;
     }
