@@ -405,6 +405,46 @@
     </thead>
     <tbody>
       <tr>
+        <td rowspan="3">Rack</td>
+        <td class="device-cell is-pending">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.startech.com/en-ca/server-management/4postrack12u" target="_blank" rel="noopener noreferrer">12U 4-Post Open Frame Rack</a></span>
+              <span class="udc-sku">4POSTRACK12U · Floor Mount · 2"-40" Adjustable Depth</span>
+            </span>
+          </span>
+        </td>
+        <td class="port-cell">-</td>
+        <td class="port-cell">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-pending">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.startech.com/en-ca/server-management/4postrack15u" target="_blank" rel="noopener noreferrer">15U 4-Post Open Frame Rack</a></span>
+              <span class="udc-sku">4POSTRACK15U · Floor Mount · 22"-40" Adjustable Depth</span>
+            </span>
+          </span>
+        </td>
+        <td class="port-cell">-</td>
+        <td class="port-cell">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-pending">
+          <span class="udc-device">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://www.startech.com/en-ca/server-management/4postrack18u" target="_blank" rel="noopener noreferrer">18U 4-Post Open Frame Rack</a></span>
+              <span class="udc-sku">4POSTRACK18U · Floor Mount · 22"-40" Adjustable Depth</span>
+            </span>
+          </span>
+        </td>
+        <td class="port-cell">-</td>
+        <td class="port-cell">-</td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
         <td>Gateway</td>
         <td class="device-cell is-purchased">
           <span class="udc-device">
@@ -1358,7 +1398,8 @@
 
   <p>机柜存储正式选型 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a>（曾对照 <a href="https://www.synology.com/en-global/products/RS1626xs+" target="_blank" rel="noopener noreferrer">RS1626xs+</a> 后改回）。与 Den 的 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> 是一套分工：Studio 是算力主机（本地 LLM 推理、重视频等）；NAS 是家庭多负载存储与轻服务层（模型库、安防录像、影音、文件、Web），不算力、不做主推理。</p>
   <ul>
-    <li>硬性门槛：官方 DSM；19&quot; 机柜式（1U），进 Mechanical Room 机柜。</li>
+    <li>硬性门槛：官方 DSM；19&quot; 机柜式（1U），进 Mechanical Room 机柜（见 <a href="#1.3" class="page-ref">§1.3</a>）。</li>
+    <li>装架：四柱 + <a href="https://www.synology.com/en-us/products/RKS-01" target="_blank" rel="noopener noreferrer">Synology Rail Kit RKS-01</a>（导轨深度 553–834 mm；另购）。</li>
     <li>网络：内建 2×10GbE，机柜内 Cat6 短跳做 LACP → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>（口位见上方设备表 / <a href="#topology" class="page-ref">Topology</a>）；另有 2×1G。Studio 经 Den 10G Drop 同交换域，大文件 / 模型搬运走有线，不走 Wi‑Fi。</li>
     <li>存储：12×2.5&quot; SSD all-flash（不能插 HDD）；用多 Storage Pool / Volume 按录像、影音、文件、模型库分池。容量经济学非优先。内存建议升到 16–32 GB（上限 32 GB）。</li>
     <li>供电：单电 + 市电/<a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> 即可；冗余 PSU / OOB 是加分项，非选型主因。</li>

@@ -433,7 +433,7 @@
     }
 
     .spa-spec .spa-article .lede {
-      color: var(--ink-soft);
+      color: var(--ink);
     }
 
     .spa-spec .spa-article a {
@@ -591,7 +591,7 @@
     }
 
     .lede {
-      color: var(--ink-soft);
+      color: var(--ink);
       margin-bottom: 1.25rem;
     }
 
