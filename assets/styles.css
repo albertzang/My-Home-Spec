@@ -576,6 +576,21 @@
       background: #f8fafc;
     }
 
+    .spa-spec .spa-article table.rack-face .rack-ports {
+      gap: 3px;
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-port-gap {
+      flex: 0 0 8px;
+      width: 8px;
+    }
+
+    .spa-spec .spa-article table.rack-face .udc-port.keystone {
+      --port-c: #cbd5e1;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+    }
+
     h1 {
       margin-bottom: 0.5rem;
     }
