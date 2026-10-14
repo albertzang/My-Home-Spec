@@ -537,6 +537,10 @@
       vertical-align: middle;
     }
 
+    .spa-spec .spa-article table.rack-face td:has(.rack-ports) {
+      vertical-align: top;
+    }
+
     .spa-spec .spa-article table.rack-face .rack-u {
       width: 3rem;
       text-align: center;
@@ -560,6 +564,10 @@
       gap: 0.12rem;
     }
 
+    .spa-spec .spa-article table.rack-face .rack-slot:has(.rack-ports) {
+      justify-content: flex-start;
+    }
+
     .spa-spec .spa-article table.rack-face .rack-name {
       color: var(--ink);
       font-weight: 650;
@@ -577,12 +585,24 @@
     }
 
     .spa-spec .spa-article table.rack-face .rack-ports {
-      gap: 3px;
+      --rack-port: 26px;
+      --rack-gap: 3px;
+      display: flex;
+      width: max-content;
+      margin-top: 0.35rem;
+      gap: var(--rack-gap);
     }
 
-    .spa-spec .spa-article table.rack-face .rack-port-gap {
-      flex: 0 0 8px;
-      width: 8px;
+    /* Patch panels share the XG's 24 RJ45 columns. Those start at the left; two SFP28 sit at the right. */
+    .spa-spec .spa-article table.rack-face .rack-ports.align-xg {
+      margin-left: 0;
+    }
+
+    /* Same 26 columns as the XG face: P1–P24, then the two right-hand SFP28. */
+    .spa-spec .spa-article table.rack-face .rack-ports.place {
+      display: grid;
+      grid-template-columns: repeat(26, var(--rack-port));
+      align-items: center;
     }
 
     .spa-spec .spa-article table.rack-face .udc-port.keystone {

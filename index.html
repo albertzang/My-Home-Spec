@@ -84,7 +84,7 @@
   <h4>1.1.3 Switching</h4>
   <p>有线核心：机柜一台 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 汇聚 + Media / Garage 各一台边缘 Flex。边缘不直连机柜铜口：经本室 Room Drop home-run 到配线架（见 <a href="#1.1.5" class="page-ref">§1.1.5</a>），再短跳进 XG；墙口短跳接 Flex 的 10G RJ45 上联（不用 combo 上的 SFP+）；不接墙端 AC。</p>
   <ul>
-    <li><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>：16×10G + 8×2.5G，另有 SFP28 上联接 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>。负责 AP、门禁上行、HA / Wallpanel、各 Room Drop（Media / Garage 两路远端接边缘 Flex）。机柜 NAS（<a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a>，见 <a href="#3" class="page-ref">§3</a>）预留 2×10G LACP。</li>
+    <li><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>：16×10G + 8×2.5G，另有 SFP28 上联接 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>。负责 AP、门禁上行、HA / Wallpanel、<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a>、各 Room Drop（Media / Garage 两路远端接边缘 Flex）。机柜 NAS（<a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a>，见 <a href="#3" class="page-ref">§3</a>）占 2×10G LACP。设备房 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 上联占一个 10G 口，柜内短跳，不经配线架。16 个 10G 口用 14，空 2。八个 2.5G 口全用。</li>
     <li><a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a>（Media）：八个 2.5G 下联只传数据。Media 要多口有线。</li>
     <li><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a>（Garage）：八个 2.5G 下联可供电。车库边缘有 <a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a>、<a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>、<a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a> 等负载。</li>
   </ul>
@@ -96,11 +96,11 @@
   </ul>
 
   <h4>1.1.5 Room Drops</h4>
-  <p>七个房间（Media / Den / Master / BR1 / BR2 / Seating / Garage）各拉两根 <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmr" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMR</a> 到机柜下配线架（<a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a>），全部终结、认证、贴标。除 Den 外每间只启用一根；备用线占配线架，不占交换机口。Den 两根全开、各占一口。Media 与 Garage 的在用口在远端接边缘 Flex，机柜端从下配线架短跳进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>。</p>
+  <p>七个房间（Media / Den / Master / BR1 / BR2 / Seating / Garage）各拉两根 <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmr" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMR</a>，全部终结、认证、贴标。除 Den 外每间只启用一根；备用线占配线架，不占交换机口。Den 两根全开。Den 的 HA 那根进上配线架，它是 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 八个 2.5G 口之一；其余 13 根 Room Drop 进下配线架。Media 与 Garage 的在用口在远端接边缘 Flex，机柜端从下配线架短跳进 XG。</p>
   <ul>
-    <li>Den：墙面 <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-2p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a>（H-2P 横向双口）。一口接 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（机身 10GbE），配线架短跳进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 10G 口；另一口接 <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a>（见 <a href="#2.1" class="page-ref">§2.1</a>），配线架短跳进同一交换机的 2.5G 口。</li>
+    <li>Den：墙面 <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-2p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a>（H-2P 横向双口）。一口接 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>（机身 10GbE），配线架短跳进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的 10G 口；另一口接 <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a>（见 <a href="#2.1" class="page-ref">§2.1</a>），上配线架短跳进同一交换机的 2.5G 口。</li>
     <li>非 Den：墙面 <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-1p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a>（V-1P 纵向单口）。Media / Garage 在用口经短跳接各自 Flex 的 10G RJ45 上联。</li>
-    <li>面板采购：<a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-2p" target="_blank" rel="noopener noreferrer">H-2P</a> 一包、<a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-1p" target="_blank" rel="noopener noreferrer">V-1P</a> 两包。配线架两块 <a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a>（各 1U / 19″）。下配线架：14 根 Room Drop、<a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a> 两口。上配线架：主屋 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> ×4、<a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> ×3、墙装 Wallpanel ×3、<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a>；设备房 Flex 的下联日后也打在这里。48 孔用 27，空孔 21，用一包 <a href="https://store.ui.com/us/en/products/uacc-keystone-blank-insert" target="_blank" rel="noopener noreferrer">Keystone Blank Insert</a>（24 只）。两端 <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack</a> 合计 54 只。</li>
+    <li>面板采购：<a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-2p" target="_blank" rel="noopener noreferrer">H-2P</a> 一包、<a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-1p" target="_blank" rel="noopener noreferrer">V-1P</a> 两包。配线架两块 <a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a>（各 1U / 19″）。上配线架接八个 2.5G 口对应的设备，再加三个 AP 和 <a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a>：Den HA、墙装 Wallpanel ×3、主屋 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> ×4（Front / Mud / Dining / Basement）、<a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> ×3、Viewport，共 12，再加设备房 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 的八个下行，共 20。下配线架接 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a> 两口，以及其余全部 Room Drop 回线 13 根，共 15。车库 Door Hub 在车库 Flex 上，不进这两块配线架。48 孔用 35，空孔 13，用一包 <a href="https://store.ui.com/us/en/products/uacc-keystone-blank-insert" target="_blank" rel="noopener noreferrer">Keystone Blank Insert</a>（24 只）。两端 <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack</a> 合计 70 只。</li>
     <li>Mechanical Room：按需部署一台 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a>，与 ONT / NAH 并排放在机柜同一块 <a href="https://store.ui.com/us/en/products/uacc-rack-shelf-clv" target="_blank" rel="noopener noreferrer">Fixed Rack Shelf</a> 上（见 <a href="#1.1.7" class="page-ref">§1.1.7</a>），收拢设备房内各类设备。上联用 <a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable</a>，从本机 10G RJ45 直进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>，不经配线架。下联设备的永久链路打在上配线架，再短跳进 Flex。</li>
   </ul>
 
@@ -108,21 +108,21 @@
   <p>永久链路定为 <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmr" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMR</a>。短跳定为 <a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable</a>。进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 的铜口都先到配线架；设备房 Flex 的上联是柜内短跳，不经配线架。</p>
   <ul>
     <li>永久入墙 / home-run：<a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmr" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMR</a>，3 盒（每盒 305 m / 1,000 ft）。用于 Room Drop、主屋 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>、AP、Wallpanel、<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a>、Garage Room Drop 等。路径在静压箱内时改用 <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmp" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMP</a>。</li>
-    <li>柜内 / 墙口短跳：<a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable</a>。ONT 或 NAH 进 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>。配线架进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>，含墙口进 Flex，以及 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a> 的 LACP（两口各经下配线架的 jack）。</li>
-    <li>光 / DAC：<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>↔<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 用 <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">10G Direct Attach Cable</a> 直连。两端是 SFP+，不进配线架，不承载 PoE。</li>
+    <li>柜内 / 墙口短跳：<a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable</a>。ONT 或 NAH 进 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>。配线架进 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>，含墙口进 Flex，以及 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a> 的 LACP（两口各经下配线架的 jack）。柜内相邻 1U、口位对齐的用 0.15 m ×29：上配线架到 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 12 根，上配线架到设备房 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 8 根，下配线架到同一交换机 9 根（<a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a> 两口加 7 根在用 Room Drop）。隔一格的用 0.3 m ×2：Flex 上联，以及 ONT / NAH 到 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>。备用 Room Drop 不跳。采购：0.15 m 50-Pack ×1，0.3 m 10-Pack ×1，1 m 10-Pack ×1，2 m 10-Pack ×1，3 m ×5，5 m ×5，8 m ×2，12 m ×2，15 m ×2（见 <a href="#1.3" class="page-ref">§1.3</a>）。</li>
+    <li>户外摄像头与读头：<a href="https://store.ui.com/us/en/products/uacc-cable-patch-outdoor-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable Outdoor</a>（Cat6A，10G，PoE+++，1–15 m）。十根都从就地 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 到门口设备，不进机柜。读头与前门 <a href="https://store.ui.com/us/en/products/uvc-g6-pro-entry" target="_blank" rel="noopener noreferrer">G6 Pro Entry</a> 按 2 m ×5。屋檐与车道：Frontyard Turret 5 m、Courtyard Turret 5 m、Backyard Turret 8 m、Walkway Bullet 8 m、Laneway Turret 12 m。合计 48 m。长度按门口就地汇聚、沿屋檐或车道估算，不是实测。采购选黑色：1 m ×10，2 m ×10，3 m ×10，5 m ×5，8 m ×5，12 m ×5，15 m ×5（见 <a href="#1.3" class="page-ref">§1.3</a>）。</li>
+    <li>光 / DAC：<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>↔<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 用 <a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">10G Direct Attach Cable</a> 直连，0.5 m ×1。两端是 SFP+，不进配线架，不承载 PoE。</li>
     <li>非以太网：门锁 LOCK 为 Wet 12V 控制线；DPS 为干接点门磁（本宅 <a href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a>）；Tesla 控制为 CAN。LOCK / DPS / Tesla CAN 不按以太网线规。</li>
   </ul>
 
   <h4>1.1.7 Server Rack</h4>
   <p>Mechanical Room 落地四柱开放架：StarTech <a href="https://www.startech.com/en-ca/server-management/4postrack12u" target="_blank" rel="noopener noreferrer">4POSTRACK12U</a> / <a href="https://www.startech.com/en-ca/server-management/4postrack15u" target="_blank" rel="noopener noreferrer">4POSTRACK15U</a> / <a href="https://www.startech.com/en-ca/server-management/4postrack18u" target="_blank" rel="noopener noreferrer">4POSTRACK18U</a> 三选一（见 <a href="#1.3" class="page-ref">§1.3</a>），高度未定。导轨深度 22″–40″ 可调，装时调到约 31–32″（≈800 mm），兼容 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 与 <a href="https://www.synology.com/en-us/products/RKS-01" target="_blank" rel="noopener noreferrer">RKS-01</a>（见 <a href="#3.1" class="page-ref">§3.1</a>）。机柜 UPS 定为 <a href="https://store.ui.com/us/en/products/ups-2u-pro-us" target="_blank" rel="noopener noreferrer">UPS 2U Pro</a>（见 <a href="#4.2" class="page-ref">§4.2</a>），2U，置于架底。UniFi 没有 Flex 2.5G 专用挂耳。一块 <a href="https://store.ui.com/us/en/products/uacc-rack-shelf-clv" target="_blank" rel="noopener noreferrer">Fixed Rack Shelf</a>（1U 悬臂，深 250 mm，承重 20 kg）并排放设备房 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a>（212.9 × 76 × 33.5 mm）和 ONT 或 NAH。Nokia <a href="https://www.nokia.com/asset/210704/" target="_blank" rel="noopener noreferrer">XS-010X-Q</a> 为 135 × 135 × 30 mm，与 Flex 并排约 348 mm。Telus NAH 约 190 × 102 × 32 mm（7.5″ × 4″ × 1.25″），以 32 mm 为高度平放、短边朝前，并排约 315 mm。两者都低于 1U，深度都小于 250 mm。<a href="https://www.nokia.com/broadband-access/in-home-connectivity/fiber-ont/" target="_blank" rel="noopener noreferrer">XS-250X-A</a> 没有公开外形尺寸。两块 <a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a> 贴住 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>：上配线架在交换机上方，下配线架在交换机下方，这块搁板在上配线架之上。网关与搁板之间、NAS 与 UPS 2U Pro 之间各留 1U，正面各装一块 <a href="https://store.ui.com/us/en/products/uacc-rack-panel-ocd?variant=uacc-rack-panel-vented-1u" target="_blank" rel="noopener noreferrer">1U Vented Panel</a>，风仍能过。</p>
-  <p>机柜正面，自上而下，每一行 1U（编号自架底起）。重的在下。此排布共 10U。12U / 15U / 18U 多出的空位留在顶部。端口按设备面板画出：实心为在用，空心为已终结未跳线，灰框为 <a href="https://store.ui.com/us/en/products/uacc-keystone-blank-insert" target="_blank" rel="noopener noreferrer">Keystone Blank Insert</a>。<a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a> 的网口在机尾。</p>
+  <p>机柜正面，自上而下，每一行 1U（编号自架底起）。重的在下。此排布共 10U。12U / 15U / 18U 多出的空位留在顶部。端口按设备面板画出：实心为在用，空心为已终结未跳线，灰框为 <a href="https://store.ui.com/us/en/products/uacc-keystone-blank-insert" target="_blank" rel="noopener noreferrer">Keystone Blank Insert</a>。配线架和设备房 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 的口按下行设备自己的口速和 PoE 上色。下行设备未定的，按该链路上联口上色：未定 Room Drop 为 10G PoE+++，Flex 八个下行为 2.5G、不供电。<a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a> 的网口在机尾。</p>
   <div class="table-scroll">
   <table class="rack-face">
     <thead>
       <tr>
         <th class="rack-u">U</th>
         <th>Device</th>
-        <th>Ports</th>
       </tr>
     </thead>
     <tbody>
@@ -131,23 +131,21 @@
         <td>
           <span class="rack-slot">
             <span class="rack-name"><a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a></span>
+            <span class="udc-ports rack-ports place">
+              <span class="udc-port gbe1 idle" style="grid-column: 16" title="LAN 1 GbE RJ45 · 空闲 1"></span>
+              <span class="udc-port gbe1 idle" style="grid-column: 17" title="LAN 1 GbE RJ45 · 空闲 2"></span>
+              <span class="udc-port gbe1 idle" style="grid-column: 18" title="LAN 1 GbE RJ45 · 空闲 3"></span>
+              <span class="udc-port gbe1 idle" style="grid-column: 19" title="LAN 1 GbE RJ45 · 空闲 4"></span>
+              <span class="udc-port gbe1 idle" style="grid-column: 20" title="LAN 1 GbE RJ45 · 空闲 5"></span>
+              <span class="udc-port gbe1 idle" style="grid-column: 21" title="LAN 1 GbE RJ45 · 空闲 6"></span>
+              <span class="udc-port gbe1 idle" style="grid-column: 22" title="LAN 1 GbE RJ45 · 空闲 7"></span>
+              <span class="udc-port gbe1 idle" style="grid-column: 23" title="LAN 1 GbE RJ45 · 空闲 8"></span>
+              <span class="udc-port gbe2p5 idle" style="grid-column: 24" title="WAN 2.5 GbE RJ45 · 不用"><svg class="udc-poe" aria-hidden="true"><use href="#udc-wan"/></svg></span>
+              <span class="udc-port sfp" style="grid-column: 25" title="WAN 10G SFP+ · ONT"><svg class="udc-poe" aria-hidden="true"><use href="#udc-wan"/></svg><span class="udc-sfp-txt">SFP+</span></span>
+              <span class="udc-port sfp" style="grid-column: 26" title="LAN 10G SFP+ · DAC → Pro XG 24 PoE"><span class="udc-sfp-txt">SFP+</span></span>
+            </span>
           </span>
         </td>
-        <td class="port-cell"><span class="udc-ports rack-ports">
-              <span class="udc-port gbe2p5 idle" title="WAN 2.5 GbE RJ45 · 不用"><svg class="udc-poe" aria-hidden="true"><use href="#udc-wan"/></svg></span>
-              <span class="udc-port sfp" title="WAN 10G SFP+ · ONT"><svg class="udc-poe" aria-hidden="true"><use href="#udc-wan"/></svg><span class="udc-sfp-txt">SFP+</span></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
-              <span class="udc-port gbe1 idle" title="LAN 1 GbE RJ45 · 空闲 1"></span>
-              <span class="udc-port gbe1 idle" title="LAN 1 GbE RJ45 · 空闲 2"></span>
-              <span class="udc-port gbe1 idle" title="LAN 1 GbE RJ45 · 空闲 3"></span>
-              <span class="udc-port gbe1 idle" title="LAN 1 GbE RJ45 · 空闲 4"></span>
-              <span class="udc-port gbe1 idle" title="LAN 1 GbE RJ45 · 空闲 5"></span>
-              <span class="udc-port gbe1 idle" title="LAN 1 GbE RJ45 · 空闲 6"></span>
-              <span class="udc-port gbe1 idle" title="LAN 1 GbE RJ45 · 空闲 7"></span>
-              <span class="udc-port gbe1 idle" title="LAN 1 GbE RJ45 · 空闲 8"></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
-              <span class="udc-port sfp" title="LAN 10G SFP+ · DAC → Pro XG 24 PoE"><span class="udc-sfp-txt">SFP+</span></span>
-            </span></td>
       </tr>
       <tr>
         <th scope="row" class="rack-u">9</th>
@@ -157,7 +155,6 @@
             <span class="rack-note">通风</span>
           </span>
         </td>
-        <td class="port-cell"></td>
       </tr>
       <tr>
         <th scope="row" class="rack-u">8</th>
@@ -165,138 +162,127 @@
           <span class="rack-slot">
             <span class="rack-name"><a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> · ONT / NAH</span>
             <span class="rack-note"><a href="https://store.ui.com/us/en/products/uacc-rack-shelf-clv" target="_blank" rel="noopener noreferrer">Fixed Rack Shelf</a></span>
+            <span class="udc-ports rack-ports place">
+              <span class="udc-port gbe2p5" style="grid-column: 13" title="2.5G · 不供电 · 下行未定 · 上配线架 1"></span>
+              <span class="udc-port gbe2p5" style="grid-column: 14" title="2.5G · 不供电 · 下行未定 · 上配线架 2"></span>
+              <span class="udc-port gbe2p5" style="grid-column: 15" title="2.5G · 不供电 · 下行未定 · 上配线架 3"></span>
+              <span class="udc-port gbe2p5" style="grid-column: 16" title="2.5G · 不供电 · 下行未定 · 上配线架 4"></span>
+              <span class="udc-port gbe2p5" style="grid-column: 17" title="2.5G · 不供电 · 下行未定 · 上配线架 5"></span>
+              <span class="udc-port gbe2p5" style="grid-column: 18" title="2.5G · 不供电 · 下行未定 · 上配线架 6"></span>
+              <span class="udc-port gbe2p5" style="grid-column: 19" title="2.5G · 不供电 · 下行未定 · 上配线架 7"></span>
+              <span class="udc-port gbe2p5" style="grid-column: 20" title="2.5G · 不供电 · 下行未定 · 上配线架 8"></span>
+              <span class="udc-port gbe10" style="grid-column: 22" title="10 GbE RJ45 上联 · 短跳 → Pro XG 24 PoE · PoE+ 输入"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
+              <span class="udc-port sfp idle" style="grid-column: 23" title="10G SFP+ · 不用"><span class="udc-sfp-txt">SFP+</span></span>
+              <span class="udc-port gbe10" style="grid-column: 25" title="ONT / NAH 10 GbE RJ45"></span>
+            </span>
           </span>
         </td>
-        <td class="port-cell"><span class="udc-ports rack-ports">
-              <span class="udc-port gbe10" title="10 GbE RJ45 上联 · PoE+ 输入"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
-              <span class="udc-port sfp idle" title="10G SFP+ · 不用"><span class="udc-sfp-txt">SFP+</span></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 · 无 PoE 输出 1"></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 · 无 PoE 输出 2"></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 · 无 PoE 输出 3"></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 · 无 PoE 输出 4"></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 · 无 PoE 输出 5"></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 · 无 PoE 输出 6"></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 · 无 PoE 输出 7"></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 · 无 PoE 输出 8"></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
-              <span class="udc-port gbe10" title="ONT / NAH 10 GbE RJ45"></span>
-            </span></td>
       </tr>
       <tr>
         <th scope="row" class="rack-u">7</th>
         <td>
           <span class="rack-slot">
             <span class="rack-name"><a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a></span>
-            <span class="rack-note">门禁 / AP / Wallpanel / Viewport</span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports rack-ports">
-              <span class="udc-port gbe10" title="Door Hub Mini 1"></span>
-              <span class="udc-port gbe10" title="Door Hub Mini 2"></span>
-              <span class="udc-port gbe10" title="Door Hub Mini 3"></span>
-              <span class="udc-port gbe10" title="Door Hub Mini 4"></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
-              <span class="udc-port gbe10" title="U7 Pro Wall 1"></span>
-              <span class="udc-port gbe10" title="U7 Pro Wall 2"></span>
-              <span class="udc-port gbe10" title="U7 Pro Wall 3"></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
-              <span class="udc-port gbe10" title="Wallpanel 1"></span>
-              <span class="udc-port gbe10" title="Wallpanel 2"></span>
-              <span class="udc-port gbe10" title="Wallpanel 3"></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
-              <span class="udc-port gbe10" title="Protect Viewport"></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
+            <span class="rack-note">HA / Wallpanel ×3 / Door Hub ×4 / AP ×3 / Viewport / Flex ×8</span>
+            <span class="udc-ports rack-ports align-xg">
+              <span class="udc-port gbe2p5" title="2.5G PoE++ · Den HA"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span>
+              <span class="udc-port gbe1" title="1G PoE+ · Wallpanel Basement"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
+              <span class="udc-port gbe1" title="1G PoE+ · Wallpanel Main"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
+              <span class="udc-port gbe1" title="1G PoE+ · Wallpanel Upper"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
+              <span class="udc-port gbe1" title="1G PoE++ · Door Hub Front"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span>
+              <span class="udc-port gbe1" title="1G PoE++ · Door Hub Mud"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span>
+              <span class="udc-port gbe1" title="1G PoE++ · Door Hub Dining"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span>
+              <span class="udc-port gbe1" title="1G PoE++ · Door Hub Basement"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span>
+              <span class="udc-port gbe2p5" title="2.5G PoE+ · U7 Pro Wall Basement"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
+              <span class="udc-port gbe2p5" title="2.5G PoE+ · U7 Pro Wall Main"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
+              <span class="udc-port gbe2p5" title="2.5G PoE+ · U7 Pro Wall Upper"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
+              <span class="udc-port gbe1" title="1G PoE · Protect Viewport"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span>
+              <span class="udc-port gbe2p5" title="2.5G · 不供电 · Flex 下行 1 · 设备未定"></span>
+              <span class="udc-port gbe2p5" title="2.5G · 不供电 · Flex 下行 2 · 设备未定"></span>
+              <span class="udc-port gbe2p5" title="2.5G · 不供电 · Flex 下行 3 · 设备未定"></span>
+              <span class="udc-port gbe2p5" title="2.5G · 不供电 · Flex 下行 4 · 设备未定"></span>
+              <span class="udc-port gbe2p5" title="2.5G · 不供电 · Flex 下行 5 · 设备未定"></span>
+              <span class="udc-port gbe2p5" title="2.5G · 不供电 · Flex 下行 6 · 设备未定"></span>
+              <span class="udc-port gbe2p5" title="2.5G · 不供电 · Flex 下行 7 · 设备未定"></span>
+              <span class="udc-port gbe2p5" title="2.5G · 不供电 · Flex 下行 8 · 设备未定"></span>
               <span class="udc-port keystone" title="Blank Insert 1"></span>
               <span class="udc-port keystone" title="Blank Insert 2"></span>
               <span class="udc-port keystone" title="Blank Insert 3"></span>
               <span class="udc-port keystone" title="Blank Insert 4"></span>
-              <span class="udc-port keystone" title="Blank Insert 5"></span>
-              <span class="udc-port keystone" title="Blank Insert 6"></span>
-              <span class="udc-port keystone" title="Blank Insert 7"></span>
-              <span class="udc-port keystone" title="Blank Insert 8"></span>
-              <span class="udc-port keystone" title="Blank Insert 9"></span>
-              <span class="udc-port keystone" title="Blank Insert 10"></span>
-              <span class="udc-port keystone" title="Blank Insert 11"></span>
-              <span class="udc-port keystone" title="Blank Insert 12"></span>
-              <span class="udc-port keystone" title="Blank Insert 13"></span>
-            </span></td>
+            </span>
+          </span>
+        </td>
       </tr>
       <tr>
         <th scope="row" class="rack-u">6</th>
         <td>
           <span class="rack-slot">
             <span class="rack-name"><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></span>
+            <span class="udc-ports rack-ports">
+              <span class="udc-port gbe2p5" title="2.5G · Den HA"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe2p5" title="2.5G · Wallpanel Basement"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe2p5" title="2.5G · Wallpanel Main"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe2p5" title="2.5G · Wallpanel Upper"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe2p5" title="2.5G · Door Hub Front"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe2p5" title="2.5G · Door Hub Mud"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe2p5" title="2.5G · Door Hub Dining"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe2p5" title="2.5G · Door Hub Basement"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · U7 Pro Wall Basement"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · U7 Pro Wall Main"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · U7 Pro Wall Upper"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · Protect Viewport"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · FS2500 LACP 1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · FS2500 LACP 2"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · Room Drop Media"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · Room Drop Den"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · Room Drop Master"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · Room Drop BR1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · Room Drop BR2"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · Room Drop Seating"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · Room Drop Garage"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · Flex 2.5G 上联"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10 idle" title="10G · 空闲 1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10 idle" title="10G · 空闲 2"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port sfp idle" title="SFP28 · 空闲"><span class="udc-sfp-txt">SFP28</span></span>
+              <span class="udc-port sfp" title="SFP28 · 10G DAC ← Dream Machine Pro Max"><span class="udc-sfp-txt">SFP28</span></span>
+            </span>
           </span>
         </td>
-        <td class="port-cell"><span class="udc-ports rack-ports">
-              <span class="udc-port sfp" title="SFP28 · 10G DAC ← Dream Machine Pro Max"><span class="udc-sfp-txt">SFP28</span></span>
-              <span class="udc-port sfp idle" title="SFP28 · 空闲"><span class="udc-sfp-txt">SFP28</span></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 PoE+++ 1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 PoE+++ 2"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 PoE+++ 3"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 PoE+++ 4"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 PoE+++ 5"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 PoE+++ 6"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 PoE+++ 7"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 PoE+++ 8"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 2"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 3"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 4"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 5"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 6"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 7"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 8"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 9"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 11"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 12"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 13"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 14"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 15"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ 16"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-            </span></td>
       </tr>
       <tr>
         <th scope="row" class="rack-u">5</th>
         <td>
           <span class="rack-slot">
             <span class="rack-name"><a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a></span>
-            <span class="rack-note">Room Drop / FS2500</span>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports rack-ports">
-              <span class="udc-port gbe10" title="Room Drop · Media"></span>
-              <span class="udc-port gbe10" title="Room Drop · Den · Mac Studio"></span>
-              <span class="udc-port gbe10" title="Room Drop · Den · HA"></span>
-              <span class="udc-port gbe10" title="Room Drop · Master"></span>
-              <span class="udc-port gbe10" title="Room Drop · BR1"></span>
-              <span class="udc-port gbe10" title="Room Drop · BR2"></span>
-              <span class="udc-port gbe10" title="Room Drop · Seating"></span>
-              <span class="udc-port gbe10" title="Room Drop · Garage"></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
-              <span class="udc-port gbe10 idle" title="Room Drop · Media 备用"></span>
-              <span class="udc-port gbe10 idle" title="Room Drop · Master 备用"></span>
-              <span class="udc-port gbe10 idle" title="Room Drop · BR1 备用"></span>
-              <span class="udc-port gbe10 idle" title="Room Drop · BR2 备用"></span>
-              <span class="udc-port gbe10 idle" title="Room Drop · Seating 备用"></span>
-              <span class="udc-port gbe10 idle" title="Room Drop · Garage 备用"></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
-              <span class="udc-port gbe10" title="FS2500 · 10G LACP 1"></span>
-              <span class="udc-port gbe10" title="FS2500 · 10G LACP 2"></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
+            <span class="rack-note">自 P13 · FS2500 / Room Drop</span>
+            <span class="udc-ports rack-ports align-xg">
+              <span class="udc-port gbe10 idle" title="10G PoE+++ · Room Drop Media 备用"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10 idle" title="10G PoE+++ · Room Drop Master 备用"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10 idle" title="10G PoE+++ · Room Drop BR1 备用"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10 idle" title="10G PoE+++ · Room Drop BR2 备用"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10 idle" title="10G PoE+++ · Room Drop Seating 备用"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10 idle" title="10G PoE+++ · Room Drop Garage 备用"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
               <span class="udc-port keystone" title="Blank Insert 1"></span>
               <span class="udc-port keystone" title="Blank Insert 2"></span>
               <span class="udc-port keystone" title="Blank Insert 3"></span>
               <span class="udc-port keystone" title="Blank Insert 4"></span>
               <span class="udc-port keystone" title="Blank Insert 5"></span>
               <span class="udc-port keystone" title="Blank Insert 6"></span>
+              <span class="udc-port gbe10" title="10G · FS2500 LACP 1"></span>
+              <span class="udc-port gbe10" title="10G · FS2500 LACP 2"></span>
+              <span class="udc-port gbe10" title="10G PoE+ · Room Drop Media"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
+              <span class="udc-port gbe10" title="10G · Room Drop Den · Mac Studio"></span>
+              <span class="udc-port gbe10" title="10G PoE+++ · Room Drop Master"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G PoE+++ · Room Drop BR1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G PoE+++ · Room Drop BR2"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G PoE+++ · Room Drop Seating"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
+              <span class="udc-port gbe10" title="10G PoE+++ · Room Drop Garage"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
               <span class="udc-port keystone" title="Blank Insert 7"></span>
               <span class="udc-port keystone" title="Blank Insert 8"></span>
-            </span></td>
+              <span class="udc-port keystone" title="Blank Insert 9"></span>
+            </span>
+          </span>
+        </td>
       </tr>
       <tr>
         <th scope="row" class="rack-u">4</th>
@@ -304,15 +290,14 @@
           <span class="rack-slot">
             <span class="rack-name"><a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a></span>
             <span class="rack-note"><a href="https://www.synology.com/en-us/products/RKS-01" target="_blank" rel="noopener noreferrer">RKS-01</a> · 网口在机尾</span>
+            <span class="udc-ports rack-ports place">
+              <span class="udc-port gbe10" style="grid-column: 13" title="10 GbE RJ45 · 机尾 · LACP 1"></span>
+              <span class="udc-port gbe10" style="grid-column: 14" title="10 GbE RJ45 · 机尾 · LACP 2"></span>
+              <span class="udc-port gbe1 idle" style="grid-column: 15" title="1 GbE RJ45 · 机尾 · 未连接"></span>
+              <span class="udc-port gbe1 idle" style="grid-column: 16" title="1 GbE RJ45 · 机尾 · 未连接"></span>
+            </span>
           </span>
         </td>
-        <td class="port-cell"><span class="udc-ports rack-ports">
-              <span class="udc-port gbe10" title="10 GbE RJ45 · 机尾 · LACP 1"></span>
-              <span class="udc-port gbe10" title="10 GbE RJ45 · 机尾 · LACP 2"></span>
-              <span class="rack-port-gap" aria-hidden="true"></span>
-              <span class="udc-port gbe1" title="1 GbE RJ45 · 机尾 1"></span>
-              <span class="udc-port gbe1" title="1 GbE RJ45 · 机尾 2"></span>
-            </span></td>
       </tr>
       <tr>
         <th scope="row" class="rack-u">3</th>
@@ -322,7 +307,6 @@
             <span class="rack-note">通风</span>
           </span>
         </td>
-        <td class="port-cell"></td>
       </tr>
       <tr>
         <th scope="row" class="rack-u">2</th>
@@ -332,7 +316,6 @@
             <span class="rack-note">UPS-2U-Pro · NEMA 5-20P</span>
           </span>
         </td>
-        <td class="port-cell" rowspan="2"></td>
       </tr>
       <tr>
         <th scope="row" class="rack-u">1</th>
@@ -951,7 +934,7 @@
         <td class="price-cell">CA$227.36</td>
       </tr>
       <tr>
-        <td rowspan="15">Accessories</td>
+        <td rowspan="16">Accessories</td>
         <td class="device-cell is-purchased">
           <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/dacb316d-b254-40a0-8994-04bbf39bbddf/11c64b84-8bd1-43d1-b2dd-899305d8bb96.png" alt="">
@@ -978,7 +961,7 @@
             <img src="https://cdn.ecomm.ui.com/products/984725ff-e0cc-4bf9-8673-88a6515cf0d4/49fa943a-6c12-4211-b204-09c98b9f793c.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/10gbps-direct-attach-cable" target="_blank" rel="noopener noreferrer">10G Direct Attach Cable</a></span>
-              <span class="udc-sku">UACC-DAC-SFP10</span>
+              <span class="udc-sku">UACC-DAC-SFP10 · 0.5 m ×1</span>
             </span>
           </span>
         </td>
@@ -1006,7 +989,7 @@
             <img src="https://cdn.ecomm.ui.com/products/477a69c1-5b69-4f0f-bfaf-d1b97fa804da/d1281ace-4a5e-451c-956d-3d1f09dd66d1.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable</a></span>
-              <span class="udc-sku">UACC-Cable-Patch-EL-C6A</span>
+              <span class="udc-sku">UACC-Cable-Patch-EL-C6A · 0.15 m 50-Pack ×1 · 0.3 m 10-Pack ×1 · 1 m 10-Pack ×1 · 2 m 10-Pack ×1 · 3 m ×5 · 5 m ×5 · 8 m ×2 · 12 m ×2 · 15 m ×2</span>
             </span>
           </span>
         </td>
@@ -1017,9 +1000,23 @@
       <tr>
         <td class="device-cell is-pending">
           <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/1306284b-8bee-4509-9407-4260360917b4/a23aa0ae-aa87-4d0b-a451-0a3ce79160c8.png" alt="">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-cable-patch-outdoor-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable Outdoor</a></span>
+              <span class="udc-sku">UACC-Cable-Patch-Outdoor-C6A · Black · 1 m ×10 · 2 m ×10 · 3 m ×10 · 5 m ×5 · 8 m ×5 · 12 m ×5 · 15 m ×5</span>
+            </span>
+          </span>
+        </td>
+        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++, outdoor"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
+        <td class="port-cell"><span class="udc-ports" title="10G RJ45, PoE+++, outdoor"><span class="udc-port gbe10"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span></td>
+        <td class="price-cell">-</td>
+      </tr>
+      <tr>
+        <td class="device-cell is-pending">
+          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/b78c6ae3-515b-439d-86e6-079719ef5fca/c0e353a5-43e9-4fe0-8038-b2d7a27c62d3.png" alt="">
             <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack</a> <span class="udc-count">×54</span></span>
+              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack</a> <span class="udc-count">×70</span></span>
               <span class="udc-sku">UACC-Keystone-Jack-C6A</span>
             </span>
           </span>
@@ -1472,7 +1469,7 @@
   <p>全宅四套同款核心栈见 <a href="#2.3" class="page-ref">§2.3</a>：三套墙装（Basement / Main / Upper）+ Den 长期桌测一套。墙装每路按 <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> IEEE 802.3at 上限 30 W 预留记账（见 <a href="#1.4" class="page-ref">§1.4</a>）；桌测支架定稿 <a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a>（采购见 <a href="#2.3" class="page-ref">§2.3</a>）；墙装后壳见 <a href="#2.2.1" class="page-ref">§2.2.1</a>。</p>
 
   <ul>
-    <li>墙装 ×3：Cat6A home-run → 配线架 → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++ → HAT (C) RJ45。</li>
+    <li>墙装 ×3：Cat6A home-run → 上配线架 → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 2.5G PoE+++ → HAT (C) RJ45。</li>
     <li>Den 桌测 ×1：<a href="#2.1" class="page-ref">§2.1</a> Hub 空闲 2.5G → 短跳 → <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）DATA IN；墙插 AC → 注入器；注入器 DATA+PoE OUT → HAT (C) RJ45。电走 HAT，与墙机同路径；链路协商 1G（Pi 5 板载千兆）。</li>
   </ul>
 
