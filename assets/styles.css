@@ -1574,6 +1574,20 @@
       width: max-content;
     }
 
+    .topo-node[data-id="ha"] > .topo-mid > .topo-embeds {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .topo-node[data-id="ha"] > .topo-ports.down {
+      display: grid;
+      grid-template-columns: repeat(3, 26px);
+      gap: 0.1rem;
+      width: max-content;
+      justify-items: center;
+      align-items: center;
+    }
+
     .topo-node.topo-tb {
       grid-template-columns: 1fr;
       grid-template-rows: auto auto auto;

@@ -379,14 +379,14 @@
             P("xg-sfp2", "sfp", { t: "SFP28", title: "SFP28 unused", idle: true })
           ],
           down: [
-            P("xg-ha", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → HA", child: "ha", side: "left" }),
-            P("xg-wallpanels", "gbe2p5", { poe: "ppp", title: "3× 2.5G PoE+++ ports → Home Assistant PoE Wallpanels at 1G PoE+", count: 3, child: "group-wallpanels", side: "left" }),
+            P("xg-view", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → UP-Viewport at 1G", child: "view", side: "left" }),
+            P("xg-aps", "gbe2p5", { poe: "ppp", title: "3× 2.5G PoE+++ ports → U7-Pro at 2.5G PoE+", count: 3, child: "group-aps", side: "left" }),
             P("xg-front", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Front UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
             P("xg-mud", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Mud UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
             P("xg-din", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Dining UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
             P("xg-bsmt", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Basement UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
-            P("xg-aps", "gbe10", { poe: "ppp", title: "3× 10G PoE+++ → U7-Pro at 2.5G", count: 3, child: "group-aps" }),
-            P("xg-view", "gbe10", { poe: "ppp", title: "10G PoE+++ → UP-Viewport at 1G", child: "view" }),
+            P("xg-ha", "gbe10", { poe: "ppp", title: "10G PoE+++ → HA at 2.5G PoE++", child: "ha" }),
+            P("xg-wallpanels", "gbe10", { poe: "ppp", title: "3× 10G PoE+++ ports → Home Assistant PoE Wallpanels at 1G PoE+", count: 3, child: "group-wallpanels" }),
             P("xg-panel", "gbe10", { poe: "ppp", title: "10G → electrical panel meter · PoE off", child: "panel-meter" }),
             P("xg-nas", "gbe10", { poe: "ppp", title: "10G PoE+++ → Synology FS2500 LACP", child: "nas" }),
             P("xg-nas2", "gbe10", { poe: "ppp", title: "10G PoE+++ → Synology FS2500 LACP", child: "nas" }),
@@ -411,25 +411,26 @@
             P("nas-usb2", "other", { t: "USB-3", title: "USB 3.2 unused", idle: true }),
             P("nas-con", "other", { t: "COM", title: "Console unused", idle: true })
           ] },
-        { id: "ha", vlan: "servers", name: "ameriDroid PoE Mini PC for Home Assistant", loc: "Rack Cabinet", href: "https://ameridroid.com/products/poe-mini-pc-for-home-assistant", info: "Cat6 rack patch to USW-Pro-XG-24-PoE. 4×2.5G Intel I225/I226: one PoE++ IN plus three unused NICs are shown upstream. Two nested ZBT-2 radios: Zigbee on USB-C, Thread on USB-3 via USB-A/C adapter.",
+        { id: "ha", vlan: "servers", name: "ameriDroid PoE Mini PC for Home Assistant", loc: "Rack Cabinet", href: "https://ameridroid.com/products/poe-mini-pc-for-home-assistant", info: "PoE++ IN on a USW-Pro-XG-24-PoE 10G PoE+++ port, negotiated at 2.5G. 4×2.5G Intel I225/I226: one PoE++ IN plus three unused NICs are shown upstream. Three radios each use a stock USB-C to USB-A cable into a USB 2.0-A: ZWA-2 (Z-Wave), ZBT-2 (Zigbee), ZBT-2 (Thread). USB-C and USB 3.0-A unused.",
           embed: [
+            { name: "Connect ZWA-2 · Z-Wave", href: "https://www.home-assistant.io/connect/zwa-2/" },
             { name: "Connect ZBT-2 · Zigbee", href: "https://www.home-assistant.io/connect/zbt-2/" },
             { name: "Connect ZBT-2 · Thread", href: "https://www.home-assistant.io/connect/zbt-2/" }
           ],
           /* Cap is min(device port class, upstream port class): PoE++ 60W vs XG PoE+++ 90W. */
           poeBar: { used: 30, cap: 60 },
           up: [
-            P("ha-up", "gbe2p5", { poe: "pp", title: "2.5G PoE++ IN" })
+            P("ha-up", "gbe2p5", { poe: "pp", title: "2.5G PoE++ IN ← XG 10G PoE+++" })
           ].concat(idleMany(3, "ha-lan", "gbe2p5", { title: "2.5G LAN unused", idle: true })),
           down: [
             P("ha-hdmi", "other", { t: "HDMI", title: "HDMI 2.0 unused", idle: true }),
             P("ha-dp", "other", { t: "DP", title: "DisplayPort 1.4 unused", idle: true }),
-            P("ha-usb2a", "other", { t: "USB-2", title: "USB 2.0 unused", idle: true }),
-            P("ha-usb2b", "other", { t: "USB-2", title: "USB 2.0 unused", idle: true }),
-            P("ha-usb2c", "other", { t: "USB-2", title: "USB 2.0 unused", idle: true }),
-            P("ha-usb2d", "other", { t: "USB-2", title: "USB 2.0 unused", idle: true }),
-            P("ha-usb3", "other", { t: "USB-3", title: "USB 3.0 → ZBT-2 Thread via USB-A/C adapter" }),
-            P("ha-usb", "other", { t: "USB-C", title: "USB-C → ZBT-2 Zigbee" }),
+            P("ha-usb2a", "other", { t: "USB-2", title: "USB 2.0-A → ZWA-2 Z-Wave" }),
+            P("ha-usb2b", "other", { t: "USB-2", title: "USB 2.0-A → ZBT-2 Zigbee" }),
+            P("ha-usb2c", "other", { t: "USB-2", title: "USB 2.0-A → ZBT-2 Thread" }),
+            P("ha-usb2d", "other", { t: "USB-2", title: "USB 2.0-A unused", idle: true }),
+            P("ha-usb3", "other", { t: "USB-3", title: "USB 3.0-A unused", idle: true }),
+            P("ha-usb", "other", { t: "USB-C", title: "USB-C unused", idle: true }),
             P("ha-com", "other", { t: "COM", title: "RS232 unused", idle: true })
           ] },
         { id: "u7b", vlan: "management", name: "U7-Pro", loc: "Basement", href: UI + "u7-pro", info: "2.5G PoE+ from USW-Pro-XG-24-PoE.",
@@ -455,7 +456,7 @@
             P("media-flex-sfp", "sfp", { t: "SFP+", title: "SFP+ combo · unused", idle: true })
           ],
           down: idleMany(8, "media-flex-lan", "gbe2p5", { title: "2.5G RJ45 · no PoE output · unused", idle: true }) },
-        { id: "panel-meter", name: "Electrical Panel", loc: "Mechanical Room", info: "Line-powered meter at the electrical panel. Data only: lower patch panel P13, then a Cat6 rack patch to USW-Pro-XG-24-PoE P13 with PoE off. Model not chosen.",
+        { id: "panel-meter", vlan: "iot", name: "Electrical Panel", loc: "Mechanical Room", info: "Line-powered meter at the electrical panel. VLAN 40 · IoT / Energy. Data only: lower patch panel P13, then a Cat6 rack patch to USW-Pro-XG-24-PoE P13 with PoE off. Model not chosen.",
           up: [P("panel-meter-up", "gbe1", { title: "1G ← USW-Pro-XG-24-PoE · PoE off" })],
           down: [] },
         { id: "drop-den-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
@@ -558,7 +559,7 @@
         { id: "bsmt-strike", hideLoc: true, name: "UACC-Lock-Strike-Secure-15mm", loc: "Basement/Back Door", href: UI + "uacc-lock-strike-secure-15mm", info: "DPS + LOCK 12V from Basement UA-Hub-Door-Mini.",
           up: [P("bsmt-strike-dps", "other", { t: "DPS", title: "DPS" }), P("bsmt-strike-lock", "other", { t: "LOCK", title: "LOCK 12V" })], down: [] },
 
-        { id: "view", vlan: "security", name: "UP-Viewport", loc: "Main/Kitchen", href: UI + "ufp-viewport", info: "1G PoE from USW-Pro-XG-24-PoE.",
+        { id: "view", vlan: "security", name: "UP-Viewport", loc: "Main/Kitchen", href: UI + "ufp-viewport", info: "1G PoE from a USW-Pro-XG-24-PoE 2.5G PoE+++ port.",
           poeBar: { used: 9.5, cap: 15.4 },
           up: [P("view-up", "gbe1", { poe: "poe", title: "1G PoE" })], down: [] },
         { id: "cam-fy", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Frontyard/Front Eave/North East", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Front UA-Hub-Door-Mini.",
@@ -644,13 +645,13 @@
         { id: "gw3", name: "Tesla Gateway 3", loc: "Garage", href: "https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf", info: "CAN from Leader only.",
           up: [P("gw3-can", "other", { t: "CAN", title: "CAN ← Leader" })], down: [] },
 
-        { id: "group-wallpanels", name: "Home Assistant PoE Wallpanel ×3", info: "Three identical USW-Pro-XG-24-PoE-fed Wallpanel runs at 1G PoE+ · 30W (HAT (C) IEEE 802.3at max); locations are listed at right.",
+        { id: "group-wallpanels", name: "Home Assistant PoE Wallpanel ×3", info: "Three identical USW-Pro-XG-24-PoE 10G PoE+++ ports feed Wallpanel runs at 1G PoE+ · 30W (HAT (C) IEEE 802.3at max); locations are listed at right.",
           up: [P("wp-b-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [],
           bundle: {
             kind: "single", count: 3, source: "wp-b",
             locations: ["Basement Wall Mount", "Main Wall Mount", "Upper Wall Mount"]
           } },
-        { id: "group-aps", name: "U7-Pro ×3", info: "Three identical USW-Pro-XG-24-PoE-fed U7-Pro runs; locations are listed at right.",
+        { id: "group-aps", name: "U7-Pro ×3", info: "Three identical USW-Pro-XG-24-PoE 2.5G PoE+++ ports feed U7-Pro runs at 2.5G PoE+; locations are listed at left.",
           up: [P("u7b-up", "gbe2p5", { poe: "plus", title: "2.5G PoE+" })], down: [],
           bundle: {
             kind: "single", count: 3, source: "u7b",
@@ -716,7 +717,7 @@
       var children = {
         nah: ["udm"],
         udm: ["xg"],
-        xg: ["ha", "group-wallpanels", "group-main-doors", "group-aps", "view", "panel-meter", "nas", "group-room-drops", "drop-media", "drop-gar"],
+        xg: ["view", "group-aps", "group-main-doors", "ha", "group-wallpanels", "panel-meter", "nas", "group-room-drops", "drop-media", "drop-gar"],
         "drop-media": ["media-flex"],
         "drop-gar": ["flex"],
         flex: ["lite", "usl", "pw-lead", "group-garage-door"],
@@ -728,17 +729,17 @@
         { from: "udm", fp: "udm-lan-sfp", to: "xg", tp: "xg-sfp", cable: "dac", route: "vertical", label: "UACC-DAC-SFP10", href: UI + "10gbps-direct-attach-cable", info: "One UACC-DAC-SFP10: UDM-Pro-Max LAN SFP+ → USW-Pro-XG-24-PoE SFP28 at 10G." },
         { from: "xg", fp: "xg-nas", to: "nas", tp: "nas-10g", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → Cat6 rack patch → Synology FS2500 LACP." },
         { from: "xg", fp: "xg-nas2", to: "nas", tp: "nas-10g2", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → Cat6 rack patch → Synology FS2500 LACP." },
-        { from: "xg", fp: "xg-ha", to: "ha", tp: "ha-up", cable: "cat6", info: "USW-Pro-XG-24-PoE 2.5G PoE+++ port → Cat6 rack patch → ameriDroid PoE Mini PC for Home Assistant at PoE++." },
+        { from: "xg", fp: "xg-ha", to: "ha", tp: "ha-up", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G PoE+++ port → Cat6 rack patch → ameriDroid PoE Mini PC for Home Assistant at 2.5G PoE++." },
         { from: "xg", fp: "xg-gar", to: "drop-gar", tp: "drop-gar-xg", info: "USW-Pro-XG-24-PoE → Garage C6A." },
         { from: "drop-gar", fp: "drop-gar-flex", to: "flex", tp: "flex-up", cable: "cat6", info: "Garage C6A home-run → Type 4 / 4PPoE-rated 24–26AWG pure-copper Cat6 short patch → USW-Flex-2.5G-8-PoE 10G RJ45 / PoE+++ input." },
-        { from: "xg", fp: "xg-view", to: "view", tp: "view-up", info: "USW-Pro-XG-24-PoE → UP-Viewport." },
+        { from: "xg", fp: "xg-view", to: "view", tp: "view-up", info: "USW-Pro-XG-24-PoE 2.5G PoE+++ port → UP-Viewport at 1G PoE." },
         { from: "flex", fp: "flex-usl", to: "usl", tp: "usl-up", info: "Flex 2.5G PoE++ port → USL-Gateway at 100M PoE." },
         { from: "flex", fp: "flex-tesla", to: "pw-lead", tp: "pw-lead-lan", info: "Flex 2.5G PoE++ port → PW3 Leader at 1G; PoE disabled at the endpoint." },
         { from: "flex", fp: "flex-lite", to: "lite", tp: "lite-up", info: "Flex 2.5G PoE++ port → U7-Lite at 2.5G PoE." },
         { from: "pw-lead", fp: "pw-lead-eth", to: "pw-follow", tp: "pw-follow-eth", info: "Leader Ethernet → Follower." },
         { from: "pw-lead", fp: "pw-lead-can", to: "gw3", tp: "gw3-can", info: "Leader CAN → Gateway 3." },
-        { from: "xg", fp: "xg-wallpanels", to: "group-wallpanels", tp: "wp-b-up", info: "3× USW-Pro-XG-24-PoE 2.5G PoE+++ ports → Home Assistant PoE Wallpanels at 1G PoE+." },
-        { from: "xg", fp: "xg-aps", to: "group-aps", tp: "u7b-up", info: "3× USW-Pro-XG-24-PoE → U7-Pro." },
+        { from: "xg", fp: "xg-wallpanels", to: "group-wallpanels", tp: "wp-b-up", info: "3× USW-Pro-XG-24-PoE 10G PoE+++ ports → Home Assistant PoE Wallpanels at 1G PoE+." },
+        { from: "xg", fp: "xg-aps", to: "group-aps", tp: "u7b-up", info: "3× USW-Pro-XG-24-PoE 2.5G PoE+++ ports → U7-Pro at 2.5G PoE+." },
         { from: "xg", fp: "xg-front", to: "group-main-doors", tp: "front-mini-up", info: "USW-Pro-XG-24-PoE → Front UA-Hub-Door-Mini." },
         { from: "xg", fp: "xg-mud", to: "group-main-doors", tp: "mud-mini-up", info: "USW-Pro-XG-24-PoE → Mud UA-Hub-Door-Mini." },
         { from: "xg", fp: "xg-din", to: "group-main-doors", tp: "din-mini-up", info: "USW-Pro-XG-24-PoE → Dining UA-Hub-Door-Mini." },
@@ -973,7 +974,7 @@
       if (!els["drop-media-bak"]) mount("drop-media-bak", stage);
       if (!els["drop-gar-bak"]) mount("drop-gar-bak", stage);
 
-      var leftFlowRoots = ["ha", "group-wallpanels", "group-main-doors"];
+      var leftFlowRoots = ["view", "group-aps", "group-main-doors"];
       function markFlowLeft(id) {
         if (!els[id]) return;
         els[id].classList.add("flow-left");
@@ -2131,7 +2132,7 @@
           { color: "#005ea8", fill: "#edf3f7", label: "VLAN 10 · Management", sub: "UniFi network gear" },
           { color: "#2e7d32", fill: "#eef4ee", label: "VLAN 20 · Trusted", sub: "Personal devices · not shown" },
           { color: "#6a3d9a", fill: "#f2eff5", label: "VLAN 30 · Servers", sub: "Mac Studio · NAS · HA" },
-          { color: "#a15c00", fill: "#f7f2ea", label: "VLAN 40 · IoT / Energy", sub: "Wallpanels · USL · Powerwall" },
+          { color: "#a15c00", fill: "#f7f2ea", label: "VLAN 40 · IoT / Energy", sub: "Wallpanels · USL · Powerwall · Electrical Panel" },
           { color: "#b3263e", fill: "#f7eff0", label: "VLAN 50 · Protect / Access", sub: "Cameras · door controllers" },
           { color: "#007c7a", fill: "#edf5f4", label: "VLAN 60 · Guest", sub: "Guest clients · not shown" }
         ];
