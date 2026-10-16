@@ -373,7 +373,7 @@
             P("udm-lan-sfp", "sfp", { t: "SFP+", title: "LAN SFP+ → UACC-DAC-SFP10", child: "xg" })
           ]) },
         { id: "xg", vlan: "management", name: "USW-Pro-XG-24-PoE", loc: "Rack Cabinet", href: UI + "usw-pro-xg-24-poe", info: "2×SFP28 + 8×2.5G PoE+++ + 16×10G PoE+++. Unused ports hollow.",
-          poeBar: { label: "PoE Output Used", used: 459.9, cap: 720 },
+          poeBar: { label: "PoE Output Used", used: 445.9, cap: 720 },
           up: [
             P("xg-sfp", "sfp", { t: "SFP28", title: "SFP28 ← UACC-DAC-SFP10 at 10G" }),
             P("xg-sfp2", "sfp", { t: "SFP28", title: "SFP28 unused", idle: true })
@@ -387,6 +387,7 @@
             P("xg-bsmt", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Basement UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
             P("xg-aps", "gbe10", { poe: "ppp", title: "3× 10G PoE+++ → U7-Pro at 2.5G", count: 3, child: "group-aps" }),
             P("xg-view", "gbe10", { poe: "ppp", title: "10G PoE+++ → UP-Viewport at 1G", child: "view" }),
+            P("xg-panel", "gbe10", { poe: "ppp", title: "10G → electrical panel meter · PoE off", child: "panel-meter" }),
             P("xg-nas", "gbe10", { poe: "ppp", title: "10G PoE+++ → Synology FS2500 LACP", child: "nas" }),
             P("xg-nas2", "gbe10", { poe: "ppp", title: "10G PoE+++ → Synology FS2500 LACP", child: "nas" }),
             P("xg-room-backup", "gbe10", { poe: "ppp", title: "5× cabinet-end backup C6A · not connected to USW-Pro-XG-24-PoE", loose: true, count: 5, child: "group-room-drops" }),
@@ -395,7 +396,6 @@
             P("xg-media-live", "gbe10", { poe: "ppp", title: "10G PoE+++ → active Media Room C6A", child: "drop-media" }),
             P("xg-gar-backup", "gbe10", { poe: "ppp", title: "Cabinet-end Garage backup C6A · not connected to USW-Pro-XG-24-PoE", loose: true, child: "drop-gar" }),
             P("xg-gar", "gbe10", { poe: "ppp", title: "10G PoE+++ → active Garage C6A", child: "drop-gar" }),
-            P("xg-mech", "gbe10", { poe: "ppp", title: "10G PoE+++ → USW-Flex-2.5G-8 at PoE+", child: "mech-flex" }),
             P("xg-spare-10g-1", "gbe10", { poe: "ppp", title: "10G PoE+++ spare", idle: true }),
             P("xg-spare-10g-2", "gbe10", { poe: "ppp", title: "10G PoE+++ spare", idle: true })
           ] },
@@ -455,14 +455,9 @@
             P("media-flex-sfp", "sfp", { t: "SFP+", title: "SFP+ combo · unused", idle: true })
           ],
           down: idleMany(8, "media-flex-lan", "gbe2p5", { title: "2.5G RJ45 · no PoE output · unused", idle: true }) },
-        { id: "mech-flex", vlan: "management", name: "USW-Flex-2.5G-8", loc: "Mechanical Room", href: "https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", info: "Non-PoE model on the rack shelf. Cat6 cabinet short patch feeds its 10G RJ45 uplink and PoE+ input from USW-Pro-XG-24-PoE. No AC / USB-C supply. SFP+ combo left unused. Eight 2.5G downlinks have no PoE output and land on the upper patch panel.",
-          /* No PoE output, so it reads as a plain PD: draw against its PoE+ input. */
-          poeBar: { used: 14, cap: 30 },
-          up: [
-            P("mech-flex-up", "gbe10", { poe: "plus", title: "10G RJ45 uplink · PoE+ input" }),
-            P("mech-flex-sfp", "sfp", { t: "SFP+", title: "SFP+ combo · unused", idle: true })
-          ],
-          down: idleMany(8, "mech-flex-lan", "gbe2p5", { title: "2.5G RJ45 · no PoE output · unused", idle: true }) },
+        { id: "panel-meter", name: "Electrical Panel", loc: "Mechanical Room", info: "Line-powered meter at the electrical panel. Data only: lower patch panel P13, then a Cat6 rack patch to USW-Pro-XG-24-PoE P13 with PoE off. Model not chosen.",
+          up: [P("panel-meter-up", "gbe1", { title: "1G ← USW-Pro-XG-24-PoE · PoE off" })],
+          down: [] },
         { id: "drop-den-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
           up: [P("drop-den-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
           down: [P("drop-den-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
@@ -721,7 +716,7 @@
       var children = {
         nah: ["udm"],
         udm: ["xg"],
-        xg: ["ha", "group-wallpanels", "group-main-doors", "group-aps", "view", "nas", "group-room-drops", "drop-media", "drop-gar", "mech-flex"],
+        xg: ["ha", "group-wallpanels", "group-main-doors", "group-aps", "view", "panel-meter", "nas", "group-room-drops", "drop-media", "drop-gar"],
         "drop-media": ["media-flex"],
         "drop-gar": ["flex"],
         flex: ["lite", "usl", "pw-lead", "group-garage-door"],
@@ -774,7 +769,7 @@
         { from: "xg", fp: "xg-media-backup", to: "drop-media-bak", tp: "drop-media-bak-up", info: "Wired Media Room backup → loose cabinet end; not connected to USW-Pro-XG-24-PoE." },
         { from: "xg", fp: "xg-media-live", to: "drop-media", tp: "drop-media-up", info: "USW-Pro-XG-24-PoE 10G PoE+++ port → active Media Room Drop." },
         { from: "drop-media", fp: "drop-media-dn", to: "media-flex", tp: "media-flex-up", cable: "cat6", route: "horizontal", info: "Media Room C6A wall jack → Cat6 short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input." },
-        { from: "xg", fp: "xg-mech", to: "mech-flex", tp: "mech-flex-up", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G PoE+++ → Cat6 cabinet short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input." },
+        { from: "xg", fp: "xg-panel", to: "panel-meter", tp: "panel-meter-up", cable: "cat6", info: "USW-Pro-XG-24-PoE P13 with PoE disabled → lower patch panel P13 → electrical panel meter. Data only." },
         { from: "xg", fp: "xg-gar-backup", to: "drop-gar-bak", tp: "drop-gar-bak-up", info: "Wired Garage backup Room Drop → loose cabinet end; not connected to USW-Pro-XG-24-PoE." }
       ];
 
