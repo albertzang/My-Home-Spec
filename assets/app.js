@@ -361,7 +361,7 @@
           down: idleMany(4, "nah-1g", "gbe1", { title: "1G RJ45 unused", idle: true }).concat([
             P("nah-10g", "gbe10", { poe: "wan", title: "10G RJ45 WAN out · Cat6 rack patch to UDM CM adapter", child: "udm" })
           ]) },
-        { id: "udm", vlan: "management", name: "UDM-Pro-Max", loc: "Rack Cabinet", href: UI + "udm-pro-max", info: "ONT (or bridged NAH) Cat6 rack patch terminates at the RJ45 face of a UACC-CM-RJ45-MG inserted in UDM-Pro-Max WAN SFP+. LAN SFP+ connects directly to USW-Pro-XG-24-PoE by one DAC.",
+        { id: "udm", vlan: "management", name: "UDM-Pro-Max", loc: "Rack Cabinet", href: UI + "udm-pro-max", info: "ONT (or bridged NAH) Cat6 rack patch terminates at the RJ45 face of a UACC-CM-RJ45-MG inserted in UDM-Pro-Max WAN SFP+. LAN SFP+ connects directly to USW-Pro-XG-24-PoE by one DAC. LAN 1 connects to UPS 2U Pro management at 100M; the other seven 1G LAN ports stay unused.",
           embed: [
             { name: "UACC-CM-RJ45-MG · RJ45 ↔ SFP+", href: UI + "uacc-cm-rj45-mg" }
           ],
@@ -369,9 +369,13 @@
             P("udm-wan", "sfp", { poe: "wan", t: "SFP+", title: "WAN SFP+ via UACC-CM-RJ45-MG" }),
             P("udm-wan25", "gbe2p5", { poe: "wan", title: "WAN 2.5G RJ45 unused", idle: true })
           ],
-          down: idleMany(8, "udm-lan", "gbe1", { title: "LAN 1G unused", idle: true }).concat([
+          down: idleMany(7, "udm-lan-idle", "gbe1", { title: "LAN 1G unused", idle: true }).concat([
+            P("udm-lan1", "gbe1", { title: "LAN 1G → UPS 2U Pro at 100M", child: "ups" }),
             P("udm-lan-sfp", "sfp", { t: "SFP+", title: "LAN SFP+ → UACC-DAC-SFP10", child: "xg" })
           ]) },
+        { id: "ups", vlan: "management", name: "UPS 2U Pro", loc: "Rack Cabinet", href: UI + "ups-2u-pro-us", info: "100/10 MbE management on UDM-Pro-Max LAN 1 for adoption and NUT. Two GbE surge in/out ports stay unused; the WAN path is SFP+.",
+          up: [P("ups-lan", "fe", { title: "100/10 MbE management ← UDM LAN 1" })],
+          down: idleMany(2, "ups-surge", "gbe1", { title: "GbE surge in/out unused", idle: true }) },
         { id: "xg", vlan: "management", name: "USW-Pro-XG-24-PoE", loc: "Rack Cabinet", href: UI + "usw-pro-xg-24-poe", info: "2×SFP28 + 8×2.5G PoE+++ + 16×10G PoE+++. Unused ports hollow.",
           poeBar: { label: "PoE Output Used", used: 445.9, cap: 720 },
           up: [
@@ -456,7 +460,7 @@
             P("media-flex-sfp", "sfp", { t: "SFP+", title: "SFP+ combo · unused", idle: true })
           ],
           down: idleMany(8, "media-flex-lan", "gbe2p5", { title: "2.5G RJ45 · no PoE output · unused", idle: true }) },
-        { id: "panel-meter", vlan: "iot", name: "Electrical Panel", loc: "Mechanical Room", info: "Line-powered meter at the electrical panel. VLAN 40 · IoT / Energy. Data only: lower patch panel P13, then a Cat6 rack patch to USW-Pro-XG-24-PoE P13 with PoE off. Model not chosen.",
+        { id: "panel-meter", vlan: "iot", name: "Electrical Panel", loc: "Mechanical Room", info: "Line-powered meter at the electrical panel. VLAN 40 · IoT / Energy. Data only, PoE off at the switch. Model not chosen.",
           up: [P("panel-meter-up", "gbe1", { title: "1G ← USW-Pro-XG-24-PoE · PoE off" })],
           down: [] },
         { id: "drop-den-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
@@ -712,11 +716,12 @@
       nodes.forEach(function (node) {
         node.up = compactIdlePorts(node.up);
         node.down = compactIdlePorts(node.down);
+        if (node.right) node.right = compactIdlePorts(node.right);
       });
 
       var children = {
         nah: ["udm"],
-        udm: ["xg"],
+        udm: ["xg", "ups"],
         xg: ["view", "group-aps", "group-main-doors", "ha", "group-wallpanels", "panel-meter", "nas", "group-room-drops", "drop-media", "drop-gar"],
         "drop-media": ["media-flex"],
         "drop-gar": ["flex"],
@@ -727,6 +732,7 @@
       var links = [
         { from: "nah", fp: "nah-10g", to: "udm", tp: "udm-wan", cable: "cat6", route: "vertical", info: "ONT/NAH 10G RJ45 → Cat6 rack patch → CM RJ45; CM SFP+ is inserted in UDM-Pro-Max WAN." },
         { from: "udm", fp: "udm-lan-sfp", to: "xg", tp: "xg-sfp", cable: "dac", route: "vertical", label: "UACC-DAC-SFP10", href: UI + "10gbps-direct-attach-cable", info: "One UACC-DAC-SFP10: UDM-Pro-Max LAN SFP+ → USW-Pro-XG-24-PoE SFP28 at 10G." },
+        { from: "udm", fp: "udm-lan1", to: "ups", tp: "ups-lan", cable: "cat6", route: "horizontal", info: "UDM-Pro-Max LAN 1G → UPS 2U Pro 100/10 MbE management." },
         { from: "xg", fp: "xg-nas", to: "nas", tp: "nas-10g", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → Cat6 rack patch → Synology FS2500 LACP." },
         { from: "xg", fp: "xg-nas2", to: "nas", tp: "nas-10g2", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → Cat6 rack patch → Synology FS2500 LACP." },
         { from: "xg", fp: "xg-ha", to: "ha", tp: "ha-up", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G PoE+++ port → Cat6 rack patch → ameriDroid PoE Mini PC for Home Assistant at 2.5G PoE++." },
@@ -770,7 +776,7 @@
         { from: "xg", fp: "xg-media-backup", to: "drop-media-bak", tp: "drop-media-bak-up", info: "Wired Media Room backup → loose cabinet end; not connected to USW-Pro-XG-24-PoE." },
         { from: "xg", fp: "xg-media-live", to: "drop-media", tp: "drop-media-up", info: "USW-Pro-XG-24-PoE 10G PoE+++ port → active Media Room Drop." },
         { from: "drop-media", fp: "drop-media-dn", to: "media-flex", tp: "media-flex-up", cable: "cat6", route: "horizontal", info: "Media Room C6A wall jack → Cat6 short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input." },
-        { from: "xg", fp: "xg-panel", to: "panel-meter", tp: "panel-meter-up", cable: "cat6", info: "USW-Pro-XG-24-PoE P13 with PoE disabled → lower patch panel P13 → electrical panel meter. Data only." },
+        { from: "xg", fp: "xg-panel", to: "panel-meter", tp: "panel-meter-up", cable: "cat6", info: "USW-Pro-XG-24-PoE with PoE disabled → electrical panel meter. Data only." },
         { from: "xg", fp: "xg-gar-backup", to: "drop-gar-bak", tp: "drop-gar-bak-up", info: "Wired Garage backup Room Drop → loose cabinet end; not connected to USW-Pro-XG-24-PoE." }
       ];
 
@@ -1057,6 +1063,7 @@
           var el = els[id];
           el.style.width = "";
           el.style.height = "";
+          el.style.gridTemplateColumns = "";
           el.classList.remove("is-fanout");
           Array.prototype.forEach.call(el.querySelectorAll(".topo-slot"), function (slot) {
             slot.style.top = "";
@@ -2277,6 +2284,25 @@
         els[id].style.top = (parseFloat(els[id].style.top || 0) + dy) + "px";
       }
 
+      function placeUps() {
+        var udm = els.udm;
+        var ups = els.ups;
+        var source = portEl("udm-lan1");
+        var target = portEl("ups-lan");
+        if (!udm || !ups || !source || !target) return;
+        var stageRect = stage.getBoundingClientRect();
+        var scaleX = stage.offsetWidth ? stageRect.width / stage.offsetWidth : 1;
+        var scaleY = stage.offsetHeight ? stageRect.height / stage.offsetHeight : 1;
+        var udmRect = udm.getBoundingClientRect();
+        var sourceRect = source.getBoundingClientRect();
+        var targetRect = target.getBoundingClientRect();
+        var upsRect = ups.getBoundingClientRect();
+        var sourceCenter = (sourceRect.top + sourceRect.height / 2 - stageRect.top) / scaleY;
+        var targetOff = (targetRect.top + targetRect.height / 2 - upsRect.top) / scaleY;
+        ups.style.left = ((udmRect.right - stageRect.left) / scaleX + GAP_X) + "px";
+        ups.style.top = (sourceCenter - targetOff) + "px";
+      }
+
       function alignGarageUplink() {
         var flexY = portCenterY("flex-up");
         var dropY = portCenterY("drop-gar-flex");
@@ -2363,6 +2389,7 @@
         reconcileFanoutBottoms();
         alignXgBranchBottoms();
         pinXgPorts();
+        placeUps();
         alignLinkedPortAxes();
         paintLinks();
         layoutLegend();

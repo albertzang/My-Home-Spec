@@ -532,7 +532,7 @@
 
     .spa-spec .spa-article table.rack-face th,
     .spa-spec .spa-article table.rack-face td {
-      padding: 0.35rem 0.75rem;
+      padding: 0.35rem 0.5rem;
       white-space: nowrap;
       vertical-align: middle;
     }
@@ -586,7 +586,7 @@
 
     .spa-spec .spa-article table.rack-face .rack-ports {
       --rack-port: 26px;
-      --rack-gap: 3px;
+      --rack-gap: 2px;
       display: flex;
       width: max-content;
       margin-top: 0.35rem;
@@ -1640,6 +1640,22 @@
     .topo-node.topo-core-vertical .topo-counted-port {
       flex-direction: row;
       gap: 0.16rem;
+    }
+
+    /* Tall enough that the surge chips sit on the box centre and the count stays inside the frame. */
+    .topo-node[data-id="ups"] {
+      min-height: 4.5rem;
+    }
+
+    .topo-node[data-id="ups"] > .topo-ports.down .topo-counted-port {
+      position: relative;
+    }
+
+    .topo-node[data-id="ups"] > .topo-ports.down .topo-port-count {
+      position: absolute;
+      top: calc(100% + 0.03rem);
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .topo-node.flow-left > .topo-ports.up {
