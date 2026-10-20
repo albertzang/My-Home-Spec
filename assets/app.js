@@ -76,7 +76,7 @@
         });
       });
 
-      /* Body page-refs (§1.3, Topology, 见下方…) scroll the Spec pane / switch tabs. */
+      /* Body page-refs (§2.3, Topology, 见下方…) scroll the Spec pane / switch tabs. */
       article.addEventListener("click", function (event) {
         var a = event.target.closest && event.target.closest("a.page-ref");
         if (!a || !article.contains(a)) return;
@@ -218,7 +218,7 @@
       links.forEach(function (item) { observer.observe(item.heading); });
     })();
 
-    /* §1.4 PoE tree: span-row handles collapse their descendant levels.
+    /* §2.4 PoE tree: span-row handles collapse their descendant levels.
        Collapse a handle also collapses nested handles. Expand a handle
        shows its subtree with nested handles left collapsed. */
     (function () {
@@ -275,6 +275,217 @@
       });
 
       applyPowerTreeVisibility();
+    })();
+
+    /* Chapter 1: each room span row collapses that room's product rows.
+       The table header collapses or expands every room.
+       "-" is expanded, "+" is collapsed.
+       Product width is the longest name; Price width fits $99,999.99.
+       Those two stay put when rooms open or close. */
+    (function () {
+      var table = document.querySelector("#tab-spec table.home-appliances");
+      if (!table) return;
+      var rooms = Array.prototype.slice.call(table.querySelectorAll("tbody > tr.room-span"));
+      var headerButton = table.querySelector("thead .room-toggle");
+      var headerMark = table.querySelector("thead .room-mark");
+
+      function setHeaderOpen(open) {
+        if (headerButton) {
+          headerButton.setAttribute("aria-expanded", open ? "true" : "false");
+          headerButton.setAttribute("aria-label", open ? "Collapse all" : "Expand all");
+        }
+        if (headerMark) headerMark.textContent = open ? "-" : "+";
+      }
+
+      function syncHeader() {
+        var allOpen = rooms.every(function (row) {
+          return row.getAttribute("aria-expanded") !== "false";
+        });
+        setHeaderOpen(allOpen);
+      }
+
+      function setOpen(row, open) {
+        var button = row.querySelector(".room-toggle");
+        var mark = row.querySelector(".room-mark");
+        var heading = row.querySelector("h3");
+        row.setAttribute("aria-expanded", open ? "true" : "false");
+        if (button) {
+          button.setAttribute("aria-expanded", open ? "true" : "false");
+          var name = heading ? heading.textContent.replace(/\s+/g, " ").trim() : "room";
+          button.setAttribute("aria-label", (open ? "Collapse " : "Expand ") + name);
+        }
+        if (mark) mark.textContent = open ? "-" : "+";
+        var next = row.nextElementSibling;
+        while (next && !next.classList.contains("room-span")) {
+          if (!next.classList.contains("floor-span")) next.hidden = !open;
+          next = next.nextElementSibling;
+        }
+        syncHeader();
+      }
+
+      rooms.forEach(function (row) {
+        row.addEventListener("click", function (event) {
+          if (event.target.closest) {
+            var link = event.target.closest("a");
+            if (link && !link.classList.contains("heading-ref")) return;
+          }
+          setOpen(row, row.getAttribute("aria-expanded") === "false");
+        });
+        setOpen(row, row.getAttribute("aria-expanded") !== "false");
+      });
+
+      var thead = table.querySelector("thead");
+      if (thead) {
+        thead.addEventListener("click", function (event) {
+          if (event.target.closest && event.target.closest("a")) return;
+          var allOpen = rooms.every(function (row) {
+            return row.getAttribute("aria-expanded") !== "false";
+          });
+          rooms.forEach(function (row) { setOpen(row, !allOpen); });
+        });
+      }
+
+      function boxExtra(el) {
+        var cs = getComputedStyle(el);
+        return parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight)
+          + parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
+      }
+
+      function textWidth(sample, source) {
+        var probe = document.createElement("span");
+        var cs = getComputedStyle(source);
+        probe.textContent = sample;
+        probe.style.position = "absolute";
+        probe.style.left = "-9999px";
+        probe.style.top = "0";
+        probe.style.whiteSpace = "nowrap";
+        probe.style.visibility = "hidden";
+        probe.style.font = cs.font;
+        probe.style.fontFamily = cs.fontFamily;
+        probe.style.fontSize = cs.fontSize;
+        probe.style.fontWeight = cs.fontWeight;
+        probe.style.letterSpacing = cs.letterSpacing;
+        probe.style.fontVariantNumeric = cs.fontVariantNumeric;
+        document.body.appendChild(probe);
+        var width = probe.getBoundingClientRect().width;
+        probe.remove();
+        return width;
+      }
+
+      function lockColumns() {
+        var deviceCell = table.querySelector("td.device-cell");
+        var priceCell = table.querySelector("td.price-cell");
+        var titleEl = table.querySelector(".udc-device-title");
+        if (!deviceCell || !priceCell || !titleEl) return;
+        var titleWidth = 0;
+        Array.prototype.forEach.call(table.querySelectorAll(".udc-device-title"), function (title) {
+          titleWidth = Math.max(titleWidth, textWidth(title.textContent, titleEl));
+        });
+        var notesWidth = 0;
+        Array.prototype.forEach.call(table.querySelectorAll("tbody > tr.is-pending > td:last-child, tbody > tr.is-purchased > td:last-child"), function (cell) {
+          if (cell.closest("tr").hidden) return;
+          notesWidth = Math.max(notesWidth, cell.getBoundingClientRect().width);
+        });
+        if (!titleWidth || !notesWidth) return;
+        var productW = Math.ceil(titleWidth + boxExtra(deviceCell));
+        var priceW = Math.ceil(textWidth("$99,999.99", priceCell) + boxExtra(priceCell));
+        Array.prototype.forEach.call(table.querySelectorAll("td.price-cell"), function (cell) {
+          var lead = "";
+          var node = cell.firstChild;
+          while (node) {
+            if (node.nodeType === 3) lead += node.nodeValue;
+            else break;
+            node = node.nextSibling;
+          }
+          lead = lead.replace(/\s+/g, "").trim();
+          if (!lead || lead === "-") return;
+          priceW = Math.max(priceW, Math.ceil(textWidth(lead, priceCell) + boxExtra(priceCell)));
+        });
+        var totalEl = table.querySelector("th.price-head .price-total");
+        var priceHead = table.querySelector("th.price-head");
+        if (totalEl && priceHead) {
+          var totalText = totalEl.textContent.replace(/\s+/g, " ").trim();
+          if (totalText) priceW = Math.max(priceW, Math.ceil(textWidth(totalText, totalEl) + boxExtra(priceHead)));
+        }
+        notesWidth = Math.ceil(notesWidth);
+        var border = parseFloat(getComputedStyle(deviceCell).borderLeftWidth) || 0;
+        var cols = table.querySelectorAll("colgroup col");
+        if (cols.length !== 3) return;
+        cols[0].style.width = productW + "px";
+        cols[1].style.width = priceW + "px";
+        cols[2].style.width = notesWidth + "px";
+        table.style.tableLayout = "fixed";
+        table.style.width = (productW + priceW + notesWidth - border * 2) + "px";
+      }
+
+      requestAnimationFrame(function () { requestAnimationFrame(lockColumns); });
+    })();
+
+    /* Price headers: sum paid cells in that table. Currencies stay separate,
+       in the order they first appear. No paid rows keeps Total: $-. */
+    (function () {
+      function centsOf(raw) {
+        var n = String(raw).replace(/,/g, "");
+        var bits = n.split(".");
+        var whole = parseInt(bits[0], 10) || 0;
+        var frac = (bits[1] || "00").padEnd(2, "0").slice(0, 2);
+        return whole * 100 + parseInt(frac, 10);
+      }
+
+      function formatMoney(prefix, cents) {
+        var neg = cents < 0;
+        var abs = Math.abs(cents);
+        var whole = String(Math.floor(abs / 100));
+        var frac = String(abs % 100).padStart(2, "0");
+        whole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return (neg ? "-" : "") + prefix + whole + "." + frac;
+      }
+
+      function paidLead(cell) {
+        var text = "";
+        var node = cell.firstChild;
+        while (node) {
+          if (node.nodeType === 3) text += node.nodeValue;
+          else break;
+          node = node.nextSibling;
+        }
+        return text.replace(/\s+/g, "").trim();
+      }
+
+      Array.prototype.forEach.call(document.querySelectorAll("#tab-spec th.price-head"), function (head) {
+        var table = head.closest("table");
+        var slot = head.querySelector(".price-total");
+        if (!table || !slot) return;
+        var totals = [];
+        var index = Object.create(null);
+        Array.prototype.forEach.call(table.querySelectorAll("td.price-cell"), function (cell) {
+          var lead = paidLead(cell);
+          var match = lead.match(/^([A-Z]*)\$(\d[\d,]*(?:\.\d+)?)$/);
+          if (!match) return;
+          var prefix = match[1] + "$";
+          if (index[prefix] == null) {
+            index[prefix] = totals.length;
+            totals.push({ prefix: prefix, cents: 0 });
+          }
+          totals[index[prefix]].cents += centsOf(match[2]);
+        });
+        while (slot.firstChild) slot.removeChild(slot.firstChild);
+        if (!totals.length) {
+          slot.textContent = "Total: $-";
+          return;
+        }
+        if (totals.length === 1) {
+          slot.textContent = "Total: " + formatMoney(totals[0].prefix, totals[0].cents);
+          return;
+        }
+        slot.appendChild(document.createTextNode("Total:"));
+        totals.forEach(function (row) {
+          var line = document.createElement("span");
+          line.className = "price-total-ccy";
+          line.textContent = formatMoney(row.prefix, row.cents);
+          slot.appendChild(line);
+        });
+      });
     })();
 
 (function () {

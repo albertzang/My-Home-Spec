@@ -269,27 +269,146 @@
       vertical-align: middle;
     }
 
-    .spa-spec .spa-article .appliances-wrap .appliances-table th.brand-cell,
-    .spa-spec .spa-article .appliances-wrap .appliances-table td.brand-cell {
+    .spa-spec .spa-article .appliances-wrap table.home-appliances thead th {
       vertical-align: middle;
+      text-align: left;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances thead {
+      cursor: pointer;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances thead:hover th {
+      background: #e2e8f0;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances tbody tr.is-pending > td,
+    .spa-spec .spa-article .appliances-wrap table.home-appliances tbody tr.is-purchased > td {
+      vertical-align: middle;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances tbody tr.is-pending > td.device-cell {
+      background: #eef2f6;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances tbody tr.is-purchased > td.device-cell {
+      background: #e6f4ea;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances tr.room-span {
+      cursor: pointer;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances tr.room-span th {
+      background: #e2e8f0;
+      vertical-align: middle;
+      text-align: left;
+      padding: 0.35rem 0.75rem;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances tr.room-span:hover th {
+      background: #d5dee8;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances tr.floor-span th {
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 650;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.9rem 0.75rem 0.15rem;
+      cursor: default;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances tr.floor-span:first-child th {
+      padding-top: 0.35rem;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .room-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .room-toggle {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      color: inherit;
+      font: inherit;
+      font-weight: 650;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .room-mark {
+      display: inline-block;
+      width: 0.7em;
       text-align: center;
     }
 
-    .spa-spec .spa-article .appliances-wrap .appliances-table .brand-logo-link {
+    .spa-spec .spa-article .appliances-wrap table.home-appliances tr.room-span h3 {
+      margin: 0;
+      font-size: 0.92rem;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .udc-device {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .sku-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .brand-logo-link {
       display: flex;
       align-items: center;
-      justify-content: center;
-      width: 100%;
+      flex: 0 0 auto;
       line-height: 0;
     }
 
-    .spa-spec .spa-article .appliances-wrap .appliances-table .brand-logo {
-      height: 28px;
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .udc-device .brand-logo {
+      height: 0.72rem;
       width: auto;
-      max-width: 7.5rem;
+      max-width: 2.6rem;
       object-fit: contain;
+      object-position: left center;
       display: block;
-      margin-inline: auto;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances td.price-cell {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      color: var(--ink-soft);
+    }
+
+    .spa-spec .spa-article th.price-head {
+      vertical-align: middle;
+      text-align: left;
+    }
+
+    .spa-spec .spa-article th.price-head .price-total {
+      display: block;
+      margin-top: 0.15rem;
+      font-size: 0.72rem;
+      font-weight: 550;
+      line-height: 1.3;
+      color: #777;
+    }
+
+    .spa-spec .spa-article th.price-head .price-total-ccy {
+      display: block;
     }
 
     .appliances-table .udc-device:not(:has(img)) {
@@ -1027,7 +1146,7 @@
       vertical-align: middle;
     }
 
-    /* §1.3: port chips sit in their own row, so a hanging ×n needs room inside the cell. */
+    /* §2.3: port chips sit in their own row, so a hanging ×n needs room inside the cell. */
     table.device-list td.port-cell:has(.udc-count) {
       padding-bottom: 1.05rem;
     }
