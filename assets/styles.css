@@ -319,27 +319,13 @@
       vertical-align: middle;
     }
 
-    /* Purchase state lives on the rail, not a cell fill. Solid = bought,
-       hollow = not. One brass for Product, Device, Uplink, and Downlink.
-       Structure (header, groups) stays charcoal so the rail is not a second header. */
+    /* A bought product, device name, uplink, or downlink carries a 3px brass rail.
+       An unbought cell keeps its place and draws no rail.
+       Group rails stay charcoal. */
     .spa-spec .spa-article table.spec-sheet tbody tr.is-purchased > td.device-cell,
-    .spa-spec .spa-article table.spec-sheet td.device-cell.is-purchased,
-    .device-legend.is-purchased {
+    .spa-spec .spa-article table.spec-sheet td.device-cell.is-purchased {
       background-color: transparent;
       background-image: linear-gradient(var(--sheet-status), var(--sheet-status));
-      background-repeat: no-repeat;
-      background-size: 3px 100%;
-      background-position: left top;
-      background-origin: padding-box;
-      background-clip: padding-box;
-      box-shadow: none;
-    }
-
-    .spa-spec .spa-article table.spec-sheet tbody tr.is-pending > td.device-cell,
-    .spa-spec .spa-article table.spec-sheet td.device-cell.is-pending,
-    .device-legend.is-pending {
-      background-color: transparent;
-      background-image: linear-gradient(to right, var(--sheet-status) 0, var(--sheet-status) 1px, transparent 1px, transparent 2px, var(--sheet-status) 2px, var(--sheet-status) 3px);
       background-repeat: no-repeat;
       background-size: 3px 100%;
       background-position: left top;
@@ -700,7 +686,7 @@
 
 
     .spa-spec .spa-article {
-      /* Shared by the four schedules and the purchase legend in the ledes. */
+      /* Shared by the four schedules. */
       --sheet-paper: #fbf9f6;
       --sheet-ink: #2a2622;
       --sheet-header: #2c2825;
@@ -819,43 +805,609 @@
       white-space: normal;
     }
 
-    .spa-spec .spa-article table.door-access-compare {
+    .spa-spec .spa-article table.door-access {
+      --door-paper: #fbf9f6;
+      --door-ink: #2a2622;
+      --door-line: #e6dfd6;
+      --door-brass: #7a4e2b;
+      --role-reader: #2f4d66;
+      --role-reader-wash: #e7eef3;
+      --role-camera: #1f5c54;
+      --role-camera-wash: #e4f1ee;
+      --role-lock: #7a4e2b;
+      --role-lock-wash: #f6efe8;
+      --role-dps: #4e4842;
+      --role-dps-wash: #f0ebe6;
       width: 100%;
       min-width: 0;
       max-width: 100%;
-      table-layout: auto;
+      table-layout: fixed;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #fff;
+      border: 1px solid var(--door-line);
     }
 
-    .spa-spec .spa-article table.door-access-compare th,
-    .spa-spec .spa-article table.door-access-compare td {
+    .spa-spec .spa-article table.door-access .door-pick-col {
+      width: 19rem;
+    }
+
+    .spa-spec .spa-article table.door-access td {
+      white-space: normal;
+      vertical-align: middle;
+      border: none;
+      border-bottom: 1px solid var(--door-line);
+      padding: 0.72rem 0.9rem;
+    }
+
+    .spa-spec .spa-article table.door-access tr:last-child td {
+      border-bottom: none;
+    }
+
+    .spa-spec .spa-article table.door-access .door-pick {
+      position: relative;
+      vertical-align: top;
+      background: var(--door-paper);
+      border-right: 1px solid var(--door-line);
+      border-bottom: none;
+      padding: 0;
+    }
+
+    .spa-spec .spa-article table.door-access .door-pick-body {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: 0.95rem 0.95rem 1rem;
+    }
+
+    .spa-spec .spa-article table.door-access .door-hub-card {
+      padding: 0.68rem 0.8rem 0.72rem;
+      border-radius: 10px;
+      background: #f3efe8;
+      box-shadow: inset 3px 0 0 #b7a898;
+      cursor: default;
+    }
+
+    .spa-spec .spa-article table.door-access .door-hub-card .door-select-kicker {
+      display: block;
+      color: #8a7464;
+    }
+
+    .spa-spec .spa-article table.door-access .door-relay {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.4rem;
+      margin-top: 0.58rem;
+      padding-top: 0.55rem;
+      border-top: 1px solid #e0d8ce;
+    }
+
+    .spa-spec .spa-article table.door-access .door-relay-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.55rem;
+      width: auto;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #a39b94;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .spa-spec .spa-article table.door-access .door-relay-btn:focus-visible {
+      outline: 2px solid var(--door-brass);
+      outline-offset: 3px;
+      border-radius: 999px;
+    }
+
+    .spa-spec .spa-article table.door-access .door-relay-side {
+      font-size: 0.68rem;
+      font-weight: 650;
+      letter-spacing: 0.12em;
+      line-height: 1;
       white-space: nowrap;
-      vertical-align: middle;
+      color: #a39b94;
     }
 
-    .spa-spec .spa-article table.door-access-compare td[rowspan] {
-      vertical-align: middle;
+    .spa-spec .spa-article table.door-access .door-relay-btn.is-wet .door-relay-side[data-side="wet"],
+    .spa-spec .spa-article table.door-access .door-relay-btn:not(.is-wet) .door-relay-side[data-side="dry"] {
+      color: #5e5852;
     }
 
-    .spa-spec .spa-article table.door-access-compare .cell-stack {
+    .spa-spec .spa-article table.door-access .door-relay-track {
+      position: relative;
+      flex: 0 0 auto;
+      width: 3.2rem;
+      height: 1.62rem;
+      border-radius: 999px;
+      background: #e4ddd4;
+      box-shadow:
+        inset 0 1px 2px rgba(42, 38, 34, 0.16),
+        inset 0 0 0 1px rgba(42, 38, 34, 0.04);
+    }
+
+    .spa-spec .spa-article table.door-access .door-relay-thumb {
+      position: absolute;
+      top: 0.16rem;
+      left: 0.16rem;
+      width: 1.3rem;
+      height: 1.3rem;
+      border-radius: 50%;
+      background: radial-gradient(circle at 36% 32%, #fff 0%, #f4f0ea 70%, #ebe4db 100%);
+      box-shadow:
+        0 1px 2px rgba(42, 38, 34, 0.28),
+        0 0 0 1px rgba(42, 38, 34, 0.05);
+      transition: transform 180ms ease;
+    }
+
+    .spa-spec .spa-article table.door-access .door-relay-btn.is-wet .door-relay-thumb {
+      transform: translateX(1.58rem);
+    }
+
+    .spa-spec .spa-article table.door-access .door-relay-note {
+      margin: 0;
+      font-size: 0.78rem;
+      line-height: 1.35;
+      color: #6a6158;
+    }
+
+    .spa-spec .spa-article table.door-access .door-relay-note[hidden] {
+      display: none;
+    }
+
+    .spa-spec .spa-article table.door-access .door-pick-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .spa-spec .spa-article table.door-access .door-select {
+      position: relative;
+    }
+
+    .spa-spec .spa-article table.door-access .door-select-btn {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      align-items: center;
+      gap: 0.55rem;
+      width: 100%;
+      margin: 0;
+      padding: 0.72rem 0.8rem;
+      border: 1px solid var(--door-line);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--door-ink);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 0 1px 0 rgba(42, 38, 34, 0.04);
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .spa-spec .spa-article table.door-access .door-select.is-open .door-select-btn,
+    .spa-spec .spa-article table.door-access .door-select-btn:hover {
+      border-color: #c4b5a4;
+    }
+
+    .spa-spec .spa-article table.door-access .door-select.is-open .door-select-btn {
+      border-color: var(--door-brass);
+      box-shadow: 0 0 0 3px rgba(122, 78, 43, 0.12);
+    }
+
+    .spa-spec .spa-article table.door-access .door-select-btn:focus-visible {
+      outline: 2px solid var(--door-brass);
+      outline-offset: 2px;
+    }
+
+    .spa-spec .spa-article table.door-access .door-select-name {
+      font-weight: 680;
+      font-size: 1.02rem;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+    }
+
+    .spa-spec .spa-article table.door-access .door-select-index {
+      font-variant-numeric: tabular-nums;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: #8a8178;
+    }
+
+    .spa-spec .spa-article table.door-access .door-status .door-select-btn {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-rows: auto auto;
+      row-gap: 0.08rem;
+    }
+
+    .spa-spec .spa-article table.door-access .door-select-kicker {
+      grid-column: 1;
+      grid-row: 1;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      line-height: 1.3;
+      text-transform: uppercase;
+      color: #8a8178;
+    }
+
+    .spa-spec .spa-article table.door-access .door-status .door-select-name {
+      grid-column: 1;
+      grid-row: 2;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .spa-spec .spa-article table.door-access .door-status .door-select-mark {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      align-self: center;
+    }
+
+    .spa-spec .spa-article table.door-access .door-select-mark {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-right: 1.5px solid var(--door-ink);
+      border-bottom: 1.5px solid var(--door-ink);
+      transform: rotate(45deg) translateY(-0.12rem);
+      transition: transform 160ms ease;
+    }
+
+    .spa-spec .spa-article table.door-access .door-select.is-open .door-select-mark {
+      transform: rotate(225deg) translateY(-0.05rem);
+    }
+
+    .spa-spec .spa-article table.door-access .door-select-list {
+      position: absolute;
+      z-index: 6;
+      top: calc(100% + 0.35rem);
+      left: 0;
+      right: 0;
+      margin: 0;
+      padding: 0.3rem;
+      list-style: none;
+      background: #fff;
+      border: 1px solid var(--door-line);
+      border-radius: 10px;
+      box-shadow: 0 14px 36px rgba(42, 38, 34, 0.14);
+    }
+
+    .spa-spec .spa-article table.door-access .door-select-list[hidden] {
+      display: none;
+    }
+
+    .spa-spec .spa-article table.door-access .door-opt {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.15rem 0.65rem;
+      padding: 0.5rem 0.65rem 0.5rem 0.75rem;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    .spa-spec .spa-article table.door-access .door-opt.is-active {
+      background: #f7f3ee;
+    }
+
+    .spa-spec .spa-article table.door-access .door-opt[aria-selected="true"] {
+      background: #f3efe8;
+      box-shadow: inset 3px 0 0 var(--door-brass);
+    }
+
+    .spa-spec .spa-article table.door-access .door-opt-index {
+      grid-row: span 2;
+      align-self: center;
+      font-variant-numeric: tabular-nums;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: #8a8178;
+    }
+
+    .spa-spec .spa-article table.door-access .door-opt.is-plain {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .spa-spec .spa-article table.door-access .door-opt-name {
+      grid-column: 2;
+      grid-row: 1;
+      font-weight: 650;
+      color: var(--door-ink);
+      line-height: 1.3;
+    }
+
+    .spa-spec .spa-article table.door-access .door-opt.is-plain .door-opt-name,
+    .spa-spec .spa-article table.door-access .door-opt.is-plain .door-opt-sub {
+      grid-column: 1;
+    }
+
+    .spa-spec .spa-article table.door-access .door-opt-sub {
+      grid-column: 2;
+      grid-row: 2;
+      font-size: 0.78rem;
+      line-height: 1.3;
+      color: #6a6158;
+      white-space: nowrap;
+    }
+
+    .spa-spec .spa-article table.door-access .door-hub {
+      display: inline-block;
+      margin-top: 0.12rem;
+      font-size: 0.95rem;
+      font-weight: 680;
+      line-height: 1.25;
+    }
+
+    .spa-spec .spa-article table.door-access .door-uplink {
+      margin: 0.16rem 0 0;
+      font-size: 0.78rem;
+      line-height: 1.35;
+      color: #6a6158;
+    }
+
+    .spa-spec .spa-article table.door-access .cell-stack {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       gap: 0.12rem;
+      min-width: 0;
     }
 
-    .spa-spec .spa-article table.door-access-compare .cell-door {
-      color: var(--ink);
-      font-weight: 650;
-      font-size: 1em;
-      line-height: 1.3;
-      white-space: nowrap;
-    }
-
-    .spa-spec .spa-article table.door-access-compare .cell-meta {
+    .spa-spec .spa-article table.door-access .cell-meta {
       font-size: 0.82em;
-      line-height: 1.3;
-      color: #555;
+      line-height: 1.35;
+      color: #6a6158;
+    }
+
+    .spa-spec .spa-article table.door-access [data-role-meta] {
+      display: flex;
+      flex-direction: column;
+      gap: 0.08rem;
+    }
+
+    .spa-spec .spa-article table.door-access [data-role-meta]:empty {
+      display: none;
+    }
+
+    .spa-spec .spa-article table.door-access .door-role-line {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .spa-spec .spa-article table.door-access .door-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-left: auto;
+      padding: 0.28rem 0.55rem 0.28rem 0.32rem;
+      border: 1px solid var(--door-line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--door-ink);
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .spa-spec .spa-article table.door-access .door-switch:hover {
+      border-color: #c4b5a4;
+    }
+
+    .spa-spec .spa-article table.door-access .door-switch:focus-visible {
+      outline: 2px solid var(--door-brass);
+      outline-offset: 2px;
+    }
+
+    .spa-spec .spa-article table.door-access .door-switch-track {
+      position: relative;
+      flex: 0 0 auto;
+      width: 2.15rem;
+      height: 1.2rem;
+      border-radius: 999px;
+      background: var(--role-wash);
+      box-shadow: inset 0 0 0 1px rgba(42, 38, 34, 0.08);
+    }
+
+    .spa-spec .spa-article table.door-access .door-switch-thumb {
+      position: absolute;
+      top: 0.14rem;
+      left: 0.14rem;
+      width: 0.92rem;
+      height: 0.92rem;
+      border-radius: 50%;
+      background: var(--role);
+      transition: transform 180ms ease, background-color 180ms ease;
+    }
+
+    .spa-spec .spa-article table.door-access .door-switch.is-on .door-switch-track {
+      background: var(--role);
+      box-shadow: none;
+    }
+
+    .spa-spec .spa-article table.door-access .door-switch.is-on .door-switch-thumb {
+      background: #fff;
+      transform: translateX(0.95rem);
+    }
+
+    .spa-spec .spa-article table.door-access .door-switch-label {
+      min-width: 4.7rem;
+      font-size: 0.78rem;
+      font-weight: 650;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      text-align: left;
       white-space: nowrap;
+    }
+
+    .spa-spec .spa-article table.door-access .door-role {
+      background: #fff;
+      box-shadow: inset 3px 0 0 var(--role);
+      transition: background-color 280ms ease;
+    }
+
+    .spa-spec .spa-article table.door-access .door-role[data-role="reader"] {
+      --role: var(--role-reader);
+      --role-wash: var(--role-reader-wash);
+    }
+
+    .spa-spec .spa-article table.door-access .door-role[data-role="camera"] {
+      --role: var(--role-camera);
+      --role-wash: var(--role-camera-wash);
+    }
+
+    .spa-spec .spa-article table.door-access .door-role[data-role="lock"] {
+      --role: var(--role-lock);
+      --role-wash: var(--role-lock-wash);
+    }
+
+    .spa-spec .spa-article table.door-access .door-role[data-role="dps"] {
+      --role: var(--role-dps);
+      --role-wash: var(--role-dps-wash);
+    }
+
+    .spa-spec .spa-article table.door-access .door-role[data-role="rex"] {
+      --role: #8a8178;
+      --role-wash: transparent;
+    }
+
+    .spa-spec .spa-article table.door-access .door-role.is-idle .door-role-tag {
+      background: transparent;
+      box-shadow: inset 0 0 0 1px #d9d0c6;
+    }
+
+    .spa-spec .spa-article table.door-access .door-rex-name {
+      color: #8a8178;
+    }
+
+    .spa-spec .spa-article table.door-access .door-idle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-sizing: border-box;
+      margin-left: auto;
+      padding: 0.28rem 0.55rem 0.28rem 0.32rem;
+      border: 1px solid var(--door-line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--door-ink);
+    }
+
+    .spa-spec .spa-article table.door-access .door-idle-mark {
+      position: relative;
+      flex: 0 0 auto;
+      width: 2.15rem;
+      height: 1.2rem;
+      border-radius: 999px;
+      background: #f3efe8;
+      box-shadow: inset 0 0 0 1px rgba(42, 38, 34, 0.08);
+    }
+
+    .spa-spec .spa-article table.door-access .door-idle-mark::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0.62rem;
+      height: 0.12rem;
+      border-radius: 1px;
+      background: #8a8178;
+      transform: translate(-50%, -50%);
+    }
+
+    .spa-spec .spa-article table.door-access .door-idle-label {
+      min-width: 4.7rem;
+      font-size: 0.78rem;
+      font-weight: 650;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      text-align: left;
+    }
+
+    .spa-spec .spa-article table.door-access .door-role.is-fresh {
+      animation: door-role-in 420ms ease;
+    }
+
+    @keyframes door-role-in {
+      0% { background-color: var(--role-wash); }
+      100% { background-color: #fff; }
+    }
+
+    .spa-spec .spa-article table.door-access .door-role-tag {
+      flex: 0 0 5.4rem;
+      padding: 0.18rem 0.35rem;
+      border-radius: 999px;
+      background: var(--role-wash);
+      color: var(--role);
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      line-height: 1.4;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .spa-spec .spa-article table.door-access .door-uplink.is-fresh {
+      animation: door-uplink-in 320ms ease;
+    }
+
+    @keyframes door-uplink-in {
+      from { opacity: 0.35; }
+      to { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spa-spec .spa-article table.door-access .door-role,
+      .spa-spec .spa-article table.door-access .door-select-mark,
+      .spa-spec .spa-article table.door-access .door-select-btn,
+      .spa-spec .spa-article table.door-access .door-switch-thumb,
+      .spa-spec .spa-article table.door-access .door-relay-thumb {
+        transition: none;
+      }
+
+      .spa-spec .spa-article table.door-access .door-uplink.is-fresh,
+      .spa-spec .spa-article table.door-access .door-role.is-fresh {
+        animation: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .spa-spec .spa-article table.door-access,
+      .spa-spec .spa-article table.door-access tbody,
+      .spa-spec .spa-article table.door-access tr,
+      .spa-spec .spa-article table.door-access td {
+        display: block;
+        width: auto;
+      }
+
+      .spa-spec .spa-article table.door-access .door-pick {
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--door-line);
+        padding: 0.95rem 0.95rem 1rem;
+      }
+
+      .spa-spec .spa-article table.door-access .door-pick-body {
+        position: static;
+        gap: 0.95rem;
+      }
+
+      .spa-spec .spa-article table.door-access .door-role-tag {
+        flex-basis: 4.6rem;
+      }
+
+      .spa-spec .spa-article table.door-access .door-role-line {
+        flex-wrap: wrap;
+      }
+
+      .spa-spec .spa-article table.door-access .door-switch,
+      .spa-spec .spa-article table.door-access .door-idle {
+        margin-left: 0;
+      }
     }
 
     .spa-spec .spa-article table.rack-face {
@@ -1269,13 +1821,6 @@
 
     .devices-table td.device-cell {
       vertical-align: middle;
-    }
-
-    .device-legend {
-      display: inline-block;
-      padding: 0.05rem 0.4rem;
-      border-radius: 4px;
-      font-size: 0.92em;
     }
 
     .order-fees-table td:first-child,

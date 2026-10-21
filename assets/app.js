@@ -3163,6 +3163,9 @@
             setTimeout(window.relayoutTopo, 60);
           });
         }
+        if (key === "spec" && typeof window.equalizeDoorRows === "function") {
+          requestAnimationFrame(window.equalizeDoorRows);
+        }
       }
 
       function applyLocationHash(rawHash, scrollBehavior) {
@@ -3214,5 +3217,448 @@
       });
 
       applyLocationHash(location.hash, "auto");
+    })();
+
+    (function () {
+      var table = document.getElementById("door-access");
+      if (!table) return;
+      var doorRoot = table.querySelector("[data-door-select]");
+      var nameEl = doorRoot.querySelector("[data-door-name]");
+      var indexEl = doorRoot.querySelector("[data-door-index]");
+      var uplinkEl = table.querySelector("[data-door-uplink]");
+      var statusRoot = table.querySelector("[data-status-select]");
+      var statusNameEl = statusRoot.querySelector("[data-status-name]");
+      var XG = { name: "Pro XG 24 PoE", href: "https://store.ui.com/us/en/products/usw-pro-xg-24-poe" };
+      var FLEX = { name: "Flex 2.5G PoE", href: "https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" };
+      var G3 = {
+        name: "G3 Reader",
+        href: "https://store.ui.com/us/en/products/ua-g3",
+        meta: []
+      };
+      var LOCK = {
+        name: "Fail-Secure Strike Lock",
+        href: "https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm",
+        meta: []
+      };
+      var DPS = {
+        name: "Securitron DPS",
+        href: "https://www.securitron.com/en/products/system-accessories/dps-w--dps-m",
+        meta: []
+      };
+      function turret(place) {
+        return {
+          name: "G6 Pro Turret",
+          href: "https://store.ui.com/us/en/products/uvc-g6-pro-turret",
+          meta: [place]
+        };
+      }
+      var doors = [
+        {
+          id: "front",
+          name: "Front Door",
+          uplink: XG,
+          hint: "G6 Pro Entry · Frontyard",
+          reader: {
+            name: "G6 Pro Entry",
+            href: "https://store.ui.com/us/en/products/uvc-g6-pro-entry",
+            meta: []
+          },
+          camera: turret("Frontyard / Front Eave / North East"),
+          lock: LOCK,
+          dps: DPS
+        },
+        {
+          id: "mud",
+          name: "Mud Door",
+          uplink: XG,
+          hint: "G3 Reader · Backyard",
+          reader: G3,
+          camera: turret("Backyard / Balcony Eave / South West"),
+          lock: LOCK,
+          dps: DPS
+        },
+        {
+          id: "dining",
+          name: "Dining Door",
+          uplink: XG,
+          hint: "G3 Reader · Walkway",
+          reader: G3,
+          camera: {
+            name: "G6 Pro Bullet",
+            href: "https://store.ui.com/us/en/products/uvc-g6-pro-bullet",
+            meta: ["Walkway / Balcony Eave / South East"]
+          },
+          lock: LOCK,
+          dps: DPS
+        },
+        {
+          id: "basement",
+          name: "Basement Door",
+          uplink: XG,
+          hint: "G3 Reader · Courtyard",
+          reader: G3,
+          camera: turret("Courtyard / Eave"),
+          lock: LOCK,
+          dps: DPS
+        },
+        {
+          id: "garage",
+          name: "Garage Door",
+          uplink: FLEX,
+          hint: "G3 Reader · Laneway · Flex",
+          reader: G3,
+          camera: turret("Laneway / Garage / South"),
+          lock: LOCK,
+          dps: DPS
+        }
+      ];
+      var statuses = [
+        { id: "locked", name: "Locked", lock: false, dps: false, hint: "Closed · Locked" },
+        { id: "unlocked", name: "Unlocked", lock: true, dps: false, hint: "Closed · Unlocked" },
+        { id: "open", name: "Open", lock: true, dps: true, hint: "Open · Unlocked" },
+        { id: "forced", name: "Unauthorized Opening", lock: false, dps: true, hint: "Open · Locked" }
+      ];
+      var ready = false;
+
+      function pad(n) {
+        return (n < 10 ? "0" : "") + n;
+      }
+
+      function metaText(item) {
+        return item.meta.join("\n");
+      }
+
+      function currentMeta(row) {
+        var box = row.querySelector("[data-role-meta]");
+        var lines = [];
+        Array.prototype.forEach.call(box.querySelectorAll(".cell-meta"), function (line) {
+          lines.push(line.textContent);
+        });
+        return lines.join("\n");
+      }
+
+      function fillUplink(door, animate) {
+        var prev = uplinkEl.textContent.replace(/\s+/g, " ").trim();
+        var next = "PoE++ from " + door.uplink.name;
+        uplinkEl.textContent = "";
+        uplinkEl.appendChild(document.createTextNode("PoE++ from "));
+        var link = document.createElement("a");
+        link.href = door.uplink.href;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = door.uplink.name;
+        uplinkEl.appendChild(link);
+        if (animate && prev !== next) {
+          uplinkEl.classList.remove("is-fresh");
+          void uplinkEl.offsetWidth;
+          uplinkEl.classList.add("is-fresh");
+        }
+      }
+
+      function fillRole(role, item, animate) {
+        var row = table.querySelector('.door-role[data-role="' + role + '"]');
+        var link = row.querySelector("[data-role-name]");
+        var changed = link.textContent !== item.name || currentMeta(row) !== metaText(item);
+        link.href = item.href;
+        link.textContent = item.name;
+        var box = row.querySelector("[data-role-meta]");
+        box.textContent = "";
+        item.meta.forEach(function (line) {
+          var span = document.createElement("span");
+          span.className = "cell-meta";
+          span.textContent = line;
+          box.appendChild(span);
+        });
+        if (animate && changed) {
+          row.classList.remove("is-fresh");
+          void row.offsetWidth;
+          row.classList.add("is-fresh");
+        }
+      }
+
+      function placeList(button, list) {
+        var rect = button.getBoundingClientRect();
+        var gap = 6;
+        var edge = 8;
+        var mast = document.querySelector(".masthead");
+        var mastBottom = mast ? mast.getBoundingClientRect().bottom : 0;
+        list.style.position = "fixed";
+        list.style.left = rect.left + "px";
+        list.style.width = rect.width + "px";
+        list.style.right = "auto";
+        list.style.maxHeight = "";
+        list.style.overflowY = "";
+        list.style.top = "0px";
+        list.style.bottom = "auto";
+        var height = list.scrollHeight;
+        var spaceBelow = window.innerHeight - rect.bottom - gap - edge;
+        var spaceAbove = rect.top - mastBottom - gap - edge;
+        var openDown = height <= spaceBelow || spaceBelow >= spaceAbove;
+        var room = Math.max(120, openDown ? spaceBelow : spaceAbove);
+        if (openDown) {
+          list.style.top = (rect.bottom + gap) + "px";
+          list.style.bottom = "auto";
+        } else {
+          list.style.top = "auto";
+          list.style.bottom = (window.innerHeight - rect.top + gap) + "px";
+        }
+        if (height > room) {
+          list.style.maxHeight = room + "px";
+          list.style.overflowY = "auto";
+        }
+      }
+
+      function bindMenu(root, items, hooks) {
+        var button = root.querySelector(".door-select-btn");
+        var list = root.querySelector(".door-select-list");
+        var index = 0;
+        var active = 0;
+
+        items.forEach(function (item, i) {
+          var opt = document.createElement("li");
+          opt.className = "door-opt" + (hooks.plain ? " is-plain" : "");
+          opt.id = hooks.idPrefix + item.id;
+          opt.setAttribute("role", "option");
+          opt.setAttribute("data-index", String(i));
+          hooks.fillOption(opt, item, i);
+          list.appendChild(opt);
+        });
+
+        function paintActive() {
+          Array.prototype.forEach.call(list.children, function (opt, i) {
+            opt.classList.toggle("is-active", i === active);
+            opt.setAttribute("aria-selected", i === index ? "true" : "false");
+          });
+          var current = list.children[active];
+          if (current && !list.hidden) {
+            button.setAttribute("aria-activedescendant", current.id);
+            var top = current.offsetTop;
+            var bottom = top + current.offsetHeight;
+            if (top < list.scrollTop) list.scrollTop = top;
+            else if (bottom > list.scrollTop + list.clientHeight) list.scrollTop = bottom - list.clientHeight;
+          }
+        }
+
+        function openList() {
+          if (hooks.onOpen) hooks.onOpen();
+          list.hidden = false;
+          root.classList.add("is-open");
+          button.setAttribute("aria-expanded", "true");
+          active = index;
+          placeList(button, list);
+          paintActive();
+        }
+
+        function closeList() {
+          list.hidden = true;
+          root.classList.remove("is-open");
+          button.setAttribute("aria-expanded", "false");
+          button.removeAttribute("aria-activedescendant");
+        }
+
+        function commit(i, animate) {
+          index = i;
+          active = i;
+          hooks.apply(items[i], i, animate);
+          paintActive();
+        }
+
+        function choose(i) {
+          commit(i, ready);
+          closeList();
+        }
+
+        button.addEventListener("click", function () {
+          if (list.hidden) openList();
+          else closeList();
+        });
+
+        button.addEventListener("keydown", function (event) {
+          var key = event.key;
+          if (key === "ArrowDown" || key === "ArrowUp") {
+            event.preventDefault();
+            if (list.hidden) openList();
+            else active = (active + (key === "ArrowDown" ? 1 : items.length - 1)) % items.length;
+            paintActive();
+          } else if (key === "Home") {
+            event.preventDefault();
+            if (list.hidden) openList();
+            active = 0;
+            paintActive();
+          } else if (key === "End") {
+            event.preventDefault();
+            if (list.hidden) openList();
+            active = items.length - 1;
+            paintActive();
+          } else if (key === "Enter" || key === " ") {
+            event.preventDefault();
+            if (list.hidden) openList();
+            else choose(active);
+          } else if (key === "Escape" && !list.hidden) {
+            event.preventDefault();
+            closeList();
+          }
+        });
+
+        list.addEventListener("click", function (event) {
+          var opt = event.target.closest(".door-opt");
+          if (!opt) return;
+          choose(Number(opt.getAttribute("data-index")));
+          button.focus();
+        });
+
+        list.addEventListener("mousemove", function (event) {
+          var opt = event.target.closest(".door-opt");
+          if (!opt || list.hidden) return;
+          active = Number(opt.getAttribute("data-index"));
+          paintActive();
+        });
+
+        document.addEventListener("click", function (event) {
+          if (!root.contains(event.target) && !list.contains(event.target)) closeList();
+        });
+
+        return { close: closeList, commit: commit };
+      }
+
+      function switchLabel(which, on) {
+        if (which === "lock") return on ? "Unlocked" : "Locked";
+        return on ? "Open" : "Closed";
+      }
+
+      function paintSwitch(which, on, animate) {
+        var control = table.querySelector('.door-switch[data-switch="' + which + '"]');
+        var was = control.getAttribute("aria-checked") === "true";
+        var label = switchLabel(which, on);
+        control.setAttribute("aria-checked", on ? "true" : "false");
+        control.setAttribute("aria-label", (which === "lock" ? "Lock，" : "DPS，") + label);
+        control.classList.toggle("is-on", on);
+        control.querySelector("[data-switch-label]").textContent = label;
+        if (animate && was !== on) {
+          var row = control.closest(".door-role");
+          row.classList.remove("is-fresh");
+          void row.offsetWidth;
+          row.classList.add("is-fresh");
+        }
+      }
+
+      function statusIndexFor(lockOn, dpsOn) {
+        var found = 0;
+        statuses.forEach(function (state, i) {
+          if (state.lock === lockOn && state.dps === dpsOn) found = i;
+        });
+        return found;
+      }
+
+      function equalizeRows() {
+        var rows = table.querySelectorAll(".door-role");
+        Array.prototype.forEach.call(rows, function (row) { row.style.height = ""; });
+        var max = 0;
+        Array.prototype.forEach.call(rows, function (row) {
+          var h = row.getBoundingClientRect().height;
+          if (h > max) max = h;
+        });
+        if (max < 1) return;
+        var px = Math.ceil(max) + "px";
+        Array.prototype.forEach.call(rows, function (row) { row.style.height = px; });
+      }
+      window.equalizeDoorRows = equalizeRows;
+
+      var doorMenu;
+      var statusMenu;
+
+      doorMenu = bindMenu(doorRoot, doors, {
+        idPrefix: "door-opt-",
+        fillOption: function (opt, door, i) {
+          var num = document.createElement("span");
+          num.className = "door-opt-index";
+          num.textContent = pad(i + 1);
+          var copy = document.createElement("span");
+          copy.className = "door-opt-name";
+          copy.textContent = door.name;
+          var sub = document.createElement("span");
+          sub.className = "door-opt-sub";
+          sub.textContent = door.hint;
+          opt.appendChild(num);
+          opt.appendChild(copy);
+          opt.appendChild(sub);
+        },
+        onOpen: function () { statusMenu.close(); },
+        apply: function (door, i, animate) {
+          nameEl.textContent = door.name;
+          indexEl.textContent = pad(i + 1) + " / " + pad(doors.length);
+          doorRoot.querySelector(".door-select-btn").setAttribute("aria-label", "人行门，" + door.name + "，第 " + (i + 1) + " 扇，共 " + doors.length + " 扇");
+          fillUplink(door, animate);
+          fillRole("reader", door.reader, animate);
+          fillRole("camera", door.camera, animate);
+          fillRole("lock", door.lock, animate);
+          fillRole("dps", door.dps, animate);
+          equalizeRows();
+        }
+      });
+
+      statusMenu = bindMenu(statusRoot, statuses, {
+        idPrefix: "door-status-",
+        plain: true,
+        fillOption: function (opt, state) {
+          var copy = document.createElement("span");
+          copy.className = "door-opt-name";
+          copy.textContent = state.name;
+          var sub = document.createElement("span");
+          sub.className = "door-opt-sub";
+          sub.textContent = state.hint;
+          opt.appendChild(copy);
+          opt.appendChild(sub);
+        },
+        onOpen: function () { doorMenu.close(); },
+        apply: function (state, i, animate) {
+          statusNameEl.textContent = state.name;
+          statusRoot.querySelector(".door-select-btn").setAttribute("aria-label", "Access 状态，" + state.name + "，" + state.hint);
+          paintSwitch("lock", state.lock, animate);
+          paintSwitch("dps", state.dps, animate);
+        }
+      });
+
+      var relayBtn = table.querySelector(".door-relay-btn");
+      var relayNote = table.querySelector(".door-relay-note");
+      function paintRelay(wet) {
+        relayBtn.classList.toggle("is-wet", wet);
+        relayBtn.setAttribute("aria-checked", wet ? "true" : "false");
+        relayBtn.setAttribute("aria-label", wet ? "门锁输出，12V = 1A" : "门锁输出，DRY");
+        relayNote.hidden = wet;
+      }
+      relayBtn.addEventListener("click", function () {
+        paintRelay(!relayBtn.classList.contains("is-wet"));
+      });
+
+      Array.prototype.forEach.call(table.querySelectorAll(".door-switch"), function (control) {
+        control.addEventListener("click", function () {
+          var which = control.getAttribute("data-switch");
+          var lockOn = table.querySelector('.door-switch[data-switch="lock"]').classList.contains("is-on");
+          var dpsOn = table.querySelector('.door-switch[data-switch="dps"]').classList.contains("is-on");
+          if (which === "lock") lockOn = !lockOn;
+          else dpsOn = !dpsOn;
+          statusMenu.commit(statusIndexFor(lockOn, dpsOn), true);
+        });
+      });
+
+      var specPane = document.getElementById("tab-spec");
+      if (specPane) {
+        specPane.addEventListener("scroll", function () {
+          doorMenu.close();
+          statusMenu.close();
+        }, { passive: true });
+      }
+      window.addEventListener("resize", function () {
+        doorMenu.close();
+        statusMenu.close();
+        equalizeRows();
+      });
+
+      doorMenu.commit(0, false);
+      statusMenu.commit(0, false);
+      ready = true;
+      equalizeRows();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(equalizeRows);
     })();
 })();
