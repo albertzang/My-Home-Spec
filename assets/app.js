@@ -473,6 +473,7 @@
           var lead = paidLead(cell);
           var match = lead.match(/^([A-Z]*)\$(\d[\d,]*(?:\.\d+)?)$/);
           if (!match || cell.classList.contains("is-quote")) return;
+          if (cell.parentElement && cell.parentElement.classList.contains("cable-span")) return;
           var prefix = match[1] + "$";
           if (index[prefix] == null) {
             index[prefix] = totals.length;
