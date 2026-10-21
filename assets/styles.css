@@ -239,11 +239,11 @@
     /*
      * Same scroll rule as other Spec table wraps (overflow-x: auto above):
      * no bar when the pane is wide enough; bar appears when it is not.
-     * Leaf cells stay nowrap; min-width keeps the fixed columns from crushing.
+     * Watt and port columns stay on one line. Names and notes wrap inside the column.
      */
     .spa-spec .spa-article table.power-tree {
       width: 100%;
-      min-width: 50rem;
+      min-width: 0;
       max-width: none;
       table-layout: fixed;
     }
@@ -253,6 +253,10 @@
     }
 
     .spa-spec .spa-article table.power-tree tr.power-tree-leaf > td {
+      white-space: nowrap;
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-leaf > td[colspan="2"] {
       white-space: nowrap;
     }
 
@@ -269,17 +273,45 @@
       vertical-align: middle;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances thead th {
+    .spa-spec .spa-article table.spec-sheet thead th {
       vertical-align: middle;
       text-align: left;
+      background: var(--sheet-header);
+      color: var(--sheet-header-ink);
+      border-color: rgba(247, 244, 239, 0.14);
+      font-weight: 650;
+      letter-spacing: 0.01em;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances thead {
+    .spa-spec .spa-article table.spec-sheet thead tr:nth-child(2) th {
+      background: var(--sheet-header-2);
+      color: var(--sheet-header-2-ink);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .spa-spec .spa-article table.spec-sheet thead {
       cursor: pointer;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances thead:hover th {
-      background: #e2e8f0;
+    .spa-spec .spa-article table.power-tree.spec-sheet thead,
+    .spa-spec .spa-article table.power-tree.spec-sheet thead:hover th {
+      cursor: default;
+      background: var(--sheet-header);
+    }
+
+    .spa-spec .spa-article table.power-tree.spec-sheet thead:hover tr:nth-child(2) th {
+      background: var(--sheet-header-2);
+    }
+
+    .spa-spec .spa-article table.spec-sheet thead:hover th {
+      background: var(--sheet-header-hover);
+    }
+
+    .spa-spec .spa-article table.spec-sheet thead:hover tr:nth-child(2) th {
+      background: var(--sheet-header-2-hover);
     }
 
     .spa-spec .spa-article .appliances-wrap table.home-appliances tbody tr.is-pending > td,
@@ -287,74 +319,215 @@
       vertical-align: middle;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances tbody tr.is-pending > td.device-cell {
-      background: #eef2f6;
+    /* Purchase state lives on the rail, not a cell fill. Solid = bought,
+       hollow = not. One brass for Product, Device, Uplink, and Downlink.
+       Structure (header, groups) stays charcoal so the rail is not a second header. */
+    .spa-spec .spa-article table.spec-sheet tbody tr.is-purchased > td.device-cell,
+    .spa-spec .spa-article table.spec-sheet td.device-cell.is-purchased,
+    .device-legend.is-purchased {
+      background-color: transparent;
+      background-image: linear-gradient(var(--sheet-status), var(--sheet-status));
+      background-repeat: no-repeat;
+      background-size: 3px 100%;
+      background-position: left top;
+      background-origin: padding-box;
+      background-clip: padding-box;
+      box-shadow: none;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances tbody tr.is-purchased > td.device-cell {
-      background: #e6f4ea;
+    .spa-spec .spa-article table.spec-sheet tbody tr.is-pending > td.device-cell,
+    .spa-spec .spa-article table.spec-sheet td.device-cell.is-pending,
+    .device-legend.is-pending {
+      background-color: transparent;
+      background-image: linear-gradient(to right, var(--sheet-status) 0, var(--sheet-status) 1px, transparent 1px, transparent 2px, var(--sheet-status) 2px, var(--sheet-status) 3px);
+      background-repeat: no-repeat;
+      background-size: 3px 100%;
+      background-position: left top;
+      background-origin: padding-box;
+      background-clip: padding-box;
+      box-shadow: none;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances tr.room-span {
+    .spa-spec .spa-article table.span-groups tr.room-span {
       cursor: pointer;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances tr.room-span th {
-      background: #e2e8f0;
+    .spa-spec .spa-article table.span-groups tr.room-span th {
+      background: var(--sheet-group);
+      color: var(--sheet-group-ink);
       vertical-align: middle;
       text-align: left;
-      padding: 0.35rem 0.75rem;
+      padding: 0.42rem 0.75rem;
+      box-shadow: inset 3px 0 0 var(--sheet-rail);
+      transition: background-color 160ms ease;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances tr.room-span:hover th {
-      background: #d5dee8;
+    .spa-spec .spa-article table.span-groups tr.room-span:hover th {
+      background: var(--sheet-group-hover);
+    }
+
+    .spa-spec .spa-article table.span-groups tr.room-span[data-level="1"] > th,
+    .spa-spec .spa-article table.span-groups tr.room-span[data-level="1"] > td {
+      background: var(--sheet-nested);
+      box-shadow: inset 3px 0 0 var(--sheet-nested-rail);
+      font-weight: 550;
+    }
+
+    .spa-spec .spa-article table.span-groups tr.room-span[data-level="1"] > th {
+      padding-left: 1.35rem;
+    }
+
+    .spa-spec .spa-article table.span-groups tr.room-span[data-level="1"] > td {
+      box-shadow: none;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      vertical-align: middle;
+    }
+
+    .spa-spec .spa-article table.span-groups tr.room-span[data-level="1"]:hover > th,
+    .spa-spec .spa-article table.span-groups tr.room-span[data-level="1"]:hover > td {
+      background: var(--sheet-nested-hover);
+    }
+
+    .spa-spec .spa-article table.span-groups tr.cable-span .udc-sku {
+      font-weight: 450;
+    }
+
+    .spa-spec .spa-article table.device-list tr.cable-spec > td.device-cell {
+      padding-left: 2.55rem;
     }
 
     .spa-spec .spa-article .appliances-wrap table.home-appliances tr.floor-span th {
-      background: transparent;
-      color: var(--muted);
+      height: 1.85rem;
+      padding: 0 0.75rem;
+      background: var(--sheet-floor);
+      color: var(--sheet-floor-ink);
       font-size: 0.72rem;
       font-weight: 650;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
+      line-height: 1.85rem;
       text-transform: uppercase;
-      padding: 0.9rem 0.75rem 0.15rem;
+      vertical-align: middle;
       cursor: default;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances tr.floor-span:first-child th {
-      padding-top: 0.35rem;
-    }
-
-    .spa-spec .spa-article .appliances-wrap table.home-appliances .room-line {
+    .spa-spec .spa-article table.span-groups .room-line {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances .room-toggle {
+    .spa-spec .spa-article table.spec-sheet .room-toggle {
       appearance: none;
+      -webkit-appearance: none;
       border: 0;
       background: transparent;
       padding: 0;
       margin: 0;
+      min-width: 0;
+      min-height: 0;
       color: inherit;
       font: inherit;
       font-weight: 650;
-      line-height: 1;
+      line-height: 0;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances .room-mark {
-      display: inline-block;
-      width: 0.7em;
-      text-align: center;
+    .spa-spec .spa-article table.spec-sheet .room-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.15rem;
+      height: 1.15rem;
+      padding: 0;
+      border-radius: 4px;
+      background: var(--sheet-mark);
+      color: var(--sheet-mark-ink);
+      font-size: 0;
+      line-height: 0;
+      flex: 0 0 1.15rem;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances tr.room-span h3 {
+    .spa-spec .spa-article table.spec-sheet .room-mark::before {
+      content: "";
+      display: block;
+      width: 0.72rem;
+      height: 0.72rem;
+      background-color: currentColor;
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.25 4.1 6 7.9 9.75 4.1' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.25 4.1 6 7.9 9.75 4.1' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+      mask-mode: alpha;
+      transform: none;
+      transition: transform 180ms ease;
+    }
+
+    .spa-spec .spa-article table.spec-sheet .room-toggle[aria-expanded="false"] .room-mark::before {
+      transform: rotate(-90deg);
+    }
+
+    .spa-spec .spa-article table.spec-sheet thead .room-mark {
+      background: rgba(247, 244, 239, 0.14);
+      color: var(--sheet-header-ink);
+    }
+
+    .spa-spec .spa-article table.spec-sheet .room-toggle:focus-visible {
+      outline: 2px solid var(--sheet-status);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    .spa-spec .spa-article table.span-groups tr.room-span .room-name {
       margin: 0;
-      font-size: 0.92rem;
+      font-size: inherit;
       font-weight: 650;
       line-height: 1.35;
+    }
+
+    /* Chapter 1, §2.3, §2.4, and §3.3 share one sheet.
+       Stone paper, charcoal structure, brass only for purchase. */
+    .spa-spec .spa-article table.spec-sheet {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.84rem;
+      line-height: 1.45;
+      color: var(--sheet-ink);
+      background: var(--sheet-paper);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .spa-spec .spa-article table.spec-sheet th,
+    .spa-spec .spa-article table.spec-sheet td {
+      border-color: var(--sheet-line);
+    }
+
+    .spa-spec .spa-article table.spec-sheet .udc-sku {
+      color: var(--sheet-sku);
+    }
+
+    .spa-spec .spa-article table.spec-sheet td.price-cell,
+    .spa-spec .spa-article table.spec-sheet td.protocol-cell {
+      color: var(--sheet-price);
+    }
+
+    .spa-spec .spa-article table.spec-sheet tbody tr.power-tree-leaf:hover > td {
+      background-color: var(--sheet-leaf-hover);
+    }
+
+    .spa-spec .spa-article table.spec-sheet tbody tr:not(.room-span):not(.floor-span):not(.power-tree-handle):not(.power-tree-leaf):hover > td {
+      background-color: var(--sheet-hover);
+    }
+
+    @keyframes sheet-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .spa-spec .spa-article table.spec-sheet tr.sheet-in > td,
+    .spa-spec .spa-article table.spec-sheet tr.sheet-in > th {
+      animation: sheet-in 220ms ease;
     }
 
     .spa-spec .spa-article .appliances-wrap table.home-appliances .udc-device {
@@ -390,7 +563,7 @@
       text-align: right;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
-      color: var(--ink-soft);
+      color: var(--sheet-price);
     }
 
     .spa-spec .spa-article th.price-head {
@@ -405,6 +578,12 @@
       font-weight: 550;
       line-height: 1.3;
       color: #777;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .spa-spec .spa-article table.spec-sheet th.price-head .price-total {
+      color: var(--sheet-total);
     }
 
     .spa-spec .spa-article th.price-head .price-total-ccy {
@@ -521,6 +700,43 @@
 
 
     .spa-spec .spa-article {
+      /* Shared by the four schedules and the purchase legend in the ledes. */
+      --sheet-paper: #fbf9f6;
+      --sheet-ink: #2a2622;
+      --sheet-header: #2c2825;
+      --sheet-header-2: #3f3934;
+      --sheet-header-hover: #3a342f;
+      --sheet-header-2-hover: #4c453f;
+      --sheet-header-ink: #f7f4ef;
+      --sheet-header-2-ink: #e6ddd2;
+      --sheet-line: #e6dfd6;
+      --sheet-group: #f3efe8;
+      --sheet-group-hover: #e8e2d8;
+      --sheet-group-ink: #2a2622;
+      --sheet-rail: #2c2825;
+      --sheet-floor: #ebe4da;
+      --sheet-floor-ink: #6a6158;
+      --sheet-status: #7a4e2b;
+      --sheet-hover: #f7f3ee;
+      --sheet-sku: #8a8178;
+      --sheet-price: #5c564e;
+      --sheet-total: #e4d5c4;
+      --sheet-nested: #f7f4ef;
+      --sheet-nested-hover: #efeae3;
+      --sheet-nested-rail: #b7a898;
+      --sheet-leaf: #f7f4ef;
+      --sheet-leaf-ink: #5e584f;
+      --sheet-leaf-rail: #c4b5a4;
+      --sheet-leaf-hover: #f1ebe3;
+      --sheet-l1: #e4d5c4;
+      --sheet-l1-hover: #d9c7b2;
+      --sheet-l1-ink: #2a221c;
+      --sheet-l2: #f6f1ea;
+      --sheet-l2-hover: #efe6db;
+      --sheet-meter: #e0b56a;
+      --sheet-meter-deep: #7a4e2b;
+      --sheet-mark: rgba(42, 38, 34, 0.08);
+      --sheet-mark-ink: #2a2622;
       box-sizing: border-box;
       min-width: 0;
       max-width: none;
@@ -1035,6 +1251,10 @@
       color: var(--ink-soft);
     }
 
+    .spa-spec .spa-article table.spec-sheet > tbody > tr > td.protocol-cell {
+      color: var(--sheet-price);
+    }
+
     .design-devices-wrap .devices-table > tbody > tr > td.price-cell {
       vertical-align: middle;
       text-align: right;
@@ -1043,16 +1263,12 @@
       color: var(--ink-soft);
     }
 
+    .spa-spec .spa-article table.spec-sheet > tbody > tr > td.price-cell {
+      color: var(--sheet-price);
+    }
+
     .devices-table td.device-cell {
       vertical-align: middle;
-    }
-
-    .devices-table td.device-cell.is-pending {
-      background: #eef2f6;
-    }
-
-    .devices-table td.device-cell.is-purchased {
-      background: #e6f4ea;
     }
 
     .device-legend {
@@ -1060,14 +1276,6 @@
       padding: 0.05rem 0.4rem;
       border-radius: 4px;
       font-size: 0.92em;
-    }
-
-    .device-legend.is-pending {
-      background: #eef2f6;
-    }
-
-    .device-legend.is-purchased {
-      background: #e6f4ea;
     }
 
     .order-fees-table td:first-child,
@@ -1129,21 +1337,8 @@
 
     .spa-spec .spa-article table.device-list {
       width: 100%;
-      min-width: 48rem;
+      min-width: 0;
       table-layout: fixed;
-    }
-
-    .spa-spec .spa-article table.device-list col.col-category {
-      width: 10.25rem;
-    }
-
-    .spa-spec .spa-article table.device-list col.col-price {
-      width: 12rem;
-    }
-
-    table.device-list thead th:first-child,
-    table.device-list tbody td:first-child:not([class]) {
-      vertical-align: middle;
     }
 
     /* §2.3: port chips sit in their own row, so a hanging ×n needs room inside the cell. */
@@ -2076,9 +2271,11 @@
     .power-card {
       min-width: 0;
       padding: 0.85rem 0.9rem;
-      border: 1px solid #cfcfcf;
-      border-radius: 0.45rem;
-      background: #f3f3f3;
+      border: 1px solid #c5d4e4;
+      border-radius: 0.5rem;
+      background: #e8eef6;
+      color: var(--ink);
+      transition: background-color 160ms ease, border-color 160ms ease;
     }
 
     .power-card-wide {
@@ -2087,15 +2284,18 @@
     }
 
     .power-card-title {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
       margin: 0;
-      color: #555;
-      font-size: 0.82rem;
+      color: #334155;
+      font-size: inherit;
       font-weight: 650;
     }
 
     .power-card-value {
       margin: 0.14rem 0 0.55rem;
-      font-size: 1.45rem;
+      font-size: 1.25rem;
       font-weight: 700;
       line-height: 1.2;
       font-variant-numeric: tabular-nums;
@@ -2118,7 +2318,17 @@
       display: block;
       height: 100%;
       border-radius: inherit;
-      background: #18b86a;
+      background: var(--sheet-meter-deep, #7a4e2b);
+      transform-origin: left center;
+    }
+
+    table.spec-sheet tr.power-tree-handle:not([hidden]) .power-meter > span {
+      animation: meter-grow 680ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes meter-grow {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
     }
 
     .power-callout {
@@ -2153,34 +2363,69 @@
       border-collapse: collapse;
     }
 
-    table.power-tree .power-tree-col-load {
-      width: 22%;
-    }
-
     table.power-tree .power-tree-col-power {
-      width: 6%;
-    }
-
-    table.power-tree .power-tree-col-pd {
-      width: 22%;
-    }
-
-    table.power-tree .power-tree-col-pse {
-      width: 28%;
-    }
-
-    table.power-tree .power-tree-col-notes {
-      width: 22%;
+      width: 7rem;
     }
 
     table.power-tree td {
-      padding: 0.38rem 0.3rem;
+      padding: 0.5rem 0.75rem;
       vertical-align: middle;
-      border-top: 1px solid #e5e5e5;
-      font-size: 0.76rem;
-      line-height: 1.3;
+      border-color: var(--line);
+      font-size: inherit;
+      line-height: 1.4;
     }
 
+    table.power-tree tr.power-tree-leaf > td:first-child {
+      background: var(--sheet-leaf);
+      box-shadow: inset 3px 0 0 var(--sheet-leaf-rail);
+    }
+
+    table.power-tree tr.power-tree-leaf > td:not(.num):not(:first-child) {
+      background: var(--sheet-leaf);
+      color: var(--sheet-leaf-ink);
+    }
+
+    table.power-tree tr.power-tree-leaf > td[colspan="2"] {
+      font-weight: 650;
+      color: var(--sheet-ink);
+      border-bottom-color: transparent;
+      padding-bottom: 0.2rem;
+      white-space: nowrap;
+    }
+
+    table.power-tree tr.power-tree-leaf > td[colspan="2"] a {
+      font-weight: 650;
+    }
+
+    table.power-tree tr.power-tree-leaf > td:not([colspan]):not(.num) {
+      padding-top: 0.12rem;
+      border-top-color: transparent;
+      font-size: 0.78rem;
+    }
+
+    table.power-tree tr.power-tree-leaf > td.num {
+      background: var(--sheet-paper);
+      color: var(--sheet-price);
+      font-weight: 650;
+    }
+
+    table.power-tree tr.power-tree-leaf:hover > td {
+      background-color: var(--sheet-leaf-hover);
+    }
+
+    table.power-tree tr.power-tree-leaf[data-level="1"] > td:first-child {
+      padding-left: 1.7rem;
+    }
+
+    table.power-tree tr.power-tree-leaf[data-level="2"] > td:first-child {
+      padding-left: 2.55rem;
+    }
+
+    table.power-tree tr.power-tree-leaf[data-level="3"] > td:first-child {
+      padding-left: 3.4rem;
+    }
+
+    table.power-tree th.power-head,
     table.power-tree td.num {
       text-align: right;
       font-variant-numeric: tabular-nums;
@@ -2197,67 +2442,175 @@
       white-space: normal;
     }
 
-    /* Hierarchy via card fills — span row itself stays clear. */
     table.power-tree tr.power-tree-handle {
       cursor: pointer;
     }
 
-    table.power-tree tr.power-tree-handle > td {
-      padding: 0.55rem 0.65rem;
-      border-top: 1px solid #e5e5e5;
-      background: transparent;
+    table.power-tree tr.power-tree-handle > th {
+      padding: 0.48rem 0.75rem 0.5rem;
+      vertical-align: middle;
+      text-align: left;
+      font-weight: 550;
+      border-color: var(--sheet-line);
     }
 
-    table.power-tree tr.power-tree-handle:hover > td {
-      background: transparent;
+    table.power-tree .power-handle {
+      white-space: normal;
     }
 
-    table.power-tree tr.power-tree-handle:focus-visible .power-card {
-      outline: 2px solid #2f6fed;
-      outline-offset: 2px;
+    table.power-tree .power-handle .room-line {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 0.45rem;
     }
 
-    .power-tree-handle-body {
-      min-width: 0;
+    table.power-tree .power-handle .room-name {
+      font-weight: 650;
     }
 
-    /*
-     * Same cool steel family, stepped hue/value so nesting reads at a glance.
-     * Level 0 denser slate-blue; level 1 softer sky; level 2 pale ice.
-     */
-    table.power-tree tr.power-tree-handle[data-level="0"] .power-card {
-      background: #b9c8db;
-      border-color: #8fa3bc;
+    table.power-tree .power-readout {
+      margin-left: auto;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      white-space: nowrap;
     }
 
-    table.power-tree tr.power-tree-handle[data-level="1"] .power-card {
-      background: #d2e2f0;
-      border-color: #a7bdd2;
+    table.power-tree .power-readout span,
+    table.power-tree .power-readout small {
+      font-weight: 550;
     }
 
-    table.power-tree tr.power-tree-handle[data-level="2"] .power-card {
-      background: #e8f1f8;
-      border-color: #c3d4e4;
+    table.power-tree .power-readout small {
+      margin-left: 0.45rem;
+      font-size: 0.78em;
     }
 
-    table.power-tree tr.power-tree-handle[data-level="0"]:hover .power-card {
-      background: #aebfd5;
+    table.power-tree .power-handle .power-meter {
+      margin: 0.32rem 0 0.28rem 1.6rem;
     }
 
-    table.power-tree tr.power-tree-handle[data-level="1"]:hover .power-card {
-      background: #c6d9eb;
+    table.power-tree .power-terms {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      margin: 0 0 0 1.6rem;
+      font-variant-numeric: tabular-nums;
     }
 
-    table.power-tree tr.power-tree-handle[data-level="2"]:hover .power-card {
-      background: #dce8f3;
+    table.power-tree .power-terms span + span::before {
+      content: "+";
+      margin: 0 0.4rem;
+      font-weight: 550;
+    }
+
+    table.power-tree .power-terms small {
+      margin-left: 0.08rem;
+      font-size: 0.78em;
+    }
+
+    table.power-tree .power-terms b {
+      font-weight: 700;
+    }
+
+    table.power-tree .power-terms b::before {
+      content: "=";
+      margin: 0 0.45rem;
+      font-weight: 550;
+    }
+
+    table.power-tree .power-terms em {
+      margin-left: 0.85rem;
+      padding-left: 0.75rem;
+      box-shadow: inset 1px 0 0 rgba(42, 38, 34, 0.28);
+      font-style: normal;
+      font-weight: 550;
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="1"] .power-handle {
+      padding-left: 0.85rem;
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="2"] .power-handle {
+      padding-left: 1.7rem;
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="0"] > th {
+      background: var(--sheet-header);
+      color: var(--sheet-header-ink);
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="1"] > th {
+      background: var(--sheet-l1);
+      color: var(--sheet-l1-ink);
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="2"] > th {
+      background: var(--sheet-l2);
+      color: var(--sheet-ink);
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="0"]:hover > th {
+      background: var(--sheet-header-hover);
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="1"]:hover > th {
+      background: var(--sheet-l1-hover);
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="2"]:hover > th {
+      background: var(--sheet-l2-hover);
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="1"] .power-meter > span,
+    table.power-tree tr.power-tree-handle[data-level="2"] .power-meter > span {
+      background: var(--sheet-meter-deep);
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="0"] .room-mark {
+      background: rgba(247, 244, 239, 0.14);
+      color: var(--sheet-header-ink);
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="0"] .power-meter {
+      background: rgba(247, 244, 239, 0.16);
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="0"] .power-meter > span {
+      background: var(--sheet-meter);
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="0"] a {
+      text-decoration-color: rgba(247, 244, 239, 0.45);
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="0"] .power-readout span,
+    table.power-tree tr.power-tree-handle[data-level="0"] .power-readout small,
+    table.power-tree tr.power-tree-handle[data-level="0"] .power-terms em,
+    table.power-tree tr.power-tree-handle[data-level="0"] .power-terms span + span::before,
+    table.power-tree tr.power-tree-handle[data-level="0"] .power-terms b::before {
+      color: var(--sheet-header-2-ink);
+    }
+
+    table.power-tree tr.power-tree-handle[data-level="0"] .power-terms em {
+      box-shadow: inset 1px 0 0 rgba(244, 247, 248, 0.35);
     }
 
     table.power-tree tr.power-tree-leaf {
-      background: #fff;
+      background: var(--sheet-paper);
     }
 
-    table.power-tree tr.power-tree-leaf:nth-child(even) {
-      background: #fafafa;
+    @media (prefers-reduced-motion: reduce) {
+      .spa-spec .spa-article table.spec-sheet tr.sheet-in > td,
+      .spa-spec .spa-article table.spec-sheet tr.sheet-in > th,
+      table.spec-sheet tr.power-tree-handle:not([hidden]) .power-meter > span {
+        animation: none;
+      }
+
+      .spa-spec .spa-article table.spec-sheet .room-mark::before,
+      .power-card {
+        transition: none;
+      }
     }
 
     #export-root {

@@ -226,6 +226,23 @@
       if (!table) return;
       var rows = Array.prototype.slice.call(table.querySelectorAll("tbody > tr[data-level]"));
 
+      var handles = rows.filter(function (row) {
+        return row.classList.contains("power-tree-handle");
+      });
+
+      function setHandleOpen(row, open) {
+        row.setAttribute("aria-expanded", open ? "true" : "false");
+        var button = row.querySelector(".room-toggle");
+        var mark = row.querySelector(".room-mark");
+        var nameEl = row.querySelector(".room-name");
+        if (button) {
+          button.setAttribute("aria-expanded", open ? "true" : "false");
+          var name = nameEl ? nameEl.textContent.replace(/\s+/g, " ").trim() : "group";
+          button.setAttribute("aria-label", (open ? "Collapse " : "Expand ") + name);
+        }
+        if (mark) mark.textContent = open ? "-" : "+";
+      }
+
       function collapseDescendantHandles(handle) {
         var level = Number(handle.getAttribute("data-level"));
         var idx = rows.indexOf(handle);
@@ -233,10 +250,22 @@
           var row = rows[i];
           var rowLevel = Number(row.getAttribute("data-level"));
           if (rowLevel <= level) break;
-          if (row.classList.contains("power-tree-handle")) {
-            row.setAttribute("aria-expanded", "false");
-          }
+          if (row.classList.contains("power-tree-handle")) setHandleOpen(row, false);
         }
+      }
+
+      var revealReady = false;
+
+      function setRowHidden(row, hidden) {
+        var wasHidden = row.hidden;
+        row.hidden = hidden;
+        if (!revealReady || hidden || !wasHidden) {
+          if (hidden) row.classList.remove("sheet-in");
+          return;
+        }
+        row.classList.remove("sheet-in");
+        void row.offsetWidth;
+        row.classList.add("sheet-in");
       }
 
       function applyPowerTreeVisibility() {
@@ -245,7 +274,7 @@
           var level = Number(row.getAttribute("data-level"));
           if (level <= collapsedDepth) collapsedDepth = Infinity;
           var hiddenByAncestor = level > collapsedDepth;
-          row.hidden = hiddenByAncestor;
+          setRowHidden(row, hiddenByAncestor);
           if (
             !hiddenByAncestor &&
             row.classList.contains("power-tree-handle") &&
@@ -258,34 +287,28 @@
 
       rows.forEach(function (row) {
         if (!row.classList.contains("power-tree-handle")) return;
-        if (!row.hasAttribute("tabindex")) row.setAttribute("tabindex", "0");
-        if (!row.hasAttribute("role")) row.setAttribute("role", "button");
         row.addEventListener("click", function (event) {
           if (event.target.closest && event.target.closest("a")) return;
           var open = row.getAttribute("aria-expanded") !== "false";
-          row.setAttribute("aria-expanded", open ? "false" : "true");
-          collapseDescendantHandles(row);
+          setHandleOpen(row, !open);
+          if (open) collapseDescendantHandles(row);
           applyPowerTreeVisibility();
-        });
-        row.addEventListener("keydown", function (event) {
-          if (event.key !== "Enter" && event.key !== " ") return;
-          event.preventDefault();
-          row.click();
         });
       });
 
       applyPowerTreeVisibility();
+      revealReady = true;
     })();
 
-    /* Chapter 1: each room span row collapses that room's product rows.
-       The table header collapses or expands every room.
-       "-" is expanded, "+" is collapsed.
-       Product width is the longest name; Price width fits $99,999.99.
-       Those two stay put when rooms open or close. */
+    /* Span-row tables (chapter 1 rooms, §2.3 / §3.3 categories).
+       A span row collapses every following row until the next span at the
+       same or shallower level. Nested spans (patch-cable specs) use
+       data-level. Floor bands stay visible. The header toggles every span.
+       "-" is expanded, "+" is collapsed. */
     (function () {
-      var table = document.querySelector("#tab-spec table.home-appliances");
-      if (!table) return;
+      function bindSpanTable(table) {
       var rooms = Array.prototype.slice.call(table.querySelectorAll("tbody > tr.room-span"));
+      var bodyRows = Array.prototype.slice.call(table.querySelectorAll("tbody > tr"));
       var headerButton = table.querySelector("thead .room-toggle");
       var headerMark = table.querySelector("thead .room-mark");
 
@@ -304,23 +327,71 @@
         setHeaderOpen(allOpen);
       }
 
-      function setOpen(row, open) {
+      var revealReady = false;
+
+      function setRowHidden(row, hidden) {
+        var wasHidden = row.hidden;
+        row.hidden = hidden;
+        if (!revealReady || hidden || !wasHidden) {
+          if (hidden) row.classList.remove("sheet-in");
+          return;
+        }
+        row.classList.remove("sheet-in");
+        void row.offsetWidth;
+        row.classList.add("sheet-in");
+      }
+
+      function levelOf(row) {
+        if (row.classList.contains("floor-span")) return null;
+        if (row.hasAttribute("data-level")) return Number(row.getAttribute("data-level"));
+        if (row.classList.contains("room-span")) return 0;
+        return 1;
+      }
+
+      function setFlags(row, open) {
         var button = row.querySelector(".room-toggle");
         var mark = row.querySelector(".room-mark");
-        var heading = row.querySelector("h3");
+        var heading = row.querySelector(".room-name");
         row.setAttribute("aria-expanded", open ? "true" : "false");
         if (button) {
           button.setAttribute("aria-expanded", open ? "true" : "false");
-          var name = heading ? heading.textContent.replace(/\s+/g, " ").trim() : "room";
+          var name = heading ? heading.textContent.replace(/\s+/g, " ").trim() : "group";
           button.setAttribute("aria-label", (open ? "Collapse " : "Expand ") + name);
         }
         if (mark) mark.textContent = open ? "-" : "+";
-        var next = row.nextElementSibling;
-        while (next && !next.classList.contains("room-span")) {
-          if (!next.classList.contains("floor-span")) next.hidden = !open;
-          next = next.nextElementSibling;
+      }
+
+      function closeDescendantHandles(handle) {
+        var level = levelOf(handle);
+        var idx = bodyRows.indexOf(handle);
+        for (var i = idx + 1; i < bodyRows.length; i += 1) {
+          var row = bodyRows[i];
+          var rowLevel = levelOf(row);
+          if (rowLevel == null) continue;
+          if (row.classList.contains("room-span") && rowLevel <= level) break;
+          if (row.classList.contains("room-span")) setFlags(row, false);
         }
-        syncHeader();
+      }
+
+      function applyVisibility() {
+        var collapsedAt = Infinity;
+        bodyRows.forEach(function (row) {
+          var level = levelOf(row);
+          if (level == null) {
+            setRowHidden(row, false);
+            return;
+          }
+          if (level <= collapsedAt) collapsedAt = Infinity;
+          var hidden = level > collapsedAt;
+          setRowHidden(row, hidden);
+          if (
+            !hidden &&
+            row.classList.contains("room-span") &&
+            row.getAttribute("aria-expanded") === "false"
+          ) {
+            collapsedAt = level;
+          }
+        });
       }
 
       rooms.forEach(function (row) {
@@ -329,96 +400,36 @@
             var link = event.target.closest("a");
             if (link && !link.classList.contains("heading-ref")) return;
           }
-          setOpen(row, row.getAttribute("aria-expanded") === "false");
+          var open = row.getAttribute("aria-expanded") !== "false";
+          setFlags(row, !open);
+          if (open) closeDescendantHandles(row);
+          applyVisibility();
+          syncHeader();
         });
-        setOpen(row, row.getAttribute("aria-expanded") !== "false");
       });
 
       var thead = table.querySelector("thead");
-      if (thead) {
+      if (thead && headerButton) {
         thead.addEventListener("click", function (event) {
           if (event.target.closest && event.target.closest("a")) return;
           var allOpen = rooms.every(function (row) {
             return row.getAttribute("aria-expanded") !== "false";
           });
-          rooms.forEach(function (row) { setOpen(row, !allOpen); });
+          rooms.forEach(function (row) { setFlags(row, !allOpen); });
+          applyVisibility();
+          syncHeader();
         });
       }
 
-      function boxExtra(el) {
-        var cs = getComputedStyle(el);
-        return parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight)
-          + parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
+      applyVisibility();
+      syncHeader();
+      revealReady = true;
       }
 
-      function textWidth(sample, source) {
-        var probe = document.createElement("span");
-        var cs = getComputedStyle(source);
-        probe.textContent = sample;
-        probe.style.position = "absolute";
-        probe.style.left = "-9999px";
-        probe.style.top = "0";
-        probe.style.whiteSpace = "nowrap";
-        probe.style.visibility = "hidden";
-        probe.style.font = cs.font;
-        probe.style.fontFamily = cs.fontFamily;
-        probe.style.fontSize = cs.fontSize;
-        probe.style.fontWeight = cs.fontWeight;
-        probe.style.letterSpacing = cs.letterSpacing;
-        probe.style.fontVariantNumeric = cs.fontVariantNumeric;
-        document.body.appendChild(probe);
-        var width = probe.getBoundingClientRect().width;
-        probe.remove();
-        return width;
-      }
-
-      function lockColumns() {
-        var deviceCell = table.querySelector("td.device-cell");
-        var priceCell = table.querySelector("td.price-cell");
-        var titleEl = table.querySelector(".udc-device-title");
-        if (!deviceCell || !priceCell || !titleEl) return;
-        var titleWidth = 0;
-        Array.prototype.forEach.call(table.querySelectorAll(".udc-device-title"), function (title) {
-          titleWidth = Math.max(titleWidth, textWidth(title.textContent, titleEl));
-        });
-        var notesWidth = 0;
-        Array.prototype.forEach.call(table.querySelectorAll("tbody > tr.is-pending > td:last-child, tbody > tr.is-purchased > td:last-child"), function (cell) {
-          if (cell.closest("tr").hidden) return;
-          notesWidth = Math.max(notesWidth, cell.getBoundingClientRect().width);
-        });
-        if (!titleWidth || !notesWidth) return;
-        var productW = Math.ceil(titleWidth + boxExtra(deviceCell));
-        var priceW = Math.ceil(textWidth("$99,999.99", priceCell) + boxExtra(priceCell));
-        Array.prototype.forEach.call(table.querySelectorAll("td.price-cell"), function (cell) {
-          var lead = "";
-          var node = cell.firstChild;
-          while (node) {
-            if (node.nodeType === 3) lead += node.nodeValue;
-            else break;
-            node = node.nextSibling;
-          }
-          lead = lead.replace(/\s+/g, "").trim();
-          if (!lead || lead === "-") return;
-          priceW = Math.max(priceW, Math.ceil(textWidth(lead, priceCell) + boxExtra(priceCell)));
-        });
-        var totalEl = table.querySelector("th.price-head .price-total");
-        var priceHead = table.querySelector("th.price-head");
-        if (totalEl && priceHead) {
-          var totalText = totalEl.textContent.replace(/\s+/g, " ").trim();
-          if (totalText) priceW = Math.max(priceW, Math.ceil(textWidth(totalText, totalEl) + boxExtra(priceHead)));
-        }
-        notesWidth = Math.ceil(notesWidth);
-        var border = parseFloat(getComputedStyle(deviceCell).borderLeftWidth) || 0;
-        var cols = table.querySelectorAll("colgroup col");
-        if (cols.length !== 3) return;
-        cols[0].style.width = productW + "px";
-        cols[1].style.width = priceW + "px";
-        cols[2].style.width = notesWidth + "px";
-        table.style.tableLayout = "fixed";
-        table.style.width = (productW + priceW + notesWidth - border * 2) + "px";
-      }
-
-      requestAnimationFrame(function () { requestAnimationFrame(lockColumns); });
+      Array.prototype.forEach.call(
+        document.querySelectorAll("#tab-spec table.span-groups"),
+        bindSpanTable
+      );
     })();
 
     /* Price headers: sum paid cells in that table. Currencies stay separate,
@@ -461,7 +472,7 @@
         Array.prototype.forEach.call(table.querySelectorAll("td.price-cell"), function (cell) {
           var lead = paidLead(cell);
           var match = lead.match(/^([A-Z]*)\$(\d[\d,]*(?:\.\d+)?)$/);
-          if (!match) return;
+          if (!match || cell.classList.contains("is-quote")) return;
           var prefix = match[1] + "$";
           if (index[prefix] == null) {
             index[prefix] = totals.length;
@@ -485,6 +496,261 @@
           line.textContent = formatMoney(row.prefix, row.cents);
           slot.appendChild(line);
         });
+      });
+    })();
+
+    /* Column locks. Fixed columns use a probe string. Flexible columns are
+       at least the longest name or port pair, and take leftover pane width. */
+    (function () {
+      var PRICE_PROBE = "Total: CA$999,999.99";
+      var PROTOCOLS = ["Z-Wave", "Zigbee", "Thread", "Wi\u2011Fi", "Bluetooth"];
+
+      function boxExtra(el) {
+        var cs = getComputedStyle(el);
+        return parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight)
+          + parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
+      }
+
+      function textWidth(sample, source) {
+        var probe = document.createElement("span");
+        var cs = getComputedStyle(source);
+        probe.textContent = sample;
+        probe.style.position = "absolute";
+        probe.style.left = "-9999px";
+        probe.style.top = "0";
+        probe.style.whiteSpace = "nowrap";
+        probe.style.visibility = "hidden";
+        probe.style.font = cs.font;
+        probe.style.fontFamily = cs.fontFamily;
+        probe.style.fontSize = cs.fontSize;
+        probe.style.fontWeight = cs.fontWeight;
+        probe.style.letterSpacing = cs.letterSpacing;
+        probe.style.fontVariantNumeric = cs.fontVariantNumeric;
+        document.body.appendChild(probe);
+        var width = probe.getBoundingClientRect().width;
+        probe.remove();
+        return width;
+      }
+
+      function nameWidth(cell) {
+        var title = cell.querySelector(".udc-device-title");
+        var text = title
+          ? title.textContent.replace(/\s+/g, " ").trim()
+          : cell.textContent.replace(/\s+/g, " ").trim();
+        var source = title || cell;
+        var width = textWidth(text, source);
+        var device = cell.querySelector(".udc-device");
+        var img = device && device.querySelector("img");
+        if (img && device) {
+          var gap = parseFloat(getComputedStyle(device).columnGap || getComputedStyle(device).gap) || 0;
+          width += 28 + gap;
+        }
+        return width + boxExtra(cell);
+      }
+
+      function paneWidth(wrap) {
+        if (!wrap) return 0;
+        var prev = wrap.style.overflowX;
+        wrap.style.overflowX = "hidden";
+        var width = wrap.clientWidth;
+        wrap.style.overflowX = prev;
+        return width;
+      }
+
+      function sumOf(list) {
+        var total = 0;
+        list.forEach(function (w) { total += w; });
+        return total;
+      }
+
+      function apply(table, mins, flex, floors) {
+        var cols = table.querySelectorAll("colgroup col");
+        if (cols.length !== mins.length) return;
+        var wrap = table.parentElement;
+        var pane = wrap ? paneWidth(wrap) : sumOf(mins);
+        /* A reserved probe (the wide price sample) is used only when the
+           pane can hold it. Otherwise the column falls back to the real
+           text, so a placeholder never opens a scrollbar by itself. */
+        if (floors) {
+          var lifted = mins.map(function (w, i) { return Math.max(w, floors[i] || 0); });
+          if (sumOf(lifted) <= pane) mins = lifted;
+        }
+        var raw = sumOf(mins);
+        var widths = mins.map(function (w) { return Math.ceil(w); });
+        var minUsed = sumOf(widths);
+        var flexAt = [];
+        flex.forEach(function (on, i) { if (on) flexAt.push(i); });
+        if (!flexAt.length) flexAt.push(0);
+        var lastFlex = flexAt[flexAt.length - 1];
+        table.style.tableLayout = "fixed";
+        /* Never wider than the pane unless the content minimum itself is.
+           Ceil adds up to a pixel per column at every pane width, not only
+           at the Spec maximum, and that slack must not open a scrollbar. */
+        if (raw > pane) {
+          widths.forEach(function (w, i) { cols[i].style.width = w + "px"; });
+          table.style.width = minUsed + "px";
+          table.style.minWidth = minUsed + "px";
+          table.style.maxWidth = "none";
+          return;
+        }
+
+        table.style.maxWidth = "100%";
+        var extra = Math.max(0, pane - minUsed);
+        var share = flexAt.length > 1 ? Math.floor(extra / flexAt.length) : 0;
+        flexAt.forEach(function (idx) {
+          if (idx === lastFlex) {
+            cols[idx].style.width = "auto";
+            return;
+          }
+          cols[idx].style.width = (widths[idx] + share) + "px";
+        });
+        widths.forEach(function (w, i) {
+          if (flexAt.indexOf(i) === -1) cols[i].style.width = w + "px";
+        });
+        table.style.width = "100%";
+        table.style.minWidth = "0";
+      }
+
+      function lineWidth(el) {
+        var width = 0;
+        Array.prototype.forEach.call(el.childNodes, function (node) {
+          var text = node.textContent.replace(/\s+/g, " ").trim();
+          if (!text) return;
+          var source = node.nodeType === 1 ? node : el;
+          width = Math.max(width, textWidth(text, source));
+        });
+        if (!width) width = textWidth(el.textContent.replace(/\s+/g, " ").trim(), el);
+        return width;
+      }
+
+      function priceWidths(table) {
+        var head = table.querySelector("th.price-head");
+        var total = table.querySelector("th.price-head .price-total");
+        if (!head || !total) return { content: 0, probe: 0 };
+        var extra = boxExtra(head);
+        var content = lineWidth(total);
+        Array.prototype.forEach.call(table.querySelectorAll("td.price-cell"), function (cell) {
+          content = Math.max(content, lineWidth(cell));
+          extra = Math.max(extra, boxExtra(cell));
+        });
+        return {
+          content: Math.ceil(content + extra),
+          probe: Math.ceil(textWidth(PRICE_PROBE, total) + extra)
+        };
+      }
+
+      function lockHome(table) {
+        var names = 0;
+        Array.prototype.forEach.call(table.querySelectorAll("td.device-cell"), function (cell) {
+          names = Math.max(names, nameWidth(cell));
+        });
+        var notesCell = table.querySelector("tbody td:last-child a");
+        var notesHost = notesCell ? notesCell.parentElement : table.querySelector("tbody td:last-child");
+        if (!names || !notesHost) return;
+        var notes = Math.ceil(textWidth("Where-to-Buy", notesCell || notesHost) + boxExtra(notesHost));
+        var price = priceWidths(table);
+        apply(table, [names, price.content, notes], [true, false, false], [0, price.probe, 0]);
+      }
+
+      function lockDevices(table) {
+        var up = 0;
+        var down = 0;
+        var names = 0;
+        Array.prototype.forEach.call(table.querySelectorAll("tbody > tr"), function (row) {
+          var cells = row.children;
+          if (cells.length === 3 && cells[0].classList.contains("port-cell")) {
+            up = Math.max(up, textWidth(cells[0].textContent.replace(/\s+/g, " ").trim() || " ", cells[0]) + boxExtra(cells[0]));
+            down = Math.max(down, textWidth(cells[1].textContent.replace(/\s+/g, " ").trim() || " ", cells[1]) + boxExtra(cells[1]));
+            var ports = cells[0].querySelector(".udc-ports");
+            var ports2 = cells[1].querySelector(".udc-ports");
+            if (ports) up = Math.max(up, elementWidth(ports) + boxExtra(cells[0]));
+            if (ports2) down = Math.max(down, elementWidth(ports2) + boxExtra(cells[1]));
+          }
+          if (cells.length >= 2 && cells[0].colSpan === 2) {
+            names = Math.max(names, nameWidth(cells[0]));
+          }
+        });
+        if (names > up + down) {
+          var slack = names - (up + down);
+          up += slack / 2;
+          down += slack - slack / 2;
+        }
+        var price = priceWidths(table);
+        apply(table, [Math.ceil(up), Math.ceil(down), price.content], [true, true, false], [0, 0, price.probe]);
+      }
+
+      function elementWidth(el) {
+        var probe = el.cloneNode(true);
+        Array.prototype.forEach.call(probe.querySelectorAll("*"), function (node) {
+          node.style.whiteSpace = "nowrap";
+          node.style.minWidth = "max-content";
+          node.style.flexWrap = "nowrap";
+        });
+        probe.style.position = "absolute";
+        probe.style.left = "-9999px";
+        probe.style.top = "0";
+        probe.style.width = "max-content";
+        probe.style.whiteSpace = "nowrap";
+        document.body.appendChild(probe);
+        var width = probe.getBoundingClientRect().width;
+        probe.remove();
+        return width;
+      }
+
+      function lockPower(table) {
+        var head = table.querySelector("th.power-head");
+        if (!head) return;
+        var power = Math.ceil(textWidth("Power", head) + boxExtra(head));
+        var left = 0;
+        var right = 0;
+        var names = 0;
+        Array.prototype.forEach.call(table.querySelectorAll("tr.power-tree-leaf"), function (row) {
+          var cells = row.children;
+          if (cells.length === 2 && cells[0].colSpan === 2) {
+            names = Math.max(names, textWidth(cells[0].textContent.replace(/\s+/g, " ").trim(), cells[0]) + boxExtra(cells[0]));
+          } else if (cells.length === 2 && !cells[0].classList.contains("num")) {
+            left = Math.max(left, textWidth(cells[0].textContent.replace(/\s+/g, " ").trim(), cells[0]) + boxExtra(cells[0]));
+            right = Math.max(right, textWidth(cells[1].textContent.replace(/\s+/g, " ").trim(), cells[1]) + boxExtra(cells[1]));
+          }
+        });
+        if (names > left + right) {
+          var slack = names - (left + right);
+          left += slack / 2;
+          right += slack - slack / 2;
+        }
+        apply(table, [Math.ceil(left), Math.ceil(right), power], [true, true, false]);
+      }
+
+      function lockHa(table) {
+        var names = 0;
+        Array.prototype.forEach.call(table.querySelectorAll("td.device-cell"), function (cell) {
+          names = Math.max(names, nameWidth(cell));
+        });
+        var protocol = table.querySelector("td.protocol-cell") || table.querySelector("thead th:nth-child(2)");
+        var protocolHead = table.querySelector("thead th:nth-child(2)");
+        if (!names || !protocol || !protocolHead) return;
+        var protocolW = textWidth("Protocol", protocolHead) + boxExtra(protocolHead);
+        PROTOCOLS.forEach(function (label) {
+          protocolW = Math.max(protocolW, textWidth(label, protocol) + boxExtra(protocol));
+        });
+        var price = priceWidths(table);
+        apply(table, [names, Math.ceil(protocolW), price.content], [true, false, false], [0, 0, price.probe]);
+      }
+
+      function lockAll() {
+        var home = document.querySelector("#tab-spec table.home-appliances");
+        var devices = document.querySelector("#tab-spec table.device-list");
+        var power = document.querySelector("#tab-spec table.power-tree");
+        var ha = document.querySelector("#tab-spec table.devices-table.span-groups:not(.device-list)");
+        if (home) lockHome(home);
+        if (devices) lockDevices(devices);
+        if (power) lockPower(power);
+        if (ha) lockHa(ha);
+      }
+
+      requestAnimationFrame(function () { requestAnimationFrame(lockAll); });
+      window.addEventListener("resize", function () {
+        requestAnimationFrame(lockAll);
       });
     })();
 
