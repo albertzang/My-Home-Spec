@@ -264,9 +264,18 @@
       font-size: 0.92rem;
     }
 
+    .spa-spec .spa-article .appliances-wrap table.home-appliances {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      table-layout: fixed;
+    }
+
     .spa-spec .spa-article .appliances-wrap .appliances-table th,
     .spa-spec .spa-article .appliances-wrap .appliances-table td {
       vertical-align: top;
+      white-space: normal;
+      overflow-wrap: break-word;
     }
 
     .spa-spec .spa-article .appliances-wrap .appliances-table td.device-cell {
@@ -521,12 +530,53 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 0;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .udc-device-meta,
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .udc-device-title,
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .sku-line,
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .sku-links {
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .udc-device-meta,
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .udc-device-title,
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .sku-line {
+      width: 100%;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .udc-device-meta {
+      display: flex;
     }
 
     .spa-spec .spa-article .appliances-wrap table.home-appliances .sku-line {
-      display: inline-flex;
+      display: flex;
+      flex-wrap: wrap;
       align-items: center;
       gap: 0.35rem;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .sku-links {
+      font-size: 0.72rem;
+      line-height: 1.35;
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances a.udc-sku {
+      color: var(--sheet-sku);
+    }
+
+    .spa-spec .spa-article .appliances-wrap table.home-appliances .home-price {
+      display: block;
+      margin-top: 0.28rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--sheet-price);
+      font-variant-numeric: tabular-nums;
     }
 
     .spa-spec .spa-article .appliances-wrap table.home-appliances .brand-logo-link {

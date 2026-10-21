@@ -469,7 +469,7 @@
         if (!table || !slot) return;
         var totals = [];
         var index = Object.create(null);
-        Array.prototype.forEach.call(table.querySelectorAll("td.price-cell"), function (cell) {
+        Array.prototype.forEach.call(table.querySelectorAll("td.price-cell, .home-price"), function (cell) {
           var lead = paidLead(cell);
           var match = lead.match(/^([A-Z]*)\$(\d[\d,]*(?:\.\d+)?)$/);
           if (!match || cell.classList.contains("is-quote")) return;
@@ -641,16 +641,11 @@
       }
 
       function lockHome(table) {
-        var names = 0;
-        Array.prototype.forEach.call(table.querySelectorAll("td.device-cell"), function (cell) {
-          names = Math.max(names, nameWidth(cell));
-        });
-        var notesCell = table.querySelector("tbody td:last-child a");
-        var notesHost = notesCell ? notesCell.parentElement : table.querySelector("tbody td:last-child");
-        if (!names || !notesHost) return;
-        var notes = Math.ceil(textWidth("Where-to-Buy", notesCell || notesHost) + boxExtra(notesHost));
-        var price = priceWidths(table);
-        apply(table, [names, price.content, notes], [true, false, false], [0, price.probe, 0]);
+        /* One column. The pane sets the width and the name wraps. */
+        table.style.tableLayout = "fixed";
+        table.style.width = "100%";
+        table.style.minWidth = "0";
+        table.style.maxWidth = "100%";
       }
 
       function lockDevices(table) {
