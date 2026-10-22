@@ -392,6 +392,7 @@
             collapsedAt = level;
           }
         });
+        if (window.fitScheduleLines) window.fitScheduleLines();
       }
 
       rooms.forEach(function (row) {
@@ -411,7 +412,7 @@
       var thead = table.querySelector("thead");
       if (thead && headerButton) {
         thead.addEventListener("click", function (event) {
-          if (event.target.closest && event.target.closest("a")) return;
+          if (event.target.closest && event.target.closest("a, .port-split")) return;
           var allOpen = rooms.every(function (row) {
             return row.getAttribute("aria-expanded") !== "false";
           });
@@ -473,8 +474,12 @@
           var lead = paidLead(cell);
           var match = lead.match(/^([A-Z]*)\$(\d[\d,]*(?:\.\d+)?)$/);
           if (!match || cell.classList.contains("is-quote")) return;
-          if (cell.parentElement && cell.parentElement.classList.contains("cable-span")) return;
+          var priceRow = cell.closest ? cell.closest("tr") : cell.parentElement;
+          if (priceRow && priceRow.classList.contains("cable-span")) return;
           var prefix = match[1] + "$";
+          if (prefix === "CA$" && (table.classList.contains("home-appliances") || table.classList.contains("device-list"))) {
+            prefix = "$";
+          }
           if (index[prefix] == null) {
             index[prefix] = totals.length;
             totals.push({ prefix: prefix, cents: 0 });
@@ -504,7 +509,6 @@
        at least the longest name or port pair, and take leftover pane width. */
     (function () {
       var PRICE_PROBE = "Total: CA$999,999.99";
-      var PROTOCOLS = ["Z-Wave", "Zigbee", "Thread", "Wi\u2011Fi", "Bluetooth"];
 
       function boxExtra(el) {
         var cs = getComputedStyle(el);
@@ -649,48 +653,11 @@
       }
 
       function lockDevices(table) {
-        var up = 0;
-        var down = 0;
-        var names = 0;
-        Array.prototype.forEach.call(table.querySelectorAll("tbody > tr"), function (row) {
-          var cells = row.children;
-          if (cells.length === 3 && cells[0].classList.contains("port-cell")) {
-            up = Math.max(up, textWidth(cells[0].textContent.replace(/\s+/g, " ").trim() || " ", cells[0]) + boxExtra(cells[0]));
-            down = Math.max(down, textWidth(cells[1].textContent.replace(/\s+/g, " ").trim() || " ", cells[1]) + boxExtra(cells[1]));
-            var ports = cells[0].querySelector(".udc-ports");
-            var ports2 = cells[1].querySelector(".udc-ports");
-            if (ports) up = Math.max(up, elementWidth(ports) + boxExtra(cells[0]));
-            if (ports2) down = Math.max(down, elementWidth(ports2) + boxExtra(cells[1]));
-          }
-          if (cells.length >= 2 && cells[0].colSpan === 2) {
-            names = Math.max(names, nameWidth(cells[0]));
-          }
-        });
-        if (names > up + down) {
-          var slack = names - (up + down);
-          up += slack / 2;
-          down += slack - slack / 2;
-        }
-        var price = priceWidths(table);
-        apply(table, [Math.ceil(up), Math.ceil(down), price.content], [true, true, false], [0, 0, price.probe]);
-      }
-
-      function elementWidth(el) {
-        var probe = el.cloneNode(true);
-        Array.prototype.forEach.call(probe.querySelectorAll("*"), function (node) {
-          node.style.whiteSpace = "nowrap";
-          node.style.minWidth = "max-content";
-          node.style.flexWrap = "nowrap";
-        });
-        probe.style.position = "absolute";
-        probe.style.left = "-9999px";
-        probe.style.top = "0";
-        probe.style.width = "max-content";
-        probe.style.whiteSpace = "nowrap";
-        document.body.appendChild(probe);
-        var width = probe.getBoundingClientRect().width;
-        probe.remove();
-        return width;
+        /* One column. The pane sets the width and names wrap. */
+        table.style.tableLayout = "fixed";
+        table.style.width = "100%";
+        table.style.minWidth = "0";
+        table.style.maxWidth = "100%";
       }
 
       function lockPower(table) {
@@ -718,20 +685,212 @@
       }
 
       function lockHa(table) {
-        var names = 0;
-        Array.prototype.forEach.call(table.querySelectorAll("td.device-cell"), function (cell) {
-          names = Math.max(names, nameWidth(cell));
-        });
-        var protocol = table.querySelector("td.protocol-cell") || table.querySelector("thead th:nth-child(2)");
-        var protocolHead = table.querySelector("thead th:nth-child(2)");
-        if (!names || !protocol || !protocolHead) return;
-        var protocolW = textWidth("Protocol", protocolHead) + boxExtra(protocolHead);
-        PROTOCOLS.forEach(function (label) {
-          protocolW = Math.max(protocolW, textWidth(label, protocol) + boxExtra(protocol));
-        });
-        var price = priceWidths(table);
-        apply(table, [names, Math.ceil(protocolW), price.content], [true, false, false], [0, 0, price.probe]);
+        lockDevices(table);
       }
+
+      function scheduleUnits(table) {
+        var units = [];
+        Array.prototype.forEach.call(table.querySelectorAll(".udc-device"), function (el) { units.push(el); });
+        Array.prototype.forEach.call(table.querySelectorAll("tr.cable-spec > .device-cell"), function (el) { units.push(el); });
+        return units;
+      }
+
+      function scheduleLines(unit) {
+        var title = unit.querySelector(":scope > .udc-device-meta > .udc-device-title, :scope > .udc-device-title");
+        var sub = unit.querySelector(":scope > .udc-device-meta > .sku-line, :scope > .udc-device-meta > .protocol-line, :scope > .udc-device-meta > .udc-sku, :scope > .sku-line");
+        return [title, sub].filter(Boolean);
+      }
+
+      function lineOverflows(el) {
+        return el.scrollWidth > el.clientWidth + 1;
+      }
+
+      function restoreLine(el) {
+        if (el.getAttribute("data-full-html") == null) el.setAttribute("data-full-html", el.innerHTML);
+        else el.innerHTML = el.getAttribute("data-full-html");
+        if (el.getAttribute("data-ellipsis") === "1") {
+          el.removeAttribute("title");
+          el.removeAttribute("data-ellipsis");
+        }
+      }
+
+      function placeCut(el, keep) {
+        var nodes = [];
+        var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+        var node;
+        while ((node = walker.nextNode())) nodes.push(node);
+        var fullLen = 0;
+        nodes.forEach(function (item) { fullLen += item.nodeValue.length; });
+        if (keep >= fullLen) return;
+        var head = Math.ceil(keep / 2);
+        var endKeep = fullLen - Math.floor(keep / 2);
+        var index = 0;
+        var placed = false;
+        nodes.forEach(function (item) {
+          var value = item.nodeValue;
+          var out = "";
+          for (var i = 0; i < value.length; i += 1) {
+            var abs = index + i;
+            if (abs < head) out += value.charAt(i);
+            else if (abs >= endKeep) {
+              if (!placed) { out += "…"; placed = true; }
+              out += value.charAt(i);
+            } else if (!placed) {
+              out += "…";
+              placed = true;
+            }
+          }
+          index += value.length;
+          item.nodeValue = out;
+        });
+        if (!placed) el.appendChild(document.createTextNode("…"));
+        Array.prototype.forEach.call(el.querySelectorAll("a, span"), function (child) {
+          if (!child.textContent) child.remove();
+        });
+      }
+
+      function fitLine(el) {
+        if (!el || el.clientWidth < 2) return;
+        restoreLine(el);
+        if (!el.textContent.trim() || !lineOverflows(el)) return;
+        var full = el.textContent.replace(/\s+/g, " ").trim();
+        var len = el.textContent.length;
+        var lo = 0;
+        var hi = len - 1;
+        var best = 0;
+        while (lo <= hi) {
+          var mid = (lo + hi) >> 1;
+          el.innerHTML = el.getAttribute("data-full-html");
+          placeCut(el, mid);
+          if (!lineOverflows(el)) { best = mid; lo = mid + 1; }
+          else hi = mid - 1;
+        }
+        el.innerHTML = el.getAttribute("data-full-html");
+        placeCut(el, best);
+        el.setAttribute("title", full);
+        el.setAttribute("data-ellipsis", "1");
+      }
+
+      function inkWidth(el) {
+        if (!el) return 0;
+        var sample = el.textContent.replace(/\s+/g, " ").trim();
+        if (!sample) return 0;
+        return textWidth(sample, el);
+      }
+
+      function usedGap(el) {
+        var cs = getComputedStyle(el);
+        var gap = parseFloat(cs.columnGap);
+        if (isNaN(gap)) gap = parseFloat(cs.gap);
+        return isNaN(gap) ? 0 : gap;
+      }
+
+      function markBox(unit) {
+        if (unit.classList.contains("is-logo-hidden")) return 0;
+        var mark = unit.querySelector(":scope > .brand-logo-link, :scope > img");
+        if (!mark) return 0;
+        var width = mark.getBoundingClientRect().width;
+        if (width < 1) return 0;
+        var cs = getComputedStyle(mark);
+        return width + (parseFloat(cs.marginLeft) || 0) + (parseFloat(cs.marginRight) || 0);
+      }
+
+      function contentWidth(unit) {
+        var width = unit.clientWidth;
+        if (unit.tagName === "TD" || unit.tagName === "TH") {
+          var cs = getComputedStyle(unit);
+          width -= (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+        }
+        return width;
+      }
+
+      /* Price moves to the right edge only when the name still fits beside it. */
+      function placePrices(units) {
+        var rootPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        var priceGap = 0.85 * rootPx;
+        var plan = [];
+        units.forEach(function (unit) {
+          unit.classList.remove("is-price-aside");
+        });
+        units.forEach(function (unit) {
+          var price = unit.querySelector(":scope > .udc-device-meta > .home-price, :scope > .home-price");
+          if (!price || unit.clientWidth < 2) {
+            plan.push(null);
+            return;
+          }
+          var textW = 0;
+          scheduleLines(unit).forEach(function (line) {
+            textW = Math.max(textW, inkWidth(line));
+          });
+          var priceW = inkWidth(price);
+          var logoW = markBox(unit);
+          var logoGap = logoW > 0 ? usedGap(unit) : 0;
+          var fit = textW + priceW + logoW + logoGap + priceGap <= contentWidth(unit) - 2;
+          plan.push(fit ? Math.ceil(priceW) : null);
+        });
+        units.forEach(function (unit, i) {
+          var slot = plan[i];
+          var aside = slot != null;
+          unit.classList.toggle("is-price-aside", aside);
+          if (aside) unit.style.setProperty("--price-slot", slot + "px");
+          else unit.style.removeProperty("--price-slot");
+        });
+      }
+
+      function applyLogoSlot(table) {
+        var imgs = table.querySelectorAll("img.brand-logo");
+        if (!imgs.length) return;
+        var maxRatio = 0;
+        Array.prototype.forEach.call(imgs, function (img) {
+          if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+            maxRatio = Math.max(maxRatio, img.naturalWidth / img.naturalHeight);
+          }
+        });
+        if (!maxRatio) return;
+        var link = table.querySelector(".brand-logo-link");
+        var pad = 0;
+        if (link) {
+          var cs = getComputedStyle(link);
+          pad = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+        }
+        table.style.setProperty("--logo-slot", Math.ceil(maxRatio * 16 + pad) + "px");
+      }
+
+      function tighten(table) {
+        if (!table || table.clientWidth < 2) return;
+        applyLogoSlot(table);
+        var units = scheduleUnits(table);
+        units.forEach(function (unit) {
+          unit.classList.remove("is-logo-hidden");
+          unit.classList.remove("is-price-aside");
+          unit.style.removeProperty("--price-slot");
+          scheduleLines(unit).forEach(restoreLine);
+        });
+        var tight = false;
+        units.forEach(function (unit) {
+          scheduleLines(unit).forEach(function (line) {
+            if (line.clientWidth >= 2 && line.textContent.trim() && lineOverflows(line)) tight = true;
+          });
+        });
+        if (tight) {
+          units.forEach(function (unit) { unit.classList.add("is-logo-hidden"); });
+        }
+        placePrices(units);
+        units.forEach(function (unit) {
+          scheduleLines(unit).forEach(fitLine);
+        });
+      }
+
+      function fitSchedules() {
+        var home = document.querySelector("#tab-spec table.home-appliances");
+        var devices = document.querySelector("#tab-spec table.device-list");
+        var ha = document.querySelector("#tab-spec table.ha-devices");
+        tighten(home);
+        tighten(devices);
+        tighten(ha);
+      }
+
+      window.fitScheduleLines = fitSchedules;
 
       function lockAll() {
         var home = document.querySelector("#tab-spec table.home-appliances");
@@ -742,12 +901,19 @@
         if (devices) lockDevices(devices);
         if (power) lockPower(power);
         if (ha) lockHa(ha);
+        fitSchedules();
       }
 
       requestAnimationFrame(function () { requestAnimationFrame(lockAll); });
       window.addEventListener("resize", function () {
         requestAnimationFrame(lockAll);
       });
+      window.addEventListener("load", function () {
+        requestAnimationFrame(lockAll);
+      });
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { requestAnimationFrame(lockAll); });
+      }
     })();
 
 (function () {
@@ -3161,6 +3327,9 @@
         if (key === "spec" && typeof window.equalizeDoorRows === "function") {
           requestAnimationFrame(window.equalizeDoorRows);
         }
+        if (key === "spec" && typeof window.fitScheduleLines === "function") {
+          requestAnimationFrame(window.fitScheduleLines);
+        }
       }
 
       function applyLocationHash(rawHash, scrollBehavior) {
@@ -3547,7 +3716,9 @@
 
       function equalizeRows() {
         var rows = table.querySelectorAll(".door-role");
+        var stacked = window.matchMedia("(max-width: 720px)").matches;
         Array.prototype.forEach.call(rows, function (row) { row.style.height = ""; });
+        if (stacked) return;
         var max = 0;
         Array.prototype.forEach.call(rows, function (row) {
           var h = row.getBoundingClientRect().height;
@@ -3571,12 +3742,8 @@
           var copy = document.createElement("span");
           copy.className = "door-opt-name";
           copy.textContent = door.name;
-          var sub = document.createElement("span");
-          sub.className = "door-opt-sub";
-          sub.textContent = door.hint;
           opt.appendChild(num);
           opt.appendChild(copy);
-          opt.appendChild(sub);
         },
         onOpen: function () { statusMenu.close(); },
         apply: function (door, i, animate) {
@@ -3599,11 +3766,7 @@
           var copy = document.createElement("span");
           copy.className = "door-opt-name";
           copy.textContent = state.name;
-          var sub = document.createElement("span");
-          sub.className = "door-opt-sub";
-          sub.textContent = state.hint;
           opt.appendChild(copy);
-          opt.appendChild(sub);
         },
         onOpen: function () { doorMenu.close(); },
         apply: function (state, i, animate) {
