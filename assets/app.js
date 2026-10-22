@@ -804,11 +804,13 @@
         return width;
       }
 
-      /* Price moves to the right edge only when the name still fits beside it. */
+      /* One side for the whole table. The price sits on the right only when every visible row still fits. */
       function placePrices(units) {
         var rootPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
         var priceGap = 0.85 * rootPx;
         var plan = [];
+        var allFit = true;
+        var any = false;
         units.forEach(function (unit) {
           unit.classList.remove("is-price-aside");
         });
@@ -826,13 +828,16 @@
           var logoW = markBox(unit);
           var logoGap = logoW > 0 ? usedGap(unit) : 0;
           var fit = textW + priceW + logoW + logoGap + priceGap <= contentWidth(unit) - 2;
-          plan.push(fit ? Math.ceil(priceW) : null);
+          any = true;
+          if (!fit) allFit = false;
+          plan.push(Math.ceil(priceW));
         });
+        var aside = any && allFit;
         units.forEach(function (unit, i) {
           var slot = plan[i];
-          var aside = slot != null;
-          unit.classList.toggle("is-price-aside", aside);
-          if (aside) unit.style.setProperty("--price-slot", slot + "px");
+          var on = aside && slot != null;
+          unit.classList.toggle("is-price-aside", on);
+          if (on) unit.style.setProperty("--price-slot", slot + "px");
           else unit.style.removeProperty("--price-slot");
         });
       }

@@ -2242,7 +2242,7 @@
       text-overflow: clip;
     }
 
-    /* Wide rows put the price on the right. Narrow rows keep it as the third line. */
+    /* A wide table puts every price on the right. A narrow table keeps every price on the third line. */
     .spa-spec .spa-article .appliances-wrap table.home-appliances .udc-device.is-price-aside,
     table.device-list .udc-device.is-price-aside,
     table.ha-devices .udc-device.is-price-aside {
