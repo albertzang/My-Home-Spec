@@ -773,6 +773,18 @@
 
       function inkWidth(el) {
         if (!el) return 0;
+        var usd = el.querySelector(":scope > .price-usd");
+        if (usd) {
+          var lead = "";
+          var node = el.firstChild;
+          while (node && node !== usd) {
+            if (node.nodeType === 3) lead += node.nodeValue;
+            node = node.nextSibling;
+          }
+          lead = lead.replace(/\s+/g, " ").trim();
+          var note = usd.textContent.replace(/\s+/g, " ").trim();
+          return Math.max(lead ? textWidth(lead, el) : 0, note ? textWidth(note, usd) : 0);
+        }
         var sample = el.textContent.replace(/\s+/g, " ").trim();
         if (!sample) return 0;
         return textWidth(sample, el);

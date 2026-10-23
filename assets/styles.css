@@ -501,7 +501,7 @@
       border-color: var(--sheet-line);
     }
 
-    .spa-spec .spa-article table.spec-sheet .udc-sku {
+    .spa-spec .spa-article table.spec-sheet .udc-sku:not(:hover):not(:focus-visible) {
       color: var(--sheet-sku);
     }
 
@@ -613,7 +613,7 @@
       line-height: 1.35;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances a.udc-sku {
+    .spa-spec .spa-article .appliances-wrap table.home-appliances a.udc-sku:not(:hover):not(:focus-visible) {
       color: var(--sheet-sku);
     }
 
@@ -730,7 +730,7 @@
 
     .design-toc-title {
       margin: 0 0 10px;
-      color: var(--muted);
+      color: var(--sheet-floor-ink);
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.8px;
@@ -749,7 +749,7 @@
       padding: 7px 12px;
       border-left: 2px solid transparent;
       border-radius: 0 6px 6px 0;
-      color: var(--ink-soft);
+      color: var(--sheet-ink);
       text-decoration: none;
       font-size: 14px;
       line-height: 1.35;
@@ -758,14 +758,14 @@
     }
 
     .design-toc-list a:hover {
-      background: var(--accent-soft);
-      color: var(--accent);
+      background: var(--sheet-hover);
+      color: var(--sheet-status);
     }
 
     .design-toc-list a.is-active {
-      border-left-color: var(--accent);
-      background: var(--accent-soft);
-      color: var(--accent);
+      border-left-color: var(--sheet-status);
+      background: var(--sheet-floor);
+      color: var(--sheet-status);
       font-weight: 600;
     }
 
@@ -790,8 +790,8 @@
 
 
 
-    .spa-spec .spa-article {
-      /* Shared by the four schedules. */
+    /* Stone paper and brass for the whole Spec pane. Topology keeps the slate chrome. */
+    .spa-spec {
       --sheet-paper: #fbf9f6;
       --sheet-ink: #2a2622;
       --sheet-header: #2c2825;
@@ -828,6 +828,11 @@
       --sheet-meter-deep: #7a4e2b;
       --sheet-mark: rgba(42, 38, 34, 0.08);
       --sheet-mark-ink: #2a2622;
+      background: var(--sheet-paper);
+      color: var(--sheet-ink);
+    }
+
+    .spa-spec .spa-article {
       box-sizing: border-box;
       min-width: 0;
       max-width: none;
@@ -838,7 +843,7 @@
        */
       padding: 28px 0 calc(100vh - var(--header-h) - 2rem);
       padding: 28px 0 calc(100dvh - var(--header-h) - 2rem);
-      color: var(--ink);
+      color: var(--sheet-ink);
       font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
       font-size: 0.95rem;
       line-height: 1.7;
@@ -850,8 +855,8 @@
       margin-top: 2.7rem;
       font-size: clamp(1.2rem, 1.05rem + 0.5vw, 1.3125rem);
       letter-spacing: -0.01em;
-      border-bottom-color: var(--line);
-      color: var(--ink);
+      border-bottom-color: var(--sheet-line);
+      color: var(--sheet-ink);
     }
 
     .spa-spec .spa-article h2:first-child {
@@ -859,23 +864,23 @@
     }
 
     .spa-spec .spa-article .lede {
-      color: var(--ink);
+      color: var(--sheet-ink);
     }
 
     .spa-spec .spa-article a {
       color: inherit;
       text-decoration: underline;
       text-decoration-style: dotted;
-      text-decoration-color: color-mix(in srgb, var(--ink) 28%, transparent);
+      text-decoration-color: color-mix(in srgb, var(--sheet-ink) 28%, transparent);
       text-underline-offset: 0.16em;
     }
 
     .spa-spec .spa-article a:hover,
     .spa-spec .spa-article a:focus-visible {
-      color: var(--accent);
+      color: var(--sheet-status);
       text-decoration: underline;
       text-decoration-style: solid;
-      text-decoration-color: var(--accent);
+      text-decoration-color: var(--sheet-status);
     }
 
     .spa-spec .spa-article h2 a.heading-ref,
@@ -888,10 +893,10 @@
     .spa-spec .spa-article h2 a.heading-ref:hover,
     .spa-spec .spa-article h3 a.heading-ref:hover,
     .spa-spec .spa-article h4 a.heading-ref:hover {
-      color: var(--accent);
+      color: var(--sheet-status);
       text-decoration: underline;
       text-decoration-style: solid;
-      text-decoration-color: var(--accent);
+      text-decoration-color: var(--sheet-status);
     }
 
     .spa-spec .spa-article table {
@@ -1586,6 +1591,9 @@
       min-width: 22rem;
       max-width: none;
       table-layout: auto;
+      /* Separate borders so the U column can stick inside the horizontal scroller. */
+      border-collapse: separate;
+      border-spacing: 0;
     }
 
     .spa-spec .spa-article table.rack-face th,
@@ -1593,6 +1601,23 @@
       padding: 0.35rem 0.5rem;
       white-space: nowrap;
       vertical-align: middle;
+      border-style: solid;
+      border-width: 0 1px 1px 0;
+    }
+
+    .spa-spec .spa-article table.rack-face tr > :first-child {
+      border-left-width: 1px;
+    }
+
+    .spa-spec .spa-article table.rack-face thead th {
+      border-top-width: 1px;
+    }
+
+    /* The wide header cell cannot stick. The label does, just to the right of U. */
+    .spa-spec .spa-article table.rack-face thead .rack-head {
+      position: sticky;
+      left: calc(3rem + 0.5rem);
+      z-index: 1;
     }
 
     .spa-spec .spa-article table.rack-face td:has(.rack-ports) {
@@ -1600,14 +1625,17 @@
     }
 
     .spa-spec .spa-article table.rack-face .rack-u {
+      position: sticky;
+      left: 0;
+      z-index: 2;
       width: 3rem;
+      min-width: 3rem;
       text-align: center;
       font-variant-numeric: tabular-nums;
-      color: var(--ink-soft);
-    }
-
-    .spa-spec .spa-article table.rack-face tbody .rack-u {
-      font-weight: 500;
+      font-weight: 650;
+      background: var(--sheet-header);
+      color: var(--sheet-header-ink);
+      border-color: rgba(247, 244, 239, 0.14);
     }
 
     .spa-spec .spa-article table.rack-face tbody tr {
@@ -1627,7 +1655,7 @@
     }
 
     .spa-spec .spa-article table.rack-face .rack-name {
-      color: var(--ink);
+      color: var(--sheet-ink);
       font-weight: 650;
       line-height: 1.3;
     }
@@ -1635,11 +1663,11 @@
     .spa-spec .spa-article table.rack-face .rack-note {
       font-size: 0.82em;
       line-height: 1.3;
-      color: #777;
+      color: var(--sheet-sku);
     }
 
     .spa-spec .spa-article table.rack-face tr.rack-gap td {
-      background: #f8fafc;
+      background: var(--sheet-group);
     }
 
     .spa-spec .spa-article table.rack-face .rack-ports {
@@ -1664,9 +1692,9 @@
     }
 
     .spa-spec .spa-article table.rack-face .udc-port.keystone {
-      --port-c: #cbd5e1;
-      background: #fff;
-      border: 1px solid #cbd5e1;
+      --port-c: var(--sheet-leaf-rail);
+      background: var(--sheet-nested);
+      border: 1px solid var(--sheet-leaf-rail);
     }
 
     h1 {
@@ -2013,6 +2041,69 @@
       line-height: 1.35;
     }
 
+    /* Tesla, order fees, and the rack face sit on the same sheet as the schedules. */
+    .spa-spec .spa-article table.devices-table:not(.spec-sheet) th,
+    .spa-spec .spa-article table.devices-table:not(.spec-sheet) td,
+    .spa-spec .spa-article table.rack-face th,
+    .spa-spec .spa-article table.rack-face td {
+      border-color: var(--sheet-line);
+      background: var(--sheet-paper);
+      color: var(--sheet-ink);
+    }
+
+    .spa-spec .spa-article table.devices-table:not(.spec-sheet) thead th,
+    .spa-spec .spa-article table.rack-face thead th {
+      background: var(--sheet-header);
+      color: var(--sheet-header-ink);
+      border-color: rgba(247, 244, 239, 0.14);
+    }
+
+    .spa-spec .spa-article table.rack-face thead .rack-u {
+      color: var(--sheet-header-ink);
+    }
+
+    .spa-spec .spa-article table.devices-table:not(.spec-sheet) thead tr:nth-child(2) th {
+      background: var(--sheet-header-2);
+      color: var(--sheet-header-2-ink);
+    }
+
+    .spa-spec .spa-article table.order-fees-table tfoot .order-fees-sum th,
+    .spa-spec .spa-article table.order-fees-table tfoot .order-fees-sum td {
+      background: var(--sheet-floor);
+      color: var(--sheet-ink);
+      border-top-color: var(--sheet-line);
+    }
+
+    .spa-spec .spa-article .design-devices-wrap .order-fees-table > tbody > tr > td.price-cell {
+      color: var(--sheet-price);
+    }
+
+    .spa-spec .spa-article table.devices-table:not(.spec-sheet) tbody tr:hover > td,
+    .spa-spec .spa-article table.rack-face tbody tr:hover > td {
+      background: var(--sheet-hover);
+    }
+
+    .spa-spec .spa-article code {
+      background: var(--sheet-floor);
+      color: inherit;
+    }
+
+    .spa-spec .spa-article pre.chain-diagram {
+      padding: 0.9rem 1rem;
+      overflow-x: auto;
+      border: 1px solid var(--sheet-line);
+      background: var(--sheet-group);
+      color: var(--sheet-ink);
+      line-height: 1.35;
+      font-size: 0.9rem;
+    }
+
+    .spa-spec .spa-article .udc-count,
+    .spa-spec .spa-article .poe-sub,
+    .spa-spec .spa-article .poe-lbl {
+      color: var(--sheet-sku);
+    }
+
     .stock-out {
       color: #c0392b;
       font-weight: 600;
@@ -2158,6 +2249,17 @@
       overflow: hidden;
       overflow-wrap: normal;
       text-overflow: clip;
+    }
+
+    /* Original US amount sits under the CAD figure. The summer reads only the CAD lead. */
+    .spa-spec .spa-article .price-usd {
+      display: block;
+      margin-top: 0.08rem;
+      font-size: 0.82em;
+      font-weight: 450;
+      line-height: 1.2;
+      color: var(--sheet-sku);
+      letter-spacing: 0;
     }
 
     table.device-list td.device-cell:has(.device-main) {
@@ -3871,7 +3973,7 @@
         padding: 0;
         border: 0;
         appearance: none;
-        background: rgba(15, 23, 42, 0.45);
+        background: rgba(42, 38, 34, 0.45);
         cursor: pointer;
         touch-action: none;
       }
@@ -3904,13 +4006,13 @@
         height: calc(100vh - var(--header-h));
         height: calc(100dvh - var(--header-h));
         max-height: calc(100dvh - var(--header-h));
-        background: var(--panel);
-        border-right: 1px solid var(--line);
+        background: var(--sheet-paper);
+        border-right: 1px solid var(--sheet-line);
         padding: 12px 12px max(28px, env(safe-area-inset-bottom));
         transform: none;
         transition: left 0.22s ease;
         z-index: 45;
-        box-shadow: 6px 0 24px rgba(15, 23, 42, 0.12);
+        box-shadow: 6px 0 24px rgba(42, 38, 34, 0.12);
         overscroll-behavior: contain;
         -webkit-overflow-scrolling: touch;
       }
@@ -3958,6 +4060,10 @@
     :focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
+    }
+
+    .spa-spec :focus-visible {
+      outline-color: var(--sheet-status);
     }
 
 .spa-loading { padding: 1.25rem; color: var(--muted); }
