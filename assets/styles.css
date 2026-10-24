@@ -236,15 +236,16 @@
       margin: 0.65rem 0 1rem;
     }
 
-    /*
-     * Same scroll rule as other Spec table wraps (overflow-x: auto above):
-     * no bar when the pane is wide enough; bar appears when it is not.
-     * Watt and port columns stay on one line. Names and notes wrap inside the column.
-     */
+    /* §2.4 is one table the width of the pane. Names and the bar note ellipsize
+       in the middle, so the wrap never grows a horizontal scrollbar. */
+    .spa-spec .spa-article .power-tree-wrap {
+      overflow-x: clip;
+    }
+
     .spa-spec .spa-article table.power-tree {
       width: 100%;
       min-width: 0;
-      max-width: none;
+      max-width: 100%;
       table-layout: fixed;
     }
 
@@ -514,7 +515,7 @@
       background-color: var(--sheet-leaf-hover);
     }
 
-    .spa-spec .spa-article table.spec-sheet tbody tr:not(.room-span):not(.floor-span):not(.power-tree-handle):not(.power-tree-leaf):hover > td {
+    .spa-spec .spa-article table.spec-sheet tbody tr:not(.room-span):not(.floor-span):not(.power-tree-handle):not(.power-tree-leaf):not(.power-tree-ports):hover > td {
       background-color: var(--sheet-hover);
     }
 
@@ -2104,11 +2105,6 @@
       color: var(--sheet-sku);
     }
 
-    .stock-out {
-      color: #c0392b;
-      font-weight: 600;
-    }
-
     .poe-val {
       display: block;
       line-height: 1.25;
@@ -2333,7 +2329,6 @@
       width: 100%;
       min-width: 0;
       max-width: 100%;
-      min-height: 1.35em;
       margin-top: 0.12rem;
       font-size: 0.72rem;
       line-height: 1.35;
@@ -2344,7 +2339,12 @@
       text-overflow: clip;
     }
 
-    /* A wide table puts every price on the right. A narrow table keeps every price on the third line. */
+    table.ha-devices .protocol-line:empty {
+      display: none;
+      margin: 0;
+    }
+
+    /* A wide table puts every price on the right. A narrow table stacks the price under the name. */
     .spa-spec .spa-article .appliances-wrap table.home-appliances .udc-device.is-price-aside,
     table.device-list .udc-device.is-price-aside,
     table.ha-devices .udc-device.is-price-aside {
@@ -3467,10 +3467,6 @@
       border-collapse: collapse;
     }
 
-    table.power-tree .power-tree-col-power {
-      width: 7rem;
-    }
-
     table.power-tree td {
       padding: 0.5rem 0.75rem;
       vertical-align: middle;
@@ -3489,22 +3485,67 @@
       color: var(--sheet-leaf-ink);
     }
 
-    table.power-tree tr.power-tree-leaf > td[colspan="2"] {
+    table.power-tree tr.power-tree-leaf > td.power-device {
       font-weight: 650;
       color: var(--sheet-ink);
-      border-bottom-color: transparent;
-      padding-bottom: 0.2rem;
-      white-space: nowrap;
+      padding-bottom: 0.45rem;
     }
 
-    table.power-tree tr.power-tree-leaf > td[colspan="2"] a {
+    table.power-tree .power-device-line {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 0;
+    }
+
+    table.power-tree .power-device-name {
+      min-width: 0;
+      flex: 1 1 auto;
+      overflow: hidden;
+      white-space: nowrap;
       font-weight: 650;
     }
 
-    table.power-tree tr.power-tree-leaf > td:not([colspan]):not(.num) {
-      padding-top: 0.12rem;
-      border-top-color: transparent;
+    table.power-tree .power-device-name a {
+      font-weight: 650;
+    }
+
+    table.power-tree .power-field {
+      flex: 0 0 auto;
+      margin-left: auto;
+      text-align: right;
+      font-weight: 650;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      color: var(--sheet-price);
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-leaf > td.power-port {
+      padding-top: 0.4rem;
+      padding-bottom: 0.5rem;
       font-size: 0.78rem;
+      border-top-color: rgba(42, 38, 34, 0.22);
+      box-shadow: inset 3px 0 0 var(--sheet-leaf-rail);
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-leaf > td.power-port:first-child {
+      border-right-color: rgba(42, 38, 34, 0.22);
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-leaf > td.power-port + td.power-port {
+      border-left-color: rgba(42, 38, 34, 0.22);
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-leaf:has(> td.power-device) > td.power-device {
+      border-bottom-color: rgba(42, 38, 34, 0.22);
+    }
+
+    /* Name row and port row are one device. Hovering either paints both. */
+    .spa-spec .spa-article table.power-tree tr.power-tree-leaf:has(> td.power-device):hover > td,
+    .spa-spec .spa-article table.power-tree tr.power-tree-leaf:has(> td.power-device):hover + tr.power-tree-leaf > td,
+    .spa-spec .spa-article table.power-tree tr.power-tree-leaf:has(> td.power-device):has(+ tr.power-tree-leaf:hover) > td,
+    .spa-spec .spa-article table.power-tree tr.power-tree-leaf:has(> td.power-port):hover > td {
+      background-color: var(--sheet-leaf-hover);
     }
 
     table.power-tree tr.power-tree-leaf > td.num {
@@ -3515,18 +3556,6 @@
 
     table.power-tree tr.power-tree-leaf:hover > td {
       background-color: var(--sheet-leaf-hover);
-    }
-
-    table.power-tree tr.power-tree-leaf[data-level="1"] > td:first-child {
-      padding-left: 1.7rem;
-    }
-
-    table.power-tree tr.power-tree-leaf[data-level="2"] > td:first-child {
-      padding-left: 2.55rem;
-    }
-
-    table.power-tree tr.power-tree-leaf[data-level="3"] > td:first-child {
-      padding-left: 3.4rem;
     }
 
     table.power-tree th.power-head,
@@ -3566,15 +3595,22 @@
       display: flex;
       align-items: center;
       width: 100%;
+      min-width: 0;
       gap: 0.45rem;
     }
 
     table.power-tree .power-handle .room-name {
+      min-width: 0;
+      flex: 1 1 auto;
+      overflow: hidden;
       font-weight: 650;
+      white-space: nowrap;
     }
 
     table.power-tree .power-readout {
+      flex: 0 0 auto;
       margin-left: auto;
+      text-align: right;
       font-variant-numeric: tabular-nums;
       font-weight: 700;
       white-space: nowrap;
@@ -3595,48 +3631,13 @@
     }
 
     table.power-tree .power-terms {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
+      display: block;
+      min-width: 0;
       margin: 0 0 0 1.6rem;
+      overflow: hidden;
+      font-size: 0.72rem;
       font-variant-numeric: tabular-nums;
-    }
-
-    table.power-tree .power-terms span + span::before {
-      content: "+";
-      margin: 0 0.4rem;
-      font-weight: 550;
-    }
-
-    table.power-tree .power-terms small {
-      margin-left: 0.08rem;
-      font-size: 0.78em;
-    }
-
-    table.power-tree .power-terms b {
-      font-weight: 700;
-    }
-
-    table.power-tree .power-terms b::before {
-      content: "=";
-      margin: 0 0.45rem;
-      font-weight: 550;
-    }
-
-    table.power-tree .power-terms em {
-      margin-left: 0.85rem;
-      padding-left: 0.75rem;
-      box-shadow: inset 1px 0 0 rgba(42, 38, 34, 0.28);
-      font-style: normal;
-      font-weight: 550;
-    }
-
-    table.power-tree tr.power-tree-handle[data-level="1"] .power-handle {
-      padding-left: 0.85rem;
-    }
-
-    table.power-tree tr.power-tree-handle[data-level="2"] .power-handle {
-      padding-left: 1.7rem;
+      white-space: nowrap;
     }
 
     table.power-tree tr.power-tree-handle[data-level="0"] > th {
@@ -3689,15 +3690,63 @@
     }
 
     table.power-tree tr.power-tree-handle[data-level="0"] .power-readout span,
-    table.power-tree tr.power-tree-handle[data-level="0"] .power-readout small,
-    table.power-tree tr.power-tree-handle[data-level="0"] .power-terms em,
-    table.power-tree tr.power-tree-handle[data-level="0"] .power-terms span + span::before,
-    table.power-tree tr.power-tree-handle[data-level="0"] .power-terms b::before {
+    table.power-tree tr.power-tree-handle[data-level="0"] .power-readout small {
       color: var(--sheet-header-2-ink);
     }
 
-    table.power-tree tr.power-tree-handle[data-level="0"] .power-terms em {
-      box-shadow: inset 1px 0 0 rgba(244, 247, 248, 0.35);
+    .spa-spec .spa-article table.power-tree tr.power-tree-ports > td {
+      padding-top: 0.4rem;
+      padding-bottom: 0.5rem;
+      border-top-color: rgba(42, 38, 34, 0.22);
+      box-shadow: inset 3px 0 0 var(--sheet-leaf-rail);
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-ports > td:first-child {
+      border-right-color: rgba(42, 38, 34, 0.22);
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-ports > td + td {
+      border-left-color: rgba(42, 38, 34, 0.22);
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-handle:has(+ tr.power-tree-ports) > th {
+      padding-bottom: 0.45rem;
+      border-bottom-color: rgba(42, 38, 34, 0.22);
+    }
+
+    /* The relay's own rail continues into its port row, in that row's colour. */
+    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="1"]:has(+ tr.power-tree-ports) > th {
+      box-shadow: inset 3px 0 0 var(--sheet-meter-deep);
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="2"]:has(+ tr.power-tree-ports) > th {
+      box-shadow: inset 3px 0 0 var(--sheet-nested-rail);
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-ports[data-level="1"] > td {
+      background: var(--sheet-l1);
+      color: var(--sheet-l1-ink);
+      box-shadow: inset 3px 0 0 var(--sheet-meter-deep);
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-ports[data-level="2"] > td {
+      background: var(--sheet-l2);
+      color: var(--sheet-ink);
+      box-shadow: inset 3px 0 0 var(--sheet-nested-rail);
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="1"]:hover > th,
+    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="1"]:hover + tr.power-tree-ports > td,
+    .spa-spec .spa-article table.power-tree tr.power-tree-ports[data-level="1"]:hover > td,
+    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="1"]:has(+ tr.power-tree-ports:hover) > th {
+      background: var(--sheet-l1-hover);
+    }
+
+    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="2"]:hover > th,
+    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="2"]:hover + tr.power-tree-ports > td,
+    .spa-spec .spa-article table.power-tree tr.power-tree-ports[data-level="2"]:hover > td,
+    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="2"]:has(+ tr.power-tree-ports:hover) > th {
+      background: var(--sheet-l2-hover);
     }
 
     table.power-tree tr.power-tree-leaf {

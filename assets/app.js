@@ -237,7 +237,9 @@
         var nameEl = row.querySelector(".room-name");
         if (button) {
           button.setAttribute("aria-expanded", open ? "true" : "false");
-          var name = nameEl ? nameEl.textContent.replace(/\s+/g, " ").trim() : "group";
+          var name = nameEl
+            ? (nameEl.getAttribute("title") || nameEl.textContent).replace(/\s+/g, " ").trim()
+            : "group";
           button.setAttribute("aria-label", (open ? "Collapse " : "Expand ") + name);
         }
         if (mark) mark.textContent = open ? "-" : "+";
@@ -248,6 +250,8 @@
         var idx = rows.indexOf(handle);
         for (var i = idx + 1; i < rows.length; i += 1) {
           var row = rows[i];
+          /* The handle's own port row shares its level and is not a descendant. */
+          if (row.classList.contains("power-tree-ports")) continue;
           var rowLevel = Number(row.getAttribute("data-level"));
           if (rowLevel <= level) break;
           if (row.classList.contains("power-tree-handle")) setHandleOpen(row, false);
@@ -272,7 +276,12 @@
         var collapsedDepth = Infinity;
         rows.forEach(function (row) {
           var level = Number(row.getAttribute("data-level"));
-          if (level <= collapsedDepth) collapsedDepth = Infinity;
+          /* A port row shares its device's level, so it must not clear that
+             device's collapse. The next handle at the same level does. */
+          var opensLevel = level < collapsedDepth || (
+            level === collapsedDepth && row.classList.contains("power-tree-handle")
+          );
+          if (opensLevel) collapsedDepth = Infinity;
           var hiddenByAncestor = level > collapsedDepth;
           setRowHidden(row, hiddenByAncestor);
           if (
@@ -283,6 +292,7 @@
             collapsedDepth = level;
           }
         });
+        if (window.fitPowerLines) requestAnimationFrame(window.fitPowerLines);
       }
 
       rows.forEach(function (row) {
@@ -661,28 +671,23 @@
       }
 
       function lockPower(table) {
-        var head = table.querySelector("th.power-head");
-        if (!head) return;
-        var power = Math.ceil(textWidth("Power", head) + boxExtra(head));
-        var left = 0;
-        var right = 0;
-        var names = 0;
-        Array.prototype.forEach.call(table.querySelectorAll("tr.power-tree-leaf"), function (row) {
-          var cells = row.children;
-          if (cells.length === 2 && cells[0].colSpan === 2) {
-            names = Math.max(names, textWidth(cells[0].textContent.replace(/\s+/g, " ").trim(), cells[0]) + boxExtra(cells[0]));
-          } else if (cells.length === 2 && !cells[0].classList.contains("num")) {
-            left = Math.max(left, textWidth(cells[0].textContent.replace(/\s+/g, " ").trim(), cells[0]) + boxExtra(cells[0]));
-            right = Math.max(right, textWidth(cells[1].textContent.replace(/\s+/g, " ").trim(), cells[1]) + boxExtra(cells[1]));
-          }
+        /* One table, as wide as the pane. Names and the bar note ellipsize. */
+        table.style.tableLayout = "fixed";
+        table.style.width = "100%";
+        table.style.minWidth = "0";
+        table.style.maxWidth = "100%";
+        Array.prototype.forEach.call(table.querySelectorAll("colgroup col"), function (col) {
+          col.style.width = "50%";
         });
-        if (names > left + right) {
-          var slack = names - (left + right);
-          left += slack / 2;
-          right += slack - slack / 2;
-        }
-        apply(table, [Math.ceil(left), Math.ceil(right), power], [true, true, false]);
       }
+
+      function fitPowerLines() {
+        var table = document.querySelector("#tab-spec table.power-tree");
+        if (!table) return;
+        Array.prototype.forEach.call(table.querySelectorAll(".room-name, .power-device-name, .power-terms"), fitLine);
+      }
+
+      window.fitPowerLines = fitPowerLines;
 
       function lockHa(table) {
         lockDevices(table);
@@ -918,6 +923,7 @@
         if (devices) lockDevices(devices);
         if (power) lockPower(power);
         if (ha) lockHa(ha);
+        fitPowerLines();
         fitSchedules();
       }
 
@@ -1012,12 +1018,12 @@
 
       var UI = "https://store.ui.com/us/en/products/";
       var nodes = [
-        { id: "nah", name: "Nokia XS-250X-A", loc: "Rack Cabinet", href: "https://www.telus.com/en/bc/internet", info: "Preferred TELUS XGS-PON ONT (no Wi-Fi). 10G RJ45 WAN out over a Cat6 rack patch. If only a NAH is issued, same copper handoff with Port 10G Bridge—do not stack ONT+NAH.",
+        { id: "nah", name: "Nokia XS-250X-A", loc: "Rack Cabinet", href: "https://www.telus.com/en/bc/internet", info: "Preferred TELUS XGS-PON ONT (no Wi-Fi). The jack edge faces the rack rear. 10G RJ45 leaves on a 1 m patch into patch port 24, then a 0.15 m patch up to the UDM CM adapter. If only a NAH is issued, same copper handoff with Port 10G Bridge—do not stack ONT+NAH.",
           up: [P("nah-pon", "other", { t: "F", title: "XGS-PON fiber in" })],
           down: idleMany(4, "nah-1g", "gbe1", { title: "1G RJ45 unused", idle: true }).concat([
-            P("nah-10g", "gbe10", { poe: "wan", title: "10G RJ45 WAN out · Cat6 rack patch to UDM CM adapter", child: "udm" })
+            P("nah-10g", "gbe10", { poe: "wan", title: "10G RJ45 WAN out · 1 m rear into patch 24 · 0.15 m up to UDM CM adapter", child: "udm" })
           ]) },
-        { id: "udm", vlan: "management", name: "UDM-Pro-Max", loc: "Rack Cabinet", href: UI + "udm-pro-max", info: "ONT (or bridged NAH) Cat6 rack patch terminates at the RJ45 face of a UACC-CM-RJ45-MG inserted in UDM-Pro-Max WAN SFP+. LAN SFP+ connects directly to USW-Pro-XG-24-PoE by one DAC. LAN 1 connects to UPS 2U Pro management at 100M; the other seven 1G LAN ports stay unused.",
+        { id: "udm", vlan: "management", name: "UDM-Pro-Max", loc: "Rack Cabinet", href: UI + "udm-pro-max", info: "ONT (or bridged NAH) faces its jack edge rearward. A 1 m patch runs from that jack into patch port 24, a Cat6A keystone coupler; a 0.15 m patch continues up to the RJ45 face of a UACC-CM-RJ45-MG inserted in UDM-Pro-Max WAN SFP+. LAN SFP+ connects directly to USW-Pro-XG-24-PoE by one DAC. LAN 8 reaches UPS 2U Pro management through patch port 23: a 0.15 m patch up from an RJ45–RJ45 keystone coupler, then a 1 m patch from the UPS rear jack into that coupler. The other seven 1G LAN ports stay unused.",
           embed: [
             { name: "UACC-CM-RJ45-MG · RJ45 ↔ SFP+", href: UI + "uacc-cm-rj45-mg" }
           ],
@@ -1026,11 +1032,11 @@
             P("udm-wan25", "gbe2p5", { poe: "wan", title: "WAN 2.5G RJ45 unused", idle: true })
           ],
           down: idleMany(7, "udm-lan-idle", "gbe1", { title: "LAN 1G unused", idle: true }).concat([
-            P("udm-lan1", "gbe1", { title: "LAN 1G → UPS 2U Pro at 100M", child: "ups" }),
+            P("udm-lan8", "gbe1", { title: "LAN 8 1G → patch 23 → UPS 2U Pro at 100M", child: "ups" }),
             P("udm-lan-sfp", "sfp", { t: "SFP+", title: "LAN SFP+ → UACC-DAC-SFP10", child: "xg" })
           ]) },
-        { id: "ups", vlan: "management", name: "UPS 2U Pro", loc: "Rack Cabinet", href: UI + "ups-2u-pro-us", info: "100/10 MbE management on UDM-Pro-Max LAN 1 for adoption and NUT. Two GbE surge in/out ports stay unused; the WAN path is SFP+.",
-          up: [P("ups-lan", "fe", { title: "100/10 MbE management ← UDM LAN 1" })],
+        { id: "ups", vlan: "management", name: "UPS 2U Pro", loc: "Rack Cabinet", href: UI + "ups-2u-pro-us", info: "100/10 MbE management jack is on the rear. A 1 m patch lands on patch port 23, an RJ45–RJ45 keystone coupler; a 0.15 m patch continues up to UDM-Pro-Max LAN 8 for adoption and NUT. Two GbE surge in/out ports stay unused; the WAN path is SFP+.",
+          up: [P("ups-lan", "fe", { title: "100/10 MbE management ← patch 23 ← UDM LAN 8" })],
           down: idleMany(2, "ups-surge", "gbe1", { title: "GbE surge in/out unused", idle: true }) },
         { id: "xg", vlan: "management", name: "USW-Pro-XG-24-PoE", loc: "Rack Cabinet", href: UI + "usw-pro-xg-24-poe", info: "2×SFP28 + 8×2.5G PoE+++ + 16×10G PoE+++. Unused ports hollow.",
           poeBar: { label: "PoE Output Used", used: 445.9, cap: 720 },
@@ -1050,12 +1056,9 @@
             P("xg-panel", "gbe10", { poe: "ppp", title: "10G → electrical panel meter · PoE off", child: "panel-meter" }),
             P("xg-nas", "gbe10", { poe: "ppp", title: "10G PoE+++ → Synology FS2500 LACP", child: "nas" }),
             P("xg-nas2", "gbe10", { poe: "ppp", title: "10G PoE+++ → Synology FS2500 LACP", child: "nas" }),
-            P("xg-room-backup", "gbe10", { poe: "ppp", title: "5× cabinet-end backup C6A · not connected to USW-Pro-XG-24-PoE", loose: true, count: 5, child: "group-room-drops" }),
-            P("xg-room-live", "gbe10", { poe: "ppp", title: "5× active USW-Pro-XG-24-PoE Room Drop ports", count: 5, child: "group-room-drops" }),
-            P("xg-media-backup", "gbe10", { poe: "ppp", title: "Media Room backup C6A · cabinet end not connected to USW-Pro-XG-24-PoE", loose: true, child: "drop-media" }),
-            P("xg-media-live", "gbe10", { poe: "ppp", title: "10G PoE+++ → active Media Room C6A", child: "drop-media" }),
-            P("xg-gar-backup", "gbe10", { poe: "ppp", title: "Cabinet-end Garage backup C6A · not connected to USW-Pro-XG-24-PoE", loose: true, child: "drop-gar" }),
-            P("xg-gar", "gbe10", { poe: "ppp", title: "10G PoE+++ → active Garage C6A", child: "drop-gar" }),
+            P("xg-room-live", "gbe10", { poe: "ppp", title: "5× USW-Pro-XG-24-PoE Room Drop ports", count: 5, child: "group-room-drops" }),
+            P("xg-media-live", "gbe10", { poe: "ppp", title: "10G PoE+++ → Media Room C6A", child: "drop-media" }),
+            P("xg-gar", "gbe10", { poe: "ppp", title: "10G PoE+++ → Garage C6A", child: "drop-gar" }),
             P("xg-spare-10g-1", "gbe10", { poe: "ppp", title: "10G PoE+++ spare", idle: true }),
             P("xg-spare-10g-2", "gbe10", { poe: "ppp", title: "10G PoE+++ spare", idle: true })
           ] },
@@ -1102,10 +1105,7 @@
         { id: "u7u", vlan: "management", name: "U7-Pro", loc: "Upper", href: UI + "u7-pro", info: "2.5G PoE+ from USW-Pro-XG-24-PoE.",
           poeBar: { used: 21, cap: 30 },
           up: [P("u7u-up", "gbe2p5", { poe: "plus", title: "2.5G PoE+" })], down: [] },
-        { id: "drop-media-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
-          up: [P("drop-media-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
-          down: [P("drop-media-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-media", name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "Active C6A home-run on a single-port plate → Cat6 short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input. The second run is shown above as a separate dashed backup card.",
+        { id: "drop-media", name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "C6A home-run on a single-port plate → Cat6 short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input.",
           up: [P("drop-media-up", "gbe10", { poe: "ppp", title: "10G ← USW-Pro-XG-24-PoE" })],
           down: [P("drop-media-dn", "gbe10", { poe: "ppp", title: "10G PoE+++ pass-through → USW-Flex-2.5G-8 at PoE+", child: "media-flex" })] },
         { id: "media-flex", vlan: "management", name: "USW-Flex-2.5G-8", loc: "Basement/Media Room", href: "https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", info: "Non-PoE model. C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45 uplink and PoE+ input from USW-Pro-XG-24-PoE. No AC / USB-C supply. SFP+ combo left unused. Eight 2.5G downlinks have no PoE output.",
@@ -1119,34 +1119,19 @@
         { id: "panel-meter", vlan: "iot", name: "Electrical Panel", loc: "Mechanical Room", info: "Line-powered meter at the electrical panel. VLAN 40 · IoT / Energy. Data only, PoE off at the switch. Model not chosen.",
           up: [P("panel-meter-up", "gbe1", { title: "1G ← USW-Pro-XG-24-PoE · PoE off" })],
           down: [] },
-        { id: "drop-den-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
-          up: [P("drop-den-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
-          down: [P("drop-den-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-den", name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Only Den uses a 2-port wall plate; second jack is the backup above.",
+        { id: "drop-den", name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Den's Mac Studio Cat6A on the 2-port plate. The other jack is the HA home-run.",
           up: [P("drop-den-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
-          down: [P("drop-den-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-master-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Master Bedroom", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
-          up: [P("drop-master-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
-          down: [P("drop-master-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-master", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Master Bedroom", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Single-port vertical plate; spare is the backup above.",
+          down: [P("drop-den-dn", "gbe10", { poe: "ppp", title: "10G → Mac Studio" })] },
+        { id: "drop-master", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Master Bedroom", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A on a single-port vertical plate.",
           up: [P("drop-master-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
           down: [P("drop-master-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-br1-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Bedroom 1", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
-          up: [P("drop-br1-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
-          down: [P("drop-br1-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-br1", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Bedroom 1", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Wall has one jack; spare is the backup above.",
+        { id: "drop-br1", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Bedroom 1", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Wall has one jack.",
           up: [P("drop-br1-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
           down: [P("drop-br1-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-br2-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Bedroom 2", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
-          up: [P("drop-br2-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
-          down: [P("drop-br2-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-br2", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Bedroom 2", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Wall has one jack; spare is the backup above.",
+        { id: "drop-br2", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Bedroom 2", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Wall has one jack.",
           up: [P("drop-br2-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
           down: [P("drop-br2-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-seat-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Upper/Seating Area", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at the patch panel; not patched to USW-Pro-XG-24-PoE.",
-          up: [P("drop-seat-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
-          down: [P("drop-seat-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-seat", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Seating Area", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Wall has one jack; spare is the backup above.",
+        { id: "drop-seat", name: "UACC-Keystone-Jack-C6A", loc: "Upper/Seating Area", href: UI + "uacc-keystone-jack-c6a", info: "Patched C6A. Wall has one jack.",
           up: [P("drop-seat-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
           down: [P("drop-seat-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
 
@@ -1242,10 +1227,7 @@
           poeBar: { used: 30, cap: 30 },
           up: [P("wp-u-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
 
-        { id: "drop-gar-bak", backup: true, name: "UACC-Keystone-Jack-C6A", loc: "Garage", href: UI + "uacc-keystone-jack-c6a", info: "Backup C6A. Terminated at both ends; cabinet end is not connected to USW-Pro-XG-24-PoE.",
-          up: [P("drop-gar-bak-up", "gbe10", { poe: "ppp", title: "10G backup keystone · wired to loose cabinet end" })],
-          down: [P("drop-gar-bak-dn", "gbe10", { poe: "ppp", title: "10G unused", idle: true })] },
-        { id: "drop-gar", name: "UACC-Keystone-Jack-C6A", loc: "Garage", href: UI + "uacc-keystone-jack-c6a", info: "C6A home-run → Type 4 / 4PPoE Cat6 short patch → USW-Flex-2.5G-8-PoE 10G RJ45 uplink with PoE+++. The second wired run is shown above with a dashed device frame.",
+        { id: "drop-gar", name: "UACC-Keystone-Jack-C6A", loc: "Garage", href: UI + "uacc-keystone-jack-c6a", info: "C6A home-run → Type 4 / 4PPoE Cat6 short patch → USW-Flex-2.5G-8-PoE 10G RJ45 uplink with PoE+++.",
           up: [P("drop-gar-xg", "gbe10", { poe: "ppp", title: "10G ← USW-Pro-XG-24-PoE" })],
           down: [P("drop-gar-flex", "gbe10", { poe: "ppp", title: "10G → USW-Flex-2.5G-8-PoE 10G RJ45", child: "flex" })] },
         { id: "flex", vlan: "management", name: "USW-Flex-2.5G-8-PoE", loc: "Garage", href: UI + "usw-flex-2-5g-8-poe", info: "C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45 uplink and PoE+++ input from USW-Pro-XG-24-PoE. No AC adapter. SFP+ combo left unused. Eight 2.5G PoE++ downlinks.",
@@ -1335,12 +1317,11 @@
           bundle: DoorHubSubtrees([
             { mini: "gar-mini", reader: "gar-g3", camera: "lane", strike: "gar-strike" }
           ]) },
-        { id: "group-room-drops", name: "Room Drop + Backup ×5", info: "Five active Cat6A runs connect to USW-Pro-XG-24-PoE; five terminated backup runs remain unpatched. Locations are listed at right.",
-          up: [P("drop-den-up", "gbe10", { poe: "ppp", title: "10G active keystone" })], down: [],
+        { id: "group-room-drops", name: "Room Drop ×5", info: "Five Cat6A runs connect to USW-Pro-XG-24-PoE. Den's other wall jack is the HA home-run, drawn separately. Locations are listed at right.",
+          up: [P("drop-den-up", "gbe10", { poe: "ppp", title: "10G keystone" })], down: [],
           bundle: {
             kind: "room", count: 5,
             rows: [
-              { source: "drop-den-bak" },
               { source: "drop-den" }
             ],
             locations: ["Main/Den", "Upper/Master Bedroom", "Upper/Bedroom 1", "Upper/Bedroom 2", "Upper/Seating Area"]
@@ -1386,9 +1367,9 @@
       };
 
       var links = [
-        { from: "nah", fp: "nah-10g", to: "udm", tp: "udm-wan", cable: "cat6", route: "vertical", info: "ONT/NAH 10G RJ45 → Cat6 rack patch → CM RJ45; CM SFP+ is inserted in UDM-Pro-Max WAN." },
+        { from: "nah", fp: "nah-10g", to: "udm", tp: "udm-wan", cable: "cat6", route: "vertical", info: "ONT/NAH 10G RJ45 → 1 m rear into patch port 24 → 0.15 m up to CM RJ45; CM SFP+ is inserted in UDM-Pro-Max WAN." },
         { from: "udm", fp: "udm-lan-sfp", to: "xg", tp: "xg-sfp", cable: "dac", route: "vertical", label: "UACC-DAC-SFP10", href: UI + "10gbps-direct-attach-cable", info: "One UACC-DAC-SFP10: UDM-Pro-Max LAN SFP+ → USW-Pro-XG-24-PoE SFP28 at 10G." },
-        { from: "udm", fp: "udm-lan1", to: "ups", tp: "ups-lan", cable: "cat6", route: "horizontal", info: "UDM-Pro-Max LAN 1G → UPS 2U Pro 100/10 MbE management." },
+        { from: "udm", fp: "udm-lan8", to: "ups", tp: "ups-lan", cable: "cat6", route: "horizontal", info: "UDM-Pro-Max LAN 8 → 0.15 m up from patch port 23 → 1 m from the coupler to the UPS 2U Pro rear 100/10 MbE management jack." },
         { from: "xg", fp: "xg-nas", to: "nas", tp: "nas-10g", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → Cat6 rack patch → Synology FS2500 LACP." },
         { from: "xg", fp: "xg-nas2", to: "nas", tp: "nas-10g2", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → Cat6 rack patch → Synology FS2500 LACP." },
         { from: "xg", fp: "xg-ha", to: "ha", tp: "ha-up", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G PoE+++ port → Cat6 rack patch → ameriDroid PoE Mini PC for Home Assistant at 2.5G PoE++." },
@@ -1427,13 +1408,10 @@
         { from: "gar-mini", fp: "gar-mini-poe2", to: "lane", tp: "lane-up", cable: "cat6", route: "horizontal", info: "Garage UA-Hub-Door-Mini PoE+ → Laneway UVC-G6-Pro-Turret." },
         { from: "gar-mini", fp: "gar-mini-lock", to: "gar-strike", tp: "gar-strike-lock", route: "horizontal", info: "Garage UA-Hub-Door-Mini LOCK → UACC-Lock-Strike-Secure-15mm." },
         { from: "gar-mini", fp: "gar-mini-dps", to: "gar-strike", tp: "gar-strike-dps", route: "horizontal", info: "Garage UA-Hub-Door-Mini DPS → UACC-Lock-Strike-Secure-15mm." },
-        { from: "xg", fp: "xg-room-backup", to: "group-room-drops", tp: "drop-den-bak-up", info: "5× wired backup Room Drops → loose cabinet ends; not connected to USW-Pro-XG-24-PoE." },
-        { from: "xg", fp: "xg-room-live", to: "group-room-drops", tp: "drop-den-up", info: "5× USW-Pro-XG-24-PoE → active Room Drop." },
-        { from: "xg", fp: "xg-media-backup", to: "drop-media-bak", tp: "drop-media-bak-up", info: "Wired Media Room backup → loose cabinet end; not connected to USW-Pro-XG-24-PoE." },
-        { from: "xg", fp: "xg-media-live", to: "drop-media", tp: "drop-media-up", info: "USW-Pro-XG-24-PoE 10G PoE+++ port → active Media Room Drop." },
+        { from: "xg", fp: "xg-room-live", to: "group-room-drops", tp: "drop-den-up", info: "5× USW-Pro-XG-24-PoE → Room Drop." },
+        { from: "xg", fp: "xg-media-live", to: "drop-media", tp: "drop-media-up", info: "USW-Pro-XG-24-PoE 10G PoE+++ port → Media Room Drop." },
         { from: "drop-media", fp: "drop-media-dn", to: "media-flex", tp: "media-flex-up", cable: "cat6", route: "horizontal", info: "Media Room C6A wall jack → Cat6 short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input." },
-        { from: "xg", fp: "xg-panel", to: "panel-meter", tp: "panel-meter-up", cable: "cat6", info: "USW-Pro-XG-24-PoE with PoE disabled → electrical panel meter. Data only." },
-        { from: "xg", fp: "xg-gar-backup", to: "drop-gar-bak", tp: "drop-gar-bak-up", info: "Wired Garage backup Room Drop → loose cabinet end; not connected to USW-Pro-XG-24-PoE." }
+        { from: "xg", fp: "xg-panel", to: "panel-meter", tp: "panel-meter-up", cable: "cat6", info: "USW-Pro-XG-24-PoE with PoE disabled → electrical panel meter. Data only." }
       ];
 
       var byId = {};
@@ -1633,8 +1611,6 @@
         });
       }
       mountTree("nah");
-      if (!els["drop-media-bak"]) mount("drop-media-bak", stage);
-      if (!els["drop-gar-bak"]) mount("drop-gar-bak", stage);
 
       var leftFlowRoots = ["view", "group-aps", "group-main-doors"];
       function markFlowLeft(id) {
@@ -1759,10 +1735,8 @@
         return downSlots(byId[id] || {}).filter(function (s) { return s.child; }).length > 1;
       }
 
-      function pairedBackupId(id) {
-        return id === "drop-media" ? "drop-media-bak"
-          : id === "drop-gar" ? "drop-gar-bak"
-          : null;
+      function pairedBackupId() {
+        return null;
       }
 
       function isLTRFanout(id) {
@@ -2909,24 +2883,7 @@
         });
       }
 
-      function pinBackupPairs() {
-        [
-          ["drop-media-bak", "drop-media"],
-          ["drop-den-bak", "drop-den"],
-          ["drop-master-bak", "drop-master"],
-          ["drop-br1-bak", "drop-br1"],
-          ["drop-br2-bak", "drop-br2"],
-          ["drop-seat-bak", "drop-seat"],
-          ["drop-gar-bak", "drop-gar"]
-        ].forEach(function (pair) {
-          var bak = els[pair[0]];
-          var act = els[pair[1]];
-          if (!bak || !act) return;
-          var dx = parseFloat(act.style.left || 0) + (act.offsetWidth - bak.offsetWidth) / 2 - parseFloat(bak.style.left || 0);
-          var dy = parseFloat(act.style.top || 0) - bak.offsetHeight - 8 - parseFloat(bak.style.top || 0);
-          if (Math.abs(dx) >= 0.4 || Math.abs(dy) >= 0.4) shiftTree(pair[0], dx, dy);
-        });
-      }
+      function pinBackupPairs() {}
 
       function portCenterY(id) {
         var port = portEl(id);
@@ -2943,7 +2900,7 @@
       function placeUps() {
         var udm = els.udm;
         var ups = els.ups;
-        var source = portEl("udm-lan1");
+        var source = portEl("udm-lan8");
         var target = portEl("ups-lan");
         if (!udm || !ups || !source || !target) return;
         var stageRect = stage.getBoundingClientRect();
@@ -2965,7 +2922,6 @@
         if (flexY == null || dropY == null) return;
         var dy = flexY - dropY;
         moveNodeOnly("drop-gar", dy);
-        moveNodeOnly("drop-gar-bak", dy);
       }
 
       function alignMediaSwitchUplink() {
