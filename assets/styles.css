@@ -325,6 +325,42 @@
       background: var(--sheet-header-2-hover);
     }
 
+    /* Chapter 1, §2.3, §2.4, §3.3, and the order-fee sheet pin their heads
+       while the Spec pane scrolls. Sticky cannot see past the pane's clip,
+       so the head is translated and this only paints it above the body. */
+    .spa-spec .spa-article table.is-head-fixed thead th {
+      position: relative;
+      z-index: 3;
+    }
+
+    .spa-spec .spa-article table.is-head-fixed thead tr:last-child th {
+      box-shadow: 0 1px 0 var(--sheet-header);
+    }
+
+    .spa-spec .spa-article table.device-list.is-head-fixed thead tr:nth-child(2) th {
+      box-shadow: 0 1px 0 var(--sheet-header-2);
+    }
+
+    .spa-spec .spa-article table.power-tree.is-head-fixed thead tr:nth-child(2) th {
+      box-shadow: none;
+    }
+
+    /* §2.4: the Pro XG 24 PoE budget row pins with the column heads. */
+    .spa-spec .spa-article table.power-tree.is-head-fixed tr.power-tree-handle[data-level="0"] > th {
+      position: relative;
+      z-index: 3;
+      box-shadow: 0 1px 0 var(--sheet-header);
+    }
+
+    @media print {
+      .spa-spec .spa-article table.is-head-fixed thead th,
+      .spa-spec .spa-article table.power-tree.is-head-fixed tr.power-tree-handle[data-level="0"] > th {
+        transform: none !important;
+        position: static;
+        box-shadow: none;
+      }
+    }
+
     .spa-spec .spa-article .appliances-wrap table.home-appliances tbody tr.is-pending > td,
     .spa-spec .spa-article .appliances-wrap table.home-appliances tbody tr.is-purchased > td {
       vertical-align: middle;
@@ -1588,11 +1624,11 @@
     }
 
     .spa-spec .spa-article table.rack-face {
-      width: max-content;
-      min-width: 22rem;
+      width: 100%;
+      min-width: max-content;
       max-width: none;
       table-layout: auto;
-      /* Separate borders so the U column can stick inside the horizontal scroller. */
+      /* Separate borders so both U columns can stick inside the horizontal scroller. */
       border-collapse: separate;
       border-spacing: 0;
     }
@@ -1610,27 +1646,23 @@
       border-left-width: 1px;
     }
 
-    .spa-spec .spa-article table.rack-face thead th {
+    .spa-spec .spa-article table.rack-face tbody tr:first-child > th,
+    .spa-spec .spa-article table.rack-face tbody tr:first-child > td {
       border-top-width: 1px;
-    }
-
-    /* The wide header cell cannot stick. The label does, just to the right of U. */
-    .spa-spec .spa-article table.rack-face thead .rack-head {
-      position: sticky;
-      left: calc(3rem + 0.5rem);
-      z-index: 1;
     }
 
     .spa-spec .spa-article table.rack-face td:has(.rack-ports) {
       vertical-align: top;
     }
 
+    /* Width 0 is the column minimum. The digit plus this padding is the used width. */
     .spa-spec .spa-article table.rack-face .rack-u {
       position: sticky;
       left: 0;
       z-index: 2;
-      width: 3rem;
-      min-width: 3rem;
+      width: 0;
+      min-width: 0;
+      padding: 0 0.12rem;
       text-align: center;
       font-variant-numeric: tabular-nums;
       font-weight: 650;
@@ -1639,8 +1671,32 @@
       border-color: rgba(247, 244, 239, 0.14);
     }
 
+    .spa-spec .spa-article table.rack-face .rack-u-end {
+      left: auto;
+      right: 0;
+    }
+
+    /* Every U is the same height. A 2U device spans two of those rows.
+       The name and the port row fit inside; they do not grow the row. */
     .spa-spec .spa-article table.rack-face tbody tr {
-      height: 3.6rem;
+      height: 4.25rem;
+    }
+
+    .spa-spec .spa-article table.rack-face tbody th,
+    .spa-spec .spa-article table.rack-face tbody td {
+      height: 4.25rem;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .spa-spec .spa-article table.rack-face tbody td[rowspan="2"] {
+      height: 8.5rem;
+      vertical-align: middle;
+    }
+
+    .spa-spec .spa-article table.rack-face tbody td[rowspan="2"] .rack-slot {
+      justify-content: center;
+      height: 100%;
     }
 
     .spa-spec .spa-article table.rack-face .rack-slot {
@@ -1649,6 +1705,8 @@
       align-items: flex-start;
       justify-content: center;
       gap: 0.12rem;
+      max-height: 100%;
+      overflow: hidden;
     }
 
     .spa-spec .spa-article table.rack-face .rack-slot:has(.rack-ports) {
@@ -1669,6 +1727,154 @@
 
     .spa-spec .spa-article table.rack-face tr.rack-gap td {
       background: var(--sheet-group);
+      padding: 1px 0;
+      overflow: visible;
+      text-align: center;
+    }
+
+    .spa-spec .spa-article table.rack-face .udc-port[data-link] {
+      cursor: pointer;
+    }
+
+    .spa-spec .spa-article table.rack-face .udc-port[data-link]:focus-visible {
+      outline: 2px solid var(--sheet-status);
+      outline-offset: 1px;
+    }
+
+    /* A selected run keeps its colours. Every other port on the face goes grey. */
+    .spa-spec .spa-article table.rack-face.is-linked .udc-port:not(.is-lit) {
+      filter: grayscale(1);
+      opacity: 0.38;
+    }
+
+    .spa-spec .spa-article table.rack-face.is-linked .udc-port.is-lit {
+      filter: none;
+      opacity: 1;
+      box-shadow: inset 0 0 0 2px #fff;
+      z-index: 1;
+    }
+
+    /* A selected run is one skewer. Circle size comes from the row, with one caption line always reserved. */
+    .spa-spec .spa-article table.rack-face .rack-path {
+      --rack-wire: 1px;
+      --rack-wire-color: var(--sheet-ink);
+      box-sizing: border-box;
+      margin: 0;
+      overflow: hidden;
+      min-height: 0;
+      height: calc(4.25rem - 4px);
+      max-height: calc(4.25rem - 4px);
+      padding-bottom: calc(var(--rack-note, 12px) + var(--rack-note-gap, 2px));
+      align-items: center;
+      align-content: center;
+      white-space: nowrap;
+      background: transparent;
+      color: var(--sheet-ink);
+      line-height: 1;
+      font-weight: 650;
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-path:not([hidden]) {
+      display: inline-flex;
+      flex-wrap: nowrap;
+      width: max-content;
+      max-width: none;
+      vertical-align: middle;
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-bead {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 0 0 auto;
+      width: var(--rack-thumb, 2.6rem);
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-bead:not(:last-child) {
+      margin-right: var(--rack-join, 12px);
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-bead-face {
+      position: relative;
+      z-index: 1;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--rack-thumb, 2.6rem);
+      height: var(--rack-thumb, 2.6rem);
+      border: var(--rack-wire) solid var(--rack-wire-color);
+      border-radius: 50%;
+      background: var(--rack-fill, var(--sheet-group));
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* The stick leaves the circle's midline and meets the next circle. */
+    .spa-spec .spa-article table.rack-face .rack-bead:not(:last-child) .rack-bead-face::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      top: 50%;
+      left: calc(100% + var(--rack-wire) - 0.5px);
+      width: calc(var(--rack-join, 12px) + 1px);
+      height: var(--rack-wire);
+      background: var(--rack-wire-color);
+      transform: translateY(-50%);
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-bead-face img {
+      width: 72%;
+      height: 72%;
+      object-fit: contain;
+      display: block;
+      pointer-events: none;
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-bead-label {
+      max-width: 88%;
+      font-size: max(8px, calc(var(--rack-thumb, 2.6rem) * 0.16));
+      font-weight: 650;
+      line-height: 1.05;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-bead-note {
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      display: block;
+      height: var(--rack-note, 0px);
+      margin-top: var(--rack-note-gap, 0px);
+      overflow: visible;
+      font-size: var(--rack-note, 0px);
+      font-weight: 650;
+      line-height: 1;
+      letter-spacing: 0.01em;
+      text-align: center;
+      white-space: nowrap;
+      transform: translateX(-50%);
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-bead-note:empty {
+      display: none;
+    }
+
+    /* The first caption grows to the right, so it stays clear of the U column. */
+    .spa-spec .spa-article table.rack-face .rack-bead:first-child .rack-bead-note {
+      left: 0;
+      transform: none;
+      text-align: left;
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-bead-face:hover,
+    .spa-spec .spa-article table.rack-face .rack-bead-face:focus-visible {
+      border-color: var(--sheet-status);
+      color: var(--sheet-status);
+      text-decoration: none;
+      outline: none;
     }
 
     .spa-spec .spa-article table.rack-face .rack-ports {
@@ -2052,15 +2258,10 @@
       color: var(--sheet-ink);
     }
 
-    .spa-spec .spa-article table.devices-table:not(.spec-sheet) thead th,
-    .spa-spec .spa-article table.rack-face thead th {
+    .spa-spec .spa-article table.devices-table:not(.spec-sheet) thead th {
       background: var(--sheet-header);
       color: var(--sheet-header-ink);
       border-color: rgba(247, 244, 239, 0.14);
-    }
-
-    .spa-spec .spa-article table.rack-face thead .rack-u {
-      color: var(--sheet-header-ink);
     }
 
     .spa-spec .spa-article table.devices-table:not(.spec-sheet) thead tr:nth-child(2) th {

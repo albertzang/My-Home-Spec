@@ -292,7 +292,14 @@
             collapsedDepth = level;
           }
         });
-        if (window.fitPowerLines) requestAnimationFrame(window.fitPowerLines);
+        if (window.fitPowerLines) {
+          requestAnimationFrame(function () {
+            window.fitPowerLines();
+            if (window.pinSheetHeads) window.pinSheetHeads();
+          });
+        } else if (window.pinSheetHeads) {
+          window.pinSheetHeads();
+        }
       }
 
       rows.forEach(function (row) {
@@ -403,6 +410,7 @@
           }
         });
         if (window.fitScheduleLines) window.fitScheduleLines();
+        if (window.pinSheetHeads) window.pinSheetHeads();
       }
 
       rooms.forEach(function (row) {
@@ -914,6 +922,55 @@
 
       window.fitScheduleLines = fitSchedules;
 
+      var sheetHeadSelector = "table.home-appliances, table.device-list, table.power-tree, table.ha-devices, table.order-fees-table";
+
+      function pinSheetHeads() {
+        var pane = document.getElementById("tab-spec");
+        if (!pane || pane.clientHeight < 2) return;
+        var paneTop = pane.getBoundingClientRect().top;
+        Array.prototype.forEach.call(pane.querySelectorAll(sheetHeadSelector), function (table) {
+          var thead = table.tHead;
+          if (!thead) return;
+          var xg = table.classList.contains("power-tree")
+            ? table.querySelector("tbody > tr.power-tree-handle[data-level='0'] > th")
+            : null;
+          var tableRect = table.getBoundingClientRect();
+          var headH = thead.offsetHeight + (xg ? xg.offsetHeight : 0);
+          var cell = thead.rows[0].cells[0];
+          var applied = 0;
+          var shift = /translateY\(([-\d.]+)px\)/.exec(cell.style.transform || "");
+          if (shift) applied = parseFloat(shift[1]) || 0;
+          var layoutTop = cell.getBoundingClientRect().top - applied;
+          var offset = Math.floor(paneTop - layoutTop);
+          var max = Math.max(0, Math.floor(tableRect.bottom - headH - layoutTop));
+          if (offset < 0) offset = 0;
+          if (offset > max) offset = max;
+          var fixed = offset > 0;
+          table.classList.toggle("is-head-fixed", fixed);
+          function place(cell) {
+            if (fixed) cell.style.transform = "translateY(" + offset + "px)";
+            else cell.style.removeProperty("transform");
+          }
+          Array.prototype.forEach.call(thead.querySelectorAll("th"), place);
+          if (xg) place(xg);
+        });
+      }
+
+      window.pinSheetHeads = pinSheetHeads;
+
+      var sheetPane = document.getElementById("tab-spec");
+      var sheetPinQueued = false;
+      if (sheetPane) {
+        sheetPane.addEventListener("scroll", function () {
+          if (sheetPinQueued) return;
+          sheetPinQueued = true;
+          requestAnimationFrame(function () {
+            sheetPinQueued = false;
+            pinSheetHeads();
+          });
+        }, { passive: true });
+      }
+
       function lockAll() {
         var home = document.querySelector("#tab-spec table.home-appliances");
         var devices = document.querySelector("#tab-spec table.device-list");
@@ -925,6 +982,7 @@
         if (ha) lockHa(ha);
         fitPowerLines();
         fitSchedules();
+        pinSheetHeads();
       }
 
       requestAnimationFrame(function () { requestAnimationFrame(lockAll); });
@@ -1053,7 +1111,7 @@
             P("xg-bsmt", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Basement UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
             P("xg-ha", "gbe10", { poe: "ppp", title: "10G PoE+++ → HA at 2.5G PoE++", child: "ha" }),
             P("xg-wallpanels", "gbe10", { poe: "ppp", title: "3× 10G PoE+++ ports → Home Assistant PoE Wallpanels at 1G PoE+", count: 3, child: "group-wallpanels" }),
-            P("xg-panel", "gbe10", { poe: "ppp", title: "10G → electrical panel meter · PoE off", child: "panel-meter" }),
+            P("xg-panel", "gbe10", { poe: "ppp", title: "10G → patch 13 coupler → electrical panel meter · PoE off", child: "panel-meter" }),
             P("xg-nas", "gbe10", { poe: "ppp", title: "10G PoE+++ → Synology FS2500 LACP", child: "nas" }),
             P("xg-nas2", "gbe10", { poe: "ppp", title: "10G PoE+++ → Synology FS2500 LACP", child: "nas" }),
             P("xg-room-live", "gbe10", { poe: "ppp", title: "5× USW-Pro-XG-24-PoE Room Drop ports", count: 5, child: "group-room-drops" }),
@@ -1062,7 +1120,7 @@
             P("xg-spare-10g-1", "gbe10", { poe: "ppp", title: "10G PoE+++ spare", idle: true }),
             P("xg-spare-10g-2", "gbe10", { poe: "ppp", title: "10G PoE+++ spare", idle: true })
           ] },
-        { id: "nas", vlan: "servers", inbound: "nas-10g", name: "Synology FS2500", loc: "Rack Cabinet", href: "https://www.synology.com/en-us/products/FS2500", info: "1U all-flash · 12×2.5\" SATA SSD. 2×10G LACP to USW-Pro-XG-24-PoE over Cat6 rack patches; 2×1G unused. 2×USB 3.2 + Console unused.",
+        { id: "nas", vlan: "servers", inbound: "nas-10g", name: "Synology FS2500", loc: "Rack Cabinet", href: "https://www.synology.com/en-us/products/FS2500", info: "1U all-flash · 12×2.5\" SATA SSD. 2×10G LACP through patch ports 14 and 15, Cat6A keystone couplers: a 1 m patch from each rear jack up the rear post, then 0.15 m down to USW-Pro-XG-24-PoE. No punch-down jack. 2×1G unused. 2×USB 3.2 + Console unused.",
           up: [
             P("nas-1g1", "gbe1", { title: "1G unused", idle: true }),
             P("nas-1g2", "gbe1", { title: "1G unused", idle: true }),
@@ -1116,8 +1174,8 @@
             P("media-flex-sfp", "sfp", { t: "SFP+", title: "SFP+ combo · unused", idle: true })
           ],
           down: idleMany(8, "media-flex-lan", "gbe2p5", { title: "2.5G RJ45 · no PoE output · unused", idle: true }) },
-        { id: "panel-meter", vlan: "iot", name: "Electrical Panel", loc: "Mechanical Room", info: "Line-powered meter at the electrical panel. VLAN 40 · IoT / Energy. Data only, PoE off at the switch. Model not chosen.",
-          up: [P("panel-meter-up", "gbe1", { title: "1G ← USW-Pro-XG-24-PoE · PoE off" })],
+        { id: "panel-meter", vlan: "iot", name: "Electrical Panel", loc: "Mechanical Room", info: "Line-powered meter in the mechanical room, same room as the rack. Patch port 13 is a Cat6A keystone coupler: one patch from the meter into the rear, 0.15 m down to USW-Pro-XG-24-PoE. Data only, PoE off. No punch-down jack. VLAN 40 · IoT / Energy. Model not chosen.",
+          up: [P("panel-meter-up", "gbe1", { title: "1G ← patch 13 coupler ← USW-Pro-XG-24-PoE · PoE off" })],
           down: [] },
         { id: "drop-den", name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Den's Mac Studio Cat6A on the 2-port plate. The other jack is the HA home-run.",
           up: [P("drop-den-up", "gbe10", { poe: "ppp", title: "10G keystone" })],
@@ -1370,8 +1428,8 @@
         { from: "nah", fp: "nah-10g", to: "udm", tp: "udm-wan", cable: "cat6", route: "vertical", info: "ONT/NAH 10G RJ45 → 1 m rear into patch port 24 → 0.15 m up to CM RJ45; CM SFP+ is inserted in UDM-Pro-Max WAN." },
         { from: "udm", fp: "udm-lan-sfp", to: "xg", tp: "xg-sfp", cable: "dac", route: "vertical", label: "UACC-DAC-SFP10", href: UI + "10gbps-direct-attach-cable", info: "One UACC-DAC-SFP10: UDM-Pro-Max LAN SFP+ → USW-Pro-XG-24-PoE SFP28 at 10G." },
         { from: "udm", fp: "udm-lan8", to: "ups", tp: "ups-lan", cable: "cat6", route: "horizontal", info: "UDM-Pro-Max LAN 8 → 0.15 m up from patch port 23 → 1 m from the coupler to the UPS 2U Pro rear 100/10 MbE management jack." },
-        { from: "xg", fp: "xg-nas", to: "nas", tp: "nas-10g", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → Cat6 rack patch → Synology FS2500 LACP." },
-        { from: "xg", fp: "xg-nas2", to: "nas", tp: "nas-10g2", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → Cat6 rack patch → Synology FS2500 LACP." },
+        { from: "xg", fp: "xg-nas", to: "nas", tp: "nas-10g", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → 0.15 m to patch port 14 coupler → 1 m up the rear post → Synology FS2500 LACP." },
+        { from: "xg", fp: "xg-nas2", to: "nas", tp: "nas-10g2", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G → 0.15 m to patch port 15 coupler → 1 m up the rear post → Synology FS2500 LACP." },
         { from: "xg", fp: "xg-ha", to: "ha", tp: "ha-up", cable: "cat6", info: "USW-Pro-XG-24-PoE 10G PoE+++ port → Cat6 rack patch → ameriDroid PoE Mini PC for Home Assistant at 2.5G PoE++." },
         { from: "xg", fp: "xg-gar", to: "drop-gar", tp: "drop-gar-xg", info: "USW-Pro-XG-24-PoE → Garage C6A." },
         { from: "drop-gar", fp: "drop-gar-flex", to: "flex", tp: "flex-up", cable: "cat6", info: "Garage C6A home-run → Type 4 / 4PPoE-rated 24–26AWG pure-copper Cat6 short patch → USW-Flex-2.5G-8-PoE 10G RJ45 / PoE+++ input." },
@@ -1411,7 +1469,7 @@
         { from: "xg", fp: "xg-room-live", to: "group-room-drops", tp: "drop-den-up", info: "5× USW-Pro-XG-24-PoE → Room Drop." },
         { from: "xg", fp: "xg-media-live", to: "drop-media", tp: "drop-media-up", info: "USW-Pro-XG-24-PoE 10G PoE+++ port → Media Room Drop." },
         { from: "drop-media", fp: "drop-media-dn", to: "media-flex", tp: "media-flex-up", cable: "cat6", route: "horizontal", info: "Media Room C6A wall jack → Cat6 short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input." },
-        { from: "xg", fp: "xg-panel", to: "panel-meter", tp: "panel-meter-up", cable: "cat6", info: "USW-Pro-XG-24-PoE with PoE disabled → electrical panel meter. Data only." }
+        { from: "xg", fp: "xg-panel", to: "panel-meter", tp: "panel-meter-up", cable: "cat6", info: "USW-Pro-XG-24-PoE with PoE disabled → 0.15 m to patch port 13 coupler → patch to the electrical panel meter. Data only. No punch-down jack." }
       ];
 
       var byId = {};
@@ -3303,6 +3361,9 @@
         if (key === "spec" && typeof window.fitScheduleLines === "function") {
           requestAnimationFrame(window.fitScheduleLines);
         }
+        if (key === "spec" && typeof window.pinSheetHeads === "function") {
+          requestAnimationFrame(window.pinSheetHeads);
+        }
       }
 
       function applyLocationHash(rawHash, scrollBehavior) {
@@ -3792,4 +3853,355 @@
       equalizeRows();
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(equalizeRows);
     })();
+})();
+
+/* Rack face: click a live port to read its run in U8 and light every port on that run. */
+(function () {
+  var table = document.querySelector("table.rack-face");
+  var path = document.getElementById("rack-path");
+  if (!table || !path) return;
+
+  var UI = "https://store.ui.com/us/en/products/";
+
+  function shop(slug, name, note) {
+    return { href: UI + slug, name: name, note: note || "" };
+  }
+
+  function ext(href, name, note) {
+    return { href: href, name: name, note: note || "" };
+  }
+
+  function page(href, name) {
+    return { href: href, name: name, page: true, note: "" };
+  }
+
+  var jack = shop("uacc-keystone-jack-c6a", "Cat6A Keystone Jack");
+  var cmr = shop("uacc-cable-c6a-cmr", "UniFi Indoor Cable Cat6A CMR");
+  var panel = shop("uacc-rack-panel-patch-blank-24", "24-Port Blank Keystone Patch Panel");
+  var xg = shop("usw-pro-xg-24-poe", "Pro XG 24 PoE");
+  var patch = shop("uacc-cable-patch-el-c6a", "UniFi Premium Patch Cable");
+  var patch15 = shop("uacc-cable-patch-el-c6a?variant=uacc-cable-patch-el-c6a-0dot15m-w-50", "UniFi Premium Patch Cable");
+  var patch1 = shop("uacc-cable-patch-el-c6a?variant=uacc-cable-patch-el-c6a-1m-w-10", "UniFi Premium Patch Cable");
+  var coupler = shop("uacc-keystone-coupler-c6a", "Cat6A Keystone Coupler");
+  var plateH = shop("uacc-wp-keystone?variant=uacc-wp-keystone-h-2p", "Universal Paintable Keystone Wall Plate");
+  var plateV = shop("uacc-wp-keystone?variant=uacc-wp-keystone-v-1p", "Universal Paintable Keystone Wall Plate");
+  var udm = shop("udm-pro-max", "Dream Machine Pro Max");
+  var adapter = shop("uacc-cm-rj45-mg", "SFP+ to RJ45 Adapter");
+  var dacCable = shop("10gbps-direct-attach-cable", "10G Direct Attach Cable");
+
+  function homeRun(device, accessory) {
+    return [device, patch, accessory, cmr, jack, panel, patch15, xg];
+  }
+
+  /* No end device yet: the run starts at the wall plate, and the room name stays on that plate. */
+  function openDrop(room) {
+    return [
+      shop("uacc-wp-keystone?variant=uacc-wp-keystone-v-1p", "Universal Paintable Keystone Wall Plate", room),
+      cmr, jack, panel, patch15, xg
+    ];
+  }
+
+  function passThrough(device, rear, front, tail) {
+    return [device, rear, coupler, panel, front].concat(tail);
+  }
+
+  var runs = {
+    viewport: homeRun(shop("ufp-viewport", "Protect Viewport"), jack),
+    "u7-basement": homeRun(shop("u7-pro-wall", "U7 Pro Wall", "Basement"), jack),
+    "u7-main": homeRun(shop("u7-pro-wall", "U7 Pro Wall", "Main"), jack),
+    "u7-upper": homeRun(shop("u7-pro-wall", "U7 Pro Wall", "Upper"), jack),
+    "door-front": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Front"), jack),
+    "door-mud": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Mud"), jack),
+    "door-dining": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Dining"), jack),
+    "door-basement": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Basement"), jack),
+    ha: homeRun(ext("https://ameridroid.com/products/poe-mini-pc-for-home-assistant", "ameriDroid PoE Mini PC for Home Assistant"), plateH),
+    "wall-basement": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Basement"), jack),
+    "wall-main": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Main"), jack),
+    "wall-upper": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Upper"), jack),
+    meter: passThrough(page("#4.3", "Electrical Panel"), patch, patch15, [xg]),
+    "fs-1": passThrough(ext("https://www.synology.com/en-us/products/FS2500", "Synology FS2500"), patch1, patch15, [xg]),
+    "fs-2": passThrough(ext("https://www.synology.com/en-us/products/FS2500", "Synology FS2500"), patch1, patch15, [xg]),
+    "drop-media": homeRun(ext("https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", "Flex 2.5G", "Media"), plateV),
+    "drop-den": homeRun(ext("https://www.apple.com/mac-studio/", "Mac Studio"), plateH),
+    "drop-master": openDrop("Master"),
+    "drop-br1": openDrop("BR1"),
+    "drop-br2": openDrop("BR2"),
+    "drop-seating": openDrop("Seating"),
+    "drop-garage": homeRun(ext("https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe", "Flex 2.5G PoE", "Garage"), plateV),
+    ups: passThrough(shop("ups-2u-pro-us", "UPS 2U Pro"), patch1, patch15, [udm]),
+    ont: passThrough(ext("https://www.nokia.com/broadband-access/in-home-connectivity/fiber-ont/", "XS-250X-A"), patch1, patch15, [adapter, udm]),
+    dac: [udm, dacCable, xg]
+  };
+
+  var localThumbs = {
+    "https://www.apple.com/mac-studio/": "assets/devices/mac-studio.png",
+    "https://ameridroid.com/products/poe-mini-pc-for-home-assistant": "assets/devices/ameridroid-poe-mini-pc.png",
+    "https://www.raspberrypi.com/products/raspberry-pi-5/": "assets/devices/raspberry-pi-5.png",
+    "https://www.nokia.com/broadband-access/in-home-connectivity/fiber-ont/": "assets/devices/xs-250x-a.png"
+  };
+
+  var thumbs = Object.create(null);
+  (function indexThumbs() {
+    var list = document.querySelector("table.device-list");
+    if (!list) return;
+    var carried = "";
+    Array.prototype.forEach.call(list.querySelectorAll("tr"), function (row) {
+      var img = row.querySelector("img[src]");
+      if (img && img.getAttribute("src")) carried = img.getAttribute("src");
+      if (!carried) return;
+      Array.prototype.forEach.call(row.querySelectorAll("a[href]"), function (a) {
+        var href = a.getAttribute("href");
+        if (!href || href.charAt(0) === "#") return;
+        if (!thumbs[href]) thumbs[href] = carried;
+      });
+    });
+  })();
+
+  function plain(parts) {
+    return parts.map(function (part) {
+      return part.note ? part.name + " · " + part.note : part.name;
+    }).join(" -- ");
+  }
+
+  function fill(parts) {
+    path.replaceChildren();
+    parts.forEach(function (part) {
+      var bead = document.createElement("span");
+      bead.className = "rack-bead";
+      var src = part.href && (localThumbs[part.href] || thumbs[part.href]);
+      var face;
+      if (part.href) {
+        face = document.createElement("a");
+        face.href = part.href;
+        face.className = part.page ? "rack-bead-face page-ref" : "rack-bead-face";
+        if (!part.page) {
+          face.target = "_blank";
+          face.rel = "noopener noreferrer";
+        }
+      } else {
+        face = document.createElement("span");
+        face.className = "rack-bead-face";
+      }
+      face.setAttribute("aria-label", part.note ? part.name + " · " + part.note : part.name);
+      if (src) {
+        var img = document.createElement("img");
+        img.src = src;
+        img.alt = part.name;
+        face.appendChild(img);
+      } else {
+        var label = document.createElement("span");
+        label.className = "rack-bead-label";
+        label.textContent = part.name;
+        face.appendChild(label);
+      }
+      bead.appendChild(face);
+      var note = document.createElement("span");
+      note.className = "rack-bead-note";
+      note.textContent = part.note || "";
+      bead.appendChild(note);
+      path.appendChild(bead);
+      if (src) scheduleTint(face, face.querySelector("img"), part.href);
+    });
+  }
+
+  var fillCache = {};
+
+  /* These two photos are served without CORS, so the circle colour is the same sample taken from the file. */
+  var fillFallback = {
+    "https://store.ui.com/us/en/products/udm-pro-max": "rgb(41, 38, 36)",
+    "https://store.ui.com/us/en/products/usw-pro-xg-24-poe": "rgb(41, 38, 36)"
+  };
+
+  function scheduleTint(face, img, href) {
+    if (!img) return;
+    function run() { tintFace(face, img.currentSrc || img.src, href); }
+    if (img.complete && img.naturalWidth) run();
+    else img.addEventListener("load", run, { once: true });
+  }
+
+  function rgbToHsl(r, g, b) {
+    r /= 255;
+    g /= 255;
+    b /= 255;
+    var max = Math.max(r, g, b);
+    var min = Math.min(r, g, b);
+    var h = 0;
+    var s = 0;
+    var l = (max + min) / 2;
+    var d = max - min;
+    if (d > 0) {
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+      else if (max === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h *= 60;
+    }
+    return { h: h, s: s, l: l };
+  }
+
+  function hslToRgb(h, s, l) {
+    var c = (1 - Math.abs(2 * l - 1)) * s;
+    var hp = ((h % 360) + 360) % 360 / 60;
+    var x = c * (1 - Math.abs(hp % 2 - 1));
+    var r = 0;
+    var g = 0;
+    var b = 0;
+    if (hp < 1) { r = c; g = x; }
+    else if (hp < 2) { r = x; g = c; }
+    else if (hp < 3) { g = c; b = x; }
+    else if (hp < 4) { g = x; b = c; }
+    else if (hp < 5) { r = x; b = c; }
+    else { r = c; b = x; }
+    var m = l - c / 2;
+    return {
+      r: Math.round((r + m) * 255),
+      g: Math.round((g + m) * 255),
+      b: Math.round((b + m) * 255)
+    };
+  }
+
+  /* A light product sits on a dark disc. A dark product sits on a light disc. */
+  function sampleContrast(image) {
+    var size = 36;
+    var canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    var ctx = canvas.getContext("2d", { willReadFrequently: true });
+    var nw = image.naturalWidth || image.width;
+    var nh = image.naturalHeight || image.height;
+    var scale = Math.min(size / nw, size / nh);
+    var dw = Math.max(1, Math.round(nw * scale));
+    var dh = Math.max(1, Math.round(nh * scale));
+    ctx.clearRect(0, 0, size, size);
+    ctx.drawImage(image, Math.floor((size - dw) / 2), Math.floor((size - dh) / 2), dw, dh);
+    var data = ctx.getImageData(0, 0, size, size).data;
+    var sr = 0;
+    var sg = 0;
+    var sb = 0;
+    var sn = 0;
+    var i;
+    for (i = 0; i < data.length; i += 4) {
+      if (data[i + 3] < 140) continue;
+      sr += data[i];
+      sg += data[i + 1];
+      sb += data[i + 2];
+      sn += 1;
+    }
+    if (!sn) return "";
+    var r = sr / sn;
+    var g = sg / sn;
+    var b = sb / sn;
+    var luma = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+    var hue = rgbToHsl(r, g, b);
+    var lightProduct = luma >= 0.52;
+    var L = lightProduct ? 0.15 : 0.94;
+    var S = hue.s < 0.18 ? (lightProduct ? 0.06 : 0.07) : Math.min(0.32, hue.s * 0.4);
+    var H = hue.s < 0.18 ? 32 : hue.h;
+    var rgb = hslToRgb(H, S, L);
+    return "rgb(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ")";
+  }
+
+  function paintFill(face, src, href, color) {
+    if (!color && href && fillFallback[href]) color = fillFallback[href];
+    fillCache[src] = color || "";
+    if (color && face.isConnected) face.style.setProperty("--rack-fill", color);
+  }
+
+  function tintFace(face, src, href) {
+    if (!src) return;
+    if (Object.prototype.hasOwnProperty.call(fillCache, src)) {
+      if (fillCache[src]) face.style.setProperty("--rack-fill", fillCache[src]);
+      else if (href && fillFallback[href]) face.style.setProperty("--rack-fill", fillFallback[href]);
+      return;
+    }
+    var probe = new Image();
+    probe.crossOrigin = "anonymous";
+    probe.onload = function () {
+      var color = "";
+      try { color = sampleContrast(probe); } catch (err) { color = ""; }
+      paintFill(face, src, href, color);
+    };
+    probe.onerror = function () { paintFill(face, src, href, ""); };
+    probe.src = src;
+  }
+
+  /* Every circle uses the row height minus one caption line, whether or not this run has a caption. */
+  function placePath() {
+    if (path.hidden) return;
+    path.style.width = "";
+    path.style.transform = "";
+    var row = path.clientHeight;
+    var note = Math.max(11, Math.round(row * 0.19));
+    var gap = 2;
+    path.style.setProperty("--rack-note", note + "px");
+    path.style.setProperty("--rack-note-gap", gap + "px");
+    var room = row - note - gap;
+    if (room < 16) room = 16;
+    path.style.setProperty("--rack-thumb", room.toFixed(2) + "px");
+    path.style.setProperty("--rack-join", Math.max(8, Math.round(room * 0.42)) + "px");
+  }
+
+  function portsFor(id) {
+    return table.querySelectorAll('.udc-port[data-link="' + id + '"]');
+  }
+
+  function clearRun() {
+    table.classList.remove("is-linked");
+    table.removeAttribute("data-selected");
+    Array.prototype.forEach.call(table.querySelectorAll(".udc-port.is-lit"), function (port) {
+      port.classList.remove("is-lit");
+      port.setAttribute("aria-pressed", "false");
+    });
+    path.hidden = true;
+    path.replaceChildren();
+    path.style.transform = "";
+    path.style.width = "";
+  }
+
+  function selectRun(id) {
+    var parts = runs[id];
+    if (!parts) return;
+    clearRun();
+    table.classList.add("is-linked");
+    table.setAttribute("data-selected", id);
+    Array.prototype.forEach.call(portsFor(id), function (port) {
+      port.classList.add("is-lit");
+      port.setAttribute("aria-pressed", "true");
+    });
+    fill(parts);
+    path.hidden = false;
+    placePath();
+  }
+
+  Array.prototype.forEach.call(table.querySelectorAll(".udc-port[data-link]"), function (port) {
+    var id = port.getAttribute("data-link");
+    port.setAttribute("role", "button");
+    port.tabIndex = 0;
+    port.setAttribute("aria-pressed", "false");
+    if (runs[id]) port.setAttribute("aria-label", plain(runs[id]));
+  });
+
+  function toggle(port) {
+    var id = port && port.getAttribute("data-link");
+    if (!id || !runs[id]) return;
+    if (table.getAttribute("data-selected") === id) clearRun();
+    else selectRun(id);
+  }
+
+  table.addEventListener("click", function (event) {
+    if (event.target.closest("a")) return;
+    var port = event.target.closest(".udc-port");
+    if (!port || !table.contains(port)) return;
+    toggle(port);
+  });
+
+  table.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    var port = event.target.closest && event.target.closest(".udc-port[data-link]");
+    if (!port || !table.contains(port)) return;
+    event.preventDefault();
+    toggle(port);
+  });
+
+  window.addEventListener("resize", placePath);
 })();
