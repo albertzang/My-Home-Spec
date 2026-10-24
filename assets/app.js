@@ -523,17 +523,9 @@
       });
     })();
 
-    /* Column locks. Fixed columns use a probe string. Flexible columns are
-       at least the longest name or port pair, and take leftover pane width. */
+    /* One-column sheets fill the pane. Names ellipsize; a price sits on the
+       right only when every visible row still fits. */
     (function () {
-      var PRICE_PROBE = "Total: CA$999,999.99";
-
-      function boxExtra(el) {
-        var cs = getComputedStyle(el);
-        return parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight)
-          + parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
-      }
-
       function textWidth(sample, source) {
         var probe = document.createElement("span");
         var cs = getComputedStyle(source);
@@ -555,123 +547,7 @@
         return width;
       }
 
-      function nameWidth(cell) {
-        var title = cell.querySelector(".udc-device-title");
-        var text = title
-          ? title.textContent.replace(/\s+/g, " ").trim()
-          : cell.textContent.replace(/\s+/g, " ").trim();
-        var source = title || cell;
-        var width = textWidth(text, source);
-        var device = cell.querySelector(".udc-device");
-        var img = device && device.querySelector("img");
-        if (img && device) {
-          var gap = parseFloat(getComputedStyle(device).columnGap || getComputedStyle(device).gap) || 0;
-          width += 28 + gap;
-        }
-        return width + boxExtra(cell);
-      }
-
-      function paneWidth(wrap) {
-        if (!wrap) return 0;
-        var prev = wrap.style.overflowX;
-        wrap.style.overflowX = "hidden";
-        var width = wrap.clientWidth;
-        wrap.style.overflowX = prev;
-        return width;
-      }
-
-      function sumOf(list) {
-        var total = 0;
-        list.forEach(function (w) { total += w; });
-        return total;
-      }
-
-      function apply(table, mins, flex, floors) {
-        var cols = table.querySelectorAll("colgroup col");
-        if (cols.length !== mins.length) return;
-        var wrap = table.parentElement;
-        var pane = wrap ? paneWidth(wrap) : sumOf(mins);
-        /* A reserved probe (the wide price sample) is used only when the
-           pane can hold it. Otherwise the column falls back to the real
-           text, so a placeholder never opens a scrollbar by itself. */
-        if (floors) {
-          var lifted = mins.map(function (w, i) { return Math.max(w, floors[i] || 0); });
-          if (sumOf(lifted) <= pane) mins = lifted;
-        }
-        var raw = sumOf(mins);
-        var widths = mins.map(function (w) { return Math.ceil(w); });
-        var minUsed = sumOf(widths);
-        var flexAt = [];
-        flex.forEach(function (on, i) { if (on) flexAt.push(i); });
-        if (!flexAt.length) flexAt.push(0);
-        var lastFlex = flexAt[flexAt.length - 1];
-        table.style.tableLayout = "fixed";
-        /* Never wider than the pane unless the content minimum itself is.
-           Ceil adds up to a pixel per column at every pane width, not only
-           at the Spec maximum, and that slack must not open a scrollbar. */
-        if (raw > pane) {
-          widths.forEach(function (w, i) { cols[i].style.width = w + "px"; });
-          table.style.width = minUsed + "px";
-          table.style.minWidth = minUsed + "px";
-          table.style.maxWidth = "none";
-          return;
-        }
-
-        table.style.maxWidth = "100%";
-        var extra = Math.max(0, pane - minUsed);
-        var share = flexAt.length > 1 ? Math.floor(extra / flexAt.length) : 0;
-        flexAt.forEach(function (idx) {
-          if (idx === lastFlex) {
-            cols[idx].style.width = "auto";
-            return;
-          }
-          cols[idx].style.width = (widths[idx] + share) + "px";
-        });
-        widths.forEach(function (w, i) {
-          if (flexAt.indexOf(i) === -1) cols[i].style.width = w + "px";
-        });
-        table.style.width = "100%";
-        table.style.minWidth = "0";
-      }
-
-      function lineWidth(el) {
-        var width = 0;
-        Array.prototype.forEach.call(el.childNodes, function (node) {
-          var text = node.textContent.replace(/\s+/g, " ").trim();
-          if (!text) return;
-          var source = node.nodeType === 1 ? node : el;
-          width = Math.max(width, textWidth(text, source));
-        });
-        if (!width) width = textWidth(el.textContent.replace(/\s+/g, " ").trim(), el);
-        return width;
-      }
-
-      function priceWidths(table) {
-        var head = table.querySelector("th.price-head");
-        var total = table.querySelector("th.price-head .price-total");
-        if (!head || !total) return { content: 0, probe: 0 };
-        var extra = boxExtra(head);
-        var content = lineWidth(total);
-        Array.prototype.forEach.call(table.querySelectorAll("td.price-cell"), function (cell) {
-          content = Math.max(content, lineWidth(cell));
-          extra = Math.max(extra, boxExtra(cell));
-        });
-        return {
-          content: Math.ceil(content + extra),
-          probe: Math.ceil(textWidth(PRICE_PROBE, total) + extra)
-        };
-      }
-
-      function lockHome(table) {
-        /* One column. The pane sets the width and the name wraps. */
-        table.style.tableLayout = "fixed";
-        table.style.width = "100%";
-        table.style.minWidth = "0";
-        table.style.maxWidth = "100%";
-      }
-
-      function lockDevices(table) {
-        /* One column. The pane sets the width and names wrap. */
+      function lockPane(table) {
         table.style.tableLayout = "fixed";
         table.style.width = "100%";
         table.style.minWidth = "0";
@@ -679,11 +555,7 @@
       }
 
       function lockPower(table) {
-        /* One table, as wide as the pane. Names and the bar note ellipsize. */
-        table.style.tableLayout = "fixed";
-        table.style.width = "100%";
-        table.style.minWidth = "0";
-        table.style.maxWidth = "100%";
+        lockPane(table);
         Array.prototype.forEach.call(table.querySelectorAll("colgroup col"), function (col) {
           col.style.width = "50%";
         });
@@ -696,10 +568,6 @@
       }
 
       window.fitPowerLines = fitPowerLines;
-
-      function lockHa(table) {
-        lockDevices(table);
-      }
 
       function scheduleUnits(table) {
         var units = [];
@@ -976,10 +844,10 @@
         var devices = document.querySelector("#tab-spec table.device-list");
         var power = document.querySelector("#tab-spec table.power-tree");
         var ha = document.querySelector("#tab-spec table.devices-table.span-groups:not(.device-list)");
-        if (home) lockHome(home);
-        if (devices) lockDevices(devices);
+        if (home) lockPane(home);
+        if (devices) lockPane(devices);
         if (power) lockPower(power);
-        if (ha) lockHa(ha);
+        if (ha) lockPane(ha);
         fitPowerLines();
         fitSchedules();
         pinSheetHeads();
@@ -1595,9 +1463,8 @@
             "</div>";
         } else if (b.kind === "room") {
           diagram = b.rows.map(function (row) {
-            var isBackup = !!byId[row.source].backup;
             return '<div class="topo-bundle-row">' +
-              bundleDeviceHTML(row.source, isBackup ? "topo-backup" : "", false, !!b.showLoc) +
+              bundleDeviceHTML(row.source, "", false, !!b.showLoc) +
               "</div>";
           }).join("");
         } else if (b.kind === "door-hub-subtrees") {
@@ -1627,7 +1494,7 @@
       function makeNode(n) {
         var btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "topo-node" + (n.vlan ? " vlan-" + n.vlan : "") + (isTB(n.id) ? " topo-tb" : "") + (n.id === "nah" || n.id === "udm" ? " topo-core-vertical" : "") + (n.id === "xg" ? " topo-xg" : "") + (n.backup ? " topo-backup" : "");
+        btn.className = "topo-node" + (n.vlan ? " vlan-" + n.vlan : "") + (isTB(n.id) ? " topo-tb" : "") + (n.id === "nah" || n.id === "udm" ? " topo-core-vertical" : "") + (n.id === "xg" ? " topo-xg" : "");
         btn.setAttribute("data-id", n.id);
         if (n.vlan) btn.setAttribute("data-vlan", n.vlan);
         btn.setAttribute("data-title", n.name);
@@ -1793,10 +1660,6 @@
         return downSlots(byId[id] || {}).filter(function (s) { return s.child; }).length > 1;
       }
 
-      function pairedBackupId() {
-        return null;
-      }
-
       function isLTRFanout(id) {
         return id !== "xg" && isFanout(id) && !isTB(id);
       }
@@ -1827,17 +1690,7 @@
       }
 
       function slotH(s, parentId) {
-        if (s.child) {
-          var backupId = pairedBackupId(s.child);
-          if (backupId && natural[backupId]) {
-            var pairedBranchH = boxHeight(s.child);
-            stageKids(s.child).forEach(function (childId) {
-              pairedBranchH = Math.max(pairedBranchH, subtreeH(childId));
-            });
-            return Math.max(SLOT_MIN, pairedBranchH + natural[backupId].h + 8);
-          }
-          return Math.max(SLOT_MIN, subtreeH(s.child));
-        }
+        if (s.child) return Math.max(SLOT_MIN, subtreeH(s.child));
         return isDoorMini(parentId) ? SLOT_IDLE_MINI : SLOT_MIN;
       }
 
@@ -2123,10 +1976,6 @@
         stageKids(id).forEach(function (childId) {
           bottom = Math.max(bottom, renderedTreeBottom(childId));
         });
-        var backupId = pairedBackupId(id);
-        if (backupId && els[backupId]) {
-          bottom = Math.max(bottom, els[backupId].getBoundingClientRect().bottom);
-        }
         return bottom;
       }
 
@@ -2272,11 +2121,6 @@
         if (byId[id] && byId[id].bundle) {
           x -= bundleLeftInset(els[id]);
         }
-        var backupId = pairedBackupId(id);
-        if (backupId && natural[backupId]) {
-          place(id, x, slotTop + natural[backupId].h + 8);
-          return;
-        }
         var h = natural[id] ? natural[id].h : 0;
         place(id, x, slotTop + Math.max(0, (slotHgt - h) / 2));
       }
@@ -2352,33 +2196,18 @@
         });
       }
 
-      function xgBranchBox(id) {
-        var box = treeBox(id);
-        var backupId = pairedBackupId(id);
-        if (!backupId || !els[backupId]) return box;
-        var backupTop = parseFloat(els[backupId].style.top || 0);
-        return {
-          top: Math.min(box.top, backupTop),
-          bottom: Math.max(box.bottom, backupTop + els[backupId].offsetHeight),
-          left: Math.min(box.left, parseFloat(els[backupId].style.left || 0)),
-          right: Math.max(box.right, parseFloat(els[backupId].style.left || 0) + els[backupId].offsetWidth)
-        };
-      }
-
       function shiftXgBranch(id, dy) {
         if (Math.abs(dy) < 0.01) return;
         shiftTree(id, 0, dy);
-        var backupId = pairedBackupId(id);
-        if (backupId && els[backupId]) shiftTree(backupId, 0, dy);
       }
 
       function balanceXgBranchExtents() {
         var left = xgBranchSlots("left").filter(function (slot) { return slot.child; });
         var right = xgBranchSlots("right").filter(function (slot) { return slot.child; });
         if (left.length < 2 || right.length < 2) return;
-        var leftTop = xgBranchBox(left[0].child).top;
-        var leftBottom = xgBranchBox(left[left.length - 1].child).bottom;
-        var boxes = right.map(function (slot) { return xgBranchBox(slot.child); });
+        var leftTop = treeBox(left[0].child).top;
+        var leftBottom = treeBox(left[left.length - 1].child).bottom;
+        var boxes = right.map(function (slot) { return treeBox(slot.child); });
         var occupied = boxes.reduce(function (sum, box) { return sum + box.bottom - box.top; }, 0);
         var gap = Math.max(GAP_Y, ((leftBottom - leftTop) - occupied) / (right.length - 1));
         var cursor = leftTop;
@@ -2941,8 +2770,6 @@
         });
       }
 
-      function pinBackupPairs() {}
-
       function portCenterY(id) {
         var port = portEl(id);
         if (!port) return null;
@@ -3044,7 +2871,6 @@
         separateSiblings("flex");
         pinAllFanout();
         spaceGarageFlexBranches();
-        pinBackupPairs();
         alignGarageUplink();
         alignMediaSwitchUplink();
         balanceXgBranchExtents();
@@ -3053,7 +2879,6 @@
         clampOrigin();
         pinAllFanout();
         spaceGarageFlexBranches();
-        pinBackupPairs();
         alignGarageUplink();
         alignMediaSwitchUplink();
         reconcileFanoutBottoms();
@@ -3883,22 +3708,23 @@
   var patch15 = shop("uacc-cable-patch-el-c6a?variant=uacc-cable-patch-el-c6a-0dot15m-w-50", "UniFi Premium Patch Cable");
   var patch1 = shop("uacc-cable-patch-el-c6a?variant=uacc-cable-patch-el-c6a-1m-w-10", "UniFi Premium Patch Cable");
   var coupler = shop("uacc-keystone-coupler-c6a", "Cat6A Keystone Coupler");
-  var plateH = shop("uacc-wp-keystone?variant=uacc-wp-keystone-h-2p", "Universal Paintable Keystone Wall Plate");
-  var plateV = shop("uacc-wp-keystone?variant=uacc-wp-keystone-v-1p", "Universal Paintable Keystone Wall Plate");
   var udm = shop("udm-pro-max", "Dream Machine Pro Max");
   var adapter = shop("uacc-cm-rj45-mg", "SFP+ to RJ45 Adapter");
   var dacCable = shop("10gbps-direct-attach-cable", "10G Direct Attach Cable");
 
-  function homeRun(device, accessory) {
-    return [device, patch, accessory, cmr, jack, panel, patch15, xg];
+  function homeRun(device) {
+    return [device, patch, jack, cmr, jack, panel, patch15, xg];
   }
 
-  /* No end device yet: the run starts at the wall plate, and the room name stays on that plate. */
-  function openDrop(room) {
-    return [
-      shop("uacc-wp-keystone?variant=uacc-wp-keystone-v-1p", "Universal Paintable Keystone Wall Plate", room),
-      cmr, jack, panel, patch15, xg
-    ];
+  function wallPlate(variant, room) {
+    return shop("uacc-wp-keystone?variant=" + variant, "Universal Paintable Keystone Wall Plate", room);
+  }
+
+  /* Every room drop reaches the wall plate. The room name sits on that plate. */
+  function roomDrop(device, variant, room) {
+    var wall = wallPlate(variant, room);
+    if (!device) return [wall, jack, cmr, jack, panel, patch15, xg];
+    return [device, patch, wall, jack, cmr, jack, panel, patch15, xg];
   }
 
   function passThrough(device, rear, front, tail) {
@@ -3906,28 +3732,27 @@
   }
 
   var runs = {
-    viewport: homeRun(shop("ufp-viewport", "Protect Viewport"), jack),
-    "u7-basement": homeRun(shop("u7-pro-wall", "U7 Pro Wall", "Basement"), jack),
-    "u7-main": homeRun(shop("u7-pro-wall", "U7 Pro Wall", "Main"), jack),
-    "u7-upper": homeRun(shop("u7-pro-wall", "U7 Pro Wall", "Upper"), jack),
-    "door-front": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Front"), jack),
-    "door-mud": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Mud"), jack),
-    "door-dining": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Dining"), jack),
-    "door-basement": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Basement"), jack),
-    ha: homeRun(ext("https://ameridroid.com/products/poe-mini-pc-for-home-assistant", "ameriDroid PoE Mini PC for Home Assistant"), plateH),
-    "wall-basement": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Basement"), jack),
-    "wall-main": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Main"), jack),
-    "wall-upper": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Upper"), jack),
+    viewport: homeRun(shop("ufp-viewport", "Protect Viewport")),
+    "u7-basement": homeRun(shop("u7-pro-wall", "U7 Pro Wall", "Basement")),
+    "u7-main": homeRun(shop("u7-pro-wall", "U7 Pro Wall", "Main")),
+    "u7-upper": homeRun(shop("u7-pro-wall", "U7 Pro Wall", "Upper")),
+    "door-front": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Front")),
+    "door-mud": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Mud")),
+    "door-dining": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Dining")),
+    "door-basement": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Basement")),
+    ha: roomDrop(ext("https://ameridroid.com/products/poe-mini-pc-for-home-assistant", "ameriDroid PoE Mini PC for Home Assistant"), "uacc-wp-keystone-h-2p", "Den"),
+    "wall-basement": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Basement")),
+    "wall-main": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Main")),
+    "wall-upper": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Upper")),
     meter: passThrough(page("#4.3", "Electrical Panel"), patch, patch15, [xg]),
-    "fs-1": passThrough(ext("https://www.synology.com/en-us/products/FS2500", "Synology FS2500"), patch1, patch15, [xg]),
-    "fs-2": passThrough(ext("https://www.synology.com/en-us/products/FS2500", "Synology FS2500"), patch1, patch15, [xg]),
-    "drop-media": homeRun(ext("https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", "Flex 2.5G", "Media"), plateV),
-    "drop-den": homeRun(ext("https://www.apple.com/mac-studio/", "Mac Studio"), plateH),
-    "drop-master": openDrop("Master"),
-    "drop-br1": openDrop("BR1"),
-    "drop-br2": openDrop("BR2"),
-    "drop-seating": openDrop("Seating"),
-    "drop-garage": homeRun(ext("https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe", "Flex 2.5G PoE", "Garage"), plateV),
+    fs: passThrough(ext("https://www.synology.com/en-us/products/FS2500", "Synology FS2500"), patch1, patch15, [xg]),
+    "drop-media": roomDrop(ext("https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", "Flex 2.5G"), "uacc-wp-keystone-v-1p", "Media"),
+    "drop-den": roomDrop(ext("https://www.apple.com/mac-studio/", "Mac Studio"), "uacc-wp-keystone-h-2p", "Den"),
+    "drop-master": roomDrop(null, "uacc-wp-keystone-v-1p", "Master"),
+    "drop-br1": roomDrop(null, "uacc-wp-keystone-v-1p", "BR1"),
+    "drop-br2": roomDrop(null, "uacc-wp-keystone-v-1p", "BR2"),
+    "drop-seating": roomDrop(null, "uacc-wp-keystone-v-1p", "Seating"),
+    "drop-garage": roomDrop(ext("https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe", "Flex 2.5G PoE"), "uacc-wp-keystone-v-1p", "Garage"),
     ups: passThrough(shop("ups-2u-pro-us", "UPS 2U Pro"), patch1, patch15, [udm]),
     ont: passThrough(ext("https://www.nokia.com/broadband-access/in-home-connectivity/fiber-ont/", "XS-250X-A"), patch1, patch15, [adapter, udm]),
     dac: [udm, dacCable, xg]
@@ -3963,166 +3788,68 @@
     }).join(" -- ");
   }
 
+  function isJack(part) {
+    return !!(part && part.href === jack.href);
+  }
+
+  function isCmr(part) {
+    return !!(part && part.href === cmr.href);
+  }
+
+  function beadFor(part) {
+    var bead = document.createElement("span");
+    bead.className = "rack-bead";
+    var src = part.href && (localThumbs[part.href] || thumbs[part.href]);
+    var face;
+    if (part.href) {
+      face = document.createElement("a");
+      face.href = part.href;
+      face.className = part.page ? "rack-bead-face page-ref" : "rack-bead-face";
+      if (!part.page) {
+        face.target = "_blank";
+        face.rel = "noopener noreferrer";
+      }
+    } else {
+      face = document.createElement("span");
+      face.className = "rack-bead-face";
+    }
+    face.setAttribute("aria-label", part.note ? part.name + " · " + part.note : part.name);
+    if (src) {
+      var img = document.createElement("img");
+      img.src = src;
+      img.alt = part.name;
+      face.appendChild(img);
+    } else {
+      var label = document.createElement("span");
+      label.className = "rack-bead-label";
+      label.textContent = part.name;
+      face.appendChild(label);
+    }
+    bead.appendChild(face);
+    var note = document.createElement("span");
+    note.className = "rack-bead-note";
+    note.textContent = part.note || "";
+    bead.appendChild(note);
+    return bead;
+  }
+
   function fill(parts) {
     path.replaceChildren();
-    parts.forEach(function (part) {
-      var bead = document.createElement("span");
-      bead.className = "rack-bead";
-      var src = part.href && (localThumbs[part.href] || thumbs[part.href]);
-      var face;
-      if (part.href) {
-        face = document.createElement("a");
-        face.href = part.href;
-        face.className = part.page ? "rack-bead-face page-ref" : "rack-bead-face";
-        if (!part.page) {
-          face.target = "_blank";
-          face.rel = "noopener noreferrer";
-        }
+    var i = 0;
+    while (i < parts.length) {
+      if (isJack(parts[i]) && isCmr(parts[i + 1]) && isJack(parts[i + 2])) {
+        var bundle = document.createElement("span");
+        bundle.className = "rack-link";
+        bundle.appendChild(beadFor(parts[i]));
+        bundle.appendChild(beadFor(parts[i + 1]));
+        bundle.appendChild(beadFor(parts[i + 2]));
+        path.appendChild(bundle);
+        i += 3;
       } else {
-        face = document.createElement("span");
-        face.className = "rack-bead-face";
+        path.appendChild(beadFor(parts[i]));
+        i += 1;
       }
-      face.setAttribute("aria-label", part.note ? part.name + " · " + part.note : part.name);
-      if (src) {
-        var img = document.createElement("img");
-        img.src = src;
-        img.alt = part.name;
-        face.appendChild(img);
-      } else {
-        var label = document.createElement("span");
-        label.className = "rack-bead-label";
-        label.textContent = part.name;
-        face.appendChild(label);
-      }
-      bead.appendChild(face);
-      var note = document.createElement("span");
-      note.className = "rack-bead-note";
-      note.textContent = part.note || "";
-      bead.appendChild(note);
-      path.appendChild(bead);
-      if (src) scheduleTint(face, face.querySelector("img"), part.href);
-    });
-  }
-
-  var fillCache = {};
-
-  /* These two photos are served without CORS, so the circle colour is the same sample taken from the file. */
-  var fillFallback = {
-    "https://store.ui.com/us/en/products/udm-pro-max": "rgb(41, 38, 36)",
-    "https://store.ui.com/us/en/products/usw-pro-xg-24-poe": "rgb(41, 38, 36)"
-  };
-
-  function scheduleTint(face, img, href) {
-    if (!img) return;
-    function run() { tintFace(face, img.currentSrc || img.src, href); }
-    if (img.complete && img.naturalWidth) run();
-    else img.addEventListener("load", run, { once: true });
-  }
-
-  function rgbToHsl(r, g, b) {
-    r /= 255;
-    g /= 255;
-    b /= 255;
-    var max = Math.max(r, g, b);
-    var min = Math.min(r, g, b);
-    var h = 0;
-    var s = 0;
-    var l = (max + min) / 2;
-    var d = max - min;
-    if (d > 0) {
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-      if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
-      else if (max === g) h = (b - r) / d + 2;
-      else h = (r - g) / d + 4;
-      h *= 60;
     }
-    return { h: h, s: s, l: l };
-  }
-
-  function hslToRgb(h, s, l) {
-    var c = (1 - Math.abs(2 * l - 1)) * s;
-    var hp = ((h % 360) + 360) % 360 / 60;
-    var x = c * (1 - Math.abs(hp % 2 - 1));
-    var r = 0;
-    var g = 0;
-    var b = 0;
-    if (hp < 1) { r = c; g = x; }
-    else if (hp < 2) { r = x; g = c; }
-    else if (hp < 3) { g = c; b = x; }
-    else if (hp < 4) { g = x; b = c; }
-    else if (hp < 5) { r = x; b = c; }
-    else { r = c; b = x; }
-    var m = l - c / 2;
-    return {
-      r: Math.round((r + m) * 255),
-      g: Math.round((g + m) * 255),
-      b: Math.round((b + m) * 255)
-    };
-  }
-
-  /* A light product sits on a dark disc. A dark product sits on a light disc. */
-  function sampleContrast(image) {
-    var size = 36;
-    var canvas = document.createElement("canvas");
-    canvas.width = size;
-    canvas.height = size;
-    var ctx = canvas.getContext("2d", { willReadFrequently: true });
-    var nw = image.naturalWidth || image.width;
-    var nh = image.naturalHeight || image.height;
-    var scale = Math.min(size / nw, size / nh);
-    var dw = Math.max(1, Math.round(nw * scale));
-    var dh = Math.max(1, Math.round(nh * scale));
-    ctx.clearRect(0, 0, size, size);
-    ctx.drawImage(image, Math.floor((size - dw) / 2), Math.floor((size - dh) / 2), dw, dh);
-    var data = ctx.getImageData(0, 0, size, size).data;
-    var sr = 0;
-    var sg = 0;
-    var sb = 0;
-    var sn = 0;
-    var i;
-    for (i = 0; i < data.length; i += 4) {
-      if (data[i + 3] < 140) continue;
-      sr += data[i];
-      sg += data[i + 1];
-      sb += data[i + 2];
-      sn += 1;
-    }
-    if (!sn) return "";
-    var r = sr / sn;
-    var g = sg / sn;
-    var b = sb / sn;
-    var luma = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-    var hue = rgbToHsl(r, g, b);
-    var lightProduct = luma >= 0.52;
-    var L = lightProduct ? 0.15 : 0.94;
-    var S = hue.s < 0.18 ? (lightProduct ? 0.06 : 0.07) : Math.min(0.32, hue.s * 0.4);
-    var H = hue.s < 0.18 ? 32 : hue.h;
-    var rgb = hslToRgb(H, S, L);
-    return "rgb(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ")";
-  }
-
-  function paintFill(face, src, href, color) {
-    if (!color && href && fillFallback[href]) color = fillFallback[href];
-    fillCache[src] = color || "";
-    if (color && face.isConnected) face.style.setProperty("--rack-fill", color);
-  }
-
-  function tintFace(face, src, href) {
-    if (!src) return;
-    if (Object.prototype.hasOwnProperty.call(fillCache, src)) {
-      if (fillCache[src]) face.style.setProperty("--rack-fill", fillCache[src]);
-      else if (href && fillFallback[href]) face.style.setProperty("--rack-fill", fillFallback[href]);
-      return;
-    }
-    var probe = new Image();
-    probe.crossOrigin = "anonymous";
-    probe.onload = function () {
-      var color = "";
-      try { color = sampleContrast(probe); } catch (err) { color = ""; }
-      paintFill(face, src, href, color);
-    };
-    probe.onerror = function () { paintFill(face, src, href, ""); };
-    probe.src = src;
   }
 
   /* Every circle uses the row height minus one caption line, whether or not this run has a caption. */

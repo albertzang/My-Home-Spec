@@ -221,7 +221,6 @@
      */
     .spa-spec .spa-article .table-scroll,
     .spa-spec .spa-article .design-devices-wrap,
-    .spa-spec .spa-article .power-table-wrap,
     .spa-spec .spa-article .power-tree-wrap,
     .spa-spec .spa-article .appliances-wrap {
       max-width: 100%;
@@ -231,7 +230,6 @@
       margin: 0.75rem 0 1.4rem;
     }
 
-    .spa-spec .spa-article .power-table-wrap,
     .spa-spec .spa-article .power-tree-wrap {
       margin: 0.65rem 0 1rem;
     }
@@ -542,8 +540,7 @@
       color: var(--sheet-sku);
     }
 
-    .spa-spec .spa-article table.spec-sheet td.price-cell,
-    .spa-spec .spa-article table.spec-sheet td.protocol-cell {
+    .spa-spec .spa-article table.spec-sheet td.price-cell {
       color: var(--sheet-price);
     }
 
@@ -947,11 +944,6 @@
       white-space: nowrap;
     }
 
-    /* PoE sub-labels stay multi-line under the watt figure. */
-    .spa-spec .spa-article .poe-sub {
-      white-space: normal;
-    }
-
     .spa-spec .spa-article table.door-access {
       --door-paper: #fbf9f6;
       --door-ink: #2a2622;
@@ -1273,7 +1265,7 @@
     }
 
     .spa-spec .spa-article table.door-access .door-opt-index {
-      grid-row: span 2;
+      grid-row: 1;
       align-self: center;
       font-variant-numeric: tabular-nums;
       font-size: 0.72rem;
@@ -1293,18 +1285,8 @@
       line-height: 1.3;
     }
 
-    .spa-spec .spa-article table.door-access .door-opt.is-plain .door-opt-name,
-    .spa-spec .spa-article table.door-access .door-opt.is-plain .door-opt-sub {
+    .spa-spec .spa-article table.door-access .door-opt.is-plain .door-opt-name {
       grid-column: 1;
-    }
-
-    .spa-spec .spa-article table.door-access .door-opt-sub {
-      grid-column: 2;
-      grid-row: 2;
-      font-size: 0.78rem;
-      line-height: 1.3;
-      color: #6a6158;
-      white-space: nowrap;
     }
 
     .spa-spec .spa-article table.door-access .door-hub {
@@ -1764,7 +1746,9 @@
       min-height: 0;
       height: calc(4.25rem - 4px);
       max-height: calc(4.25rem - 4px);
-      padding-bottom: calc(var(--rack-note, 12px) + var(--rack-note-gap, 2px));
+      --rack-link-join: max(6px, calc(var(--rack-thumb, 2.6rem) * 0.16));
+      --rack-link-pad: max(4px, calc(var(--rack-thumb, 2.6rem) * 0.12));
+      padding: 0 0.75rem calc(var(--rack-note, 12px) + var(--rack-note-gap, 2px));
       align-items: center;
       align-content: center;
       white-space: nowrap;
@@ -1795,6 +1779,42 @@
       margin-right: var(--rack-join, 12px);
     }
 
+    /* Jack, CMR, and Jack are one permanent link: a shared capsule, with the inner sticks pulled in. */
+    .spa-spec .spa-article table.rack-face .rack-link {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+      padding: 0 var(--rack-link-pad);
+      border-radius: 999px;
+      background: #d9d0c3;
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-link:not(:last-child) {
+      margin-right: var(--rack-join, 12px);
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-link .rack-bead:not(:last-child) {
+      margin-right: var(--rack-link-join);
+    }
+
+    .spa-spec .spa-article table.rack-face .rack-link .rack-bead:not(:last-child) .rack-bead-face::before {
+      width: calc(var(--rack-link-join) + 1px);
+    }
+
+    /* The stick leaves the last circle, crosses the capsule ear, and meets the next circle. */
+    .spa-spec .spa-article table.rack-face .rack-link:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      top: 50%;
+      left: calc(100% - var(--rack-link-pad) + var(--rack-wire) - 0.5px);
+      width: calc(var(--rack-link-pad) + var(--rack-join, 12px) + 1px);
+      height: var(--rack-wire);
+      background: var(--rack-wire-color);
+      transform: translateY(-50%);
+    }
+
     .spa-spec .spa-article table.rack-face .rack-bead-face {
       position: relative;
       z-index: 1;
@@ -1806,7 +1826,8 @@
       height: var(--rack-thumb, 2.6rem);
       border: var(--rack-wire) solid var(--rack-wire-color);
       border-radius: 50%;
-      background: var(--rack-fill, var(--sheet-group));
+      /* One disc for every bead: darker than a white product, lighter than a black one. */
+      background: #9a948c;
       color: inherit;
       text-decoration: none;
     }
@@ -1822,6 +1843,11 @@
       height: var(--rack-wire);
       background: var(--rack-wire-color);
       transform: translateY(-50%);
+    }
+
+    /* The next circle sits inside the capsule, so this stick also crosses the ear. */
+    .spa-spec .spa-article table.rack-face .rack-bead:has(+ .rack-link) .rack-bead-face::before {
+      width: calc(var(--rack-join, 12px) + var(--rack-link-pad) + 1px);
     }
 
     .spa-spec .spa-article table.rack-face .rack-bead-face img {
@@ -1860,13 +1886,6 @@
 
     .spa-spec .spa-article table.rack-face .rack-bead-note:empty {
       display: none;
-    }
-
-    /* The first caption grows to the right, so it stays clear of the U column. */
-    .spa-spec .spa-article table.rack-face .rack-bead:first-child .rack-bead-note {
-      left: 0;
-      transform: none;
-      text-align: left;
     }
 
     .spa-spec .spa-article table.rack-face .rack-bead-face:hover,
@@ -1985,10 +2004,6 @@
       background: #eff6ff;
     }
 
-    .checklist li {
-      margin: 0.4rem 0;
-    }
-
     /* Port icons */
     .udc-device {
       display: inline-flex;
@@ -2098,100 +2113,6 @@
       color: #fff;
     }
 
-    /* Kit rows: equal flex bands + full-bleed dashed lines across Device/Port/PoE */
-    td:has(> .udc-device-stack),
-    td:has(> .kit-stack) {
-      padding: 0;
-      height: 1px;
-      vertical-align: top;
-    }
-
-    .udc-device-stack,
-    .kit-stack {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0;
-      width: 100%;
-      height: 100%;
-      min-height: 100%;
-      box-sizing: border-box;
-    }
-
-    .udc-device-stack > .udc-device,
-    .udc-device-stack > a:first-child {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      flex: 1 1 0;
-      min-height: 2.75rem;
-      padding: 0.5rem 0.75rem;
-      box-sizing: border-box;
-    }
-
-    .udc-accessory {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      flex: 1 1 0;
-      min-height: 2.75rem;
-      margin: 0;
-      padding: 0.5rem 0.75rem 0.5rem 2.1rem;
-      border-top: none;
-      background-image: repeating-linear-gradient(
-        to right,
-        #ccc 0,
-        #ccc 0.45rem,
-        transparent 0.45rem,
-        transparent 0.7rem
-      );
-      background-size: 100% 1px;
-      background-repeat: repeat-x;
-      background-position: left top;
-      font-size: inherit;
-      color: inherit;
-      box-sizing: border-box;
-    }
-
-    .udc-accessory img {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
-
-    .kit-seg {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      flex: 1 1 0;
-      min-height: 2.75rem;
-      padding: 0.5rem 0.75rem;
-      box-sizing: border-box;
-      width: 100%;
-    }
-
-    .kit-seg.acc {
-      margin: 0;
-      border-top: none;
-      background-image: repeating-linear-gradient(
-        to right,
-        #ccc 0,
-        #ccc 0.45rem,
-        transparent 0.45rem,
-        transparent 0.7rem
-      );
-      background-size: 100% 1px;
-      background-repeat: repeat-x;
-      background-position: left top;
-    }
-
-    .poe-cell {
-      vertical-align: top;
-      min-width: 5.5rem;
-    }
-
     td.port-cell {
       min-width: 4.5rem;
       vertical-align: middle !important;
@@ -2201,16 +2122,6 @@
     td.port-cell > .udc-ports {
       display: flex;
       width: max-content;
-    }
-
-    .design-devices-wrap .devices-table > tbody > tr > td.protocol-cell {
-      vertical-align: middle;
-      white-space: nowrap;
-      color: var(--ink-soft);
-    }
-
-    .spa-spec .spa-article table.spec-sheet > tbody > tr > td.protocol-cell {
-      color: var(--sheet-price);
     }
 
     .design-devices-wrap .devices-table > tbody > tr > td.price-cell {
@@ -2240,12 +2151,6 @@
       border-top: 1px solid var(--line);
       padding-top: 0.65rem;
       vertical-align: top;
-    }
-
-    .order-fees-ccy {
-      display: block;
-      font-variant-numeric: tabular-nums;
-      line-height: 1.35;
     }
 
     /* Tesla, order fees, and the rack face sit on the same sheet as the schedules. */
@@ -2300,33 +2205,8 @@
       font-size: 0.9rem;
     }
 
-    .spa-spec .spa-article .udc-count,
-    .spa-spec .spa-article .poe-sub,
-    .spa-spec .spa-article .poe-lbl {
+    .spa-spec .spa-article .udc-count {
       color: var(--sheet-sku);
-    }
-
-    .poe-val {
-      display: block;
-      line-height: 1.25;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .poe-sub {
-      display: block;
-      margin-top: 0.12rem;
-      font-size: 0.7rem;
-      color: #666;
-      white-space: normal;
-      max-width: 9rem;
-      line-height: 1.25;
-    }
-
-    .poe-lbl {
-      font-size: 0.65em;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      color: #888;
     }
 
     th.port-group {
@@ -2921,10 +2801,6 @@
       height: auto;
     }
 
-    .topo-node.topo-backup {
-      outline-style: dashed;
-    }
-
     .topo-counted-port {
       display: inline-flex;
       flex-direction: column;
@@ -3014,10 +2890,6 @@
       border-radius: 0.32rem;
       background: #fff;
       text-align: center;
-    }
-
-    .topo-bundle-device.topo-backup {
-      outline-style: dashed;
     }
 
     .topo-bundle-device .topo-mid {
@@ -3573,45 +3445,6 @@
       white-space: nowrap;
     }
 
-    .power-card {
-      min-width: 0;
-      padding: 0.85rem 0.9rem;
-      border: 1px solid #c5d4e4;
-      border-radius: 0.5rem;
-      background: #e8eef6;
-      color: var(--ink);
-      transition: background-color 160ms ease, border-color 160ms ease;
-    }
-
-    .power-card-wide {
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .power-card-title {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      margin: 0;
-      color: #334155;
-      font-size: inherit;
-      font-weight: 650;
-    }
-
-    .power-card-value {
-      margin: 0.14rem 0 0.55rem;
-      font-size: 1.25rem;
-      font-weight: 700;
-      line-height: 1.2;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .power-card-value small {
-      color: #666;
-      font-size: 0.72rem;
-      font-weight: 500;
-    }
-
     .power-meter {
       height: 0.38rem;
       overflow: hidden;
@@ -3634,34 +3467,6 @@
     @keyframes meter-grow {
       from { transform: scaleX(0); }
       to { transform: scaleX(1); }
-    }
-
-    .power-callout {
-      margin: 0.65rem 0 0;
-      padding: 0.55rem 0.7rem;
-      border-left: 3px solid #d98b16;
-      background: #fff8e8;
-      color: #4a3a20;
-      font-size: 0.82rem;
-      line-height: 1.45;
-    }
-
-    .power-callout p {
-      margin: 0.55rem 0 0;
-    }
-
-    .power-callout p:last-child {
-      margin-bottom: 0;
-    }
-
-    .power-formula {
-      margin: 0.5rem 0 0;
-      color: #555;
-      font-size: 0.82rem;
-    }
-
-    .power-card > .power-formula:first-of-type {
-      margin-top: 0.55rem;
     }
 
     table.power-tree {
@@ -3759,21 +3564,10 @@
       background-color: var(--sheet-leaf-hover);
     }
 
-    table.power-tree th.power-head,
     table.power-tree td.num {
       text-align: right;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
-    }
-
-    table.power-tree .power-formula,
-    table.power-tree .power-formula code {
-      white-space: normal;
-      overflow-wrap: anywhere;
-    }
-
-    table.power-tree .power-callout {
-      white-space: normal;
     }
 
     table.power-tree tr.power-tree-handle {
@@ -3961,8 +3755,7 @@
         animation: none;
       }
 
-      .spa-spec .spa-article table.spec-sheet .room-mark::before,
-      .power-card {
+      .spa-spec .spa-article table.spec-sheet .room-mark::before {
         transition: none;
       }
     }
