@@ -30,29 +30,13 @@
     </symbol>
   </svg>
 
-  <header class="masthead">
-    <button
-      class="nav-toggle"
-      type="button"
-      aria-label="Toggle contents"
-      aria-expanded="false"
-      aria-controls="sidebar"
-    >
-      <span></span><span></span><span></span>
-    </button>
-    <a class="brand" href="#spec">
-      <span class="brand-text">
-        <span class="brand-title">Home Spec</span>
-        <span class="brand-subtitle">Whole-home design reference</span>
-      </span>
-    </a>
-  </header>
-
-  <button class="nav-backdrop" type="button" aria-label="Close contents" hidden></button>
-
   <div id="export-root" aria-hidden="true"></div>
 
 <section id="tab-spec" class="spa-tab spa-doc spa-spec">
+  <div class="contents-bar">
+    <button type="button" class="contents-toggle" aria-controls="sidebar" aria-expanded="false">Contents</button>
+  </div>
+  <button type="button" class="contents-backdrop" aria-label="Close contents" hidden></button>
   <div class="design-shell">
   <nav class="design-toc" id="sidebar" aria-label="Contents"></nav>
   <article class="spa-article">

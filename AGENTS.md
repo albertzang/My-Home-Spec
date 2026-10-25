@@ -41,7 +41,7 @@ The Spec Contents list includes document levels 1 and 2 only: the numbered `h2` 
 
 Every Spec `h2` / `h3` / `h4` gets a URL fragment from its current outline number (for example `#1.1.1`). Recompute those ids from the live heading text whenever the document changes. Do not keep alias maps, redirects, or other jump paths for retired hashes. Those body titles are clickable in-page tag refs to that live fragment. Body cross-references (`§1.3`, Topology, 见下方…) use the same live fragments via `a.page-ref`. In Spec body copy and UniFi store links, use the product-page Marketing Name shown above the SKU (for example `Pro XG 24 PoE`, not `Switch Pro XG 24 PoE` or `USW-Pro-XG-24-PoE`). Do not add category prefixes from the tab title or `og:title` (`Switch`, `Access Point`, `Camera`, `Access`, …). In device lists, that Marketing Name is the link, with the gray SKU underneath.
 
-Keep enough bottom padding on the Spec article that the last Contents target can reach the reading line under the masthead. Without that room, the pane ends first and the last item never becomes active.
+Keep enough bottom padding on the Spec article that the last Contents target can reach the reading line at the top of the pane. Without that room, the pane ends first and the last item never becomes active.
 
 ### Topology drawing
 
@@ -49,7 +49,7 @@ The on-screen SVG and the exported sheet are one drawing. Do not fix a screen ru
 
 **Export Blueprint**
 
-- Keep Export Blueprint and Full Screen in the Appendix Topology bar, outside the drawing stage (`#spec-topo`). Do not put them in the global masthead.
+- Keep Export Blueprint and Full Screen in the Appendix Topology bar, outside the drawing stage (`#spec-topo`).
 - Export clones the on-screen topology stage; do not change the drawing to make the buttons fit.
 
 **Cables**

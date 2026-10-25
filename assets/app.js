@@ -34,9 +34,17 @@
         return raw;
       }
 
+      function readingInset() {
+        var bar = document.querySelector(".contents-bar");
+        if (bar && getComputedStyle(bar).display !== "none") {
+          return bar.getBoundingClientRect().height + 8;
+        }
+        return 8;
+      }
+
       function scrollToHeading(heading, behavior) {
         if (!heading) return;
-        var top = heading.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop - 8;
+        var top = heading.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop - readingInset();
         scroller.scrollTo({ top: Math.max(0, top), behavior: behavior || "smooth" });
       }
 
@@ -126,10 +134,10 @@
       toc.appendChild(title);
       toc.appendChild(list);
 
-      /* Mobile Contents drawer — same pattern as A&J Studio Corporate Governance. */
+      /* Narrow screens keep Contents off the page until this control opens it. */
       (function () {
-        var navToggle = document.querySelector(".nav-toggle");
-        var backdrop = document.querySelector(".nav-backdrop");
+        var toggle = document.querySelector(".contents-toggle");
+        var backdrop = document.querySelector(".contents-backdrop");
         var mobileNav = window.matchMedia("(max-width: 860px)");
 
         function isMobileNav() {
@@ -137,19 +145,24 @@
         }
 
         function setSidebar(open) {
-          var show = Boolean(open) && isMobileNav();
+          var mobile = isMobileNav();
+          var show = Boolean(open) && mobile;
           toc.classList.toggle("is-open", show);
           document.body.classList.toggle("nav-open", show);
-          if (navToggle) navToggle.setAttribute("aria-expanded", show ? "true" : "false");
+          if (mobile && !show) toc.setAttribute("inert", "");
+          else toc.removeAttribute("inert");
+          if (!show && toggle && toc.contains(document.activeElement)) toggle.focus();
+          if (toggle) {
+            toggle.setAttribute("aria-expanded", show ? "true" : "false");
+            toggle.textContent = show ? "Close" : "Contents";
+          }
           if (backdrop) backdrop.hidden = !show;
         }
 
         window.setSpecSidebar = setSidebar;
 
-        if (navToggle) {
-          navToggle.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
+        if (toggle) {
+          toggle.addEventListener("click", function () {
             setSidebar(!toc.classList.contains("is-open"));
           });
         }
@@ -167,6 +180,7 @@
         window.addEventListener("resize", function () {
           if (!isMobileNav()) setSidebar(false);
         });
+        setSidebar(false);
       })();
 
       if (!("IntersectionObserver" in window)) {
@@ -187,7 +201,7 @@
 
       function updateTocFromScroll() {
         var scrollerRect = scroller.getBoundingClientRect();
-        var origin = scrollerRect.top + 28;
+        var origin = scrollerRect.top + readingInset() + 20;
         var found = links[0];
         /* At the bottom of the Spec pane the last heading can stay below the
            reading line. Count it once it is on screen. */
@@ -3257,60 +3271,29 @@
     })();
 
 (function () {
-      var brand = document.querySelector("a.brand");
-
-      function showSpec(hash) {
-        var tab = document.getElementById("tab-spec");
-        if (tab) tab.classList.add("is-on");
-        if (typeof window.setSpecSidebar === "function") window.setSpecSidebar(false);
-        if (history.replaceState) history.replaceState(null, "", "#" + (hash || "spec"));
-        if (typeof window.equalizeDoorRows === "function") {
-          requestAnimationFrame(window.equalizeDoorRows);
-        }
-        if (typeof window.fitScheduleLines === "function") {
-          requestAnimationFrame(window.fitScheduleLines);
-        }
-        if (typeof window.pinSheetHeads === "function") {
-          requestAnimationFrame(window.pinSheetHeads);
-        }
-      }
-
       function applyLocationHash(rawHash, scrollBehavior) {
         var id = (rawHash || "").replace(/^#/, "");
         try { id = decodeURIComponent(id); } catch (err) { /* keep raw id */ }
-        if (!id || id === "spec") {
-          showSpec();
-          return;
-        }
+        if (!id) return;
         var heading = typeof window.specHeadingById === "function" ? window.specHeadingById(id) : null;
         if (!heading) {
+          var article = document.querySelector("#tab-spec .spa-article");
           var el = document.getElementById(id);
-          if (el && document.querySelector("#tab-spec .spa-article") &&
-              document.querySelector("#tab-spec .spa-article").contains(el)) {
-            heading = el;
-          }
+          if (el && article && article.contains(el)) heading = el;
         }
-        showSpec(heading ? heading.id : "spec");
-        if (heading && typeof window.scrollSpecHeading === "function") {
-          var behavior = scrollBehavior || "auto";
-          var go = function () { window.scrollSpecHeading(heading, behavior); };
-          requestAnimationFrame(function () {
-            go();
-            requestAnimationFrame(go);
-          });
-          /* Spec pane may still be measuring. */
-          if (behavior === "auto") setTimeout(go, 80);
-        }
+        if (!heading || typeof window.scrollSpecHeading !== "function") return;
+        if (typeof window.setSpecSidebar === "function") window.setSpecSidebar(false);
+        if (history.replaceState) history.replaceState(null, "", "#" + heading.id);
+        var behavior = scrollBehavior || "auto";
+        var go = function () { window.scrollSpecHeading(heading, behavior); };
+        requestAnimationFrame(function () {
+          go();
+          requestAnimationFrame(go);
+        });
+        if (behavior === "auto") setTimeout(go, 80);
       }
 
       window.applyLocationHash = applyLocationHash;
-
-      if (brand) {
-        brand.addEventListener("click", function (event) {
-          event.preventDefault();
-          showSpec();
-        });
-      }
 
       window.addEventListener("hashchange", function () {
         applyLocationHash(location.hash, "smooth");
@@ -3480,8 +3463,6 @@
         var rect = button.getBoundingClientRect();
         var gap = 6;
         var edge = 8;
-        var mast = document.querySelector(".masthead");
-        var mastBottom = mast ? mast.getBoundingClientRect().bottom : 0;
         list.style.position = "fixed";
         list.style.left = rect.left + "px";
         list.style.width = rect.width + "px";
@@ -3492,7 +3473,7 @@
         list.style.bottom = "auto";
         var height = list.scrollHeight;
         var spaceBelow = window.innerHeight - rect.bottom - gap - edge;
-        var spaceAbove = rect.top - mastBottom - gap - edge;
+        var spaceAbove = rect.top - gap - edge;
         var openDown = height <= spaceBelow || spaceBelow >= spaceAbove;
         var room = Math.max(120, openDown ? spaceBelow : spaceAbove);
         if (openDown) {
