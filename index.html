@@ -2456,9 +2456,245 @@
               │
               └── CAN / 12V ──► <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a></pre>
 
+  <p>车库电气单线如下。数据链见上方。</p>
+  <figure class="tesla-eline">
+    <div class="tesla-eline-scroll">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 1040" role="img" aria-labelledby="tesla-eline-title tesla-eline-desc">
+        <title id="tesla-eline-title">车库 Tesla 系统电气单线</title>
+        <desc id="tesla-eline-desc">BC Hydro 200 A 经电表和服务断路器进入 Gateway 3 的 Supply 端子 A。服务断路器是唯一的中性线接地处，并接接地极。Gateway 3 在加拿大不作服务设备，bonding screw 拆除。孤岛开关之后，Backup 端子 B 以 200 A 四线到主屋配电盘；该盘改为分盘并拆除盘内中性线与地的连接。原厂跳线保留，把内部母排 H 留在备用侧，跳线落在母排上的 Backup 端子 E。H 从上到下是 60 A Powerwall 3 Leader、60 A Powerwall 3 Follower、100 A 两个 Wall Connector、80 A 车库 Workshop 分盘。中性线进 C 或 D，地进 F 或 G。通信插头 I 的针脚为 12V、GND、CN+、CN−、RS485。盖板内侧小图的方位与打开盖板后一致。两台 Powerwall 各 11.5 kW，交流端子在接线仓左侧，光伏从右侧 MPPT 进入。Wall Connector 以 Power Share 把持续电流限在 80 A，只有 L1、L2、PE。</desc>
+        <rect width="760" height="1040" fill="#fbf9f6"/>
+
+        <text x="24" y="32" fill="#2a2622" font-size="18" font-weight="650">车库 Tesla 系统</text>
+        <text x="24" y="54" fill="#6a6158" font-size="12">电气单线 · 分相 120/240 V · 全屋备电</text>
+        <text x="24" y="74" fill="#6a6158" font-size="12">平时市电从服务断路器进入。停电后孤岛开关断开，下面的回路改由 Powerwall 供电。</text>
+
+        <line x1="24" y1="96" x2="52" y2="96" stroke="#3e5870" stroke-width="2"/>
+        <text x="58" y="100" fill="#3e5870" font-size="12">市电</text>
+        <line x1="104" y1="96" x2="132" y2="96" stroke="#7a4e2b" stroke-width="2"/>
+        <text x="138" y="100" fill="#7a4e2b" font-size="12">备电</text>
+        <line x1="184" y1="96" x2="212" y2="96" stroke="#1f6b45" stroke-width="2" stroke-dasharray="4 3"/>
+        <text x="218" y="100" fill="#1f6b45" font-size="12">光伏直流</text>
+        <text x="300" y="100" fill="#6a6158" font-size="12">一根线是一组导体 · 数字是断路器</text>
+
+        <rect x="24" y="118" width="108" height="56" rx="6" fill="#f2f5f7" stroke="#3e5870"/>
+        <text x="78" y="142" fill="#2a2622" font-size="13" font-weight="650" text-anchor="middle">BC Hydro</text>
+        <text x="78" y="160" fill="#3e5870" font-size="12" text-anchor="middle">200 A</text>
+        <line x1="132" y1="146" x2="134" y2="146" stroke="#3e5870" stroke-width="1.75"/>
+        <circle cx="156" cy="146" r="22" fill="#f2f5f7" stroke="#3e5870" stroke-width="1.5"/>
+        <text x="156" y="150" fill="#2a2622" font-size="12" text-anchor="middle">电表</text>
+        <line x1="178" y1="146" x2="196" y2="146" stroke="#3e5870" stroke-width="1.75"/>
+
+        <rect x="196" y="114" width="248" height="64" rx="6" fill="#f2f5f7" stroke="#3e5870"/>
+        <text x="212" y="138" fill="#2a2622" font-size="13" font-weight="650">服务断路器 200 A</text>
+        <text x="212" y="158" fill="#3e5870" font-size="11">唯一的 N–G 连接 · 接地极</text>
+        <g transform="translate(412,128)" fill="none" stroke="#3e5870" stroke-width="1.4" stroke-linecap="round">
+          <line x1="0" y1="0" x2="0" y2="8"/>
+          <line x1="-7" y1="8" x2="7" y2="8"/>
+          <line x1="-4.5" y1="12" x2="4.5" y2="12"/>
+          <line x1="-2" y1="16" x2="2" y2="16"/>
+        </g>
+
+        <line x1="320" y1="178" x2="320" y2="214" stroke="#3e5870" stroke-width="1.75"/>
+        <text x="24" y="198" fill="#3e5870" font-size="12">A · Supply S1/S2 · 四线 L1 L2 N PE · 200 A</text>
+
+        <rect x="20" y="214" width="404" height="654" rx="8" fill="#f8f4ee" stroke="#7a4e2b" stroke-width="1.25"/>
+        <path d="M28 214h388a8 8 0 0 1 8 8v70H20V222a8 8 0 0 1 8-8z" fill="#f2f5f7"/>
+        <line x1="20" y1="292" x2="424" y2="292" stroke="#c4b5a4"/>
+
+        <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">
+          <text x="36" y="242" fill="#2a2622" font-size="15" font-weight="650">Gateway 3</text>
+        </a>
+        <text x="128" y="242" fill="#6a6158" font-size="12">加拿大：不作服务设备</text>
+        <text x="36" y="262" fill="#2a2622" font-size="12">bonding screw 已拆除 · Site CT 全屋计量</text>
+        <text x="36" y="282" fill="#3e5870" font-size="12">A · Supply 市电侧</text>
+
+        <line x1="320" y1="214" x2="320" y2="308" stroke="#3e5870" stroke-width="1.75"/>
+        <circle cx="320" cy="318" r="4" fill="#f8f4ee" stroke="#7a4e2b" stroke-width="1.5"/>
+        <circle cx="320" cy="332" r="4" fill="#f8f4ee" stroke="#7a4e2b" stroke-width="1.5"/>
+        <line x1="320" y1="322" x2="320" y2="328" stroke="#7a4e2b" stroke-width="1.5"/>
+        <line x1="320" y1="336" x2="320" y2="888" stroke="#7a4e2b" stroke-width="1.75"/>
+        <text x="36" y="322" fill="#7a4e2b" font-size="12" font-weight="650">孤岛开关</text>
+        <text x="36" y="340" fill="#6a6158" font-size="11">电网停电时断开 · 以下为备电</text>
+
+        <rect x="34" y="356" width="268" height="476" rx="6" fill="#fffcf8" stroke="#c4b5a4" stroke-width="1"/>
+        <text x="46" y="376" fill="#2a2622" font-size="12" font-weight="650">盖板内侧</text>
+        <text x="112" y="376" fill="#6a6158" font-size="11">方位与打开盖板后相同</text>
+
+        <rect x="46" y="388" width="14" height="14" rx="2" fill="#7a4e2b"/>
+        <text x="53" y="399" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">H</text>
+        <text x="66" y="399" fill="#2a2622" font-size="11">8 位 · 上为 L2 · ≤125 A</text>
+        <g fill="#fffcf8" stroke="#7a4e2b" stroke-width="1">
+          <rect x="46" y="408" width="120" height="22" rx="2"/>
+          <rect x="46" y="434" width="120" height="22" rx="2"/>
+          <rect x="46" y="460" width="120" height="22" rx="2"/>
+          <rect x="46" y="486" width="120" height="22" rx="2"/>
+        </g>
+        <g fill="#7a4e2b" font-size="11">
+          <text x="54" y="423">1–2</text>
+          <text x="54" y="449">3–4</text>
+          <text x="54" y="475">5–6</text>
+          <text x="54" y="501">7–8</text>
+        </g>
+        <g fill="#2a2622" font-size="11">
+          <text x="88" y="423">Leader</text>
+          <text x="88" y="449">Follower</text>
+          <text x="88" y="475">车充 ×2</text>
+          <text x="88" y="501">车间</text>
+        </g>
+
+        <rect x="186" y="388" width="14" height="14" rx="2" fill="#2a2622"/>
+        <text x="193" y="399" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">I</text>
+        <text x="206" y="399" fill="#2a2622" font-size="11">通信</text>
+        <rect x="186" y="408" width="104" height="108" rx="2" fill="#fffcf8" stroke="#2a2622" stroke-width="1"/>
+        <g fill="#2a2622" font-size="11">
+          <text x="194" y="426">12V</text>
+          <text x="194" y="442">GND</text>
+          <text x="194" y="458">CN+</text>
+          <text x="194" y="474">CN−</text>
+          <text x="194" y="490">RS485+</text>
+          <text x="194" y="506">RS485−</text>
+        </g>
+
+        <rect x="46" y="528" width="14" height="14" rx="2" fill="#7a4e2b"/>
+        <text x="53" y="539" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">E</text>
+        <rect x="66" y="526" width="18" height="18" rx="2" fill="#fffcf8" stroke="#7a4e2b"/>
+        <rect x="88" y="526" width="18" height="18" rx="2" fill="#fffcf8" stroke="#7a4e2b"/>
+        <text x="112" y="539" fill="#7a4e2b" font-size="10">母排 Backup</text>
+
+        <rect x="180" y="528" width="14" height="14" rx="2" fill="#3e5870"/>
+        <text x="187" y="539" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">A</text>
+        <rect x="200" y="524" width="40" height="22" rx="2" fill="#f2f5f7" stroke="#3e5870"/>
+        <rect x="244" y="524" width="40" height="22" rx="2" fill="#f2f5f7" stroke="#3e5870"/>
+        <text x="220" y="539" fill="#3e5870" font-size="11" text-anchor="middle">S2</text>
+        <text x="264" y="539" fill="#3e5870" font-size="11" text-anchor="middle">S1</text>
+        <text x="242" y="574" fill="#3e5870" font-size="10" text-anchor="middle">SUPPLY</text>
+
+        <line x1="86" y1="546" x2="86" y2="604" stroke="#7a4e2b" stroke-width="1.75"/>
+        <text x="96" y="580" fill="#7a4e2b" font-size="10">跳线桥</text>
+
+        <rect x="46" y="608" width="14" height="14" rx="2" fill="#7a4e2b"/>
+        <text x="53" y="619" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">B</text>
+        <rect x="66" y="604" width="22" height="22" rx="2" fill="#fffcf8" stroke="#7a4e2b" stroke-width="1.25"/>
+        <rect x="92" y="604" width="22" height="22" rx="2" fill="#fffcf8" stroke="#7a4e2b" stroke-width="1.25"/>
+        <text x="120" y="619" fill="#7a4e2b" font-size="11">Backup 出线</text>
+
+        <rect x="46" y="642" width="14" height="14" rx="2" fill="#2a2622"/>
+        <text x="53" y="653" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">D</text>
+        <text x="66" y="653" fill="#2a2622" font-size="11">附加 N</text>
+        <rect x="46" y="664" width="14" height="14" rx="2" fill="#2a2622"/>
+        <text x="53" y="675" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">C</text>
+        <text x="66" y="675" fill="#2a2622" font-size="11">大号 N</text>
+
+        <rect x="180" y="642" width="14" height="14" rx="2" fill="#2a2622"/>
+        <text x="187" y="653" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">F</text>
+        <text x="200" y="653" fill="#2a2622" font-size="11">大号 PE</text>
+        <rect x="180" y="664" width="14" height="14" rx="2" fill="#2a2622"/>
+        <text x="187" y="675" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">G</text>
+        <text x="200" y="675" fill="#2a2622" font-size="11">附加 PE</text>
+
+        <text x="46" y="702" fill="#6a6158" font-size="10">跳线桥保留</text>
+        <text x="46" y="718" fill="#6a6158" font-size="10">印 REMOVE TO ISOLATE SUB-PANEL</text>
+        <text x="46" y="736" fill="#6a6158" font-size="10">N 进 C 或 D · PE 进 F 或 G</text>
+        <text x="46" y="754" fill="#6a6158" font-size="10">Powerwall、车间四线 · 车充 L1 L2 PE</text>
+        <text x="46" y="772" fill="#6a6158" font-size="10">非备电端子不用</text>
+        <text x="46" y="796" fill="#6a6158" font-size="10">右列 1–8 就是这只 H · 进线落在 A · 下行是 B</text>
+
+        <line x1="320" y1="416" x2="372" y2="416" stroke="#7a4e2b" stroke-width="1.75"/>
+        <line x1="372" y1="416" x2="372" y2="848" stroke="#7a4e2b" stroke-width="1.75"/>
+
+        <!-- Breakers, top to bottom: Leader, Follower, Wall Connector, Workshop -->
+        <g fill="none" stroke="#7a4e2b" stroke-width="1.75">
+          <line x1="372" y1="436" x2="448" y2="436"/>
+          <rect x="392" y="428" width="16" height="16" rx="1.5" fill="#fffcf8" stroke="#7a4e2b"/>
+          <line x1="372" y1="564" x2="448" y2="564"/>
+          <rect x="392" y="556" width="16" height="16" rx="1.5" fill="#fffcf8" stroke="#7a4e2b"/>
+          <line x1="372" y1="694" x2="448" y2="694"/>
+          <rect x="392" y="686" width="16" height="16" rx="1.5" fill="#fffcf8" stroke="#7a4e2b"/>
+          <line x1="372" y1="848" x2="448" y2="848"/>
+          <rect x="392" y="840" width="16" height="16" rx="1.5" fill="#fffcf8" stroke="#7a4e2b"/>
+        </g>
+        <text x="328" y="426" fill="#7a4e2b" font-size="11">1–2</text>
+        <text x="412" y="426" fill="#7a4e2b" font-size="11">60 A</text>
+        <text x="328" y="554" fill="#7a4e2b" font-size="11">3–4</text>
+        <text x="412" y="554" fill="#7a4e2b" font-size="11">60 A</text>
+        <text x="328" y="684" fill="#7a4e2b" font-size="11">5–6</text>
+        <text x="412" y="684" fill="#7a4e2b" font-size="11">100 A</text>
+        <text x="328" y="838" fill="#7a4e2b" font-size="11">7–8</text>
+        <text x="412" y="838" fill="#7a4e2b" font-size="11">80 A</text>
+
+        <text x="36" y="862" fill="#7a4e2b" font-size="12">B · 四线 200 A · 接入主屋主输入</text>
+
+        <rect x="20" y="888" width="404" height="128" rx="8" fill="#f8f4ee" stroke="#7a4e2b" stroke-width="1.25"/>
+        <text x="36" y="914" fill="#2a2622" font-size="14" font-weight="650">主屋 200 A 配电盘</text>
+        <text x="36" y="936" fill="#2a2622" font-size="12">改为分盘 · 拆除盘内 N–G 连接</text>
+        <text x="36" y="956" fill="#6a6158" font-size="12">原有分路全部在备用侧，与内部母排同时备电</text>
+        <text x="36" y="984" fill="#6a6158" font-size="11">服务侧计算负荷不超过 200 A</text>
+
+        <rect x="448" y="214" width="292" height="150" rx="8" fill="#f3f7f4" stroke="#1f6b45" stroke-width="1.25"/>
+        <a href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer">
+          <text x="464" y="240" fill="#1f6b45" font-size="14" font-weight="650">Tesla Solar Panels</text>
+        </a>
+        <text x="464" y="262" fill="#2a2622" font-size="12">直流组串，分接到两台 Powerwall</text>
+        <text x="464" y="282" fill="#2a2622" font-size="12">每串一只 MCI · 不用优化器</text>
+        <text x="464" y="302" fill="#2a2622" font-size="12">60–550 V DC · 来回不超过 160 m</text>
+        <text x="464" y="322" fill="#2a2622" font-size="12">同一串同一坡向、同一倾角</text>
+        <text x="464" y="344" fill="#1f6b45" font-size="11">不进 Gateway，不占槽位</text>
+
+        <line x1="594" y1="364" x2="594" y2="380" stroke="#1f6b45" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="700" y1="348" x2="748" y2="348" stroke="#1f6b45" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="748" y1="348" x2="748" y2="500" stroke="#1f6b45" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="748" y1="500" x2="700" y2="500" stroke="#1f6b45" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="700" y1="500" x2="700" y2="508" stroke="#1f6b45" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="704" y="492" fill="#1f6b45" font-size="11">DC</text>
+
+        <rect x="448" y="380" width="292" height="112" rx="8" fill="#fffcf8" stroke="#7a4e2b" stroke-width="1.25"/>
+        <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">
+          <text x="464" y="406" fill="#2a2622" font-size="14" font-weight="650">Powerwall 3 · Leader</text>
+        </a>
+        <rect x="464" y="416" width="128" height="46" rx="3" fill="#f8f4ee" stroke="#7a4e2b" stroke-width="1"/>
+        <text x="528" y="434" fill="#7a4e2b" font-size="11" text-anchor="middle">左 · 交流</text>
+        <text x="528" y="452" fill="#2a2622" font-size="12" text-anchor="middle">L1  L2  N  地</text>
+        <rect x="600" y="416" width="124" height="46" rx="3" fill="#f3f7f4" stroke="#1f6b45" stroke-width="1"/>
+        <text x="662" y="434" fill="#1f6b45" font-size="11" text-anchor="middle">右 · 光伏</text>
+        <text x="662" y="452" fill="#2a2622" font-size="11" text-anchor="middle">MPPT 1–6</text>
+        <text x="464" y="480" fill="#6a6158" font-size="11">11.5 kW / 48 A · 60 A 反送 · hold-down</text>
+
+        <rect x="448" y="508" width="292" height="112" rx="8" fill="#fffcf8" stroke="#7a4e2b" stroke-width="1.25"/>
+        <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">
+          <text x="464" y="534" fill="#2a2622" font-size="14" font-weight="650">Powerwall 3 · Follower</text>
+        </a>
+        <rect x="464" y="544" width="128" height="46" rx="3" fill="#f8f4ee" stroke="#7a4e2b" stroke-width="1"/>
+        <text x="528" y="562" fill="#7a4e2b" font-size="11" text-anchor="middle">左 · 交流</text>
+        <text x="528" y="580" fill="#2a2622" font-size="12" text-anchor="middle">L1  L2  N  地</text>
+        <rect x="600" y="544" width="124" height="46" rx="3" fill="#f3f7f4" stroke="#1f6b45" stroke-width="1"/>
+        <text x="662" y="562" fill="#1f6b45" font-size="11" text-anchor="middle">右 · 光伏</text>
+        <text x="662" y="580" fill="#2a2622" font-size="11" text-anchor="middle">MPPT 1–6</text>
+        <text x="464" y="608" fill="#6a6158" font-size="11">11.5 kW · 反送 hold-down · 不用 15.4 kW</text>
+
+        <rect x="448" y="636" width="292" height="116" rx="8" fill="#fffcf8" stroke="#7a4e2b" stroke-width="1.25"/>
+        <a href="https://www.tesla.com/wall-connector" target="_blank" rel="noopener noreferrer">
+          <text x="464" y="662" fill="#2a2622" font-size="14" font-weight="650">Wall Connector × 2</text>
+        </a>
+        <text x="464" y="684" fill="#2a2622" font-size="12">端子 L1 · L2 · PE，无中性线</text>
+        <text x="464" y="704" fill="#2a2622" font-size="12">共用 100 A · Power Share 持续 80 A</text>
+        <text x="464" y="726" fill="#6a6158" font-size="11">离网时在备用母排上，随家庭负载削减</text>
+
+        <rect x="448" y="768" width="292" height="176" rx="8" fill="#fffcf8" stroke="#7a4e2b" stroke-width="1.25"/>
+        <text x="464" y="794" fill="#2a2622" font-size="14" font-weight="650">Workshop 分盘</text>
+        <text x="464" y="816" fill="#2a2622" font-size="12">母排 100 A 或 125 A · 10–12 位</text>
+        <text x="464" y="836" fill="#2a2622" font-size="12">四线 · 4 AWG 或 3 AWG 铜</text>
+        <text x="464" y="856" fill="#2a2622" font-size="12">中性线与地分开</text>
+        <text x="464" y="876" fill="#6a6158" font-size="11">照明 15–20 A · 工具插座 20 A</text>
+        <text x="464" y="894" fill="#6a6158" font-size="11">重型工具 20–30 A · 除尘 20 A</text>
+        <text x="464" y="912" fill="#6a6158" font-size="11">压缩机 30 A 预留 · 备用 20 A</text>
+      </svg>
+    </div>
+    <figcaption>Gateway 框内左下的小图是打开盖板后的端子位置，字母沿用 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-5A34398F-EB43-4BA8-8E37-6C32F0D35E1D.html" target="_blank" rel="noopener noreferrer">Gateway 3 Wiring Overview</a> 的 A–I。右列断路器就是小图里的 H；进线落在 A（S1、S2）；向下去主屋的是 B；两根母排之间的短横线是保留的跳线桥，桥上印 REMOVE TO ISOLATE SUB-PANEL。单线从上到下是电流方向，盖板小图是实物方位。Powerwall 接线仓左侧是 L1、L2、N 和接地排，光伏从右侧 MPPT 进入，设备地回到同一只接地排。只有 MPPT 1–2 与 5–6 可以跳接。线上的数字是断路器额定值：每台 Powerwall 持续 48 A，两台 Wall Connector 经 Power Share 合计持续 80 A。组串块数用 Tesla Solar Stringing Tool 按当地最低气温算定。系统关系按 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-D100084C-11F5-4EA0-BC1F-53EF5F367AD9.html" target="_blank" rel="noopener noreferrer">Whole Home Backup with Standalone Meter</a>。</figcaption>
+  </figure>
+
   <p>BC Hydro 200 A。电表处设服务入口断路器，再以 200 A 四线（L1、L2、N、PE）进入 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 的 LINE。加拿大不把 Gateway 3 当服务设备：中性线与地的唯一连接和接地极留在这只服务断路器上，Gateway 3 出厂的 bonding screw 拆掉。Gateway 的进线从服务断路器的负荷侧整根接入。</p>
   <p>LOAD 以 200 A 四线接主屋现有 200 A 配电盘的主输入端。该盘改为分盘，拆掉盘内中性线与地的连接。内部 8 位母排保留原厂跳线，接在备用侧，与主屋盘同为全屋备电。母排 200 A，分支断路器最大 125 A，用 Eaton BR（连续负载用带 H 后缀的型号，如 BR260H）、Siemens QP 或 Square D HOM。最上面一位是 L2。Powerwall 断路器反送电，装 hold-down。</p>
-  <p><a href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer">Tesla Solar Panels</a> 以直流组串直接进 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 的 MPPT，不经过独立逆变器，也不占 Gateway 槽位。每台 6 路 MPPT，直流最多 20 kW；交流仍走已有的 60 A，默认 11.5 kW。组串分接到两台。每串装 MCI。组串电压保持在 60–550 V DC，来回线长不超过 160 m；同一串的组件同一坡向、同一倾角。不用优化器。组件数量按当地最低气温用 Tesla Solar Stringing Tool 算定。</p>
+  <p><a href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer">Tesla Solar Panels</a> 以直流组串直接进 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 的 MPPT，不经过独立逆变器，也不占 Gateway 槽位。每台 6 路 MPPT，直流最多 20 kW；只有 1–2 与 5–6 可以跳接，3 与 4 出厂封闭。交流仍走已有的 60 A，默认 11.5 kW。组串分接到两台。每串装 MCI。组串电压保持在 60–550 V DC，来回线长不超过 160 m；同一串的组件同一坡向、同一倾角。不用优化器。组件数量按当地最低气温用 Tesla Solar Stringing Tool 算定。</p>
   <p>槽位按 Tesla 的顺序排：Powerwall，然后 <a href="https://www.tesla.com/wall-connector" target="_blank" rel="noopener noreferrer">Wall Connector</a>，负载放在最下面。</p>
 <div class="design-devices-wrap">
   <table class="devices-table">
@@ -2504,7 +2740,23 @@
     <li>压缩机或大型设备：30 A，预留。</li>
     <li>备用：20 A。</li>
   </ul>
-  <p>参考 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-6A472F9F-13F3-4019-ABDD-C9BDE2CDEC38.html" target="_blank" rel="noopener noreferrer">Gateway 3 服务接线</a>、<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-1E13557B-BBFF-40BD-AC2D-6194896D4605.html" target="_blank" rel="noopener noreferrer">中性线接地</a>、<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-FDBB2FF9-55B3-425B-85C2-F8367F54914C.html" target="_blank" rel="noopener noreferrer">内部母排</a>。</p>
+  <p>Tesla 安装手册里的接线仓图和系统单线如下。单线上的字母用 Wiring Overview 的 A–I。</p>
+  <ul>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-5A34398F-EB43-4BA8-8E37-6C32F0D35E1D.html" target="_blank" rel="noopener noreferrer">Gateway 3 Wiring Overview</a>：打开盖板后的接线仓。A 为 Supply（S1、S2），B 为 Backup 出线，C 为大号中性排、D 为附加中性排，E 为内部母排上的 Backup 端子，F 为大号地排、G 为附加地排，H 为 8 位内部母排，I 为通信插头。</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-56C487B0-31D6-44B4-B646-0762DF3ADFC4.html" target="_blank" rel="noopener noreferrer">Backup Lugs</a>：跳线桥的放大图。桥上印 REMOVE TO ISOLATE SUB-PANEL。这张放大图自己的 C 就是这只桥；本宅保留它，内部母排留在备用侧。</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-5518F1D0-F031-4786-AC15-FB83A535EAA4.html" target="_blank" rel="noopener noreferrer">Gateway 3 Communication Wiring</a>：I 的针脚为 12V、GND、CN+、CN−、RS485+、RS485−。Leader 的 CAN 接 CN+ / CN−，并接 12V / GND。</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-C2CF965B-EE68-42E6-BAFD-166E72C5B967.html" target="_blank" rel="noopener noreferrer">Wire Communication Connection from Gateway 3 to Powerwall 3</a>：Gateway 到 Powerwall 的通信线束。</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-1BE23A55-EBB1-4015-A67F-6AD915FA2B5C.html" target="_blank" rel="noopener noreferrer">Gateway 3 Neutral Bar and Ground Bars</a>：C/D 与 F/G 的位置和可接导线。</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-1E13557B-BBFF-40BD-AC2D-6194896D4605.html" target="_blank" rel="noopener noreferrer">中性线接地</a>：bonding screw 出厂装上、以及拆除后的两张图。加拿大拆除，唯一的 N–G 连接留在电表处的服务断路器。</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-FDBB2FF9-55B3-425B-85C2-F8367F54914C.html" target="_blank" rel="noopener noreferrer">内部母排</a>：H 的槽位顺序为 Powerwall、Wall Connector、负载在最下；最上一位是 L2；反送断路器装 hold-down。</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-6A472F9F-13F3-4019-ABDD-C9BDE2CDEC38.html" target="_blank" rel="noopener noreferrer">Gateway 3 服务接线</a>：Gateway 3 在加拿大不作服务设备。</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-D100084C-11F5-4EA0-BC1F-53EF5F367AD9.html" target="_blank" rel="noopener noreferrer">Gateway 3 Wiring Diagrams</a>：Figure 1 Whole Home Backup with Standalone Meter 与本宅对应。Figure 2 是电表箱自带主断路器的画法。</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-5DAC2670-0432-48D0-A5D6-FD031C0C6F11.html" target="_blank" rel="noopener noreferrer">Powerwall 3 AC Wiring</a>：接线仓左侧弹簧端子为 L1、L2、N，接地排单独一只。</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-2F9B249F-50C2-4EDE-972B-271F0A3ECD8B.html" target="_blank" rel="noopener noreferrer">PV Wiring</a>：光伏线束进右侧 MPPT 端子，设备地回到同一只接地排。P/N 1707000-11-L、1707000-21-L 及以后与更早批次的端子排不同，手册各有一张图。</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-5FC784FE-D39D-4772-A003-C6E7F094F3A5.html" target="_blank" rel="noopener noreferrer">MPPT Jumpers</a>：只有 MPPT 1–2 与 5–6 可以跳接。3 与 4 出厂封闭。</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-FDF6014A-AD21-443F-B299-26FCC56B4A28.html" target="_blank" rel="noopener noreferrer">Powerwall 3 AC and PV Wiring</a>：交流与光伏合在一张参考图上。</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-3B4FFAB3-FDB9-492C-85D6-8FA60E1226FB.html" target="_blank" rel="noopener noreferrer">Powerwall 3 as a Wiring Raceway</a>：两台之间过线时，交流从一侧进、光伏从另一侧进。</li>
+  </ul>
 
   <p>机械间配电盘旁的分路电表，定为 <a href="https://store.egauge.net/egauge-pro-v2-warrantied" target="_blank" rel="noopener noreferrer">eGauge Pro</a>（EG4030W-64E）。配电盘仍是房屋的负荷中心。30 个传感器口；表从盘内断路器取电（L1 对中性线，85–277 V），典型约 2 W。CT 夹在盘内分路上，用 <a href="https://store.egauge.net/Split-Core-CTID" target="_blank" rel="noopener noreferrer">Split Core CTs with CTid</a>：分路 ECS09-50A（9 mm / 50 A），粗线 ECS20-100A（20 mm / 100 A），引线 2.4 m。表体放在盘旁的 <a href="https://store.egauge.net/powered_enclosure_kit_120" target="_blank" rel="noopener noreferrer">Powered Enclosure Kit (120/240VAC, 120/208VAC)</a> 里，外壳落在引线长度内。</p>
   <p>只传数据。以太网经配线架第 13 口 <a href="https://store.ui.com/us/en/products/uacc-keystone-coupler-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Coupler</a> 两段跳线接入，不占打线模块，该口 PoE 关闭。VLAN 40。口位见 <a href="#2.1.8" class="page-ref">§2.1.8</a> 与 <a href="#appendix-topology" class="page-ref">Topology</a>。Home Assistant 的 <a href="https://www.home-assistant.io/integrations/egauge/" target="_blank" rel="noopener noreferrer">eGauge</a> 集成在本地读取。全屋电网、光伏与电池以 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 为准；本表记备用侧各分路。</p>

@@ -2059,6 +2059,40 @@
       font-size: 0.9rem;
     }
 
+    .spa-spec .spa-article figure.tesla-eline {
+      margin: 0.9rem 0 1.35rem;
+    }
+
+    .spa-spec .spa-article figure.tesla-eline .tesla-eline-scroll {
+      overflow-x: auto;
+      border: 1px solid var(--sheet-line);
+      background: var(--sheet-paper);
+    }
+
+    .spa-spec .spa-article figure.tesla-eline svg {
+      display: block;
+      width: 100%;
+      min-width: 740px;
+      height: auto;
+      font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+    }
+
+    .spa-spec .spa-article figure.tesla-eline figcaption {
+      margin-top: 0.45rem;
+      color: var(--sheet-floor-ink);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .spa-spec .spa-article figure.tesla-eline a {
+      text-decoration: none;
+    }
+
+    .spa-spec .spa-article figure.tesla-eline a:hover text,
+    .spa-spec .spa-article figure.tesla-eline a:focus-visible text {
+      fill: var(--sheet-status);
+    }
+
     .spa-spec .spa-article .udc-count {
       color: var(--sheet-sku);
     }
