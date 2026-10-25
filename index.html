@@ -40,23 +40,19 @@
     >
       <span></span><span></span><span></span>
     </button>
-    <a class="brand" href="#spec" data-tab="spec">
+    <a class="brand" href="#spec">
       <span class="brand-text">
         <span class="brand-title">Home Spec</span>
         <span class="brand-subtitle">Whole-home design reference</span>
       </span>
     </a>
-    <nav class="spa-nav" aria-label="Sections">
-      <button type="button" data-tab="spec" class="is-on">Spec</button>
-      <button type="button" data-tab="topology">Topology</button>
-    </nav>
   </header>
 
   <button class="nav-backdrop" type="button" aria-label="Close contents" hidden></button>
 
   <div id="export-root" aria-hidden="true"></div>
 
-<section id="tab-spec" class="spa-tab spa-doc spa-spec" data-tab="spec">
+<section id="tab-spec" class="spa-tab spa-doc spa-spec">
   <div class="design-shell">
   <nav class="design-toc" id="sidebar" aria-label="Contents"></nav>
   <article class="spa-article">
@@ -798,7 +794,7 @@
   </div>
 
   <h3>2.2 Protect &amp; Access</h3>
-  <p class="lede">户外人行门禁、Protect 监视、车道门与 SuperLink 传感。连线落点见 <a href="#topology" class="page-ref">Topology</a>；功率预算见 <a href="#2.4" class="page-ref">§2.4</a>。</p>
+  <p class="lede">户外人行门禁、Protect 监视、车道门与 SuperLink 传感。连线落点见 <a href="#appendix-topology" class="page-ref">Topology</a>；功率预算见 <a href="#2.4" class="page-ref">§2.4</a>。</p>
 
   <h4>2.2.1 Exterior Door</h4>
   <p>五扇户外人行门共用同一模式。就地汇聚用 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>：上行 PoE++，两个 PoE+ 口分别给读头与一台摄像头。LOCK（Wet 12V）接 <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（15 mm，无内置 DPS）。DPS 另接第三方干接点 <a href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a>（木框 DPS-W、钢框 DPS-M → Hub DPS+/−）。REX 本宅空闲。无 DPS 时，App 只能显示 Locked / Unlocked。Access App 的 Door Position 是软件配置，本宅选 Open Active（NC，常闭，门关时接通）；Close Active（NO，常开）则是门开时接通。</p>
@@ -2413,7 +2409,7 @@
   </div>
 
   <h2>4. Tesla Energy System</h2>
-  <p class="lede"><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a>、<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 与车库侧数据链；两台并联承担全屋持续供电。分路电表 <a href="https://store.egauge.net/egauge-pro" target="_blank" rel="noopener noreferrer">eGauge Pro</a>。</p>
+  <p class="lede"><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a>、<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 与车库侧数据链。BC Hydro 200 A 经电表处的服务断路器进入 Gateway 3，两台并联承担全屋持续供电。<a href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer">Tesla Solar Panels</a> 直流进 Powerwall 3。分路电表 <a href="https://store.egauge.net/egauge-pro-v2-warrantied" target="_blank" rel="noopener noreferrer">eGauge Pro</a>。</p>
   <p>车库 Powerwall / Gateway 端口一览。同型号合并一行，数量写 <code>×n</code>（×1 省略）。</p>
 <div class="design-devices-wrap">
   <table class="devices-table">
@@ -2476,8 +2472,58 @@
               │
               └── CAN / 12V ──► <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a></pre>
 
-  <p>机械间配电盘旁的分路电表，定为 <a href="https://store.egauge.net/egauge-pro" target="_blank" rel="noopener noreferrer">eGauge Pro</a>（EG4030）。配电盘仍是房屋的负荷中心。30 个传感器口；表从盘内断路器取电（L1 对中性线，85–277 V），典型约 2 W。CT 夹在盘内分路上，表体放在盘旁外壳里，外壳落在 CT 引线长度内。</p>
-  <p>只传数据。以太网经配线架第 13 口 <a href="https://store.ui.com/us/en/products/uacc-keystone-coupler-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Coupler</a> 两段跳线接入，不占打线模块，该口 PoE 关闭。VLAN 40。口位见 <a href="#2.1.8" class="page-ref">§2.1.8</a> 与 <a href="#topology" class="page-ref">Topology</a>。Home Assistant 的 <a href="https://www.home-assistant.io/integrations/egauge/" target="_blank" rel="noopener noreferrer">eGauge</a> 集成在本地读取。全屋电网、光伏与电池以 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 为准；本表记备用侧各分路。</p>
+  <p>BC Hydro 200 A。电表处设服务入口断路器，再以 200 A 四线（L1、L2、N、PE）进入 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 的 LINE。加拿大不把 Gateway 3 当服务设备：中性线与地的唯一连接和接地极留在这只服务断路器上，Gateway 3 出厂的 bonding screw 拆掉。Gateway 的进线从服务断路器的负荷侧整根接入。</p>
+  <p>LOAD 以 200 A 四线接主屋现有 200 A 配电盘的主输入端。该盘改为分盘，拆掉盘内中性线与地的连接。内部 8 位母排保留原厂跳线，接在备用侧，与主屋盘同为全屋备电。母排 200 A，分支断路器最大 125 A，用 Eaton BR（连续负载用带 H 后缀的型号，如 BR260H）、Siemens QP 或 Square D HOM。最上面一位是 L2。Powerwall 断路器反送电，装 hold-down。</p>
+  <p><a href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer">Tesla Solar Panels</a> 以直流组串直接进 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 的 MPPT，不经过独立逆变器，也不占 Gateway 槽位。每台 6 路 MPPT，直流最多 20 kW；交流仍走已有的 60 A，默认 11.5 kW。组串分接到两台。每串装 MCI。组串电压保持在 60–550 V DC，来回线长不超过 160 m；同一串的组件同一坡向、同一倾角。不用优化器。组件数量按当地最低气温用 Tesla Solar Stringing Tool 算定。</p>
+  <p>槽位按 Tesla 的顺序排：Powerwall，然后 <a href="https://www.tesla.com/wall-connector" target="_blank" rel="noopener noreferrer">Wall Connector</a>，负载放在最下面。</p>
+<div class="design-devices-wrap">
+  <table class="devices-table">
+    <thead>
+      <tr>
+        <th>Space</th>
+        <th>Breaker</th>
+        <th>Lands</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1–2</td>
+        <td>60 A 2-pole</td>
+        <td><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> Leader</td>
+      </tr>
+      <tr>
+        <td>3–4</td>
+        <td>60 A 2-pole</td>
+        <td><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> Follower</td>
+      </tr>
+      <tr>
+        <td>5–6</td>
+        <td>100 A 2-pole</td>
+        <td>两个 <a href="https://www.tesla.com/wall-connector" target="_blank" rel="noopener noreferrer">Wall Connector</a></td>
+      </tr>
+      <tr>
+        <td>7–8</td>
+        <td>80 A 2-pole</td>
+        <td>车库 Workshop 分盘</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+  <p>两台 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 各按默认 11.5 kW / 48 A，配 60 A。不启用离网 15.4 kW，那一档要 80 A 断路器和相应线径。两台合计 23 kW。服务侧的计算负荷不超过 200 A。</p>
+  <p>两个 Wall Connector 共用 5–6 位，以 Power Share 把持续电流限在 80 A。离网时这只断路器在备用母排上；Powerwall 按家庭负载削减或停止车辆充电。</p>
+  <p>7–8 位馈到车库 Workshop 分盘。分盘母排 100 A 或 125 A，留 10–12 位。馈线用 4 AWG 或 3 AWG 铜，按距离和压降选定；四线，中性线与地分开。</p>
+  <ul>
+    <li>车库主照明与射灯：15 A 或 20 A。</li>
+    <li>墙面工具插座：20 A。</li>
+    <li>台锯、刨床等重型工具：20 A 或 30 A，单独回路。</li>
+    <li>除尘：20 A，单独回路。</li>
+    <li>压缩机或大型设备：30 A，预留。</li>
+    <li>备用：20 A。</li>
+  </ul>
+  <p>参考 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-6A472F9F-13F3-4019-ABDD-C9BDE2CDEC38.html" target="_blank" rel="noopener noreferrer">Gateway 3 服务接线</a>、<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-1E13557B-BBFF-40BD-AC2D-6194896D4605.html" target="_blank" rel="noopener noreferrer">中性线接地</a>、<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-FDBB2FF9-55B3-425B-85C2-F8367F54914C.html" target="_blank" rel="noopener noreferrer">内部母排</a>。</p>
+
+  <p>机械间配电盘旁的分路电表，定为 <a href="https://store.egauge.net/egauge-pro-v2-warrantied" target="_blank" rel="noopener noreferrer">eGauge Pro</a>（EG4030W-64E）。配电盘仍是房屋的负荷中心。30 个传感器口；表从盘内断路器取电（L1 对中性线，85–277 V），典型约 2 W。CT 夹在盘内分路上，用 <a href="https://store.egauge.net/Split-Core-CTID" target="_blank" rel="noopener noreferrer">Split Core CTs with CTid</a>：分路 ECS09-50A（9 mm / 50 A），粗线 ECS20-100A（20 mm / 100 A），引线 2.4 m。表体放在盘旁的 <a href="https://store.egauge.net/powered_enclosure_kit_120" target="_blank" rel="noopener noreferrer">Powered Enclosure Kit (120/240VAC, 120/208VAC)</a> 里，外壳落在引线长度内。</p>
+  <p>只传数据。以太网经配线架第 13 口 <a href="https://store.ui.com/us/en/products/uacc-keystone-coupler-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Coupler</a> 两段跳线接入，不占打线模块，该口 PoE 关闭。VLAN 40。口位见 <a href="#2.1.8" class="page-ref">§2.1.8</a> 与 <a href="#appendix-topology" class="page-ref">Topology</a>。Home Assistant 的 <a href="https://www.home-assistant.io/integrations/egauge/" target="_blank" rel="noopener noreferrer">eGauge</a> 集成在本地读取。全屋电网、光伏与电池以 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 为准；本表记备用侧各分路。</p>
   <p>参考 <a href="https://www.egauge.net/media/support/docs/EG4030-datasheet-web-v1-1.pdf" target="_blank" rel="noopener noreferrer">eGauge Pro Datasheet</a>。</p>
 
     <h2>Appendix. Order Fees Running Total</h2>
@@ -2572,22 +2618,17 @@
     </tfoot>
   </table>
   </div>
+  <h2>Appendix. Topology</h2>
+  <div class="spec-topo-frame" id="spec-topo-frame">
+    <div class="spec-topo-bar">
+      <button type="button" id="spec-topo-fullscreen" class="spec-topo-mode" aria-pressed="false">Full Screen</button>
+      <button type="button" id="export-page-pdf" class="topo-export-button">Export Blueprint</button>
+    </div>
+    <div class="spec-topo" id="spec-topo"></div>
+  </div>
 </article>
   </div>
   </section>
-
-<section id="tab-topology" class="spa-tab spa-topo-page" data-tab="topology">
-  <div class="topo-toolbar">
-    <div class="topo-toolbar-copy">
-      <p class="topo-toolbar-title">Physical Topology</p>
-      <p class="topo-toolbar-hint">Export draws the on-screen diagram to Arch C landscape at 1:1.</p>
-    </div>
-    <button type="button" id="export-page-pdf" class="topo-export-button">Export Blueprint</button>
-  </div>
-  <div class="topo-wrap">
-    <div class="topo-canvas" id="topo-canvas"></div>
-  </div>
-</section>
 
   <noscript><p class="spa-loading">JavaScript is required for this specification.</p></noscript>
   <script src="assets/app.js" defer></script>

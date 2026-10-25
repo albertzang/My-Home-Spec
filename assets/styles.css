@@ -106,36 +106,6 @@
       display: none;
     }
 
-    .spa-nav {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.35rem;
-      margin-left: auto;
-    }
-
-    .spa-nav button {
-      font: inherit;
-      font-size: 0.88rem;
-      font-weight: 600;
-      padding: 0.4rem 0.85rem;
-      border: 1px solid rgba(248, 250, 252, 0.22);
-      border-radius: 8px;
-      background: transparent;
-      color: #e2e8f0;
-      cursor: pointer;
-    }
-
-    .spa-nav button:hover {
-      background: rgba(248, 250, 252, 0.08);
-    }
-
-    .spa-nav button.is-on {
-      background: #f8fafc;
-      border-color: #f8fafc;
-      color: var(--ink);
-    }
-
     .masthead :focus-visible {
       outline: 2px solid #f8fafc;
       outline-offset: 2px;
@@ -149,42 +119,6 @@
 
     .spa-tab.is-on {
       display: flex;
-    }
-
-    .spa-topo-page.is-on {
-      flex-direction: column;
-      min-height: 0;
-      padding: 0;
-      background: var(--bg);
-    }
-
-    .topo-toolbar {
-      flex: 0 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem 1rem;
-      padding: 0.65rem 0.9rem;
-      border-bottom: 1px solid var(--line);
-      background: var(--panel);
-    }
-
-    .topo-toolbar-copy {
-      min-width: 0;
-    }
-
-    .topo-toolbar-title {
-      margin: 0;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .topo-toolbar-hint {
-      margin: 0.15rem 0 0;
-      font-size: 0.78rem;
-      color: var(--muted);
     }
 
     .topo-export-button {
@@ -824,7 +758,7 @@
 
 
 
-    /* Stone paper and brass for the whole Spec pane. Topology keeps the slate chrome. */
+    /* Stone paper and brass for the Spec prose. The topology drawing keeps its own device colours. */
     .spa-spec {
       --sheet-paper: #fbf9f6;
       --sheet-ink: #2a2622;
@@ -2611,31 +2545,116 @@
     .vlan-iot { --vlan-color: #a15c00; --vlan-fill: #f7f2ea; }
     .vlan-security { --vlan-color: #b3263e; --vlan-fill: #f7eff0; }
 
-    .topo-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      margin: 0;
-      padding: 0.55rem 0.7rem 0.7rem;
-      flex: 1 1 auto;
-      min-height: 0;
-      height: 100%;
-    }
-
-    .topo-canvas {
-      position: relative;
-      width: 100%;
-      min-height: 0;
-      height: 100%;
-      overflow: auto;
-      background: var(--panel);
-      outline: 1px solid var(--line);
-      outline-offset: -1px;
-    }
-
     .topo-stage {
       position: relative;
       margin-inline: auto;
+    }
+
+    /*
+     * Appendix Topology is the drawing. The bar stays outside the stage so
+     * Export Blueprint clones the stage alone. The box is as tall as the
+     * drawing: the Spec pane scrolls it vertically, and the box pans sideways.
+     */
+    .spa-spec .spa-article .spec-topo-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.85rem;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .spec-topo-mode {
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.45rem 0.95rem;
+      border: 1px solid var(--sheet-line);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--sheet-ink);
+      cursor: pointer;
+    }
+
+    .spec-topo-mode:hover,
+    .spec-topo-mode:focus-visible {
+      background: var(--sheet-hover);
+    }
+
+    .spa-spec .spa-article .spec-topo {
+      box-sizing: border-box;
+      max-width: 100%;
+      margin-top: 0.45rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      background: var(--panel);
+      outline: 1px solid var(--line);
+      outline-offset: -1px;
+      color: #1a1a1a;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      touch-action: none;
+    }
+
+    .spa-spec .spa-article .spec-topo > .topo-stage {
+      margin-inline: 0;
+    }
+
+    .spa-spec .spa-article .spec-topo.is-pan,
+    .spa-spec .spa-article .spec-topo.is-pan * {
+      cursor: grab;
+    }
+
+    .spa-spec .spa-article .spec-topo.is-pan a,
+    .spa-spec .spa-article .spec-topo.is-pan a * {
+      cursor: pointer;
+    }
+
+    .spa-spec .spa-article .spec-topo.is-panning,
+    .spa-spec .spa-article .spec-topo.is-panning *,
+    .spa-spec .spa-article .spec-topo.is-panning a,
+    .spa-spec .spa-article .spec-topo.is-panning a * {
+      cursor: grabbing;
+      user-select: none;
+    }
+
+    .spa-spec .spa-article .spec-topo a {
+      color: inherit;
+      text-decoration: none;
+      text-underline-offset: unset;
+    }
+
+    .spa-spec .spa-article .spec-topo a.topo-name:hover,
+    .spa-spec .spa-article .spec-topo a.topo-embed-name:hover {
+      text-decoration: underline;
+    }
+
+    .spa-spec .spa-article .spec-topo-frame:fullscreen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      margin: 0;
+      padding: 0.65rem 0.9rem 0.7rem;
+      background: var(--panel);
+    }
+
+    .spa-spec .spa-article .spec-topo-frame:fullscreen .spec-topo-bar {
+      flex: 0 0 auto;
+      margin-top: 0;
+    }
+
+    .spa-spec .spa-article .spec-topo-frame:fullscreen .spec-topo {
+      flex: 1 1 auto;
+      min-height: 0;
+      height: auto;
+      margin-top: 0.55rem;
+      overflow: auto;
     }
 
     .topo-edges {
@@ -3851,18 +3870,6 @@
       text-transform: uppercase;
     }
 
-    body.export-source-measure #tab-topology {
-      position: fixed !important;
-      left: 0 !important;
-      top: 0 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      visibility: hidden !important;
-      width: 132rem !important;
-      height: 78rem !important;
-      pointer-events: none !important;
-    }
-
     /*
      * Export reminder: the browser's own print dialog writes the PDF, so its
      * defaults (headers, scale) decide whether the sheet is usable.
@@ -3964,8 +3971,7 @@
       body.print-topology .masthead,
       body.print-topology .nav-backdrop,
       body.print-topology .print-hint,
-      body.print-topology .spa-tab,
-      body.print-topology .topo-toolbar {
+      body.print-topology .spa-tab {
         display: none !important;
       }
 
@@ -3994,16 +4000,11 @@
         padding-left: 16px;
         padding-right: 16px;
       }
-
-      .topo-wrap {
-        height: auto;
-      }
-
     }
 
     /* Phone / narrow: off-canvas Contents drawer, matching Corporate Governance. */
     @media (max-width: 860px) {
-      body.tab-spec .nav-toggle {
+      .nav-toggle {
         display: flex;
       }
 
@@ -4077,16 +4078,6 @@
         padding: 20px max(20px, env(safe-area-inset-right)) calc(100dvh - var(--header-h) - 2rem) max(20px, env(safe-area-inset-left));
         overflow-x: clip;
       }
-
-      .topo-wrap {
-        height: auto;
-      }
-
-      .topo-toolbar {
-        padding-left: max(0.9rem, env(safe-area-inset-left));
-        padding-right: max(0.9rem, env(safe-area-inset-right));
-      }
-
     }
 
     @media (prefers-reduced-motion: reduce) {

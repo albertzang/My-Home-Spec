@@ -76,7 +76,7 @@
         });
       });
 
-      /* Body page-refs (§2.3, Topology, 见下方…) scroll the Spec pane / switch tabs. */
+      /* Body page-refs (§2.3, Topology, 见下方…) scroll the Spec pane. */
       article.addEventListener("click", function (event) {
         var a = event.target.closest && event.target.closest("a.page-ref");
         if (!a || !article.contains(a)) return;
@@ -137,7 +137,7 @@
         }
 
         function setSidebar(open) {
-          var show = Boolean(open) && isMobileNav() && document.body.classList.contains("tab-spec");
+          var show = Boolean(open) && isMobileNav();
           toc.classList.toggle("is-open", show);
           document.body.classList.toggle("nav-open", show);
           if (navToggle) navToggle.setAttribute("aria-expanded", show ? "true" : "false");
@@ -866,7 +866,7 @@
     })();
 
 (function () {
-      var canvas = document.getElementById("topo-canvas");
+      var canvas = document.getElementById("spec-topo");
       if (!canvas) return;
 
       var GAP_X = 32;
@@ -1042,7 +1042,7 @@
             P("media-flex-sfp", "sfp", { t: "SFP+", title: "SFP+ combo · unused", idle: true })
           ],
           down: idleMany(8, "media-flex-lan", "gbe2p5", { title: "2.5G RJ45 · no PoE output · unused", idle: true }) },
-        { id: "panel-meter", vlan: "iot", name: "eGauge Pro", loc: "Mechanical Room", href: "https://store.egauge.net/egauge-pro", info: "EG4030 branch meter beside the mechanical-room load center, same room as the rack. 30 sensor inputs. Line-powered from a panel breaker; CTs clamp branch conductors inside the panel. Patch port 13 is a Cat6A keystone coupler: one patch from the meter into the rear, 0.15 m down to USW-Pro-XG-24-PoE. Data only, PoE off. No punch-down jack. VLAN 40 · IoT / Energy. Gateway 3 remains the grid, solar, and battery source.",
+        { id: "panel-meter", vlan: "iot", name: "eGauge Pro", loc: "Mechanical Room", href: "https://store.egauge.net/egauge-pro-v2-warrantied", info: "EG4030W-64E branch meter beside the mechanical-room load center, same room as the rack. 30 sensor inputs. Line-powered from a panel breaker; CTs clamp branch conductors inside the panel. Patch port 13 is a Cat6A keystone coupler: one patch from the meter into the rear, 0.15 m down to USW-Pro-XG-24-PoE. Data only, PoE off. No punch-down jack. VLAN 40 · IoT / Energy. Gateway 3 remains the grid, solar, and battery source.",
           up: [P("panel-meter-up", "gbe1", { title: "1G ← patch 13 coupler ← USW-Pro-XG-24-PoE · PoE off" })],
           down: [] },
         { id: "drop-den", name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Den's Mac Studio Cat6A on the 2-port plate. The other jack is the HA home-run.",
@@ -2861,6 +2861,107 @@
         }
       }
 
+      /*
+       * Drag pans the drawing. In the appendix, horizontal moves the figure
+       * and vertical moves the Spec pane. Full screen makes this box the
+       * viewport, so both axes scroll it. Anchors stay clickable.
+       */
+      function bindSpecTopoPan() {
+        var host = document.getElementById("spec-topo");
+        var frame = document.getElementById("spec-topo-frame");
+        var scroller = document.getElementById("tab-spec");
+        if (!host || host.getAttribute("data-pan") === "1") return;
+        host.setAttribute("data-pan", "1");
+        host.classList.add("is-pan");
+        var drag = null;
+        var swallowClick = false;
+
+        function overLink(event) {
+          var node = event.target;
+          return !!(node && node.closest && node.closest("a"));
+        }
+
+        function onScrollbar(event) {
+          var rect = host.getBoundingClientRect();
+          return event.clientX >= rect.left + host.clientLeft + host.clientWidth
+            || event.clientY >= rect.top + host.clientTop + host.clientHeight;
+        }
+
+        function verticalScroller() {
+          if (frame && document.fullscreenElement === frame) return host;
+          return scroller;
+        }
+
+        host.addEventListener("pointerdown", function (event) {
+          if (event.button !== 0 || overLink(event) || onScrollbar(event)) return;
+          var vertical = verticalScroller();
+          drag = {
+            id: event.pointerId,
+            x: event.clientX,
+            y: event.clientY,
+            left: host.scrollLeft,
+            top: vertical ? vertical.scrollTop : 0,
+            vertical: vertical,
+            moved: false
+          };
+          host.classList.add("is-panning");
+          if (host.setPointerCapture) host.setPointerCapture(event.pointerId);
+          event.preventDefault();
+        });
+
+        host.addEventListener("pointermove", function (event) {
+          if (!drag || event.pointerId !== drag.id) return;
+          var dx = event.clientX - drag.x;
+          var dy = event.clientY - drag.y;
+          if (!drag.moved && (dx * dx + dy * dy) < 9) return;
+          drag.moved = true;
+          host.scrollLeft = drag.left - dx;
+          if (drag.vertical) drag.vertical.scrollTop = drag.top - dy;
+        });
+
+        function endDrag(event) {
+          if (!drag || (event && event.pointerId !== drag.id)) return;
+          if (drag.moved) {
+            swallowClick = true;
+            /* The gesture's own click follows pointerup in this task.
+               A later click, including one on a link, must still land. */
+            setTimeout(function () { swallowClick = false; }, 0);
+          }
+          drag = null;
+          host.classList.remove("is-panning");
+        }
+
+        host.addEventListener("pointerup", endDrag);
+        host.addEventListener("pointercancel", endDrag);
+        host.addEventListener("click", function (event) {
+          if (!swallowClick) return;
+          swallowClick = false;
+          event.preventDefault();
+          event.stopPropagation();
+        }, true);
+      }
+
+      function bindSpecTopoFullscreen() {
+        var frame = document.getElementById("spec-topo-frame");
+        var button = document.getElementById("spec-topo-fullscreen");
+        if (!frame || !button) return;
+
+        function sync() {
+          var on = document.fullscreenElement === frame;
+          button.textContent = on ? "Exit Full Screen" : "Full Screen";
+          button.setAttribute("aria-pressed", on ? "true" : "false");
+        }
+
+        button.addEventListener("click", function () {
+          if (document.fullscreenElement === frame) {
+            document.exitFullscreen();
+            return;
+          }
+          if (frame.requestFullscreen) frame.requestFullscreen();
+        });
+        document.addEventListener("fullscreenchange", sync);
+      }
+
       function relayout() {
         subH = {};
         subW = {};
@@ -2891,6 +2992,10 @@
         canvas.scrollLeft = Math.max(0, (canvas.scrollWidth - canvas.clientWidth) / 2);
       }
 
+      function layoutTopology() {
+        if (canvas.offsetWidth > 40) relayout();
+      }
+
       window.addEventListener("resize", function () {
         if (canvas.offsetWidth > 40) {
           paintLinks();
@@ -2898,13 +3003,11 @@
         }
       });
       window.relayoutTopo = relayout;
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () {
-        if (canvas.offsetWidth > 40) relayout();
-      });
-      if (canvas.offsetWidth > 40) {
-        relayout();
-        setTimeout(relayout, 60);
-      }
+      bindSpecTopoPan();
+      bindSpecTopoFullscreen();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutTopology);
+      layoutTopology();
+      setTimeout(layoutTopology, 60);
     })();
 
 (function () {
@@ -2962,7 +3065,7 @@
       }
 
       function cloneTopology() {
-        var source = document.querySelector("#topo-canvas .topo-stage");
+        var source = document.querySelector("#spec-topo .topo-stage");
         if (!source) return null;
         var clone = source.cloneNode(true);
         freezeCloneSizes(source, clone);
@@ -3041,24 +3144,21 @@
       }
 
       function clearPrintMode() {
-        document.body.classList.remove("print-topology", "export-source-measure");
+        document.body.classList.remove("print-topology");
         if (pageStyle.parentNode) pageStyle.parentNode.removeChild(pageStyle);
         if (exportRoot) exportRoot.innerHTML = "";
         if (typeof window.relayoutTopo === "function") window.relayoutTopo();
       }
 
       /*
-       * The topology is cloned while the source tab is forced to its full
-       * drawing width, so a narrow window never bakes a cramped layout into the
-       * sheet.
+       * The stage is content-sized, so the appendix column does not reflow it.
+       * Relayout, then clone that stage onto the sheet.
        */
       async function stageTopologySheet(spec) {
-        document.body.classList.add("export-source-measure");
         if (typeof window.relayoutTopo === "function") window.relayoutTopo();
         await waitFrame();
         var sheet = buildSheet(spec);
         await waitFrame();
-        document.body.classList.remove("export-source-measure");
         if (sheet) placeTargetOneToOne(sheet.querySelector('[data-export="main"]'));
         return sheet;
       }
@@ -3157,36 +3257,20 @@
     })();
 
 (function () {
-      var tabs = document.querySelectorAll(".spa-tab");
-      var buttons = document.querySelectorAll(".spa-nav button[data-tab]");
-      var brand = document.querySelector("a.brand[data-tab]");
-      var known = { topology: true, spec: true };
+      var brand = document.querySelector("a.brand");
 
-      function showTab(key, hash) {
-        if (!known[key]) key = "spec";
-        Array.prototype.forEach.call(tabs, function (t) {
-          t.classList.toggle("is-on", t.getAttribute("data-tab") === key);
-        });
-        Array.prototype.forEach.call(buttons, function (b) {
-          b.classList.toggle("is-on", b.getAttribute("data-tab") === key);
-        });
-        document.body.classList.toggle("tab-spec", key === "spec");
-        document.body.classList.toggle("tab-topology", key === "topology");
+      function showSpec(hash) {
+        var tab = document.getElementById("tab-spec");
+        if (tab) tab.classList.add("is-on");
         if (typeof window.setSpecSidebar === "function") window.setSpecSidebar(false);
-        if (history.replaceState) history.replaceState(null, "", "#" + (hash || key));
-        if (key === "topology" && typeof window.relayoutTopo === "function") {
-          requestAnimationFrame(function () {
-            window.relayoutTopo();
-            setTimeout(window.relayoutTopo, 60);
-          });
-        }
-        if (key === "spec" && typeof window.equalizeDoorRows === "function") {
+        if (history.replaceState) history.replaceState(null, "", "#" + (hash || "spec"));
+        if (typeof window.equalizeDoorRows === "function") {
           requestAnimationFrame(window.equalizeDoorRows);
         }
-        if (key === "spec" && typeof window.fitScheduleLines === "function") {
+        if (typeof window.fitScheduleLines === "function") {
           requestAnimationFrame(window.fitScheduleLines);
         }
-        if (key === "spec" && typeof window.pinSheetHeads === "function") {
+        if (typeof window.pinSheetHeads === "function") {
           requestAnimationFrame(window.pinSheetHeads);
         }
       }
@@ -3194,12 +3278,8 @@
       function applyLocationHash(rawHash, scrollBehavior) {
         var id = (rawHash || "").replace(/^#/, "");
         try { id = decodeURIComponent(id); } catch (err) { /* keep raw id */ }
-        if (id === "topology") {
-          showTab("topology");
-          return;
-        }
         if (!id || id === "spec") {
-          showTab("spec");
+          showSpec();
           return;
         }
         var heading = typeof window.specHeadingById === "function" ? window.specHeadingById(id) : null;
@@ -3210,7 +3290,7 @@
             heading = el;
           }
         }
-        showTab("spec", heading ? heading.id : "spec");
+        showSpec(heading ? heading.id : "spec");
         if (heading && typeof window.scrollSpecHeading === "function") {
           var behavior = scrollBehavior || "auto";
           var go = function () { window.scrollSpecHeading(heading, behavior); };
@@ -3218,20 +3298,17 @@
             go();
             requestAnimationFrame(go);
           });
-          /* Spec pane may still be measuring after the tab turns on. */
+          /* Spec pane may still be measuring. */
           if (behavior === "auto") setTimeout(go, 80);
         }
       }
 
       window.applyLocationHash = applyLocationHash;
 
-      Array.prototype.forEach.call(buttons, function (b) {
-        b.addEventListener("click", function () { showTab(b.getAttribute("data-tab")); });
-      });
       if (brand) {
         brand.addEventListener("click", function (event) {
           event.preventDefault();
-          showTab(brand.getAttribute("data-tab") || "spec");
+          showSpec();
         });
       }
 
@@ -3744,7 +3821,7 @@
     "wall-basement": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Basement")),
     "wall-main": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Main")),
     "wall-upper": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Upper")),
-    meter: passThrough(ext("https://store.egauge.net/egauge-pro", "eGauge Pro"), patch, patch15, [xg]),
+    meter: passThrough(ext("https://store.egauge.net/egauge-pro-v2-warrantied", "eGauge Pro"), patch, patch15, [xg]),
     fs: passThrough(ext("https://www.synology.com/en-us/products/FS2500", "Synology FS2500"), patch1, patch15, [xg]),
     "drop-media": roomDrop(ext("https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", "Flex 2.5G"), "uacc-wp-keystone-v-1p", "Media"),
     "drop-den": roomDrop(ext("https://www.apple.com/mac-studio/", "Mac Studio"), "uacc-wp-keystone-h-2p", "Den"),

@@ -27,7 +27,7 @@ If port 8000 is already serving this checkout, leave that process running. Do no
 
 ### Page files
 
-This site is one static page. Spec and Topology both live in `index.html` (`#tab-spec`, `#tab-topology`). Behaviour stays in `assets/app.js`; chrome and drawing styles stay in `assets/styles.css`.
+This site is one static page. The spec lives in `index.html` (`#tab-spec`). The topology drawing is Appendix. Topology inside that spec. Behaviour stays in `assets/app.js`; chrome and drawing styles stay in `assets/styles.css`.
 
 ### Verifying edits
 
@@ -49,8 +49,8 @@ The on-screen SVG and the exported sheet are one drawing. Do not fix a screen ru
 
 **Export Blueprint**
 
-- Topology only. Keep the control in the Topology toolbar outside `#topo-canvas`. Do not put it in the global masthead or on the Spec tab.
-- Export clones the on-screen topology stage; do not change the drawing to make the button fit.
+- Keep Export Blueprint and Full Screen in the Appendix Topology bar, outside the drawing stage (`#spec-topo`). Do not put them in the global masthead.
+- Export clones the on-screen topology stage; do not change the drawing to make the buttons fit.
 
 **Cables**
 
@@ -73,14 +73,14 @@ The on-screen SVG and the exported sheet are one drawing. Do not fix a screen ru
 
 **Legend**
 
-- Draw the legend into the topology SVG, in the empty upper right. No sidebar, and do not put it in the Spec document.
+- Draw the legend into the topology SVG, in the empty upper right. No sidebar, and do not add a separate legend section in the Spec prose.
 - Two equal-width columns. Tops align with NAH. No "Legend" heading.
 - Left column is PORTS. Right column is CABLES above VLANS.
 - Each card has its own border and the same inner padding.
 
 **Alignment**
 
-- Centre the drawing on the topology page.
+- Centre the drawing in the appendix view.
 - Close every fanout on its subtree. The XG frame, the deepest box of the left subtree, and the deepest box of the right subtree share one bottom edge. Nested fanouts, including Flex and the Powerwall leader, follow the same rule.
 
 **PoE labels**
