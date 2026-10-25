@@ -2413,9 +2413,8 @@
   </div>
 
   <h2>4. Tesla Energy System</h2>
-  <p class="lede"><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a>、<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 与车库侧数据链；全屋备电策略及机柜 <a href="https://store.ui.com/us/en/products/ups-2u-pro-us" target="_blank" rel="noopener noreferrer">UPS 2U Pro</a>。配电盘能耗监测见 <a href="#4.3" class="page-ref">§4.3</a>。</p>
-  <h3>4.1 Tesla 链</h3>
-  <p class="lede">车库 Powerwall / Gateway 端口一览。同型号合并一行，数量写 <code>×n</code>（×1 省略）。</p>
+  <p class="lede"><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a>、<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 与车库侧数据链；两台并联承担全屋持续供电。分路电表 <a href="https://store.egauge.net/egauge-pro" target="_blank" rel="noopener noreferrer">eGauge Pro</a>。</p>
+  <p>车库 Powerwall / Gateway 端口一览。同型号合并一行，数量写 <code>×n</code>（×1 省略）。</p>
 <div class="design-devices-wrap">
   <table class="devices-table">
     <thead>
@@ -2477,17 +2476,9 @@
               │
               └── CAN / 12V ──► <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a></pre>
 
-  <h3>4.2 UPS 2U Pro</h3>
-  <p>两台并联 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 承担全屋持续供电。机柜 UPS 定为 <a href="https://store.ui.com/us/en/products/ups-2u-pro-us" target="_blank" rel="noopener noreferrer">UPS 2U Pro</a>：2U，机身深 630 mm，置于架底（见 <a href="#2.1.8" class="page-ref">§2.1.8</a>）。1920VA / 1920W，线路互动，电池端纯正弦；8 个 NEMA 5-20R 均带电池。输入 NEMA 5-20P，机柜回路用 20A，并纳入 whole-home backup。</p>
-  <p>电池口接 TELUS ONT、<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>、<a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>，以及 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">Synology FS2500</a> 的两路电源。Powerwall 维护、故障或电量耗尽时，经 NUT 关 NAS。管理口在机尾，100/10 MbE。机尾用已购 1 m <a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable</a> 接配线架第 23 口背面的 <a href="https://store.ui.com/us/en/products/uacc-keystone-coupler-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Coupler</a>，正面 0.15 m 向上跳进 <a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> 的第八口 1GbE LAN。这三口同列（见 <a href="#2.1.8" class="page-ref">§2.1.8</a>）。两个 GbE 是防雷直通，本宅不用。</p>
-  <ul>
-    <li>交流输入频率窗口 60 Hz ±5 Hz（55–65 Hz）。<a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 离网抬频最高 65.2 Hz；安装时把 Maximum Frequency Shift 设为不超过 5 Hz。</li>
-    <li>切换时间典型 6 ms、最长 10 ms。装完做一次离网切换测试。</li>
-  </ul>
-  <p>参考 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3 Datasheet</a>。</p>
-
-  <h3>4.3 配电盘</h3>
-  <p>机械间配电盘的能耗监测。型号未定。只传数据，电表自盘内取电。经配线架第 13 口 <a href="https://store.ui.com/us/en/products/uacc-keystone-coupler-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Coupler</a> 两段跳线接入，不占打线模块。口位见 <a href="#2.1.8" class="page-ref">§2.1.8</a> 与 <a href="#topology" class="page-ref">Topology</a>。</p>
+  <p>机械间配电盘旁的分路电表，定为 <a href="https://store.egauge.net/egauge-pro" target="_blank" rel="noopener noreferrer">eGauge Pro</a>（EG4030）。配电盘仍是房屋的负荷中心。30 个传感器口；表从盘内断路器取电（L1 对中性线，85–277 V），典型约 2 W。CT 夹在盘内分路上，表体放在盘旁外壳里，外壳落在 CT 引线长度内。</p>
+  <p>只传数据。以太网经配线架第 13 口 <a href="https://store.ui.com/us/en/products/uacc-keystone-coupler-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Coupler</a> 两段跳线接入，不占打线模块，该口 PoE 关闭。VLAN 40。口位见 <a href="#2.1.8" class="page-ref">§2.1.8</a> 与 <a href="#topology" class="page-ref">Topology</a>。Home Assistant 的 <a href="https://www.home-assistant.io/integrations/egauge/" target="_blank" rel="noopener noreferrer">eGauge</a> 集成在本地读取。全屋电网、光伏与电池以 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 为准；本表记备用侧各分路。</p>
+  <p>参考 <a href="https://www.egauge.net/media/support/docs/EG4030-datasheet-web-v1-1.pdf" target="_blank" rel="noopener noreferrer">eGauge Pro Datasheet</a>。</p>
 
     <h2>Appendix. Order Fees Running Total</h2>
   <p class="lede">订单级费用（Shipping / Handling 及摊在运费上的税），<strong>不</strong>摊入 <a href="#2.3" class="page-ref">§2.3</a> / <a href="#3.3" class="page-ref">§3.3</a> 的 Device Price。按结款单整单记账；新单只追加本表。结款 PDF 在 <code>orders/</code>。</p>

@@ -979,7 +979,7 @@
             P("xg-bsmt", "gbe2p5", { poe: "ppp", title: "2.5G PoE+++ → Basement UA-Hub-Door-Mini", child: "group-main-doors", side: "left" }),
             P("xg-ha", "gbe10", { poe: "ppp", title: "10G PoE+++ → HA at 2.5G PoE++", child: "ha" }),
             P("xg-wallpanels", "gbe10", { poe: "ppp", title: "3× 10G PoE+++ ports → Home Assistant PoE Wallpanels at 1G PoE+", count: 3, child: "group-wallpanels" }),
-            P("xg-panel", "gbe10", { poe: "ppp", title: "10G → patch 13 coupler → electrical panel meter · PoE off", child: "panel-meter" }),
+            P("xg-panel", "gbe10", { poe: "ppp", title: "10G → patch 13 coupler → eGauge Pro · PoE off", child: "panel-meter" }),
             P("xg-nas", "gbe10", { poe: "ppp", title: "10G PoE+++ → Synology FS2500 LACP", child: "nas" }),
             P("xg-nas2", "gbe10", { poe: "ppp", title: "10G PoE+++ → Synology FS2500 LACP", child: "nas" }),
             P("xg-room-live", "gbe10", { poe: "ppp", title: "5× USW-Pro-XG-24-PoE Room Drop ports", count: 5, child: "group-room-drops" }),
@@ -1042,7 +1042,7 @@
             P("media-flex-sfp", "sfp", { t: "SFP+", title: "SFP+ combo · unused", idle: true })
           ],
           down: idleMany(8, "media-flex-lan", "gbe2p5", { title: "2.5G RJ45 · no PoE output · unused", idle: true }) },
-        { id: "panel-meter", vlan: "iot", name: "Electrical Panel", loc: "Mechanical Room", info: "Line-powered meter in the mechanical room, same room as the rack. Patch port 13 is a Cat6A keystone coupler: one patch from the meter into the rear, 0.15 m down to USW-Pro-XG-24-PoE. Data only, PoE off. No punch-down jack. VLAN 40 · IoT / Energy. Model not chosen.",
+        { id: "panel-meter", vlan: "iot", name: "eGauge Pro", loc: "Mechanical Room", href: "https://store.egauge.net/egauge-pro", info: "EG4030 branch meter beside the mechanical-room load center, same room as the rack. 30 sensor inputs. Line-powered from a panel breaker; CTs clamp branch conductors inside the panel. Patch port 13 is a Cat6A keystone coupler: one patch from the meter into the rear, 0.15 m down to USW-Pro-XG-24-PoE. Data only, PoE off. No punch-down jack. VLAN 40 · IoT / Energy. Gateway 3 remains the grid, solar, and battery source.",
           up: [P("panel-meter-up", "gbe1", { title: "1G ← patch 13 coupler ← USW-Pro-XG-24-PoE · PoE off" })],
           down: [] },
         { id: "drop-den", name: "UACC-Keystone-Jack-C6A", loc: "Main/Den", href: UI + "uacc-keystone-jack-c6a", info: "Den's Mac Studio Cat6A on the 2-port plate. The other jack is the HA home-run.",
@@ -1337,7 +1337,7 @@
         { from: "xg", fp: "xg-room-live", to: "group-room-drops", tp: "drop-den-up", info: "5× USW-Pro-XG-24-PoE → Room Drop." },
         { from: "xg", fp: "xg-media-live", to: "drop-media", tp: "drop-media-up", info: "USW-Pro-XG-24-PoE 10G PoE+++ port → Media Room Drop." },
         { from: "drop-media", fp: "drop-media-dn", to: "media-flex", tp: "media-flex-up", cable: "cat6", route: "horizontal", info: "Media Room C6A wall jack → Cat6 short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input." },
-        { from: "xg", fp: "xg-panel", to: "panel-meter", tp: "panel-meter-up", cable: "cat6", info: "USW-Pro-XG-24-PoE with PoE disabled → 0.15 m to patch port 13 coupler → patch to the electrical panel meter. Data only. No punch-down jack." }
+        { from: "xg", fp: "xg-panel", to: "panel-meter", tp: "panel-meter-up", cable: "cat6", info: "USW-Pro-XG-24-PoE with PoE disabled → 0.15 m to patch port 13 coupler → patch to the eGauge Pro. Data only. No punch-down jack." }
       ];
 
       var byId = {};
@@ -2656,7 +2656,7 @@
           { color: "#005ea8", fill: "#edf3f7", label: "VLAN 10 · Management", sub: "UniFi network gear" },
           { color: "#2e7d32", fill: "#eef4ee", label: "VLAN 20 · Trusted", sub: "Personal devices · not shown" },
           { color: "#6a3d9a", fill: "#f2eff5", label: "VLAN 30 · Servers", sub: "Mac Studio · NAS · HA" },
-          { color: "#a15c00", fill: "#f7f2ea", label: "VLAN 40 · IoT / Energy", sub: "Wallpanels · USL · Powerwall · Electrical Panel" },
+          { color: "#a15c00", fill: "#f7f2ea", label: "VLAN 40 · IoT / Energy", sub: "Wallpanels · USL · Powerwall · eGauge Pro" },
           { color: "#b3263e", fill: "#f7eff0", label: "VLAN 50 · Protect / Access", sub: "Cameras · door controllers" },
           { color: "#007c7a", fill: "#edf5f4", label: "VLAN 60 · Guest", sub: "Guest clients · not shown" }
         ];
@@ -3744,7 +3744,7 @@
     "wall-basement": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Basement")),
     "wall-main": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Main")),
     "wall-upper": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Upper")),
-    meter: passThrough(page("#4.3", "Electrical Panel"), patch, patch15, [xg]),
+    meter: passThrough(ext("https://store.egauge.net/egauge-pro", "eGauge Pro"), patch, patch15, [xg]),
     fs: passThrough(ext("https://www.synology.com/en-us/products/FS2500", "Synology FS2500"), patch1, patch15, [xg]),
     "drop-media": roomDrop(ext("https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", "Flex 2.5G"), "uacc-wp-keystone-v-1p", "Media"),
     "drop-den": roomDrop(ext("https://www.apple.com/mac-studio/", "Mac Studio"), "uacc-wp-keystone-h-2p", "Den"),
