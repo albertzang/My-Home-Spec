@@ -2464,12 +2464,26 @@
     .spa-spec .spa-article figure.gw-compartment .pw-pv[data-pol="-"] .pw-space { stroke: #1a1a1a; }
     .spa-spec .spa-article figure.gw-compartment .pw-pv[data-pol="-"] .pw-label { fill: #1a1a1a; font-size: 11px; }
 
+    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="CN-"] .pw-space { stroke: #e06a12; }
+    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="CN-"] .pw-label { fill: #e06a12; font-size: 11px; }
+    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="CN+"] .pw-space { stroke: #1d4f91; }
+    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="CN+"] .pw-label { fill: #1d4f91; font-size: 11px; }
+    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="GND"] .pw-space { stroke: #1a1a1a; }
+    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="GND"] .pw-label { fill: #1a1a1a; font-size: 11px; }
+    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="12V"] .pw-space { stroke: #d20f0f; }
+    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="12V"] .pw-label { fill: #d20f0f; font-size: 11px; }
+
     .spa-spec .spa-article figure.gw-compartment .wc-term[data-leg="G"] .wc-space { stroke: #1c7c34; }
     .spa-spec .spa-article figure.gw-compartment .wc-term[data-leg="G"] .wc-label { fill: #1c7c34; font-size: 16px; }
     .spa-spec .spa-article figure.gw-compartment .wc-term[data-leg="L2/N"] .wc-space { stroke: #d20f0f; }
     .spa-spec .spa-article figure.gw-compartment .wc-term[data-leg="L2/N"] .wc-label { fill: #d20f0f; font-size: 13px; }
     .spa-spec .spa-article figure.gw-compartment .wc-term[data-leg="L1"] .wc-space { stroke: #1a1a1a; }
     .spa-spec .spa-article figure.gw-compartment .wc-term[data-leg="L1"] .wc-label { fill: #1a1a1a; font-size: 16px; }
+
+    .spa-spec .spa-article figure.gw-compartment .wc-comm[data-port="red"] .wc-space { stroke: #d20f0f; }
+    .spa-spec .spa-article figure.gw-compartment .wc-comm[data-port="red"] .wc-label { fill: #d20f0f; font-size: 11px; }
+    .spa-spec .spa-article figure.gw-compartment .wc-comm[data-port="white"] .wc-space { stroke: #6f6860; }
+    .spa-spec .spa-article figure.gw-compartment .wc-comm[data-port="white"] .wc-label { fill: #6f6860; font-size: 11px; }
 
     .spa-spec .spa-article figure.gw-compartment figcaption {
       margin-top: 0.45rem;
