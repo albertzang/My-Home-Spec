@@ -96,3 +96,145 @@ The on-screen SVG and the exported sheet are one drawing. Do not fix a screen ru
 - Title is HOME NETWORK. Subtitle is Physical Topology. Put that metadata in the empty upper left of the drawing. The sheet has only its outer border.
 - The page margin, sheet size, sheet padding, and drawing origin are whole CSS pixels, so the cable grid and the painted port chips are the same grid.
 
+### Tesla wiring drawing
+
+The Gateway 3 wiring compartment is a schematic. It shows the relative position and the use of each main interface. It is not a picture of the hardware. Do not draw realistic hardware, fasteners, mesh, silkscreen, hinges, or any other extra line inside the bay. The sheet is a grid. Gateway 3 is one rounded square on that grid, and later devices sit on the same grid once an instruction places them. Reference cells are a flat fill.
+
+Keep this section current. When a later instruction adds or changes a rule for this drawing, record that rule here.
+
+**Bay**
+
+- The sheet is 400 by 400 cells. Gateway 3 is one rounded square, 100 by 100 cells, with its top-left on sheet cell `LO-LO`. The square and its interfaces are one group, `translate(3000, 3000)`, so the block can move later without rewriting the interfaces.
+- The square's fill is the paper color and its stroke is the rounded frame. The square has no internal grid. The sheet grid runs underneath, and the fill covers it.
+- The zoom slider and the caption sit outside the sheet. They are not part of the drawing.
+
+**Grid**
+
+- Divide the sheet into a 400 by 400 grid. The lines use `--gw-hairline` and stay 0.5px on screen at every zoom. They sit on the interior cell edges, one cell in from each side, through the last interior edge.
+- Both axes use the same two-letter names. For index `n`, the first letter is `A + floor(n / 26)` and the second is `A + (n % 26)`. Index 0 is `AA`. Index 399 is `PJ`. A 400-cell axis ends at `PJ`.
+- Columns run left to right, `AA` through `PJ`. Rows run top to bottom, `AA` through `PJ`. `AA` is the top row and the left column.
+- Name a cell as the column, a hyphen, then the row. `AJ-AJ` is column `AJ`, row `AJ`.
+- The grid locates devices. A grid line is not part of a device.
+- Every 10 by 10 block has its bottom-right cell filled, as a reference mark. Those cells are indices 9, 19, 29, …, 399 on both axes. The first is `AJ-AJ`. The last is `PJ-PJ`. The fill is a reference mark, not a device.
+
+**Hover readout**
+
+- When the drawing is zoomed far enough that the pointer can sit clearly in one cell, and the coordinate fits inside that cell, the cell under the pointer shows its name, for example `AA-AB`.
+- Below that size, show no coordinate.
+- The readout names only the cell under the pointer, in sheet coordinates, including over the Gateway square.
+
+**Zoom**
+
+- One slider, directly above the SVG, the same width as the SVG area.
+- It moves continuously from 1× to 128×. The sheet area is 16 times the previous 100 by 100 sheet, and the previous maximum was 8×. It replaces separate zoom-in, zoom-out, and reset controls.
+- Dragging inside the drawing pans. The wheel and a two-finger pinch use the same 1×–128× range and move the slider with them.
+
+**Strokes**
+
+- Every line on this sheet keeps the same thickness on screen at every zoom. The zoom is a CSS transform, so a stroke of N screen pixels is `calc(Npx / var(--gw-scale, 1))` with `vector-effect: non-scaling-stroke`.
+- The sheet defines three weights on the SVG: `--gw-hairline` is 0.5px for the grid, `--gw-frame` is 1.5px for a device's outer frame, and `--gw-device` is 1px for the lines drawn inside a device. Shapes in the sheet use `--gw-device` unless a more specific rule names another weight.
+- Gateway 3 uses that division for its frame and for every interface stroke. A later device on this sheet uses the same division. Do not put a raw pixel stroke on a device line.
+
+**Interfaces A–I**
+
+- The nine components use the names and roles on [Gateway 3 Wiring Overview](https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-5A34398F-EB43-4BA8-8E37-6C32F0D35E1D.html). Do not copy that page's line art.
+  - A, Supply Terminals
+  - B, Backup Terminals
+  - C, Large Neutral Terminals
+  - D, Additional Neutral Terminals
+  - E, Backup Terminals on Internal Panelboard
+  - F, Large Ground Terminals
+  - G, Additional Ground Terminals
+  - H, Internal Panelboard
+  - I, Communication connector
+- Draw a component only when instructed. When one is placed, record its cell span and its job in this section.
+- Cell spans below are local to the Gateway square, counted from its own top-left. Local columns stay `00`–`99` and local rows stay `AA`–`DV`. On the sheet, local `00-AA` is currently `LO-LO`. Moving the square later changes the sheet cells and leaves these local spans as they are.
+- How this house uses each component stays in the Spec prose. The drawing shows where the interface is and what it is for.
+
+**H, Internal Panelboard**
+
+- Eight equal rounded rectangles. The top edge of `L2 - 01` is row `AK`. Each space is 21 cells wide and 5 cells tall. All eight share that size and the same left and right edges, columns `33` through `53`.
+- Leave one grid row between spaces. Top to bottom the order is L2, L1, L2, L1, four pairs:
+  - `L2 - 01`, rows `AK`–`AO`
+  - `L1 - 01`, rows `AQ`–`AU`
+  - `L2 - 02`, rows `AW`–`BA`
+  - `L1 - 02`, rows `BC`–`BG`
+  - `L2 - 03`, rows `BI`–`BM`
+  - `L1 - 03`, rows `BO`–`BS`
+  - `L2 - 04`, rows `BU`–`BY`
+  - `L1 - 04`, rows `CA`–`CE`
+- Cover the grid inside each rectangle, including a reference mark that falls inside it. The rounded stroke is the only border. The corner radius is one cell.
+- L2 strokes are red. L1 strokes are black. These spaces have no selection state.
+- Every space always shows its label centered, `L2 - 01` through `L1 - 04`, in the same color as its stroke.
+
+**E, Backup Terminals on Internal Panelboard**
+
+- Two circles, diameter 7 cells. The left circle's bounding rows are `CJ`–`CP`, columns `33`–`39`. The right circle's bounding rows are `CJ`–`CP`, columns `47`–`53`. Cover the grid inside each circle. These circles have no selection state.
+- The left circle is L1 and its stroke is black. The right circle is L2 and its stroke is red. Each circle always shows that label centered, in the same color as its stroke.
+- The manual says the top breaker position is L2. On this staggered bus the top tooth is the right-hand one, so the right bus is L2 and the left bus is L1. These terminals sit directly under that column, one on each bus, and their outer edges line up with the column. The Powerwall AC table in the same manual states L1 is black and L2 is red. Gateway terminals A, B, and E list that pair as black, then red.
+
+**Jumper bridge**
+
+- One rounded rectangle, the same size as a single H space: 21 cells wide, 5 cells tall, corner radius one cell. Columns `33` through `53`, rows `CV`–`CZ`. It is centered in the gap between E and B, with the same left and right edges as H.
+- The stroke is brown, `#7a4e2b`, the color already used for this bridge on the one-line diagram. That keeps it distinct from L1 black and L2 red. Cover the grid inside the rectangle. It has no selection state.
+- The rectangle always shows the line printed on the hardware, centered, in the same brown: `REMOVE TO ISOLATE SUB-PANEL`.
+
+**C, Large Neutral Terminals**
+
+- Three circles, the same diameter as E and B. The Wiring Overview draws C as three large neutral lugs: one left of the upper terminal pair, one left of the lower pair, and one right of the lower pair. On this grid those centers are one phase-spacing left of E-L1, one phase-spacing left of B-L1, and one phase-spacing right of B-L2. The phase spacing is the distance between the L1 and L2 centers.
+- The left-upper circle shares E's rows `CJ`–`CP`, columns `19`–`25`. The two lower circles share B's rows `DF`–`DL`. The left-lower circle is columns `19`–`25`. The right circle is columns `61`–`67`. Cover the grid inside each circle. These circles have no selection state.
+- The manual's recommended wire color for C is white. A white stroke disappears on this paper, so the stroke is gray, `#6f6860`, distinct from L1 black, L2 red, and the jumper brown. Each circle always shows `N` centered, in that same gray. All three terminals are the same neutral.
+
+**D, Additional Neutral Terminals**
+
+- Ten circles in one vertical strip. The strip's top-left cell is `09-CJ` and it is 4 cells wide, columns `09` through `12`, rows `CJ` through `DL`. Each circle has diameter 2 cells. The circles are centered on the strip, so each one occupies columns `10`–`11`. One clear cell separates each circle from the next. The top circle starts on row `CJ`. The bottom circle ends on row `DL`.
+- These are the neutral bar's B and C positions on the Neutral Bar and Ground Bars page. That page's C is seven smaller holes, and its B is three larger holes, ten in all. B accepts up to 1/0 and C accepts up to 4 AWG, which is why the hardware holes differ in size. This drawing uses one diameter for all ten, as instructed. The separate bar labeled A on that page is not D.
+- The overview lists D's wire color as white. The stroke matches C, gray `#6f6860`. The circles have no labels and no selection state.
+
+**F, Large Ground Terminals**
+
+- Four circles, diameter 5 cells, in columns `75` through `79`, rows `CJ` through `DL`. Three clear cells separate each circle from the next. The top circle starts on row `CJ` and the bottom circle ends on row `DL`, so the four circles and their gaps fill that span. Each circle is centered on the five columns and covers the grid inside it. These circles have no selection state.
+- The circles occupy rows `CJ`–`CN`, `CR`–`CV`, `CZ`–`DD`, and `DH`–`DL`.
+- These are the four large ground lugs. The manual lists the wire as green or bare, 6 AWG through 2/0. The stroke is green, `#1c7c34`, the ground green, kept distinct from the photovoltaic green on the one-line diagram. Each circle always shows `PE` centered, in that same green. The two hex fasteners beside this block on the hardware are not terminals and are not drawn.
+
+**G, Additional Ground Terminals**
+
+- Five circles, diameter 3 cells. Seven clear cells separate this column from F, so the circles occupy columns `87` through `89`. They share F's rows `CJ` through `DL`. The gap between circles is 3.5 cells, and the five circles plus those gaps fill the span: the top circle starts on row `CJ` and the bottom circle ends on row `DL`. Cover the grid inside each circle. These circles have no selection state.
+- These are the five green terminal screws on the additional ground bar. The silver screws at the two ends of that bar mount the bar and are not drawn. The stroke and the centered `PE` label match F. On the Neutral Bar and Ground Bars page this bar is the section labeled A, and it accepts 14 AWG through 4 AWG.
+
+**A, Supply Terminals**
+
+- Two circles, diameter 7 cells, on one horizontal line. Seven clear cells separate them. The right circle's right edge is the right edge of column `89`, so that circle occupies columns `83`–`89`. The left circle occupies columns `69`–`75`. Both bottoms are the bottom of row `CE`, so both occupy rows `BY`–`CE`, level with the bottom of H. Cover the grid inside each circle. These circles have no selection state.
+- The left circle is S2 and its stroke is red. The right circle is S1 and its stroke is black. Each circle always shows that label centered, in the same color as its stroke. The supply lugs are arranged S2 then S1 from left to right, the same order as the one-line diagram. Red and black are the manual's pair for these hots.
+
+**I, Communication connector**
+
+- Six rectangles in one column, the physical top-to-bottom order of the communication connector on [Gateway 3 Communication Wiring](https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-5518F1D0-F031-4786-AC15-FB83A535EAA4.html). Each is 10 cells wide and 3 cells tall, corner radius 4 units. One clear cell separates each rectangle from the next. The top-left cell of the top rectangle is `80-AK`, so the column is columns `80` through `89`. Cover the grid inside each rectangle. These rectangles have no selection state.
+- Top to bottom:
+  - `12V`, rows `AK`–`AM`. Recommended color red, stroke `#d20f0f`.
+  - `GND`, rows `AO`–`AQ`. Recommended color black, stroke `#1a1a1a`.
+  - `CN+`, rows `AS`–`AU`. Recommended color blue, stroke `#1d4f91`.
+  - `CN−`, rows `AW`–`AY`. Recommended color orange, stroke `#e06a12`.
+  - `RS485+`, rows `BA`–`BC`. The manual lists the color as not used, so the stroke is gray `#8a847c`.
+  - `RS485−`, rows `BE`–`BG`. Same unused gray.
+- Each rectangle always shows that pin name centered, in the same color as its stroke. This is the same order as the one-line diagram.
+
+**B, Backup Terminals**
+
+- Two circles, the same diameter as E. Each sits directly under one E circle, with 15 clear grid cells between the circles. The left center is column-aligned with the left E circle and its top is row `DF`. The right center is column-aligned with the right E circle. They run through row `DL`. Cover the grid inside each circle. These circles have no selection state.
+- The left circle is L1 and its stroke is black. The right circle is L2 and its stroke is red. Each circle always shows that label centered, in the same color as its stroke. On the wiring overview these two lugs sit directly under the two E terminals, one on each phase bus.
+
+**Powerwall 3**
+
+- One rounded rectangle on the sheet, 99 cells wide and 24 cells tall, corner radius 12 units. Its group is `translate(200, 200)`, so the top-left is sheet cell `AU-AU` until it is moved. The frame uses `--gw-frame`. There is no internal grid. No cable is drawn to Gateway 3 or to the Wall Connector.
+- The field terminals follow [Powerwall 3 AC and PV Wiring](https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-FDF6014A-AD21-443F-B299-26FCC56B4A28.html). Positions below are cells inside this rectangle, counted from its own top-left. Do not copy that page's line art.
+- AC connector, four equal circles, diameter 7, one clear cell between circles, on one horizontal line. Left to right: an unused terminal with no label and gray stroke `#8a847c`; `N` in gray `#6f6860`; `L2` in red `#d20f0f`; `L1` in black `#1a1a1a`. The manual says the leftmost terminal is not used. The labeled order on the connector is N, L2, L1.
+- Ground bar, three circles, diameter 3, one clear cell between them, above the AC connector. Each is green `#1c7c34` and shows `PE`. These are the three equipment-ground screws.
+- MPPT, six pairs on the same horizontal line as the AC circles, to their right, with eight clear cells between the AC block and the first pair. Inside a pair the positive circle is on the left and the negative circle is on the right, diameter 3, one clear cell between them. Two clear cells separate pairs. Left to right the pairs are 1 through 6. Positive strokes are red and read `1+` through `6+`. Negative strokes are black and read `1−` through `6−`. This is the side-by-side connector on units P/N 1707000-11-L and higher, or 1707000-21-L and higher. Earlier units put every positive on the left and every negative on the right; that layout is not the one drawn.
+- Jumper pieces are not drawn. MPPT 1–2 and 5–6 can take the supplied jumper. MPPT 3 and 4 are closed from the factory. The communication harness and the Tesla Asset Controller are not drawn.
+
+**Wall Connector Gen 3**
+
+- One rounded rectangle, 33 cells wide and 15 cells tall, corner radius 12 units. Its group is `translate(1400, 200)`, so the top-left is sheet cell `FK-AU` until it is moved. The frame uses `--gw-frame`. There is no internal grid. No cable is drawn to another device.
+- Three circles, diameter 7, two clear cells between them, on one horizontal line. Left to right this is the North American wirebox order on the Gen 3 installation manual, Step 5: `G` in green `#1c7c34`, `L2/N` in red `#d20f0f`, `L1` in black `#1a1a1a`. Terminals are bi-directional. On this split-phase service the middle terminal is L2, line to line, not a neutral. The entry knockouts, service channel, and zip tie are not drawn.
+

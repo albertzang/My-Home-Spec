@@ -3990,3 +3990,249 @@
 
   window.addEventListener("resize", placePath);
 })();
+
+(function () {
+  var root = document.querySelector("figure.gw-compartment");
+  if (!root) return;
+  var viewport = root.querySelector(".gw-zoom-viewport");
+  var svg = viewport.querySelector("svg");
+  var slider = root.querySelector(".gw-zoom-slider");
+  var readout = svg.querySelector("#gw-cell-readout");
+  var hot = svg.querySelector("#gw-cell-hot");
+  var nameEl = svg.querySelector("#gw-cell-name");
+  var scale = 1;
+  var x = 0;
+  var y = 0;
+  var minScale = 1;
+  var maxScale = 128;
+  var cell = 10;
+  var cols = 400;
+  var readoutMin = 36;
+  var pointer = null;
+  var svgNs = "http://www.w3.org/2000/svg";
+
+  function buildSheet() {
+    var refs = svg.querySelector(".gw-refs");
+    var grid = svg.querySelector(".gw-grid");
+    if (!refs || !grid || refs.childNodes.length) return;
+    var frag = document.createDocumentFragment();
+    var mark;
+    var col;
+    var row;
+    var at;
+    for (col = 9; col < cols; col += 10) {
+      for (row = 9; row < cols; row += 10) {
+        mark = document.createElementNS(svgNs, "rect");
+        mark.setAttribute("class", "gw-ref");
+        mark.setAttribute("x", String(col * cell));
+        mark.setAttribute("y", String(row * cell));
+        mark.setAttribute("width", String(cell));
+        mark.setAttribute("height", String(cell));
+        frag.appendChild(mark);
+      }
+    }
+    refs.appendChild(frag);
+    var parts = [];
+    var extent = cols * cell;
+    for (at = cell; at < extent; at += cell) {
+      parts.push("M" + at + " 0V" + extent + "M0 " + at + "H" + extent);
+    }
+    grid.setAttribute("d", parts.join(""));
+  }
+
+  function layoutSize() {
+    var vb = svg.viewBox.baseVal;
+    var vw = viewport.clientWidth;
+    var vh = viewport.clientHeight;
+    var fit = Math.min(vw / vb.width, vh / vb.height);
+    return { w: vb.width * fit, h: vb.height * fit };
+  }
+
+  function rowName(index) {
+    return String.fromCharCode(65 + Math.floor(index / 26)) + String.fromCharCode(65 + (index % 26));
+  }
+
+  function colName(index) {
+    return rowName(index);
+  }
+
+  function insideSheet(px, py) {
+    var extent = cols * cell;
+    return px >= 0 && py >= 0 && px < extent && py < extent;
+  }
+
+  function userFromClient(cx, cy) {
+    var pt = svg.createSVGPoint();
+    pt.x = cx;
+    pt.y = cy;
+    var matrix = svg.getScreenCTM();
+    if (!matrix) return null;
+    return pt.matrixTransform(matrix.inverse());
+  }
+
+  function placeReadout() {
+    if (!readout) return;
+    if (!pointer) {
+      readout.setAttribute("visibility", "hidden");
+      return;
+    }
+    var cellPx = layoutSize().w / cols * scale;
+    var p = userFromClient(pointer.x, pointer.y);
+    if (!p || cellPx < readoutMin || !insideSheet(p.x, p.y)) {
+      readout.setAttribute("visibility", "hidden");
+      return;
+    }
+    var col = Math.floor(p.x / cell);
+    var row = Math.floor(p.y / cell);
+    if (col < 0 || col >= cols || row < 0 || row >= cols) {
+      readout.setAttribute("visibility", "hidden");
+      return;
+    }
+    var x0 = col * cell;
+    var y0 = row * cell;
+    hot.setAttribute("x", String(x0));
+    hot.setAttribute("y", String(y0));
+    nameEl.setAttribute("x", String(x0 + cell / 2));
+    nameEl.setAttribute("y", String(y0 + cell / 2));
+    nameEl.textContent = colName(col) + "-" + rowName(row);
+    readout.setAttribute("visibility", "visible");
+  }
+
+  function apply() {
+    svg.style.setProperty("--gw-scale", String(scale));
+    svg.style.transform = "translate(" + x + "px," + y + "px) scale(" + scale + ")";
+    if (slider) {
+      slider.value = String(scale);
+      slider.setAttribute("aria-valuetext", scale.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1") + "×");
+    }
+    placeReadout();
+  }
+
+  function clamp() {
+    var box = layoutSize();
+    var vw = viewport.clientWidth;
+    var vh = viewport.clientHeight;
+    var w = box.w * scale;
+    var h = box.h * scale;
+    if (w <= vw) x = (vw - w) / 2;
+    else x = Math.min(0, Math.max(vw - w, x));
+    if (h <= vh) y = (vh - h) / 2;
+    else y = Math.min(0, Math.max(vh - h, y));
+  }
+
+  function fit() {
+    var box = layoutSize();
+    svg.style.width = box.w + "px";
+    svg.style.height = box.h + "px";
+    scale = 1;
+    x = (viewport.clientWidth - box.w) / 2;
+    y = (viewport.clientHeight - box.h) / 2;
+    apply();
+  }
+
+  function zoomAt(cx, cy, next) {
+    next = Math.min(maxScale, Math.max(minScale, next));
+    var k = next / scale;
+    x = cx - k * (cx - x);
+    y = cy - k * (cy - y);
+    scale = next;
+    clamp();
+    apply();
+  }
+
+  slider.addEventListener("input", function () {
+    zoomAt(viewport.clientWidth / 2, viewport.clientHeight / 2, Number(slider.value));
+  });
+
+  viewport.addEventListener("wheel", function (event) {
+    event.preventDefault();
+    var rect = viewport.getBoundingClientRect();
+    var factor = event.deltaY < 0 ? 1.08 : 1 / 1.08;
+    zoomAt(event.clientX - rect.left, event.clientY - rect.top, scale * factor);
+  }, { passive: false });
+
+  viewport.addEventListener("pointermove", function (event) {
+    pointer = { x: event.clientX, y: event.clientY };
+    if (pointers.has(event.pointerId)) {
+      pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    }
+    if (pointers.size >= 2 && pinch) {
+      var dist = pointDistance();
+      if (pinch.dist > 0) {
+        var mid = pointMid();
+        zoomAt(mid.x, mid.y, pinch.scale * (dist / pinch.dist));
+      }
+      return;
+    }
+    if (drag && drag.id === event.pointerId) {
+      x = drag.x + (event.clientX - drag.px);
+      y = drag.y + (event.clientY - drag.py);
+      clamp();
+      apply();
+      return;
+    }
+    placeReadout();
+  });
+
+  viewport.addEventListener("pointerleave", function () {
+    pointer = null;
+    placeReadout();
+  });
+
+  var pointers = new Map();
+  var drag = null;
+  var pinch = null;
+
+  function pointDistance() {
+    var pts = Array.from(pointers.values());
+    var dx = pts[0].x - pts[1].x;
+    var dy = pts[0].y - pts[1].y;
+    return Math.hypot(dx, dy);
+  }
+
+  function pointMid() {
+    var rect = viewport.getBoundingClientRect();
+    var pts = Array.from(pointers.values());
+    return {
+      x: (pts[0].x + pts[1].x) / 2 - rect.left,
+      y: (pts[0].y + pts[1].y) / 2 - rect.top
+    };
+  }
+
+  viewport.addEventListener("pointerdown", function (event) {
+    if (event.button !== undefined && event.button !== 0) return;
+    pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    viewport.setPointerCapture(event.pointerId);
+    if (pointers.size === 1) {
+      drag = { id: event.pointerId, px: event.clientX, py: event.clientY, x: x, y: y };
+      pinch = null;
+    } else if (pointers.size === 2) {
+      drag = null;
+      pinch = { dist: pointDistance(), scale: scale };
+    }
+  });
+
+  function endDrag(event) {
+    if (!pointers.has(event.pointerId)) return;
+    pointers.delete(event.pointerId);
+    if (drag && drag.id === event.pointerId) drag = null;
+    if (pointers.size < 2) pinch = null;
+    if (pointers.size === 1) {
+      var only = pointers.entries().next().value;
+      drag = { id: only[0], px: only[1].x, py: only[1].y, x: x, y: y };
+    }
+  }
+  viewport.addEventListener("pointerup", endDrag);
+  viewport.addEventListener("pointercancel", endDrag);
+
+  window.addEventListener("resize", function () {
+    if (scale === 1) fit();
+    else {
+      clamp();
+      apply();
+    }
+  });
+
+  buildSheet();
+  fit();
+})();
