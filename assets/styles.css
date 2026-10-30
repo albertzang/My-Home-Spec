@@ -2435,6 +2435,57 @@
       vector-effect: non-scaling-stroke;
     }
 
+    .spa-spec .spa-article figure.gw-compartment .sheet-tag,
+    .spa-spec .spa-article figure.gw-compartment .sheet-label {
+      fill: var(--sheet-ink);
+      font-family: inherit;
+      pointer-events: none;
+    }
+
+    .spa-spec .spa-article figure.gw-compartment .sheet-tag {
+      font-size: 16px;
+      dominant-baseline: alphabetic;
+    }
+
+    .spa-spec .spa-article figure.gw-compartment .sheet-label {
+      font-size: 18px;
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+
+    .spa-spec .spa-article figure.gw-compartment .sheet-label.small {
+      font-size: 14px;
+    }
+
+    .spa-spec .spa-article figure.gw-compartment .pv-term {
+      fill: var(--sheet-paper);
+    }
+
+    .spa-spec .spa-article figure.gw-compartment .pv-term[data-pol="+"] { stroke: #d20f0f; }
+    .spa-spec .spa-article figure.gw-compartment .pv-term[data-pol="-"] { stroke: #1a1a1a; }
+
+    .spa-spec .spa-article figure.gw-compartment .sheet-wire {
+      fill: none;
+      pointer-events: none;
+      stroke-linejoin: miter;
+    }
+
+    .spa-spec .spa-article figure.gw-compartment .sheet-wire[data-c="L2"],
+    .spa-spec .spa-article figure.gw-compartment .sheet-wire[data-c="PV+"],
+    .spa-spec .spa-article figure.gw-compartment .sheet-wire[data-c="12V"] { stroke: #d20f0f; }
+    .spa-spec .spa-article figure.gw-compartment .sheet-wire[data-c="L1"],
+    .spa-spec .spa-article figure.gw-compartment .sheet-wire[data-c="PV-"],
+    .spa-spec .spa-article figure.gw-compartment .sheet-wire[data-c="GND"] { stroke: #1a1a1a; }
+    .spa-spec .spa-article figure.gw-compartment .sheet-wire[data-c="N"] { stroke: #6f6860; }
+    .spa-spec .spa-article figure.gw-compartment .sheet-wire[data-c="PE"] { stroke: #1c7c34; }
+    .spa-spec .spa-article figure.gw-compartment .sheet-wire[data-c="CN+"] { stroke: #1d4f91; }
+    .spa-spec .spa-article figure.gw-compartment .sheet-wire[data-c="CN-"] { stroke: #e06a12; }
+    .spa-spec .spa-article figure.gw-compartment .sheet-wire[data-c="JUMP"] { stroke: #7a4e2b; }
+    .spa-spec .spa-article figure.gw-compartment .sheet-wire[data-c="ETH"] {
+      stroke: #6b4c9a;
+      stroke-dasharray: calc(6px / var(--gw-scale, 1));
+    }
+
     .spa-spec .spa-article figure.gw-compartment .pw-space,
     .spa-spec .spa-article figure.gw-compartment .wc-space {
       fill: var(--sheet-paper);
@@ -2465,13 +2516,13 @@
     .spa-spec .spa-article figure.gw-compartment .pw-pv[data-pol="-"] .pw-label { fill: #1a1a1a; font-size: 11px; }
 
     .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="CN-"] .pw-space { stroke: #e06a12; }
-    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="CN-"] .pw-label { fill: #e06a12; font-size: 11px; }
+    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="CN-"] .pw-label { fill: #e06a12; font-size: 9px; }
     .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="CN+"] .pw-space { stroke: #1d4f91; }
-    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="CN+"] .pw-label { fill: #1d4f91; font-size: 11px; }
+    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="CN+"] .pw-label { fill: #1d4f91; font-size: 9px; }
     .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="GND"] .pw-space { stroke: #1a1a1a; }
-    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="GND"] .pw-label { fill: #1a1a1a; font-size: 11px; }
+    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="GND"] .pw-label { fill: #1a1a1a; font-size: 9px; }
     .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="12V"] .pw-space { stroke: #d20f0f; }
-    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="12V"] .pw-label { fill: #d20f0f; font-size: 11px; }
+    .spa-spec .spa-article figure.gw-compartment .pw-comm[data-pin="12V"] .pw-label { fill: #d20f0f; font-size: 9px; }
 
     .spa-spec .spa-article figure.gw-compartment .wc-term[data-leg="G"] .wc-space { stroke: #1c7c34; }
     .spa-spec .spa-article figure.gw-compartment .wc-term[data-leg="G"] .wc-label { fill: #1c7c34; font-size: 16px; }
