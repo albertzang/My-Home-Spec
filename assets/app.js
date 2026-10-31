@@ -4004,9 +4004,9 @@
   var x = 0;
   var y = 0;
   var minScale = 1;
-  var maxScale = 128;
+  var maxScale = 8;
   var cell = 10;
-  var cols = 400;
+  var cols = 250;
   var readoutMin = 36;
   var pointer = null;
   var svgNs = "http://www.w3.org/2000/svg";
@@ -4104,6 +4104,7 @@
     if (slider) {
       slider.value = String(scale);
       slider.setAttribute("aria-valuetext", scale.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1") + "×");
+      slider.style.setProperty("--gw-zoom", ((scale - minScale) / (maxScale - minScale) * 100) + "%");
     }
     placeReadout();
   }
@@ -4164,6 +4165,9 @@
       }
       return;
     }
+    if (press && press.id === event.pointerId && Math.hypot(event.clientX - press.x, event.clientY - press.y) > 4) {
+      press.moved = true;
+    }
     if (drag && drag.id === event.pointerId) {
       x = drag.x + (event.clientX - drag.px);
       y = drag.y + (event.clientY - drag.py);
@@ -4182,6 +4186,152 @@
   var pointers = new Map();
   var drag = null;
   var pinch = null;
+  var press = null;
+  var deviceName = {
+    gw: "Tesla Gateway 3",
+    "pw-follower": "Tesla Powerwall 3，Follower",
+    "pw-leader": "Tesla Powerwall 3，Leader",
+    wc1: "Wall Connector Gen 3，1",
+    wc2: "Wall Connector Gen 3，2",
+    meter: "Meter-Main",
+    house: "Main House Subpanel",
+    garage: "Garage Subpanel",
+    "pv-f1": "Tesla Solar Panel，Follower 1",
+    "pv-f2": "Tesla Solar Panel，Follower 2",
+    "pv-f3": "Tesla Solar Panel，Follower 3",
+    "pv-f4": "Tesla Solar Panel，Follower 4",
+    "pv-l1": "Tesla Solar Panel，Leader 1",
+    "pv-l2": "Tesla Solar Panel，Leader 2",
+    "pv-l3": "Tesla Solar Panel，Leader 3",
+    "pv-l4": "Tesla Solar Panel，Leader 4",
+    "mci-f": "MCI-1，Follower 组串",
+    "mci-l": "MCI-1，Leader 组串"
+  };
+  var nets = [
+    { ends: ["meter", "gw-a-s1"] },
+    { ends: ["meter", "gw-a-s2"] },
+    { ends: ["meter", "gw-c-3"] },
+    { ends: ["meter", "gw-f-1"] },
+    { ends: ["house", "gw-b-l1"] },
+    { ends: ["house", "gw-b-l2"] },
+    { ends: ["house", "gw-c-2"] },
+    { ends: ["house", "gw-f-4"] },
+    { ends: ["pw-leader-l1", "gw-h-l1-01"] },
+    { ends: ["pw-leader-l2", "gw-h-l2-01"] },
+    { ends: ["pw-leader-n", "gw-c-1"] },
+    { ends: ["pw-leader-pe-1", "gw-f-2"] },
+    { ends: ["pw-leader-12v", "gw-i-12v"] },
+    { ends: ["pw-leader-gnd", "gw-i-gnd"] },
+    { ends: ["pw-leader-cnp", "gw-i-cnp"] },
+    { ends: ["pw-leader-cnn", "gw-i-cnn"] },
+    { ends: ["pw-follower-l1", "gw-h-l1-02"] },
+    { ends: ["pw-follower-l2", "gw-h-l2-02"] },
+    { ends: ["pw-follower-n", "gw-d-3"] },
+    { ends: ["pw-follower-pe-3", "gw-g-1"] },
+    { ends: ["wc1-l1", "wc2-l1", "gw-h-l1-03"] },
+    { ends: ["wc1-l2", "wc2-l2", "gw-h-l2-03"] },
+    { ends: ["wc1-g", "wc2-g", "gw-g-5"] },
+    { ends: ["garage", "gw-h-l1-04"] },
+    { ends: ["garage", "gw-h-l2-04"] },
+    { ends: ["garage", "gw-d-7"] },
+    { ends: ["garage", "gw-f-3"] },
+    { ends: ["pv-f1-pos", "pw-follower-pv-1p"] },
+    { ends: ["pv-f1-neg", "pv-f2-pos"] },
+    { ends: ["pv-f2-neg", "mci-f"] },
+    { ends: ["mci-f", "pv-f3-pos"] },
+    { ends: ["pv-f3-neg", "pv-f4-pos"] },
+    { ends: ["pv-f4-neg", "pw-follower-pv-1m"] },
+    { ends: ["pv-l1-pos", "pw-leader-pv-1p"] },
+    { ends: ["pv-l1-neg", "pv-l2-pos"] },
+    { ends: ["pv-l2-neg", "mci-l"] },
+    { ends: ["mci-l", "pv-l3-pos"] },
+    { ends: ["pv-l3-neg", "pv-l4-pos"] },
+    { ends: ["pv-l4-neg", "pw-leader-pv-1m"] },
+    { ends: ["pw-follower", "pw-leader"], peer: true }
+  ];
+
+  function portOwner() {
+    var owner = {};
+    svg.querySelectorAll("[data-port]").forEach(function (port) {
+      var unit = port.closest("[data-device]");
+      if (unit) owner[port.getAttribute("data-port")] = unit.getAttribute("data-device");
+    });
+    return owner;
+  }
+
+  function clearPick() {
+    root.removeAttribute("data-pick");
+    svg.querySelectorAll(".is-selected, .is-linked, .is-peer, .is-hot").forEach(function (el) {
+      el.classList.remove("is-selected", "is-linked", "is-peer", "is-hot");
+    });
+    svg.querySelectorAll("[data-device]").forEach(function (unit) {
+      unit.setAttribute("aria-pressed", "false");
+    });
+  }
+
+  function pickDevice(id) {
+    var owner = portOwner();
+    var portOn = {};
+    var deviceOn = {};
+    var peerOn = {};
+    clearPick();
+    nets.forEach(function (net) {
+      var touches = net.ends.some(function (end) {
+        return end === id || owner[end] === id;
+      });
+      if (!touches) return;
+      if (net.peer) {
+        net.ends.forEach(function (end) {
+          if (end !== id) peerOn[end] = true;
+        });
+        return;
+      }
+      net.ends.forEach(function (end) {
+        if (owner[end]) portOn[end] = true;
+        else deviceOn[end] = true;
+      });
+    });
+    svg.querySelectorAll("[data-port]").forEach(function (port) {
+      if (portOn[port.getAttribute("data-port")]) port.classList.add("is-linked");
+    });
+    svg.querySelectorAll("[data-device]").forEach(function (unit) {
+      var dev = unit.getAttribute("data-device");
+      var selected = dev === id;
+      unit.classList.toggle("is-selected", selected);
+      unit.classList.toggle("is-linked", !!deviceOn[dev]);
+      unit.classList.toggle("is-peer", !!peerOn[dev]);
+      unit.setAttribute("aria-pressed", selected ? "true" : "false");
+      var hot = selected || !!deviceOn[dev] || !!peerOn[dev] || !!unit.querySelector(".sheet-port.is-linked");
+      unit.classList.toggle("is-hot", hot);
+    });
+    root.setAttribute("data-pick", id);
+  }
+
+  function toggleDevice(id) {
+    if (root.getAttribute("data-pick") === id) clearPick();
+    else pickDevice(id);
+  }
+
+  function pickAt(cx, cy) {
+    var el = document.elementFromPoint(cx, cy);
+    var unit = el && el.closest ? el.closest("[data-device]") : null;
+    if (!unit || !svg.contains(unit)) clearPick();
+    else toggleDevice(unit.getAttribute("data-device"));
+  }
+
+  svg.querySelectorAll("[data-device]").forEach(function (unit) {
+    var id = unit.getAttribute("data-device");
+    unit.setAttribute("role", "group");
+    unit.tabIndex = 0;
+    unit.setAttribute("aria-pressed", "false");
+    unit.setAttribute("aria-label", deviceName[id] || id);
+  });
+  svg.querySelectorAll(".sheet-port").forEach(function (port) {
+    var shape = port.querySelector("rect, circle");
+    if (!shape) return;
+    var stroke = getComputedStyle(shape).stroke;
+    if (stroke && stroke !== "none") port.style.setProperty("--port-ink", stroke);
+  });
 
   function pointDistance() {
     var pts = Array.from(pointers.values());
@@ -4201,13 +4351,17 @@
 
   viewport.addEventListener("pointerdown", function (event) {
     if (event.button !== undefined && event.button !== 0) return;
+    var link = event.target.closest && event.target.closest("a");
+    if (link && svg.contains(link)) return;
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     viewport.setPointerCapture(event.pointerId);
     if (pointers.size === 1) {
       drag = { id: event.pointerId, px: event.clientX, py: event.clientY, x: x, y: y };
+      press = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
       pinch = null;
     } else if (pointers.size === 2) {
       drag = null;
+      press = null;
       pinch = { dist: pointDistance(), scale: scale };
     }
   });
@@ -4222,8 +4376,28 @@
       drag = { id: only[0], px: only[1].x, py: only[1].y, x: x, y: y };
     }
   }
-  viewport.addEventListener("pointerup", endDrag);
-  viewport.addEventListener("pointercancel", endDrag);
+  viewport.addEventListener("pointerup", function (event) {
+    var was = press;
+    endDrag(event);
+    if (press && press.id === event.pointerId) press = null;
+    if (!was || was.id !== event.pointerId || was.moved) return;
+    pickAt(event.clientX, event.clientY);
+  });
+  viewport.addEventListener("pointercancel", function (event) {
+    if (press && press.id === event.pointerId) press = null;
+    endDrag(event);
+  });
+  viewport.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      clearPick();
+      return;
+    }
+    var unit = event.target.closest && event.target.closest("[data-device]");
+    if (!unit || !svg.contains(unit)) return;
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    toggleDevice(unit.getAttribute("data-device"));
+  });
 
   window.addEventListener("resize", function () {
     if (scale === 1) fit();

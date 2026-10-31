@@ -104,18 +104,18 @@ Keep this section current. When a later instruction adds or changes a rule for t
 
 **Bay**
 
-- The sheet is 400 by 400 cells. Gateway 3 is one rounded square, 100 by 100 cells, with its top-left on sheet cell `JY-BO`. The square and its interfaces are one group, `translate(2580, 400)`, so the block can move later without rewriting the interfaces.
+- The sheet is 250 by 250 cells. The device block is 210 cells wide and 210 cells tall, so twenty cells of sheet remain on every side. Gateway 3 is one rounded square, 100 by 100 cells, with its top-left on sheet cell `AU-CA`. Meter-Main sits directly above it, with ten cells between them. The square and its interfaces are one group, `translate(200, 520)`, so the block can move later without rewriting the interfaces.
 - The square's fill is the paper color and its stroke is the rounded frame. The square has no internal grid. The sheet grid runs underneath, and the fill covers it.
-- The zoom slider and the caption sit outside the sheet. They are not part of the drawing.
+- The zoom slider sits directly above the sheet. It is not part of the drawing. The sheet has no caption and no hint.
 
 **Grid**
 
-- Divide the sheet into a 400 by 400 grid. The lines use `--gw-hairline` and stay 0.5px on screen at every zoom. They sit on the interior cell edges, one cell in from each side, through the last interior edge.
-- Both axes use the same two-letter names. For index `n`, the first letter is `A + floor(n / 26)` and the second is `A + (n % 26)`. Index 0 is `AA`. Index 399 is `PJ`. A 400-cell axis ends at `PJ`.
-- Columns run left to right, `AA` through `PJ`. Rows run top to bottom, `AA` through `PJ`. `AA` is the top row and the left column.
+- Divide the sheet into a 250 by 250 grid. The lines use `--gw-hairline` and stay 0.5px on screen at every zoom. They sit on the interior cell edges, one cell in from each side, through the last interior edge.
+- Both axes use the same two-letter names. For index `n`, the first letter is `A + floor(n / 26)` and the second is `A + (n % 26)`. Index 0 is `AA`. Index 249 is `JP`. A 250-cell axis ends at `JP`.
+- Columns run left to right, `AA` through `JP`. Rows run top to bottom, `AA` through `JP`. `AA` is the top row and the left column.
 - Name a cell as the column, a hyphen, then the row. `AJ-AJ` is column `AJ`, row `AJ`.
 - The grid locates devices. A grid line is not part of a device.
-- Every 10 by 10 block has its bottom-right cell filled, as a reference mark. Those cells are indices 9, 19, 29, …, 399 on both axes. The first is `AJ-AJ`. The last is `PJ-PJ`. The fill is a reference mark, not a device.
+- Every 10 by 10 block has its bottom-right cell filled, as a reference mark. Those cells are indices 9, 19, 29, …, 249 on both axes. The first is `AJ-AJ`. The last is `JP-JP`. The fill is a reference mark, not a device.
 
 **Hover readout**
 
@@ -126,8 +126,9 @@ Keep this section current. When a later instruction adds or changes a rule for t
 **Zoom**
 
 - One slider, directly above the SVG, the same width as the SVG area.
-- It moves continuously from 1× to 128×. The sheet area is 16 times the previous 100 by 100 sheet, and the previous maximum was 8×. It replaces separate zoom-in, zoom-out, and reset controls.
-- Dragging inside the drawing pans. The wheel and a two-finger pinch use the same 1×–128× range and move the slider with them.
+- It moves continuously from 1× to 8×. It replaces separate zoom-in, zoom-out, and reset controls.
+- Dragging inside the drawing pans. Text on the sheet cannot be selected. The wheel and a two-finger pinch use the same 1×–8× range and move the slider with them.
+- The drawing area has a 1.5px border in the sheet ink. The border is drawn on the viewport, not in the SVG, so zooming and panning leave it in place and at the same thickness.
 
 **Strokes**
 
@@ -149,7 +150,7 @@ Keep this section current. When a later instruction adds or changes a rule for t
   - H, Internal Panelboard
   - I, Communication connector
 - Draw a component only when instructed. When one is placed, record its cell span and its job in this section.
-- Cell spans below are local to the Gateway square, counted from its own top-left. Local columns stay `00`–`99` and local rows stay `AA`–`DV`. On the sheet, local `00-AA` is currently `JY-BO`. Moving the square later changes the sheet cells and leaves these local spans as they are.
+- Cell spans below are local to the Gateway square, counted from its own top-left. Local columns stay `00`–`99` and local rows stay `AA`–`DV`. On the sheet, local `00-AA` is currently `AU-CA`. Moving the square later changes the sheet cells and leaves these local spans as they are.
 - How this house uses each component stays in the Spec prose. The drawing shows where the interface is and what it is for.
 
 **H, Internal Panelboard**
@@ -227,7 +228,7 @@ Keep this section current. When a later instruction adds or changes a rule for t
 
 **Powerwall 3**
 
-- One rounded rectangle, 100 cells wide and 56 cells tall, corner radius one cell. The sheet has two copies. Follower is `translate(80, 520)`, top-left `AI-CA`. Leader is `translate(1360, 520)`, top-left `FG-CA`. Inner ids carry that group id as a prefix. The frame uses `--gw-frame`. There is no internal grid. Ten clear cells separate the frame from the nearest interface on every side.
+- One rounded rectangle, 100 cells wide and 56 cells tall, corner radius one cell. The sheet has two copies, on the same left edge, ten cells to the right of Gateway 3. Follower is `translate(1300, 200)`, top-left `FA-AU`. Leader is `translate(1300, 1300)`, top-left `FA-FA`. A solar string sits between them and another sits under the Leader. Ten cells separate Follower, its string, Leader, and the Leader string. Inner ids carry that group id as a prefix. The frame uses `--gw-frame`. There is no internal grid. Ten clear cells separate the frame from the nearest interface on every side.
 - The field terminals follow [Powerwall 3 AC and PV Wiring](https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-FDF6014A-AD21-443F-B299-26FCC56B4A28.html). Positions below are cells inside this rectangle, counted from its own top-left. Do not copy that page's line art.
 - AC connector, four rounded rectangles with the long side vertical: 5 cells wide, 21 cells tall, corner radius one cell. One clear cell between rectangles. They share one top edge and one bottom edge. Ten clear cells separate the unused rectangle from the left side of the frame. Left to right: an unused terminal with no label and gray stroke `#8a847c`; `N` in gray `#6f6860`; `L2` in red `#d20f0f`; `L1` in black `#1a1a1a`. The manual says the leftmost terminal is not used. The labeled order on the connector is N, L2, L1. Ten clear cells separate L1 from `1+`.
 - Ground bar, three circles, diameter 3, one clear cell between them. They sit above `1+`, `2+`, and `3+`, one circle centered on each rectangle, so the left edge of the first circle lines up with the left edge of `1+` and the right edge of the third circle lines up with the right edge of `3+`. Five clear cells separate the circles from those rectangles. Each is green `#1c7c34` and shows `PE`. These are the three equipment-ground screws.
@@ -237,15 +238,19 @@ Keep this section current. When a later instruction adds or changes a rule for t
 
 **Wall Connector Gen 3**
 
-- One rounded rectangle, 45 cells wide and 35 cells tall, corner radius one cell. The sheet has two copies. Wall Connector 1 is `translate(80, 1680)`, top-left `AI-GM`. Wall Connector 2 is `translate(640, 1680)`, top-left `CM-GM`. Inner ids carry that group id as a prefix. The frame uses `--gw-frame`. There is no internal grid. Ten clear cells separate the frame from the nearest interface on every side.
-- RS-485 port, two squares, 4 by 4 cells, corner radius one cell, one clear cell between them, at the upper left of the rectangle. Four clear cells separate this port from the power terminals below. Left to right this is the backside port on the Gen 3 installation manual, Wall Connector Internal Components callout 1, landed as described under Dynamic Power Management: the red port, labeled `RED`, stroke `#d20f0f`; the white port, labeled `WHT`, stroke `#6f6860`. The red harness lead lands on the red port and the black lead lands on the white port. The manual does not mark polarity. The green housing under the two ports is not a terminal.
-- Three circles, diameter 7, two clear cells between them, on one horizontal line below that port, with four clear cells between the port and these circles. Left to right this is the North American wirebox order on the Gen 3 installation manual, Step 5: `G` in green `#1c7c34`, `L2/N` in red `#d20f0f`, `L1` in black `#1a1a1a`. Terminals are bi-directional. On this split-phase service the middle terminal is L2, line to line, not a neutral. The entry knockouts, service channel, and zip tie are not drawn.
+- One rounded rectangle, 45 cells wide and 36 cells tall, corner radius one cell. The sheet has two copies, on one horizontal line, ten cells below Gateway 3. Their outer left and right edges line up with Gateway 3. Wall Connector 1 is `translate(200, 1620)`, top-left `AU-GG`. Wall Connector 2 is `translate(750, 1620)`, top-left `CX-GG`. Ten cells separate the two frames. Inner ids carry that group id as a prefix. The frame uses `--gw-frame`. There is no internal grid. Ten clear cells separate the frame from the nearest interface on every side.
+- RS-485 port, two squares, 4 by 4 cells, corner radius one cell, one clear cell between them, at the upper left of the rectangle. Five clear cells separate this port from the power terminals below. Left to right this is the backside port on the Gen 3 installation manual, Wall Connector Internal Components callout 1, landed as described under Dynamic Power Management: the red port, labeled `RED`, stroke `#d20f0f`; the white port, labeled `WHT`, stroke `#6f6860`. The red harness lead lands on the red port and the black lead lands on the white port. The manual does not mark polarity. The green housing under the two ports is not a terminal.
+- Three circles, diameter 7, two clear cells between them, on one horizontal line below that port, with five clear cells between the port and these circles. Left to right this is the North American wirebox order on the Gen 3 installation manual, Step 5: `G` in green `#1c7c34`, `L2/N` in red `#d20f0f`, `L1` in black `#1a1a1a`. Terminals are bi-directional. On this split-phase service the middle terminal is L2, line to line, not a neutral. The entry knockouts, service channel, and zip tie are not drawn.
 
 **System**
 
 - The same sheet holds the rest of the house Tesla system. Compartment interiors stay as drawn above.
-- Role names sit outside the clip, above the frame, at local `y=-16`: Gateway 3, Follower, Leader, WC 1, WC 2. They are not covered by the paper fill.
-- Labeled rounded boxes use the paper fill, the frame stroke, and a corner radius of one cell: Meter-Main `JA402R-BC-HI`; Main House Subpanel; Garage Subpanel; eight solar modules; two `MCI-1` boxes. A module draws a red positive terminal and a black negative terminal on its bottom edge. Tesla Remote Meters are not on this sheet. The two Wall Connectors use Power Share over Wi-Fi; their RS-485 ports stay drawn and unwired.
-- Wires are orthogonal polylines, one horizontal or vertical segment at a time. An end meets the rim of an existing terminal, or the edge of a labeled box. One conductor per hole. The stroke color matches that terminal. Ethernet between the two Powerwalls is dashed. Module-to-module leads use the jumper brown. MPPT jumpers are not drawn; each string lands on MPPT 1 only.
-- The circuit narrative stays out of this file and out of the Spec essay. The figure caption names the devices and says the wires are orthogonal.
+- Product names sit inside the frame, at the top left, local `(20, 32)`: Tesla Gateway 3, Tesla Powerwall 3, Wall Connector Gen 3. Each solar module reads Tesla Solar Panel at local `(16, 32)`. Each name is a link to that product's page. A click on the name follows the link and does not select the device. The two Powerwalls both read Tesla Powerwall 3; Follower is the upper one and Leader is the lower one. The two Wall Connectors both read Wall Connector Gen 3; Wall Connector 1 is the left one. The eight modules all read Tesla Solar Panel.
+- Labeled rounded boxes use the paper fill, the frame stroke, and a corner radius of one cell. Meter-Main is 100 by 22 cells at `AU-AU`, directly above Gateway 3, with `JA402R-BC-HI` on a second line. Main House Subpanel and Garage Subpanel are each 45 by 22 cells, on one horizontal line with ten cells between them, and ten cells under the two Wall Connectors. Their top-left cells are `AU-IA` and `CX-IA`, and their outer edges line up with the Wall Connector pair. Each solar string is one 100 by 34 cell block under its Powerwall, top-left `FA-DI` for Follower and `FA-HO` for Leader. Inside, left to right: two modules, one `MCI-1`, two modules. Each module is 22 by 34 cells. `MCI-1` is 4 by 4 cells. Two cells separate each of those five, and their horizontal centerlines line up. Each module has two terminals on its center: a red positive above a black negative. Each terminal is 2 cells wide and 4 cells tall. Six cells separate the two, and the pair is centered in the module. Tesla Remote Meters are not on this sheet. The two Wall Connectors use Power Share over Wi-Fi; their RS-485 ports stay drawn and unwired.
+- The sheet draws no wires. A click on a device selects it. Every interface on a conductor that touches that device fills with its own stroke colour and its label turns white. Every other interface fades. Meter-Main, the two subpanels, and each MCI-1 have no separate terminals, so the box itself fills. Clicking the same device again, or empty sheet, clears the selection. A press that moves still pans.
+- The two Wall Connectors share L1, L2, and ground. Selecting either lights both connectors' G, L2/N, and L1, plus Gateway H `L1 - 03`, H `L2 - 03`, and the shared G lug.
+- Ethernet between the Powerwalls has no drawn jack. Selecting either strokes the other frame in `#6b4c9a`. The Leader comm drain stays on that Powerwall and does not light a Gateway terminal.
+- Each string still lands on MPPT 1 only. Module-to-module and module-to-MCI joins are conductors in that same selection model. MPPT jumper pieces are not drawn.
+- The circuit narrative stays out of this file and out of the Spec essay. The sheet has no caption. A selected device is shown only by the interfaces that light.
+- "No selection state" on a Gateway, Powerwall, or Wall Connector interface means that interface is not its own control. The device is the control. Those interfaces still light when a device that lands on them is selected.
 

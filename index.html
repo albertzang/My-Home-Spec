@@ -2394,424 +2394,79 @@
 
   <h2>4. Tesla Energy System</h2>
   <p class="lede"><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a>、<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 与车库侧数据链。BC Hydro 200 A 经电表处的服务断路器进入 Gateway 3，两台并联承担全屋持续供电。<a href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer">Tesla Solar Panels</a> 直流进 Powerwall 3。分路电表 <a href="https://store.egauge.net/egauge-pro-v2-warrantied" target="_blank" rel="noopener noreferrer">eGauge Pro</a>。</p>
-  <p>车库 Powerwall / Gateway 端口一览。同型号合并一行，数量写 <code>×n</code>（×1 省略）。</p>
-<div class="design-devices-wrap">
-  <table class="devices-table">
-    <thead>
-      <tr>
-        <th rowspan="2">Category</th>
-        <th rowspan="2">Device</th>
-        <th colspan="2" class="port-group">Port</th>
-      </tr>
-      <tr>
-        <th class="port-sub">Uplink</th>
-        <th class="port-sub">Downlink</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td rowspan="3">Tesla</td>
-        <td>
-          <span class="udc-device">
-            <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Tesla Powerwall 3 (Leader)</a>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="1 GbE RJ45"><span class="udc-port gbe1" title="1 GbE RJ45"></span></span></td>
-        <td class="port-cell"><span class="udc-ports" title="1 GbE RJ45; CAN">
-            <span class="udc-port gbe1" title="1 GbE RJ45"></span>
-            <span class="udc-port other" title="CAN to Gateway 3">CAN</span>
-          </span></td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Tesla Powerwall 3 (Follower)</a>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="1G toward Leader"><span class="udc-port gbe1" title="1 GbE RJ45 from Leader"></span></span></td>
-        <td class="port-cell"><span class="udc-ports" title="2nd ETH; CAN">
-            <span class="udc-port gbe1" title="1 GbE RJ45"></span>
-            <span class="udc-port other" title="CAN">CAN</span>
-          </span></td>
-      </tr>
-      <tr>
-        <td>
-          <span class="udc-device">
-            <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Tesla Gateway 3</a>
-          </span>
-        </td>
-        <td class="port-cell"><span class="udc-ports" title="CAN"><span class="udc-port other" title="CAN">CAN</span></span></td>
-        <td class="port-cell">-</td>
-      </tr>
-    </tbody>
-  </table>
-  </div>
 
   <ul>
-    <li>Leader / Follower 同口：每台 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> 都是 2×ETH（交换）+ CAN。Leader：ETH→<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a>、ETH→Follower、CAN→<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a>。Follower：ETH←Leader，第二路 ETH 与 CAN 空闲。</li>
-    <li>Follower / <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a>：不另接家用交换机。</li>
-    <li>禁止把 UniFi 设备串进两台 PW 之间。</li>
+    <li>Meter-Main，JA402R-BC-HI</li>
+    <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Tesla Gateway 3</a></li>
+    <li><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Tesla Powerwall 3</a> ×2</li>
+    <li><a href="https://www.tesla.com/wall-connector" target="_blank" rel="noopener noreferrer">Wall Connector Gen 3</a> ×2</li>
+    <li><a href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer">Tesla Solar Panels</a>，两组各 4 块，各一只 MCI-1</li>
+    <li>Main House Subpanel</li>
+    <li>Garage Subpanel</li>
+    <li><a href="https://store.egauge.net/egauge-pro-v2-warrantied" target="_blank" rel="noopener noreferrer">eGauge Pro</a></li>
   </ul>
-  <pre class="chain-diagram"><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> ──► <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> Leader ──Ethernet──► <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">PW3</a> Follower
-              │
-              └── CAN / 12V ──► <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a></pre>
-
-  <p>车库电气单线如下。数据链见上方。</p>
-  <figure class="tesla-eline">
-    <div class="tesla-eline-scroll">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 1040" role="img" aria-labelledby="tesla-eline-title tesla-eline-desc">
-        <title id="tesla-eline-title">车库 Tesla 系统电气单线</title>
-        <desc id="tesla-eline-desc">BC Hydro 200 A 经电表和服务断路器进入 Gateway 3 的 Supply 端子 A。服务断路器是唯一的中性线接地处，并接接地极。Gateway 3 在加拿大不作服务设备，bonding screw 拆除。孤岛开关之后，Backup 端子 B 以 200 A 四线到主屋配电盘；该盘改为分盘并拆除盘内中性线与地的连接。原厂跳线保留，把内部母排 H 留在备用侧，跳线落在母排上的 Backup 端子 E。H 从上到下是 60 A Powerwall 3 Leader、60 A Powerwall 3 Follower、100 A 两个 Wall Connector、80 A 车库 Workshop 分盘。中性线进 C 或 D，地进 F 或 G。通信插头 I 的针脚为 12V、GND、CN+、CN−、RS485。盖板内侧小图的方位与打开盖板后一致。两台 Powerwall 各 11.5 kW，交流端子在接线仓左侧，光伏从右侧 MPPT 进入。Wall Connector 以 Power Share 把持续电流限在 80 A，只有 L1、L2、PE。</desc>
-        <rect width="760" height="1040" fill="#fbf9f6"/>
-
-        <text x="24" y="32" fill="#2a2622" font-size="18" font-weight="650">车库 Tesla 系统</text>
-        <text x="24" y="54" fill="#6a6158" font-size="12">电气单线 · 分相 120/240 V · 全屋备电</text>
-        <text x="24" y="74" fill="#6a6158" font-size="12">平时市电从服务断路器进入。停电后孤岛开关断开，下面的回路改由 Powerwall 供电。</text>
-
-        <line x1="24" y1="96" x2="52" y2="96" stroke="#3e5870" stroke-width="2"/>
-        <text x="58" y="100" fill="#3e5870" font-size="12">市电</text>
-        <line x1="104" y1="96" x2="132" y2="96" stroke="#7a4e2b" stroke-width="2"/>
-        <text x="138" y="100" fill="#7a4e2b" font-size="12">备电</text>
-        <line x1="184" y1="96" x2="212" y2="96" stroke="#1f6b45" stroke-width="2" stroke-dasharray="4 3"/>
-        <text x="218" y="100" fill="#1f6b45" font-size="12">光伏直流</text>
-        <text x="300" y="100" fill="#6a6158" font-size="12">一根线是一组导体 · 数字是断路器</text>
-
-        <rect x="24" y="118" width="108" height="56" rx="6" fill="#f2f5f7" stroke="#3e5870"/>
-        <text x="78" y="142" fill="#2a2622" font-size="13" font-weight="650" text-anchor="middle">BC Hydro</text>
-        <text x="78" y="160" fill="#3e5870" font-size="12" text-anchor="middle">200 A</text>
-        <line x1="132" y1="146" x2="134" y2="146" stroke="#3e5870" stroke-width="1.75"/>
-        <circle cx="156" cy="146" r="22" fill="#f2f5f7" stroke="#3e5870" stroke-width="1.5"/>
-        <text x="156" y="150" fill="#2a2622" font-size="12" text-anchor="middle">电表</text>
-        <line x1="178" y1="146" x2="196" y2="146" stroke="#3e5870" stroke-width="1.75"/>
-
-        <rect x="196" y="114" width="248" height="64" rx="6" fill="#f2f5f7" stroke="#3e5870"/>
-        <text x="212" y="138" fill="#2a2622" font-size="13" font-weight="650">服务断路器 200 A</text>
-        <text x="212" y="158" fill="#3e5870" font-size="11">唯一的 N–G 连接 · 接地极</text>
-        <g transform="translate(412,128)" fill="none" stroke="#3e5870" stroke-width="1.4" stroke-linecap="round">
-          <line x1="0" y1="0" x2="0" y2="8"/>
-          <line x1="-7" y1="8" x2="7" y2="8"/>
-          <line x1="-4.5" y1="12" x2="4.5" y2="12"/>
-          <line x1="-2" y1="16" x2="2" y2="16"/>
-        </g>
-
-        <line x1="320" y1="178" x2="320" y2="214" stroke="#3e5870" stroke-width="1.75"/>
-        <text x="24" y="198" fill="#3e5870" font-size="12">A · Supply S1/S2 · 四线 L1 L2 N PE · 200 A</text>
-
-        <rect x="20" y="214" width="404" height="654" rx="8" fill="#f8f4ee" stroke="#7a4e2b" stroke-width="1.25"/>
-        <path d="M28 214h388a8 8 0 0 1 8 8v70H20V222a8 8 0 0 1 8-8z" fill="#f2f5f7"/>
-        <line x1="20" y1="292" x2="424" y2="292" stroke="#c4b5a4"/>
-
-        <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">
-          <text x="36" y="242" fill="#2a2622" font-size="15" font-weight="650">Gateway 3</text>
-        </a>
-        <text x="128" y="242" fill="#6a6158" font-size="12">加拿大：不作服务设备</text>
-        <text x="36" y="262" fill="#2a2622" font-size="12">bonding screw 已拆除 · Site CT 全屋计量</text>
-        <text x="36" y="282" fill="#3e5870" font-size="12">A · Supply 市电侧</text>
-
-        <line x1="320" y1="214" x2="320" y2="308" stroke="#3e5870" stroke-width="1.75"/>
-        <circle cx="320" cy="318" r="4" fill="#f8f4ee" stroke="#7a4e2b" stroke-width="1.5"/>
-        <circle cx="320" cy="332" r="4" fill="#f8f4ee" stroke="#7a4e2b" stroke-width="1.5"/>
-        <line x1="320" y1="322" x2="320" y2="328" stroke="#7a4e2b" stroke-width="1.5"/>
-        <line x1="320" y1="336" x2="320" y2="888" stroke="#7a4e2b" stroke-width="1.75"/>
-        <text x="36" y="322" fill="#7a4e2b" font-size="12" font-weight="650">孤岛开关</text>
-        <text x="36" y="340" fill="#6a6158" font-size="11">电网停电时断开 · 以下为备电</text>
-
-        <rect x="34" y="356" width="268" height="476" rx="6" fill="#fffcf8" stroke="#c4b5a4" stroke-width="1"/>
-        <text x="46" y="376" fill="#2a2622" font-size="12" font-weight="650">盖板内侧</text>
-        <text x="112" y="376" fill="#6a6158" font-size="11">方位与打开盖板后相同</text>
-
-        <rect x="46" y="388" width="14" height="14" rx="2" fill="#7a4e2b"/>
-        <text x="53" y="399" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">H</text>
-        <text x="66" y="399" fill="#2a2622" font-size="11">8 位 · 上为 L2 · ≤125 A</text>
-        <g fill="#fffcf8" stroke="#7a4e2b" stroke-width="1">
-          <rect x="46" y="408" width="120" height="22" rx="2"/>
-          <rect x="46" y="434" width="120" height="22" rx="2"/>
-          <rect x="46" y="460" width="120" height="22" rx="2"/>
-          <rect x="46" y="486" width="120" height="22" rx="2"/>
-        </g>
-        <g fill="none" stroke="#7a4e2b" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M60 410 V412 H52 A4 4 0 0 0 52 418 H60 V420 H68 A4 4 0 0 1 68 426 H60 V428"/>
-          <path d="M60 436 V438 H52 A4 4 0 0 0 52 444 H60 V446 H68 A4 4 0 0 1 68 452 H60 V454"/>
-          <path d="M60 462 V464 H52 A4 4 0 0 0 52 470 H60 V472 H68 A4 4 0 0 1 68 478 H60 V480"/>
-          <path d="M60 488 V490 H52 A4 4 0 0 0 52 496 H60 V498 H68 A4 4 0 0 1 68 504 H60 V506"/>
-        </g>
-        <g fill="#7a4e2b" font-size="11">
-          <text x="74" y="423">1–2</text>
-          <text x="74" y="449">3–4</text>
-          <text x="74" y="475">5–6</text>
-          <text x="74" y="501">7–8</text>
-        </g>
-        <g fill="#2a2622" font-size="11">
-          <text x="104" y="423">Leader</text>
-          <text x="104" y="449">Follower</text>
-          <text x="104" y="475">车充 ×2</text>
-          <text x="104" y="501">车间</text>
-        </g>
-
-        <rect x="186" y="388" width="14" height="14" rx="2" fill="#2a2622"/>
-        <text x="193" y="399" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">I</text>
-        <text x="206" y="399" fill="#2a2622" font-size="11">通信</text>
-        <rect x="186" y="408" width="104" height="108" rx="2" fill="#fffcf8" stroke="#2a2622" stroke-width="1"/>
-        <g fill="#2a2622" font-size="11">
-          <text x="194" y="426">12V</text>
-          <text x="194" y="442">GND</text>
-          <text x="194" y="458">CN+</text>
-          <text x="194" y="474">CN−</text>
-          <text x="194" y="490">RS485+</text>
-          <text x="194" y="506">RS485−</text>
-        </g>
-
-        <rect x="46" y="528" width="14" height="14" rx="2" fill="#7a4e2b"/>
-        <text x="53" y="539" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">E</text>
-        <rect x="66" y="526" width="18" height="18" rx="2" fill="#fffcf8" stroke="#7a4e2b"/>
-        <rect x="88" y="526" width="18" height="18" rx="2" fill="#fffcf8" stroke="#7a4e2b"/>
-        <text x="112" y="539" fill="#7a4e2b" font-size="10">母排 Backup</text>
-
-        <rect x="180" y="528" width="14" height="14" rx="2" fill="#3e5870"/>
-        <text x="187" y="539" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">A</text>
-        <rect x="200" y="524" width="40" height="22" rx="2" fill="#f2f5f7" stroke="#3e5870"/>
-        <rect x="244" y="524" width="40" height="22" rx="2" fill="#f2f5f7" stroke="#3e5870"/>
-        <text x="220" y="539" fill="#3e5870" font-size="11" text-anchor="middle">S2</text>
-        <text x="264" y="539" fill="#3e5870" font-size="11" text-anchor="middle">S1</text>
-        <text x="242" y="574" fill="#3e5870" font-size="10" text-anchor="middle">SUPPLY</text>
-
-        <line x1="86" y1="546" x2="86" y2="604" stroke="#7a4e2b" stroke-width="1.75"/>
-        <text x="96" y="580" fill="#7a4e2b" font-size="10">跳线桥</text>
-
-        <rect x="46" y="608" width="14" height="14" rx="2" fill="#7a4e2b"/>
-        <text x="53" y="619" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">B</text>
-        <rect x="66" y="604" width="22" height="22" rx="2" fill="#fffcf8" stroke="#7a4e2b" stroke-width="1.25"/>
-        <rect x="92" y="604" width="22" height="22" rx="2" fill="#fffcf8" stroke="#7a4e2b" stroke-width="1.25"/>
-        <text x="120" y="619" fill="#7a4e2b" font-size="11">Backup 出线</text>
-
-        <rect x="46" y="642" width="14" height="14" rx="2" fill="#2a2622"/>
-        <text x="53" y="653" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">D</text>
-        <text x="66" y="653" fill="#2a2622" font-size="11">附加 N</text>
-        <rect x="46" y="664" width="14" height="14" rx="2" fill="#2a2622"/>
-        <text x="53" y="675" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">C</text>
-        <text x="66" y="675" fill="#2a2622" font-size="11">大号 N</text>
-
-        <rect x="180" y="642" width="14" height="14" rx="2" fill="#2a2622"/>
-        <text x="187" y="653" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">F</text>
-        <text x="200" y="653" fill="#2a2622" font-size="11">大号 PE</text>
-        <rect x="180" y="664" width="14" height="14" rx="2" fill="#2a2622"/>
-        <text x="187" y="675" fill="#fffcf8" font-size="10" font-weight="650" text-anchor="middle">G</text>
-        <text x="200" y="675" fill="#2a2622" font-size="11">附加 PE</text>
-
-        <text x="46" y="702" fill="#6a6158" font-size="10">跳线桥保留</text>
-        <text x="46" y="718" fill="#6a6158" font-size="10">印 REMOVE TO ISOLATE SUB-PANEL</text>
-        <text x="46" y="736" fill="#6a6158" font-size="10">N 进 C 或 D · PE 进 F 或 G</text>
-        <text x="46" y="754" fill="#6a6158" font-size="10">Powerwall、车间四线 · 车充 L1 L2 PE</text>
-        <text x="46" y="772" fill="#6a6158" font-size="10">非备电端子不用</text>
-        <text x="46" y="796" fill="#6a6158" font-size="10">右列 1–8 就是这只 H · 进线落在 A · 下行是 B</text>
-
-        <line x1="320" y1="416" x2="372" y2="416" stroke="#7a4e2b" stroke-width="1.75"/>
-        <line x1="372" y1="416" x2="372" y2="848" stroke="#7a4e2b" stroke-width="1.75"/>
-
-        <!-- Breakers, top to bottom: Leader, Follower, Wall Connector, Workshop -->
-        <g fill="none" stroke="#7a4e2b" stroke-width="1.75">
-          <line x1="372" y1="436" x2="448" y2="436"/>
-          <rect x="392" y="428" width="16" height="16" rx="1.5" fill="#fffcf8" stroke="#7a4e2b"/>
-          <line x1="372" y1="564" x2="448" y2="564"/>
-          <rect x="392" y="556" width="16" height="16" rx="1.5" fill="#fffcf8" stroke="#7a4e2b"/>
-          <line x1="372" y1="694" x2="448" y2="694"/>
-          <rect x="392" y="686" width="16" height="16" rx="1.5" fill="#fffcf8" stroke="#7a4e2b"/>
-          <line x1="372" y1="848" x2="448" y2="848"/>
-          <rect x="392" y="840" width="16" height="16" rx="1.5" fill="#fffcf8" stroke="#7a4e2b"/>
-        </g>
-        <text x="328" y="426" fill="#7a4e2b" font-size="11">1–2</text>
-        <text x="412" y="426" fill="#7a4e2b" font-size="11">60 A</text>
-        <text x="328" y="554" fill="#7a4e2b" font-size="11">3–4</text>
-        <text x="412" y="554" fill="#7a4e2b" font-size="11">60 A</text>
-        <text x="328" y="684" fill="#7a4e2b" font-size="11">5–6</text>
-        <text x="412" y="684" fill="#7a4e2b" font-size="11">100 A</text>
-        <text x="328" y="838" fill="#7a4e2b" font-size="11">7–8</text>
-        <text x="412" y="838" fill="#7a4e2b" font-size="11">80 A</text>
-
-        <text x="36" y="862" fill="#7a4e2b" font-size="12">B · 四线 200 A · 接入主屋主输入</text>
-
-        <rect x="20" y="888" width="404" height="128" rx="8" fill="#f8f4ee" stroke="#7a4e2b" stroke-width="1.25"/>
-        <text x="36" y="914" fill="#2a2622" font-size="14" font-weight="650">主屋 200 A 配电盘</text>
-        <text x="36" y="936" fill="#2a2622" font-size="12">改为分盘 · 拆除盘内 N–G 连接</text>
-        <text x="36" y="956" fill="#6a6158" font-size="12">原有分路全部在备用侧，与内部母排同时备电</text>
-        <text x="36" y="984" fill="#6a6158" font-size="11">服务侧计算负荷不超过 200 A</text>
-
-        <rect x="448" y="214" width="292" height="150" rx="8" fill="#f3f7f4" stroke="#1f6b45" stroke-width="1.25"/>
-        <a href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer">
-          <text x="464" y="240" fill="#1f6b45" font-size="14" font-weight="650">Tesla Solar Panels</text>
-        </a>
-        <text x="464" y="262" fill="#2a2622" font-size="12">直流组串，分接到两台 Powerwall</text>
-        <text x="464" y="282" fill="#2a2622" font-size="12">每串一只 MCI · 不用优化器</text>
-        <text x="464" y="302" fill="#2a2622" font-size="12">60–550 V DC · 来回不超过 160 m</text>
-        <text x="464" y="322" fill="#2a2622" font-size="12">同一串同一坡向、同一倾角</text>
-        <text x="464" y="344" fill="#1f6b45" font-size="11">不进 Gateway，不占槽位</text>
-
-        <line x1="594" y1="364" x2="594" y2="380" stroke="#1f6b45" stroke-width="1.5" stroke-dasharray="4 3"/>
-        <line x1="700" y1="348" x2="748" y2="348" stroke="#1f6b45" stroke-width="1.5" stroke-dasharray="4 3"/>
-        <line x1="748" y1="348" x2="748" y2="500" stroke="#1f6b45" stroke-width="1.5" stroke-dasharray="4 3"/>
-        <line x1="748" y1="500" x2="700" y2="500" stroke="#1f6b45" stroke-width="1.5" stroke-dasharray="4 3"/>
-        <line x1="700" y1="500" x2="700" y2="508" stroke="#1f6b45" stroke-width="1.5" stroke-dasharray="4 3"/>
-        <text x="704" y="492" fill="#1f6b45" font-size="11">DC</text>
-
-        <rect x="448" y="380" width="292" height="112" rx="8" fill="#fffcf8" stroke="#7a4e2b" stroke-width="1.25"/>
-        <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">
-          <text x="464" y="406" fill="#2a2622" font-size="14" font-weight="650">Powerwall 3 · Leader</text>
-        </a>
-        <rect x="464" y="416" width="128" height="46" rx="3" fill="#f8f4ee" stroke="#7a4e2b" stroke-width="1"/>
-        <text x="528" y="434" fill="#7a4e2b" font-size="11" text-anchor="middle">左 · 交流</text>
-        <text x="528" y="452" fill="#2a2622" font-size="12" text-anchor="middle">L1  L2  N  地</text>
-        <rect x="600" y="416" width="124" height="46" rx="3" fill="#f3f7f4" stroke="#1f6b45" stroke-width="1"/>
-        <text x="662" y="434" fill="#1f6b45" font-size="11" text-anchor="middle">右 · 光伏</text>
-        <text x="662" y="452" fill="#2a2622" font-size="11" text-anchor="middle">MPPT 1–6</text>
-        <text x="464" y="480" fill="#6a6158" font-size="11">11.5 kW / 48 A · 60 A 反送 · hold-down</text>
-
-        <rect x="448" y="508" width="292" height="112" rx="8" fill="#fffcf8" stroke="#7a4e2b" stroke-width="1.25"/>
-        <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">
-          <text x="464" y="534" fill="#2a2622" font-size="14" font-weight="650">Powerwall 3 · Follower</text>
-        </a>
-        <rect x="464" y="544" width="128" height="46" rx="3" fill="#f8f4ee" stroke="#7a4e2b" stroke-width="1"/>
-        <text x="528" y="562" fill="#7a4e2b" font-size="11" text-anchor="middle">左 · 交流</text>
-        <text x="528" y="580" fill="#2a2622" font-size="12" text-anchor="middle">L1  L2  N  地</text>
-        <rect x="600" y="544" width="124" height="46" rx="3" fill="#f3f7f4" stroke="#1f6b45" stroke-width="1"/>
-        <text x="662" y="562" fill="#1f6b45" font-size="11" text-anchor="middle">右 · 光伏</text>
-        <text x="662" y="580" fill="#2a2622" font-size="11" text-anchor="middle">MPPT 1–6</text>
-        <text x="464" y="608" fill="#6a6158" font-size="11">11.5 kW · 反送 hold-down · 不用 15.4 kW</text>
-
-        <rect x="448" y="636" width="292" height="116" rx="8" fill="#fffcf8" stroke="#7a4e2b" stroke-width="1.25"/>
-        <a href="https://www.tesla.com/wall-connector" target="_blank" rel="noopener noreferrer">
-          <text x="464" y="662" fill="#2a2622" font-size="14" font-weight="650">Wall Connector × 2</text>
-        </a>
-        <text x="464" y="684" fill="#2a2622" font-size="12">端子 L1 · L2 · PE，无中性线</text>
-        <text x="464" y="704" fill="#2a2622" font-size="12">共用 100 A · Power Share 持续 80 A</text>
-        <text x="464" y="726" fill="#6a6158" font-size="11">离网时在备用母排上，随家庭负载削减</text>
-
-        <rect x="448" y="768" width="292" height="176" rx="8" fill="#fffcf8" stroke="#7a4e2b" stroke-width="1.25"/>
-        <text x="464" y="794" fill="#2a2622" font-size="14" font-weight="650">Workshop 分盘</text>
-        <text x="464" y="816" fill="#2a2622" font-size="12">母排 100 A 或 125 A · 10–12 位</text>
-        <text x="464" y="836" fill="#2a2622" font-size="12">四线 · 4 AWG 或 3 AWG 铜</text>
-        <text x="464" y="856" fill="#2a2622" font-size="12">中性线与地分开</text>
-        <text x="464" y="876" fill="#6a6158" font-size="11">照明 15–20 A · 工具插座 20 A</text>
-        <text x="464" y="894" fill="#6a6158" font-size="11">重型工具 20–30 A · 除尘 20 A</text>
-        <text x="464" y="912" fill="#6a6158" font-size="11">压缩机 30 A 预留 · 备用 20 A</text>
-      </svg>
-    </div>
-    <figcaption>Gateway 框内左下的小图是打开盖板后的端子位置，字母沿用 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-5A34398F-EB43-4BA8-8E37-6C32F0D35E1D.html" target="_blank" rel="noopener noreferrer">Gateway 3 Wiring Overview</a> 的 A–I。右列断路器就是小图里的 H；进线落在 A（S1、S2）；向下去主屋的是 B；两根母排之间的短横线是保留的跳线桥，桥上印 REMOVE TO ISOLATE SUB-PANEL。单线从上到下是电流方向，盖板小图是实物方位。Powerwall 接线仓左侧是 L1、L2、N 和接地排，光伏从右侧 MPPT 进入，设备地回到同一只接地排。只有 MPPT 1–2 与 5–6 可以跳接。线上的数字是断路器额定值：每台 Powerwall 持续 48 A，两台 Wall Connector 经 Power Share 合计持续 80 A。组串块数用 Tesla Solar Stringing Tool 按当地最低气温算定。系统关系按 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-D100084C-11F5-4EA0-BC1F-53EF5F367AD9.html" target="_blank" rel="noopener noreferrer">Whole Home Backup with Standalone Meter</a>。</figcaption>
-  </figure>
-
-  <p>整张图是 400×400 格，横轴和纵轴都用两位字母编号，从 AA 往后排，末格是 PJ。Gateway 3 左上角在 JY-BO。Follower Powerwall 3 在 AI-CA，Leader Powerwall 3 在 FG-CA，各宽 100 格、高 56 格。两只 Wall Connector Gen 3 在 AI-GM 和 CM-GM。电表、主屋分盘、车库分盘、八块光伏板和两只 MCI 是带字的圆角框。线是横平竖直的直角折线。这张图上每个矩形的圆角半径都是 1 格。</p>
   <figure class="gw-compartment">
     <div class="gw-zoom-bar">
-      <input class="gw-zoom-slider" type="range" min="1" max="128" step="any" value="1" aria-label="整张图缩放" aria-valuemin="1" aria-valuemax="128" aria-valuetext="1×">
+      <input class="gw-zoom-slider" type="range" min="1" max="8" step="any" value="1" aria-label="整张图缩放" aria-valuemin="1" aria-valuemax="8" aria-valuetext="1×">
     </div>
-    <div class="gw-zoom-viewport" tabindex="0" aria-label="整张图。滑块从 1 倍连续放到 128 倍，在图内拖动查看。放大到能对准一格时，格内显示坐标。">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4000 4000" role="img" aria-labelledby="gw3-title gw3-desc">
+    <div class="gw-zoom-viewport" tabindex="0" aria-label="整张图。滑块从 1 倍连续放到 8 倍，在图内拖动查看。点一台设备，它接到的接口会涂实。放大到能对准一格时，格内显示坐标。">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2500 2500" role="group" aria-labelledby="gw3-title gw3-desc">
 <title id="gw3-title">整张图</title>
-<desc id="gw3-desc">整张图 400×400 格，横轴和纵轴都用两位字母编号，从 AA 往后排，末格是 PJ。每 10×10 块的右下角一格涂色，作为参照，例如 AJ-AJ。Gateway 3 是边长 100 格的圆角正方形，左上角是 JY-BO，方块里面不画格。方块里的接口仍按方块自己的格来定位，横轴 00 到 99，纵轴 AA 到 DV。H 是八个圆角矩形，从上到下 L2、L1 交替四对。E 是其下方两只直径 7 格的圆，左圆黑色并写 L1，右圆红色并写 L2。B 在两只 E 圆正下方，中间空 15 格，同样大小，左圆黑色并写 L1，右圆红色并写 L2。E 与 B 的正中有一只和 H 单格同样大小的圆角矩形，棕色边框，框内写 REMOVE TO ISOLATE SUB-PANEL。C 是三只同样大小的圆，分别在 E-L1 左侧、B-L1 左侧和 B-L2 右侧，间距等于两只相线圆心的距离；灰色边框，框内写 N。D 是第 09–12 列里的一排 10 只小圆，从 CJ 排到 DL，直径 2 格，相邻两只中间空 1 格，水平居中，灰色边框。F 是第 75–79 列里的四只圆，从 CJ 排到 DL，直径 5 格，相邻两只中间空 3 格，绿色边框，框内写 PE。G 在 F 右侧空 7 格，五只直径 3 格的圆，同样从 CJ 排到 DL，相邻两只中间空 3.5 格，绿色边框，框内写 PE。A 是两只直径 7 格的圆，水平对齐，下边缘落在 CE 行，右圆右侧落在第 89 列，两圆中间空 7 格；左圆红色写 S2，右圆黑色写 S1。I 是第 80–89 列里的六个矩形，最上框左上角是 80-AK，高 3 格、宽 10 格，相邻两框中间空 1 格。从上到下写 12V、GND、CN+、CN−、RS485+、RS485−，边框分别是红、黑、蓝、橙，RS485 两框是灰色。Follower 与 Leader 两台 Powerwall 3，左上角分别是 AI-CA 和 FG-CA，各宽 100 格、高 56 格，边框与内侧接口四向都空 10 格。交流四孔是竖向圆角矩形，长边垂直，从左到右为空、N、L2、L1。右侧十二只竖向矩形从左到右是 1+ 到 6+，然后 1− 到 6−，与交流孔顶底对齐，L1 与 1+ 中间空 10 格。地排三只 PE 在 1+、2+、3+ 正上方，左右缘与这三孔对齐，与光伏孔中间空 5 格。通信四孔长边垂直，宽 3 格、高 10 格，横排，中间空 1 格，底边距光伏孔 5 格。12V 的右缘与 6− 的右缘对齐，从左到右是 CN−、CN+、GND、12V，分别在 3−、4−、5−、6− 上方。整张图上每个矩形的圆角半径都是 1 格。两只 Wall Connector Gen 3，左上角分别是 AI-GM 和 CM-GM，各宽 45 格、高 35 格，边框与内侧接口四向都空 10 格。左上两只通信口是 4×4 的方格，红口 RED 和白口 WHT，下面从左到右是 G、L2/N、L1。其余是带字的圆角框：电表、主屋分盘、车库分盘、八块光伏板、两只 MCI。设备之间用直角折线按端子颜色相连。放大到能对准一格时，指针下的格子显示坐标，例如 AA-AB。</desc>
+<desc id="gw3-desc">整张图 250×250 格，横轴和纵轴都用两位字母编号，从 AA 到 JP。设备区上下左右各空 20 格。点一台设备，它接到的接口会涂实，其余接口变淡。再点同一台或空白处取消。放大到能对准一格时，指针下的格子显示坐标。</desc>
 <defs>
-<clipPath id="gw-bay-clip"><rect x="0.75" y="0.75" width="998.5" height="998.5" rx="10"/></clipPath><clipPath id="pw3-clip"><rect x="0.75" y="0.75" width="998.5" height="558.5" rx="10"/></clipPath><clipPath id="wc3-clip"><rect x="0.75" y="0.75" width="448.5" height="348.5" rx="10"/></clipPath>
+<clipPath id="gw-bay-clip"><rect x="0.75" y="0.75" width="998.5" height="998.5" rx="10"/></clipPath><clipPath id="pw3-clip"><rect x="0.75" y="0.75" width="998.5" height="558.5" rx="10"/></clipPath><clipPath id="wc3-clip"><rect x="0.75" y="0.75" width="448.5" height="358.5" rx="10"/></clipPath>
 </defs>
 <g class="gw-refs"></g>
 <path class="gw-grid"/>
-<g id="gw3" transform="translate(2580,400)">
-<text class="sheet-tag" x="24" y="-16">Gateway 3</text>
+<g id="gw3" class="sheet-unit" data-device="gw" transform="translate(200,520)">
 <rect class="gw-bay" x="0.75" y="0.75" width="998.5" height="998.5" rx="10"/>
+<a class="sheet-name" href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer"><text class="sheet-tag" x="20" y="32">Tesla Gateway 3</text></a>
 <g clip-path="url(#gw-bay-clip)">
-<g id="gw-h"><g class="gw-h-slot" data-leg="L2" data-pair="01"><rect class="gw-h-space" x="330" y="100" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="125">L2 - 01</text></g><g class="gw-h-slot" data-leg="L1" data-pair="01"><rect class="gw-h-space" x="330" y="160" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="185">L1 - 01</text></g><g class="gw-h-slot" data-leg="L2" data-pair="02"><rect class="gw-h-space" x="330" y="220" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="245">L2 - 02</text></g><g class="gw-h-slot" data-leg="L1" data-pair="02"><rect class="gw-h-space" x="330" y="280" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="305">L1 - 02</text></g><g class="gw-h-slot" data-leg="L2" data-pair="03"><rect class="gw-h-space" x="330" y="340" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="365">L2 - 03</text></g><g class="gw-h-slot" data-leg="L1" data-pair="03"><rect class="gw-h-space" x="330" y="400" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="425">L1 - 03</text></g><g class="gw-h-slot" data-leg="L2" data-pair="04"><rect class="gw-h-space" x="330" y="460" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="485">L2 - 04</text></g><g class="gw-h-slot" data-leg="L1" data-pair="04"><rect class="gw-h-space" x="330" y="520" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="545">L1 - 04</text></g></g><g id="gw-e"><g class="gw-e-slot" data-leg="L1"><circle class="gw-e-space" cx="365" cy="645" r="35"/><text class="gw-e-label" x="365" y="645">L1</text></g><g class="gw-e-slot" data-leg="L2"><circle class="gw-e-space" cx="505" cy="645" r="35"/><text class="gw-e-label" x="505" y="645">L2</text></g></g><g id="gw-jumper"><rect class="gw-jumper-space" x="330" y="730" width="210" height="50" rx="10" ry="10"/><text class="gw-jumper-label" x="435" y="755">REMOVE TO ISOLATE SUB-PANEL</text></g><g id="gw-b"><g class="gw-b-slot" data-leg="L1"><circle class="gw-b-space" cx="365" cy="865" r="35"/><text class="gw-b-label" x="365" y="865">L1</text></g><g class="gw-b-slot" data-leg="L2"><circle class="gw-b-space" cx="505" cy="865" r="35"/><text class="gw-b-label" x="505" y="865">L2</text></g></g><g id="gw-c"><g class="gw-c-slot"><circle class="gw-c-space" cx="225" cy="645" r="35"/><text class="gw-c-label" x="225" y="645">N</text></g><g class="gw-c-slot"><circle class="gw-c-space" cx="225" cy="865" r="35"/><text class="gw-c-label" x="225" y="865">N</text></g><g class="gw-c-slot"><circle class="gw-c-space" cx="645" cy="865" r="35"/><text class="gw-c-label" x="645" y="865">N</text></g></g><g id="gw-d"><circle class="gw-d-space" cx="110" cy="620" r="10"/><circle class="gw-d-space" cx="110" cy="650" r="10"/><circle class="gw-d-space" cx="110" cy="680" r="10"/><circle class="gw-d-space" cx="110" cy="710" r="10"/><circle class="gw-d-space" cx="110" cy="740" r="10"/><circle class="gw-d-space" cx="110" cy="770" r="10"/><circle class="gw-d-space" cx="110" cy="800" r="10"/><circle class="gw-d-space" cx="110" cy="830" r="10"/><circle class="gw-d-space" cx="110" cy="860" r="10"/><circle class="gw-d-space" cx="110" cy="890" r="10"/></g><g id="gw-f"><circle class="gw-f-space" cx="775" cy="635" r="25"/><text class="gw-f-label" x="775" y="635">PE</text><circle class="gw-f-space" cx="775" cy="715" r="25"/><text class="gw-f-label" x="775" y="715">PE</text><circle class="gw-f-space" cx="775" cy="795" r="25"/><text class="gw-f-label" x="775" y="795">PE</text><circle class="gw-f-space" cx="775" cy="875" r="25"/><text class="gw-f-label" x="775" y="875">PE</text></g><g id="gw-g"><circle class="gw-g-space" cx="885" cy="625" r="15"/><text class="gw-g-label" x="885" y="625">PE</text><circle class="gw-g-space" cx="885" cy="690" r="15"/><text class="gw-g-label" x="885" y="690">PE</text><circle class="gw-g-space" cx="885" cy="755" r="15"/><text class="gw-g-label" x="885" y="755">PE</text><circle class="gw-g-space" cx="885" cy="820" r="15"/><text class="gw-g-label" x="885" y="820">PE</text><circle class="gw-g-space" cx="885" cy="885" r="15"/><text class="gw-g-label" x="885" y="885">PE</text></g><g id="gw-a"><g class="gw-a-slot" data-leg="S2"><circle class="gw-a-space" cx="725" cy="535" r="35"/><text class="gw-a-label" x="725" y="535">S2</text></g><g class="gw-a-slot" data-leg="S1"><circle class="gw-a-space" cx="865" cy="535" r="35"/><text class="gw-a-label" x="865" y="535">S1</text></g></g><g id="gw-i"><g class="gw-i-slot" data-pin="12V"><rect class="gw-i-space" x="800" y="100" width="100" height="30" rx="10" ry="10"/><text class="gw-i-label" x="850" y="115">12V</text></g><g class="gw-i-slot" data-pin="GND"><rect class="gw-i-space" x="800" y="140" width="100" height="30" rx="10" ry="10"/><text class="gw-i-label" x="850" y="155">GND</text></g><g class="gw-i-slot" data-pin="CN+"><rect class="gw-i-space" x="800" y="180" width="100" height="30" rx="10" ry="10"/><text class="gw-i-label" x="850" y="195">CN+</text></g><g class="gw-i-slot" data-pin="CN-"><rect class="gw-i-space" x="800" y="220" width="100" height="30" rx="10" ry="10"/><text class="gw-i-label" x="850" y="235">CN−</text></g><g class="gw-i-slot" data-pin="RS485+"><rect class="gw-i-space" x="800" y="260" width="100" height="30" rx="10" ry="10"/><text class="gw-i-label" x="850" y="275">RS485+</text></g><g class="gw-i-slot" data-pin="RS485-"><rect class="gw-i-space" x="800" y="300" width="100" height="30" rx="10" ry="10"/><text class="gw-i-label" x="850" y="315">RS485−</text></g></g></g>
+<g id="gw-h"><g class="sheet-port gw-h-slot" data-port="gw-h-l2-01" data-leg="L2" data-pair="01"><rect class="gw-h-space" x="330" y="100" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="125">L2 - 01</text></g><g class="sheet-port gw-h-slot" data-port="gw-h-l1-01" data-leg="L1" data-pair="01"><rect class="gw-h-space" x="330" y="160" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="185">L1 - 01</text></g><g class="sheet-port gw-h-slot" data-port="gw-h-l2-02" data-leg="L2" data-pair="02"><rect class="gw-h-space" x="330" y="220" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="245">L2 - 02</text></g><g class="sheet-port gw-h-slot" data-port="gw-h-l1-02" data-leg="L1" data-pair="02"><rect class="gw-h-space" x="330" y="280" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="305">L1 - 02</text></g><g class="sheet-port gw-h-slot" data-port="gw-h-l2-03" data-leg="L2" data-pair="03"><rect class="gw-h-space" x="330" y="340" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="365">L2 - 03</text></g><g class="sheet-port gw-h-slot" data-port="gw-h-l1-03" data-leg="L1" data-pair="03"><rect class="gw-h-space" x="330" y="400" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="425">L1 - 03</text></g><g class="sheet-port gw-h-slot" data-port="gw-h-l2-04" data-leg="L2" data-pair="04"><rect class="gw-h-space" x="330" y="460" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="485">L2 - 04</text></g><g class="sheet-port gw-h-slot" data-port="gw-h-l1-04" data-leg="L1" data-pair="04"><rect class="gw-h-space" x="330" y="520" width="210" height="50" rx="10" ry="10"/><text class="gw-h-label" x="435" y="545">L1 - 04</text></g></g><g id="gw-e"><g class="sheet-port gw-e-slot" data-port="gw-e-l1" data-leg="L1"><circle class="gw-e-space" cx="365" cy="645" r="35"/><text class="gw-e-label" x="365" y="645">L1</text></g><g class="sheet-port gw-e-slot" data-port="gw-e-l2" data-leg="L2"><circle class="gw-e-space" cx="505" cy="645" r="35"/><text class="gw-e-label" x="505" y="645">L2</text></g></g><g id="gw-jumper" class="sheet-port" data-port="gw-jumper"><rect class="gw-jumper-space" x="330" y="730" width="210" height="50" rx="10" ry="10"/><text class="gw-jumper-label" x="435" y="755">REMOVE TO ISOLATE SUB-PANEL</text></g><g id="gw-b"><g class="sheet-port gw-b-slot" data-port="gw-b-l1" data-leg="L1"><circle class="gw-b-space" cx="365" cy="865" r="35"/><text class="gw-b-label" x="365" y="865">L1</text></g><g class="sheet-port gw-b-slot" data-port="gw-b-l2" data-leg="L2"><circle class="gw-b-space" cx="505" cy="865" r="35"/><text class="gw-b-label" x="505" y="865">L2</text></g></g><g id="gw-c"><g class="sheet-port gw-c-slot" data-port="gw-c-1"><circle class="gw-c-space" cx="225" cy="645" r="35"/><text class="gw-c-label" x="225" y="645">N</text></g><g class="sheet-port gw-c-slot" data-port="gw-c-2"><circle class="gw-c-space" cx="225" cy="865" r="35"/><text class="gw-c-label" x="225" y="865">N</text></g><g class="sheet-port gw-c-slot" data-port="gw-c-3"><circle class="gw-c-space" cx="645" cy="865" r="35"/><text class="gw-c-label" x="645" y="865">N</text></g></g><g id="gw-d"><g class="sheet-port" data-port="gw-d-1"><circle class="gw-d-space" cx="110" cy="620" r="10"/></g><g class="sheet-port" data-port="gw-d-2"><circle class="gw-d-space" cx="110" cy="650" r="10"/></g><g class="sheet-port" data-port="gw-d-3"><circle class="gw-d-space" cx="110" cy="680" r="10"/></g><g class="sheet-port" data-port="gw-d-4"><circle class="gw-d-space" cx="110" cy="710" r="10"/></g><g class="sheet-port" data-port="gw-d-5"><circle class="gw-d-space" cx="110" cy="740" r="10"/></g><g class="sheet-port" data-port="gw-d-6"><circle class="gw-d-space" cx="110" cy="770" r="10"/></g><g class="sheet-port" data-port="gw-d-7"><circle class="gw-d-space" cx="110" cy="800" r="10"/></g><g class="sheet-port" data-port="gw-d-8"><circle class="gw-d-space" cx="110" cy="830" r="10"/></g><g class="sheet-port" data-port="gw-d-9"><circle class="gw-d-space" cx="110" cy="860" r="10"/></g><g class="sheet-port" data-port="gw-d-10"><circle class="gw-d-space" cx="110" cy="890" r="10"/></g></g><g id="gw-f"><g class="sheet-port" data-port="gw-f-1"><circle class="gw-f-space" cx="775" cy="635" r="25"/><text class="gw-f-label" x="775" y="635">PE</text></g><g class="sheet-port" data-port="gw-f-2"><circle class="gw-f-space" cx="775" cy="715" r="25"/><text class="gw-f-label" x="775" y="715">PE</text></g><g class="sheet-port" data-port="gw-f-3"><circle class="gw-f-space" cx="775" cy="795" r="25"/><text class="gw-f-label" x="775" y="795">PE</text></g><g class="sheet-port" data-port="gw-f-4"><circle class="gw-f-space" cx="775" cy="875" r="25"/><text class="gw-f-label" x="775" y="875">PE</text></g></g><g id="gw-g"><g class="sheet-port" data-port="gw-g-1"><circle class="gw-g-space" cx="885" cy="625" r="15"/><text class="gw-g-label" x="885" y="625">PE</text></g><g class="sheet-port" data-port="gw-g-2"><circle class="gw-g-space" cx="885" cy="690" r="15"/><text class="gw-g-label" x="885" y="690">PE</text></g><g class="sheet-port" data-port="gw-g-3"><circle class="gw-g-space" cx="885" cy="755" r="15"/><text class="gw-g-label" x="885" y="755">PE</text></g><g class="sheet-port" data-port="gw-g-4"><circle class="gw-g-space" cx="885" cy="820" r="15"/><text class="gw-g-label" x="885" y="820">PE</text></g><g class="sheet-port" data-port="gw-g-5"><circle class="gw-g-space" cx="885" cy="885" r="15"/><text class="gw-g-label" x="885" y="885">PE</text></g></g><g id="gw-a"><g class="sheet-port gw-a-slot" data-port="gw-a-s2" data-leg="S2"><circle class="gw-a-space" cx="725" cy="535" r="35"/><text class="gw-a-label" x="725" y="535">S2</text></g><g class="sheet-port gw-a-slot" data-port="gw-a-s1" data-leg="S1"><circle class="gw-a-space" cx="865" cy="535" r="35"/><text class="gw-a-label" x="865" y="535">S1</text></g></g><g id="gw-i"><g class="sheet-port gw-i-slot" data-port="gw-i-12v" data-pin="12V"><rect class="gw-i-space" x="800" y="100" width="100" height="30" rx="10" ry="10"/><text class="gw-i-label" x="850" y="115">12V</text></g><g class="sheet-port gw-i-slot" data-port="gw-i-gnd" data-pin="GND"><rect class="gw-i-space" x="800" y="140" width="100" height="30" rx="10" ry="10"/><text class="gw-i-label" x="850" y="155">GND</text></g><g class="sheet-port gw-i-slot" data-port="gw-i-cnp" data-pin="CN+"><rect class="gw-i-space" x="800" y="180" width="100" height="30" rx="10" ry="10"/><text class="gw-i-label" x="850" y="195">CN+</text></g><g class="sheet-port gw-i-slot" data-port="gw-i-cnn" data-pin="CN-"><rect class="gw-i-space" x="800" y="220" width="100" height="30" rx="10" ry="10"/><text class="gw-i-label" x="850" y="235">CN−</text></g><g class="sheet-port gw-i-slot" data-port="gw-i-rs485p" data-pin="RS485+"><rect class="gw-i-space" x="800" y="260" width="100" height="30" rx="10" ry="10"/><text class="gw-i-label" x="850" y="275">RS485+</text></g><g class="sheet-port gw-i-slot" data-port="gw-i-rs485n" data-pin="RS485-"><rect class="gw-i-space" x="800" y="300" width="100" height="30" rx="10" ry="10"/><text class="gw-i-label" x="850" y="315">RS485−</text></g></g></g>
 </g>
-<g id="pw3-follower" transform="translate(80,520)">
-<text class="sheet-tag" x="24" y="-16">Follower</text>
+<g id="pw3-follower" class="sheet-unit" data-device="pw-follower" transform="translate(1300,200)">
 <rect class="sheet-frame" x="0.75" y="0.75" width="998.5" height="558.5" rx="10"/>
+<a class="sheet-name" href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer"><text class="sheet-tag" x="20" y="32">Tesla Powerwall 3</text></a>
 <g clip-path="url(#pw3-clip)">
-<g id="pw3-follower-comm"><g class="pw-comm" data-pin="CN-"><rect class="pw-space" x="750" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="765" y="150">CN−</text></g><g class="pw-comm" data-pin="CN+"><rect class="pw-space" x="790" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="805" y="150">CN+</text></g><g class="pw-comm" data-pin="GND"><rect class="pw-space" x="830" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="845" y="150">GND</text></g><g class="pw-comm" data-pin="12V"><rect class="pw-space" x="870" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="885" y="150">12V</text></g></g>
-<g id="pw3-follower-pe"><g class="pw-pe" ><circle class="pw-space" cx="445" cy="185" r="15"/><text class="pw-label" x="445" y="185">PE</text></g><g class="pw-pe" ><circle class="pw-space" cx="485" cy="185" r="15"/><text class="pw-label" x="485" y="185">PE</text></g><g class="pw-pe" ><circle class="pw-space" cx="525" cy="185" r="15"/><text class="pw-label" x="525" y="185">PE</text></g></g>
-<g id="pw3-follower-ac"><g class="pw-ac" data-leg="unused"><rect class="pw-space" x="100" y="250" width="50" height="210" rx="10" ry="10"/></g><g class="pw-ac" data-leg="N"><rect class="pw-space" x="160" y="250" width="50" height="210" rx="10" ry="10"/><text class="pw-label" x="185" y="355">N</text></g><g class="pw-ac" data-leg="L2"><rect class="pw-space" x="220" y="250" width="50" height="210" rx="10" ry="10"/><text class="pw-label" x="245" y="355">L2</text></g><g class="pw-ac" data-leg="L1"><rect class="pw-space" x="280" y="250" width="50" height="210" rx="10" ry="10"/><text class="pw-label" x="305" y="355">L1</text></g></g>
-<g id="pw3-follower-pv"><g class="pw-pv" data-n="1" data-pol="+"><rect class="pw-space" x="430" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="445" y="355">1+</text></g><g class="pw-pv" data-n="2" data-pol="+"><rect class="pw-space" x="470" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="485" y="355">2+</text></g><g class="pw-pv" data-n="3" data-pol="+"><rect class="pw-space" x="510" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="525" y="355">3+</text></g><g class="pw-pv" data-n="4" data-pol="+"><rect class="pw-space" x="550" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="565" y="355">4+</text></g><g class="pw-pv" data-n="5" data-pol="+"><rect class="pw-space" x="590" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="605" y="355">5+</text></g><g class="pw-pv" data-n="6" data-pol="+"><rect class="pw-space" x="630" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="645" y="355">6+</text></g><g class="pw-pv" data-n="1" data-pol="-"><rect class="pw-space" x="670" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="685" y="355">1−</text></g><g class="pw-pv" data-n="2" data-pol="-"><rect class="pw-space" x="710" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="725" y="355">2−</text></g><g class="pw-pv" data-n="3" data-pol="-"><rect class="pw-space" x="750" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="765" y="355">3−</text></g><g class="pw-pv" data-n="4" data-pol="-"><rect class="pw-space" x="790" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="805" y="355">4−</text></g><g class="pw-pv" data-n="5" data-pol="-"><rect class="pw-space" x="830" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="845" y="355">5−</text></g><g class="pw-pv" data-n="6" data-pol="-"><rect class="pw-space" x="870" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="885" y="355">6−</text></g></g></g>
+<g id="pw3-follower-comm"><g class="sheet-port pw-comm" data-port="pw-follower-cnn" data-pin="CN-"><rect class="pw-space" x="750" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="765" y="150">CN−</text></g><g class="sheet-port pw-comm" data-port="pw-follower-cnp" data-pin="CN+"><rect class="pw-space" x="790" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="805" y="150">CN+</text></g><g class="sheet-port pw-comm" data-port="pw-follower-gnd" data-pin="GND"><rect class="pw-space" x="830" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="845" y="150">GND</text></g><g class="sheet-port pw-comm" data-port="pw-follower-12v" data-pin="12V"><rect class="pw-space" x="870" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="885" y="150">12V</text></g></g>
+<g id="pw3-follower-pe"><g class="sheet-port pw-pe" data-port="pw-follower-pe-1" ><circle class="pw-space" cx="445" cy="185" r="15"/><text class="pw-label" x="445" y="185">PE</text></g><g class="sheet-port pw-pe" data-port="pw-follower-pe-2" ><circle class="pw-space" cx="485" cy="185" r="15"/><text class="pw-label" x="485" y="185">PE</text></g><g class="sheet-port pw-pe" data-port="pw-follower-pe-3" ><circle class="pw-space" cx="525" cy="185" r="15"/><text class="pw-label" x="525" y="185">PE</text></g></g>
+<g id="pw3-follower-ac"><g class="sheet-port pw-ac" data-port="pw-follower-unused" data-leg="unused"><rect class="pw-space" x="100" y="250" width="50" height="210" rx="10" ry="10"/></g><g class="sheet-port pw-ac" data-port="pw-follower-n" data-leg="N"><rect class="pw-space" x="160" y="250" width="50" height="210" rx="10" ry="10"/><text class="pw-label" x="185" y="355">N</text></g><g class="sheet-port pw-ac" data-port="pw-follower-l2" data-leg="L2"><rect class="pw-space" x="220" y="250" width="50" height="210" rx="10" ry="10"/><text class="pw-label" x="245" y="355">L2</text></g><g class="sheet-port pw-ac" data-port="pw-follower-l1" data-leg="L1"><rect class="pw-space" x="280" y="250" width="50" height="210" rx="10" ry="10"/><text class="pw-label" x="305" y="355">L1</text></g></g>
+<g id="pw3-follower-pv"><g class="sheet-port pw-pv" data-port="pw-follower-pv-1p" data-n="1" data-pol="+"><rect class="pw-space" x="430" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="445" y="355">1+</text></g><g class="sheet-port pw-pv" data-port="pw-follower-pv-2p" data-n="2" data-pol="+"><rect class="pw-space" x="470" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="485" y="355">2+</text></g><g class="sheet-port pw-pv" data-port="pw-follower-pv-3p" data-n="3" data-pol="+"><rect class="pw-space" x="510" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="525" y="355">3+</text></g><g class="sheet-port pw-pv" data-port="pw-follower-pv-4p" data-n="4" data-pol="+"><rect class="pw-space" x="550" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="565" y="355">4+</text></g><g class="sheet-port pw-pv" data-port="pw-follower-pv-5p" data-n="5" data-pol="+"><rect class="pw-space" x="590" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="605" y="355">5+</text></g><g class="sheet-port pw-pv" data-port="pw-follower-pv-6p" data-n="6" data-pol="+"><rect class="pw-space" x="630" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="645" y="355">6+</text></g><g class="sheet-port pw-pv" data-port="pw-follower-pv-1m" data-n="1" data-pol="-"><rect class="pw-space" x="670" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="685" y="355">1−</text></g><g class="sheet-port pw-pv" data-port="pw-follower-pv-2m" data-n="2" data-pol="-"><rect class="pw-space" x="710" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="725" y="355">2−</text></g><g class="sheet-port pw-pv" data-port="pw-follower-pv-3m" data-n="3" data-pol="-"><rect class="pw-space" x="750" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="765" y="355">3−</text></g><g class="sheet-port pw-pv" data-port="pw-follower-pv-4m" data-n="4" data-pol="-"><rect class="pw-space" x="790" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="805" y="355">4−</text></g><g class="sheet-port pw-pv" data-port="pw-follower-pv-5m" data-n="5" data-pol="-"><rect class="pw-space" x="830" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="845" y="355">5−</text></g><g class="sheet-port pw-pv" data-port="pw-follower-pv-6m" data-n="6" data-pol="-"><rect class="pw-space" x="870" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="885" y="355">6−</text></g></g></g>
 </g>
-<g id="pw3-leader" transform="translate(1360,520)">
-<text class="sheet-tag" x="24" y="-16">Leader</text>
+<g id="pw3-leader" class="sheet-unit" data-device="pw-leader" transform="translate(1300,1300)">
 <rect class="sheet-frame" x="0.75" y="0.75" width="998.5" height="558.5" rx="10"/>
+<a class="sheet-name" href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer"><text class="sheet-tag" x="20" y="32">Tesla Powerwall 3</text></a>
 <g clip-path="url(#pw3-clip)">
-<g id="pw3-leader-comm"><g class="pw-comm" data-pin="CN-"><rect class="pw-space" x="750" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="765" y="150">CN−</text></g><g class="pw-comm" data-pin="CN+"><rect class="pw-space" x="790" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="805" y="150">CN+</text></g><g class="pw-comm" data-pin="GND"><rect class="pw-space" x="830" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="845" y="150">GND</text></g><g class="pw-comm" data-pin="12V"><rect class="pw-space" x="870" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="885" y="150">12V</text></g></g>
-<g id="pw3-leader-pe"><g class="pw-pe" ><circle class="pw-space" cx="445" cy="185" r="15"/><text class="pw-label" x="445" y="185">PE</text></g><g class="pw-pe" ><circle class="pw-space" cx="485" cy="185" r="15"/><text class="pw-label" x="485" y="185">PE</text></g><g class="pw-pe" ><circle class="pw-space" cx="525" cy="185" r="15"/><text class="pw-label" x="525" y="185">PE</text></g></g>
-<g id="pw3-leader-ac"><g class="pw-ac" data-leg="unused"><rect class="pw-space" x="100" y="250" width="50" height="210" rx="10" ry="10"/></g><g class="pw-ac" data-leg="N"><rect class="pw-space" x="160" y="250" width="50" height="210" rx="10" ry="10"/><text class="pw-label" x="185" y="355">N</text></g><g class="pw-ac" data-leg="L2"><rect class="pw-space" x="220" y="250" width="50" height="210" rx="10" ry="10"/><text class="pw-label" x="245" y="355">L2</text></g><g class="pw-ac" data-leg="L1"><rect class="pw-space" x="280" y="250" width="50" height="210" rx="10" ry="10"/><text class="pw-label" x="305" y="355">L1</text></g></g>
-<g id="pw3-leader-pv"><g class="pw-pv" data-n="1" data-pol="+"><rect class="pw-space" x="430" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="445" y="355">1+</text></g><g class="pw-pv" data-n="2" data-pol="+"><rect class="pw-space" x="470" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="485" y="355">2+</text></g><g class="pw-pv" data-n="3" data-pol="+"><rect class="pw-space" x="510" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="525" y="355">3+</text></g><g class="pw-pv" data-n="4" data-pol="+"><rect class="pw-space" x="550" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="565" y="355">4+</text></g><g class="pw-pv" data-n="5" data-pol="+"><rect class="pw-space" x="590" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="605" y="355">5+</text></g><g class="pw-pv" data-n="6" data-pol="+"><rect class="pw-space" x="630" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="645" y="355">6+</text></g><g class="pw-pv" data-n="1" data-pol="-"><rect class="pw-space" x="670" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="685" y="355">1−</text></g><g class="pw-pv" data-n="2" data-pol="-"><rect class="pw-space" x="710" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="725" y="355">2−</text></g><g class="pw-pv" data-n="3" data-pol="-"><rect class="pw-space" x="750" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="765" y="355">3−</text></g><g class="pw-pv" data-n="4" data-pol="-"><rect class="pw-space" x="790" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="805" y="355">4−</text></g><g class="pw-pv" data-n="5" data-pol="-"><rect class="pw-space" x="830" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="845" y="355">5−</text></g><g class="pw-pv" data-n="6" data-pol="-"><rect class="pw-space" x="870" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="885" y="355">6−</text></g></g></g>
+<g id="pw3-leader-comm"><g class="sheet-port pw-comm" data-port="pw-leader-cnn" data-pin="CN-"><rect class="pw-space" x="750" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="765" y="150">CN−</text></g><g class="sheet-port pw-comm" data-port="pw-leader-cnp" data-pin="CN+"><rect class="pw-space" x="790" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="805" y="150">CN+</text></g><g class="sheet-port pw-comm" data-port="pw-leader-gnd" data-pin="GND"><rect class="pw-space" x="830" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="845" y="150">GND</text></g><g class="sheet-port pw-comm" data-port="pw-leader-12v" data-pin="12V"><rect class="pw-space" x="870" y="100" width="30" height="100" rx="10" ry="10"/><text class="pw-label" x="885" y="150">12V</text></g></g>
+<g id="pw3-leader-pe"><g class="sheet-port pw-pe" data-port="pw-leader-pe-1" ><circle class="pw-space" cx="445" cy="185" r="15"/><text class="pw-label" x="445" y="185">PE</text></g><g class="sheet-port pw-pe" data-port="pw-leader-pe-2" ><circle class="pw-space" cx="485" cy="185" r="15"/><text class="pw-label" x="485" y="185">PE</text></g><g class="sheet-port pw-pe" data-port="pw-leader-pe-3" ><circle class="pw-space" cx="525" cy="185" r="15"/><text class="pw-label" x="525" y="185">PE</text></g></g>
+<g id="pw3-leader-ac"><g class="sheet-port pw-ac" data-port="pw-leader-unused" data-leg="unused"><rect class="pw-space" x="100" y="250" width="50" height="210" rx="10" ry="10"/></g><g class="sheet-port pw-ac" data-port="pw-leader-n" data-leg="N"><rect class="pw-space" x="160" y="250" width="50" height="210" rx="10" ry="10"/><text class="pw-label" x="185" y="355">N</text></g><g class="sheet-port pw-ac" data-port="pw-leader-l2" data-leg="L2"><rect class="pw-space" x="220" y="250" width="50" height="210" rx="10" ry="10"/><text class="pw-label" x="245" y="355">L2</text></g><g class="sheet-port pw-ac" data-port="pw-leader-l1" data-leg="L1"><rect class="pw-space" x="280" y="250" width="50" height="210" rx="10" ry="10"/><text class="pw-label" x="305" y="355">L1</text></g></g>
+<g id="pw3-leader-pv"><g class="sheet-port pw-pv" data-port="pw-leader-pv-1p" data-n="1" data-pol="+"><rect class="pw-space" x="430" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="445" y="355">1+</text></g><g class="sheet-port pw-pv" data-port="pw-leader-pv-2p" data-n="2" data-pol="+"><rect class="pw-space" x="470" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="485" y="355">2+</text></g><g class="sheet-port pw-pv" data-port="pw-leader-pv-3p" data-n="3" data-pol="+"><rect class="pw-space" x="510" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="525" y="355">3+</text></g><g class="sheet-port pw-pv" data-port="pw-leader-pv-4p" data-n="4" data-pol="+"><rect class="pw-space" x="550" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="565" y="355">4+</text></g><g class="sheet-port pw-pv" data-port="pw-leader-pv-5p" data-n="5" data-pol="+"><rect class="pw-space" x="590" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="605" y="355">5+</text></g><g class="sheet-port pw-pv" data-port="pw-leader-pv-6p" data-n="6" data-pol="+"><rect class="pw-space" x="630" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="645" y="355">6+</text></g><g class="sheet-port pw-pv" data-port="pw-leader-pv-1m" data-n="1" data-pol="-"><rect class="pw-space" x="670" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="685" y="355">1−</text></g><g class="sheet-port pw-pv" data-port="pw-leader-pv-2m" data-n="2" data-pol="-"><rect class="pw-space" x="710" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="725" y="355">2−</text></g><g class="sheet-port pw-pv" data-port="pw-leader-pv-3m" data-n="3" data-pol="-"><rect class="pw-space" x="750" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="765" y="355">3−</text></g><g class="sheet-port pw-pv" data-port="pw-leader-pv-4m" data-n="4" data-pol="-"><rect class="pw-space" x="790" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="805" y="355">4−</text></g><g class="sheet-port pw-pv" data-port="pw-leader-pv-5m" data-n="5" data-pol="-"><rect class="pw-space" x="830" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="845" y="355">5−</text></g><g class="sheet-port pw-pv" data-port="pw-leader-pv-6m" data-n="6" data-pol="-"><rect class="pw-space" x="870" y="250" width="30" height="210" rx="10" ry="10"/><text class="pw-label" x="885" y="355">6−</text></g></g></g>
 </g>
-<g id="wc3-1" transform="translate(80,1680)">
-<text class="sheet-tag" x="24" y="-16">WC 1</text>
-<rect class="sheet-frame" x="0.75" y="0.75" width="448.5" height="348.5" rx="10"/>
+<g id="wc3-1" class="sheet-unit" data-device="wc1" transform="translate(200,1620)">
+<rect class="sheet-frame" x="0.75" y="0.75" width="448.5" height="358.5" rx="10"/>
+<a class="sheet-name" href="https://www.tesla.com/wall-connector" target="_blank" rel="noopener noreferrer"><text class="sheet-tag" x="20" y="32">Wall Connector Gen 3</text></a>
 <g clip-path="url(#wc3-clip)">
-<g id="wc3-1-comm"><g class="wc-comm" data-port="red"><rect class="wc-space" x="100" y="100" width="40" height="40" rx="10" ry="10"/><text class="wc-label" x="120" y="120">RED</text></g><g class="wc-comm" data-port="white"><rect class="wc-space" x="150" y="100" width="40" height="40" rx="10" ry="10"/><text class="wc-label" x="170" y="120">WHT</text></g></g>
-<g id="wc3-1-terms"><g class="wc-term" data-leg="G"><circle class="wc-space" cx="135" cy="215" r="35"/><text class="wc-label" x="135" y="215">G</text></g><g class="wc-term" data-leg="L2/N"><circle class="wc-space" cx="225" cy="215" r="35"/><text class="wc-label" x="225" y="215">L2/N</text></g><g class="wc-term" data-leg="L1"><circle class="wc-space" cx="315" cy="215" r="35"/><text class="wc-label" x="315" y="215">L1</text></g></g>
+<g id="wc3-1-comm"><g class="sheet-port wc-comm" data-port="wc1-red"><rect class="wc-space" x="100" y="100" width="40" height="40" rx="10" ry="10"/><text class="wc-label" x="120" y="120">RED</text></g><g class="sheet-port wc-comm" data-port="wc1-wht"><rect class="wc-space" x="150" y="100" width="40" height="40" rx="10" ry="10"/><text class="wc-label" x="170" y="120">WHT</text></g></g>
+<g id="wc3-1-terms"><g class="sheet-port wc-term" data-port="wc1-g" data-leg="G"><circle class="wc-space" cx="135" cy="225" r="35"/><text class="wc-label" x="135" y="225">G</text></g><g class="sheet-port wc-term" data-port="wc1-l2" data-leg="L2/N"><circle class="wc-space" cx="225" cy="225" r="35"/><text class="wc-label" x="225" y="225">L2/N</text></g><g class="sheet-port wc-term" data-port="wc1-l1" data-leg="L1"><circle class="wc-space" cx="315" cy="225" r="35"/><text class="wc-label" x="315" y="225">L1</text></g></g>
 </g>
 </g>
-<g id="wc3-2" transform="translate(640,1680)">
-<text class="sheet-tag" x="24" y="-16">WC 2</text>
-<rect class="sheet-frame" x="0.75" y="0.75" width="448.5" height="348.5" rx="10"/>
+<g id="wc3-2" class="sheet-unit" data-device="wc2" transform="translate(750,1620)">
+<rect class="sheet-frame" x="0.75" y="0.75" width="448.5" height="358.5" rx="10"/>
+<a class="sheet-name" href="https://www.tesla.com/wall-connector" target="_blank" rel="noopener noreferrer"><text class="sheet-tag" x="20" y="32">Wall Connector Gen 3</text></a>
 <g clip-path="url(#wc3-clip)">
-<g id="wc3-2-comm"><g class="wc-comm" data-port="red"><rect class="wc-space" x="100" y="100" width="40" height="40" rx="10" ry="10"/><text class="wc-label" x="120" y="120">RED</text></g><g class="wc-comm" data-port="white"><rect class="wc-space" x="150" y="100" width="40" height="40" rx="10" ry="10"/><text class="wc-label" x="170" y="120">WHT</text></g></g>
-<g id="wc3-2-terms"><g class="wc-term" data-leg="G"><circle class="wc-space" cx="135" cy="215" r="35"/><text class="wc-label" x="135" y="215">G</text></g><g class="wc-term" data-leg="L2/N"><circle class="wc-space" cx="225" cy="215" r="35"/><text class="wc-label" x="225" y="215">L2/N</text></g><g class="wc-term" data-leg="L1"><circle class="wc-space" cx="315" cy="215" r="35"/><text class="wc-label" x="315" y="215">L1</text></g></g>
+<g id="wc3-2-comm"><g class="sheet-port wc-comm" data-port="wc2-red"><rect class="wc-space" x="100" y="100" width="40" height="40" rx="10" ry="10"/><text class="wc-label" x="120" y="120">RED</text></g><g class="sheet-port wc-comm" data-port="wc2-wht"><rect class="wc-space" x="150" y="100" width="40" height="40" rx="10" ry="10"/><text class="wc-label" x="170" y="120">WHT</text></g></g>
+<g id="wc3-2-terms"><g class="sheet-port wc-term" data-port="wc2-g" data-leg="G"><circle class="wc-space" cx="135" cy="225" r="35"/><text class="wc-label" x="135" y="225">G</text></g><g class="sheet-port wc-term" data-port="wc2-l2" data-leg="L2/N"><circle class="wc-space" cx="225" cy="225" r="35"/><text class="wc-label" x="225" y="225">L2/N</text></g><g class="sheet-port wc-term" data-port="wc2-l1" data-leg="L1"><circle class="wc-space" cx="315" cy="225" r="35"/><text class="wc-label" x="315" y="225">L1</text></g></g>
 </g>
 </g>
-<g id="sheet-boxes"><rect class="sheet-frame" x="2920.75" y="30.75" width="618.5" height="268.5" rx="10"/><text class="sheet-label" x="3230" y="154">Meter-Main</text><text class="sheet-label" x="3230" y="176">JA402R-BC-HI</text><rect class="sheet-frame" x="2700.75" y="1620.75" width="798.5" height="358.5" rx="10"/><text class="sheet-label" x="3100" y="1789">Main House</text><text class="sheet-label" x="3100" y="1811">Subpanel</text><rect class="sheet-frame" x="2100.75" y="2200.75" width="478.5" height="318.5" rx="10"/><text class="sheet-label" x="2340" y="2349">Garage</text><text class="sheet-label" x="2340" y="2371">Subpanel</text><rect class="sheet-frame" x="500.75" y="40.75" width="148.5" height="108.5" rx="10"/><text class="sheet-label" x="575" y="86">F1</text><rect class="pv-term" data-pol="+" x="500" y="120" width="16" height="30" rx="10"/><rect class="pv-term" data-pol="-" x="634" y="120" width="16" height="30" rx="10"/><rect class="sheet-frame" x="670.75" y="40.75" width="148.5" height="108.5" rx="10"/><text class="sheet-label" x="745" y="86">F2</text><rect class="pv-term" data-pol="+" x="670" y="120" width="16" height="30" rx="10"/><rect class="pv-term" data-pol="-" x="804" y="120" width="16" height="30" rx="10"/><rect class="sheet-frame" x="840.75" y="40.75" width="148.5" height="108.5" rx="10"/><text class="sheet-label" x="915" y="86">F3</text><rect class="pv-term" data-pol="+" x="840" y="120" width="16" height="30" rx="10"/><rect class="pv-term" data-pol="-" x="974" y="120" width="16" height="30" rx="10"/><rect class="sheet-frame" x="1010.75" y="40.75" width="148.5" height="108.5" rx="10"/><text class="sheet-label" x="1085" y="86">F4</text><rect class="pv-term" data-pol="+" x="1010" y="120" width="16" height="30" rx="10"/><rect class="pv-term" data-pol="-" x="1144" y="120" width="16" height="30" rx="10"/><rect class="sheet-frame" x="1760.75" y="40.75" width="148.5" height="108.5" rx="10"/><text class="sheet-label" x="1835" y="86">L1</text><rect class="pv-term" data-pol="+" x="1760" y="120" width="16" height="30" rx="10"/><rect class="pv-term" data-pol="-" x="1894" y="120" width="16" height="30" rx="10"/><rect class="sheet-frame" x="1930.75" y="40.75" width="148.5" height="108.5" rx="10"/><text class="sheet-label" x="2005" y="86">L2</text><rect class="pv-term" data-pol="+" x="1930" y="120" width="16" height="30" rx="10"/><rect class="pv-term" data-pol="-" x="2064" y="120" width="16" height="30" rx="10"/><rect class="sheet-frame" x="2100.75" y="40.75" width="148.5" height="108.5" rx="10"/><text class="sheet-label" x="2175" y="86">L3</text><rect class="pv-term" data-pol="+" x="2100" y="120" width="16" height="30" rx="10"/><rect class="pv-term" data-pol="-" x="2234" y="120" width="16" height="30" rx="10"/><rect class="sheet-frame" x="2270.75" y="40.75" width="148.5" height="108.5" rx="10"/><text class="sheet-label" x="2345" y="86">L4</text><rect class="pv-term" data-pol="+" x="2270" y="120" width="16" height="30" rx="10"/><rect class="pv-term" data-pol="-" x="2404" y="120" width="16" height="30" rx="10"/><rect class="sheet-frame" x="760.75" y="180.75" width="138.5" height="68.5" rx="10"/><text class="sheet-label small" x="830" y="215">MCI-1</text><rect class="sheet-frame" x="2020.75" y="180.75" width="138.5" height="68.5" rx="10"/><text class="sheet-label small" x="2090" y="215">MCI-1</text></g>
-<g id="sheet-wires"><path class="sheet-wire" data-c="L2" data-name="service-L2" d="M3080 300 L3080 332 L3660 332 L3660 860 L3305 860 L3305 900"/><path class="sheet-wire" data-c="L1" data-name="service-L1" d="M3200 300 L3200 324 L3700 324 L3700 880 L3445 880 L3445 900"/><path class="sheet-wire" data-c="PE" data-name="service-PE" d="M3320 300 L3320 316 L3740 316 L3740 1000 L3355 1000 L3355 1010"/><path class="sheet-wire" data-c="N" data-name="service-N" d="M3440 300 L3440 308 L3780 308 L3780 1242 L3260 1242 L3260 1265"/><path class="sheet-wire" data-c="N" data-name="house-N" d="M2805 1300 L2805 1620"/><path class="sheet-wire" data-c="L1" data-name="house-L1" d="M2945 1300 L2945 1620"/><path class="sheet-wire" data-c="L2" data-name="house-L2" d="M3085 1300 L3085 1620"/><path class="sheet-wire" data-c="PE" data-name="house-PE" d="M3355 1300 L3355 1620"/><path class="sheet-wire" data-c="L2" data-name="leader-L2" d="M1605 770 L1605 200 L1545 200 L1545 22 L2880 22 L2880 525 L2910 525"/><path class="sheet-wire" data-c="L1" data-name="leader-L1" d="M1665 770 L1665 210 L1740 210 L1740 28 L2840 28 L2840 585 L2910 585"/><path class="sheet-wire" data-c="12V" data-name="can-12V" d="M2245 720 L2245 732 L2340 732 L2340 735 L3160 735 L3160 450 L3360 450 L3360 515 L3380 515"/><path class="sheet-wire" data-c="GND" data-name="can-GND" d="M2205 720 L2205 742 L2270 742 L2270 736 L3200 736 L3200 555 L3380 555"/><path class="sheet-wire" data-c="CN+" data-name="can-CN+" d="M2165 720 L2165 752 L2290 752 L2290 738 L3230 738 L3230 595 L3380 595"/><path class="sheet-wire" data-c="CN-" data-name="can-CN-" d="M2125 720 L2125 762 L2310 762 L2310 739 L3260 739 L3260 635 L3380 635"/><path class="sheet-wire" data-c="L2" data-name="follower-L2" d="M325 770 L325 200 L260 200 L260 10 L2904 10 L2904 348 L3140 348 L3140 645 L3120 645"/><path class="sheet-wire" data-c="L1" data-name="follower-L1" d="M385 770 L385 210 L430 210 L430 16 L2892 16 L2892 356 L3128 356 L3128 616 L2400 616 L2400 705 L2910 705"/><path class="sheet-wire" data-c="L2" data-name="wc-L2" d="M305 1860 L305 1840 L120 1840 L120 1280 L70 1280 L70 4 L2916 4 L2916 340 L3500 340 L3500 765 L3120 765"/><path class="sheet-wire" data-c="L2" data-name="wc2-L2" d="M865 1860 L865 1840 L2200 1840 L2200 1280 L120 1280"/><path class="sheet-wire" data-c="L1" data-name="wc-L1" d="M2910 825 L2860 825 L2860 1095 L2420 1095 L2420 2060 L395 2060 L395 1930"/><path class="sheet-wire" data-c="L1" data-name="wc2-L1" d="M955 1930 L955 2060"/><path class="sheet-wire" data-c="L2" data-name="garage-L2" d="M2910 885 L2880 885 L2880 1125 L2480 1125 L2480 2200"/><path class="sheet-wire" data-c="L1" data-name="garage-L1" d="M2910 945 L2900 945 L2900 1155 L2540 1155 L2540 2200"/><path class="sheet-wire" data-c="N" data-name="leader-N" d="M1545 980 L1545 1000 L2805 1000 L2805 1010"/><path class="sheet-wire" data-c="N" data-name="follower-N" d="M265 980 L265 1065 L2680 1065 L2680 1080"/><path class="sheet-wire" data-c="N" data-name="garage-N" d="M2550 2200 L2550 1185 L2680 1185 L2680 1200"/><path class="sheet-wire" data-c="PE" data-name="leader-PE" d="M1805 720 L1740 720 L1740 764 L2350 764 L2350 793 L3248 793 L3248 1068 L3355 1068 L3355 1090"/><path class="sheet-wire" data-c="PE" data-name="follower-PE" d="M605 720 L605 730 L460 730 L460 980 L290 980 L290 770 L240 770 L240 1090 L2850 1090 L2850 800 L3240 800 L3240 1140 L3440 1140 L3440 1040 L3465 1040"/><path class="sheet-wire" data-c="PE" data-name="garage-PE" d="M2575 2200 L2575 1215 L2720 1215 L2720 1195 L3330 1195"/><path class="sheet-wire" data-c="PE" data-name="drain" d="M1885 720 L1885 728 L2100 728"/><path class="sheet-wire" data-c="PE" data-name="wc-pe" d="M180 1895 L40 1895 L40 2700 L3820 2700 L3820 1310 L3465 1310 L3465 1300"/><path class="sheet-wire" data-c="PE" data-name="wc2-pe" d="M740 1895 L740 1852 L350 1852 L350 1940 L40 1940"/><path class="sheet-wire" data-c="ETH" data-name="eth" d="M1080 900 L1360 900"/><path class="sheet-wire" data-c="PV+" data-name="pv-f+" d="M508 150 L508 165 L625 165 L625 740 L500 740 L500 875 L510 875"/><path class="sheet-wire" data-c="JUMP" data-name="pv-f-12" d="M642 150 L642 165 L678 165 L678 150"/><path class="sheet-wire" data-c="JUMP" data-name="pv-f-2m" d="M812 150 L812 180"/><path class="sheet-wire" data-c="JUMP" data-name="pv-f-m3" d="M848 150 L848 180"/><path class="sheet-wire" data-c="JUMP" data-name="pv-f-34" d="M982 150 L982 165 L1018 165 L1018 150"/><path class="sheet-wire" data-c="PV-" data-name="pv-f-" d="M1152 150 L1152 260 L765 260 L765 770"/><path class="sheet-wire" data-c="PV+" data-name="pv-l+" d="M1768 150 L1768 230 L1700 230 L1700 985 L1790 985 L1790 875"/><path class="sheet-wire" data-c="JUMP" data-name="pv-l-12" d="M1902 150 L1902 165 L1938 165 L1938 150"/><path class="sheet-wire" data-c="JUMP" data-name="pv-l-2m" d="M2072 150 L2072 180"/><path class="sheet-wire" data-c="JUMP" data-name="pv-l-m3" d="M2108 150 L2108 180"/><path class="sheet-wire" data-c="JUMP" data-name="pv-l-34" d="M2242 150 L2242 165 L2278 165 L2278 150"/><path class="sheet-wire" data-c="PV-" data-name="pv-l-" d="M2412 150 L2412 400 L1730 400 L1730 767 L2045 767 L2045 770"/><text class="sheet-tag" x="1220" y="888" text-anchor="middle">Ethernet</text></g>
+<g id="sheet-boxes"><g class="sheet-unit" data-device="meter"><rect class="sheet-frame" x="200.75" y="200.75" width="998.5" height="218.5" rx="10"/><text class="sheet-bar" x="220" y="296">Meter-Main</text><text class="sheet-bar sub" x="220" y="324">JA402R-BC-HI</text></g><g class="sheet-unit" data-device="house"><rect class="sheet-frame" x="200.75" y="2080.75" width="448.5" height="218.5" rx="10"/><text class="sheet-bar" x="220" y="2190">Main House Subpanel</text></g><g class="sheet-unit" data-device="garage"><rect class="sheet-frame" x="750.75" y="2080.75" width="448.5" height="218.5" rx="10"/><text class="sheet-bar" x="770" y="2190">Garage Subpanel</text></g><g id="string-f" transform="translate(1300,860)"><g class="sheet-unit" data-device="pv-f1"><rect class="sheet-frame" x="0.75" y="0.75" width="218.5" height="338.5" rx="10"/><a class="sheet-name" href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer"><text class="sheet-tag" x="16" y="32">Tesla Solar Panel</text></a><g class="sheet-port" data-port="pv-f1-pos"><rect class="pv-term" data-pol="+" x="100" y="100" width="20" height="40" rx="10"/></g><g class="sheet-port" data-port="pv-f1-neg"><rect class="pv-term" data-pol="-" x="100" y="200" width="20" height="40" rx="10"/></g></g><g class="sheet-unit" data-device="pv-f2"><rect class="sheet-frame" x="240.75" y="0.75" width="218.5" height="338.5" rx="10"/><a class="sheet-name" href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer"><text class="sheet-tag" x="256" y="32">Tesla Solar Panel</text></a><g class="sheet-port" data-port="pv-f2-pos"><rect class="pv-term" data-pol="+" x="340" y="100" width="20" height="40" rx="10"/></g><g class="sheet-port" data-port="pv-f2-neg"><rect class="pv-term" data-pol="-" x="340" y="200" width="20" height="40" rx="10"/></g></g><g class="sheet-unit" data-device="mci-f"><rect class="sheet-frame" x="480.75" y="150.75" width="38.5" height="38.5" rx="10"/><text class="sheet-label mci" x="500" y="170">MCI-1</text></g><g class="sheet-unit" data-device="pv-f3"><rect class="sheet-frame" x="540.75" y="0.75" width="218.5" height="338.5" rx="10"/><a class="sheet-name" href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer"><text class="sheet-tag" x="556" y="32">Tesla Solar Panel</text></a><g class="sheet-port" data-port="pv-f3-pos"><rect class="pv-term" data-pol="+" x="640" y="100" width="20" height="40" rx="10"/></g><g class="sheet-port" data-port="pv-f3-neg"><rect class="pv-term" data-pol="-" x="640" y="200" width="20" height="40" rx="10"/></g></g><g class="sheet-unit" data-device="pv-f4"><rect class="sheet-frame" x="780.75" y="0.75" width="218.5" height="338.5" rx="10"/><a class="sheet-name" href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer"><text class="sheet-tag" x="796" y="32">Tesla Solar Panel</text></a><g class="sheet-port" data-port="pv-f4-pos"><rect class="pv-term" data-pol="+" x="880" y="100" width="20" height="40" rx="10"/></g><g class="sheet-port" data-port="pv-f4-neg"><rect class="pv-term" data-pol="-" x="880" y="200" width="20" height="40" rx="10"/></g></g></g><g id="string-l" transform="translate(1300,1960)"><g class="sheet-unit" data-device="pv-l1"><rect class="sheet-frame" x="0.75" y="0.75" width="218.5" height="338.5" rx="10"/><a class="sheet-name" href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer"><text class="sheet-tag" x="16" y="32">Tesla Solar Panel</text></a><g class="sheet-port" data-port="pv-l1-pos"><rect class="pv-term" data-pol="+" x="100" y="100" width="20" height="40" rx="10"/></g><g class="sheet-port" data-port="pv-l1-neg"><rect class="pv-term" data-pol="-" x="100" y="200" width="20" height="40" rx="10"/></g></g><g class="sheet-unit" data-device="pv-l2"><rect class="sheet-frame" x="240.75" y="0.75" width="218.5" height="338.5" rx="10"/><a class="sheet-name" href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer"><text class="sheet-tag" x="256" y="32">Tesla Solar Panel</text></a><g class="sheet-port" data-port="pv-l2-pos"><rect class="pv-term" data-pol="+" x="340" y="100" width="20" height="40" rx="10"/></g><g class="sheet-port" data-port="pv-l2-neg"><rect class="pv-term" data-pol="-" x="340" y="200" width="20" height="40" rx="10"/></g></g><g class="sheet-unit" data-device="mci-l"><rect class="sheet-frame" x="480.75" y="150.75" width="38.5" height="38.5" rx="10"/><text class="sheet-label mci" x="500" y="170">MCI-1</text></g><g class="sheet-unit" data-device="pv-l3"><rect class="sheet-frame" x="540.75" y="0.75" width="218.5" height="338.5" rx="10"/><a class="sheet-name" href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer"><text class="sheet-tag" x="556" y="32">Tesla Solar Panel</text></a><g class="sheet-port" data-port="pv-l3-pos"><rect class="pv-term" data-pol="+" x="640" y="100" width="20" height="40" rx="10"/></g><g class="sheet-port" data-port="pv-l3-neg"><rect class="pv-term" data-pol="-" x="640" y="200" width="20" height="40" rx="10"/></g></g><g class="sheet-unit" data-device="pv-l4"><rect class="sheet-frame" x="780.75" y="0.75" width="218.5" height="338.5" rx="10"/><a class="sheet-name" href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer"><text class="sheet-tag" x="796" y="32">Tesla Solar Panel</text></a><g class="sheet-port" data-port="pv-l4-pos"><rect class="pv-term" data-pol="+" x="880" y="100" width="20" height="40" rx="10"/></g><g class="sheet-port" data-port="pv-l4-neg"><rect class="pv-term" data-pol="-" x="880" y="200" width="20" height="40" rx="10"/></g></g></g></g>
 <g id="gw-cell-readout" visibility="hidden" pointer-events="none">
 <rect class="gw-cell-hot" id="gw-cell-hot" width="10" height="10"/>
 <text class="gw-cell-name" id="gw-cell-name" text-anchor="middle" dominant-baseline="central"></text>
 </g>
 </svg>
     </div>
-    <figcaption>整张图用细实线分成 400×400 格，横轴和纵轴都用两位字母编号，从 AA 往后排，末格是 PJ。每 10×10 块的右下角一格涂色，作为参照，例如 AJ-AJ。Gateway 3 是边长 100 格的圆角正方形，左上角落在 JY-BO，方块里面不画格。方块里的接口仍按方块自己的格来定位，横轴 00–99，纵轴 AA–DV。滑块与图同宽，从 1× 连续滑到 128×。放大到能对准一格时，指针下的格子写出坐标，例如 AA-AB。H 是内部母排上的八个等大圆角框，从上到下 L2、L1 交替四对；L2 红框，L1 黑框。每个框里一直显示 L2 - 01 这类编号。E 在 H 下方，两只圆的外接方块左上角是 33-CJ 和 47-CJ，直径 7 格；左圆黑色，写 L1，接 L1 母线，右圆红色，写 L2，接 L2 母线。B 在两只 E 圆的正下方，中间空 15 格，同样大小；左圆黑色写 L1，右圆红色写 L2。E 与 B 的正中是一只和 H 单格同样大小的圆角矩形，棕色边框，框内写 REMOVE TO ISOLATE SUB-PANEL。C 是三只同样大小的圆，分别在 E 的 L1 左侧、B 的 L1 左侧和 B 的 L2 右侧，间距等于两只相线圆心的距离；灰色边框，框内写 N，接大号中性端子。D 在第 09–12 列，从 CJ 排到 DL，10 只直径 2 格的小圆水平居中，相邻两只中间空 1 格，灰色边框，接附加中性端子。F 在第 75–79 列，从 CJ 排到 DL，四只直径 5 格的圆，相邻两只中间空 3 格，绿色边框，框内写 PE，接大号接地端子。G 在 F 右侧，中间空 7 格，五只直径 3 格的圆，同样从 CJ 排到 DL，相邻两只中间空 3.5 格，绿色边框，框内写 PE，接附加接地端子。A 是两只直径 7 格的圆，水平对齐，下边缘落在 CE 行，右圆右侧落在第 89 列，两圆中间空 7 格；左圆红色写 S2，右圆黑色写 S1，接进线端子。I 在第 80–89 列，最上框左上角是 80-AK，六个高 3 格、宽 10 格的矩形从上到下空 1 格，依次是红色 12V、黑色 GND、蓝色 CN+、橙色 CN−，以及灰色的 RS485+ 和 RS485−；手册标明 RS485 两针不用。九个接口沿用 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-5A34398F-EB43-4BA8-8E37-6C32F0D35E1D.html" target="_blank" rel="noopener noreferrer">Gateway 3 Wiring Overview</a> 的 A–I。两台圆角矩形是 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-FDF6014A-AD21-443F-B299-26FCC56B4A28.html" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 的接线仓，Follower 左上角 AI-CA，Leader 左上角 FG-CA，各宽 100 格、高 56 格，边框到内侧接口四向都空 10 格。交流四孔是竖向圆角矩形，长边垂直，横排，相邻两孔中间空 1 格。最左一只不接线，灰色；然后是灰色 N、红色 L2、黑色 L1。L1 与 1+ 中间空 10 格。右侧十二只竖向矩形与交流孔一样高、顶底对齐，宽 3 格，中间空 1 格，从左到右是红色 1+ 到 6+，然后黑色 1− 到 6−。1–2 与 5–6 可以跳接，3 与 4 出厂封闭，跳线还没画。地排仍是三只绿色圆，写 PE，放在 1+、2+、3+ 正上方，左右缘与这三孔对齐，与光伏孔中间空 5 格。通信四孔长边垂直，宽 3 格、高 10 格，横排，中间空 1 格，底边距光伏孔 5 格，即接线仓里的<a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-C2CF965B-EE68-42E6-BAFD-166E72C5B967.html" target="_blank" rel="noopener noreferrer">四孔通信端子</a>，从左到右是橙色 CN−、蓝色 CN+、黑色 GND、红色 12V，分别在 3−、4−、5−、6− 上方，12V 的右缘与 6− 的右缘对齐。RS485 不在这四孔上，屏蔽层接到地，不单画。整张图上每个矩形的圆角半径都是 1 格。另外两只圆角矩形是 <a href="https://energylibrary.tesla.com/docs/Public/Charging/WallConnector/Gen3/Install/1PNA/g3_wc_install_1pna.pdf" target="_blank" rel="noopener noreferrer">Wall Connector Gen 3</a> 的接线盒，左上角分别是 AI-GM 和 CM-GM，各宽 45 格、高 35 格，边框到内侧接口四向都空 10 格。左上两只 4×4 的方格是背面的 RS-485 口，左红口写 RED，右白口写 WHT；手册要求线束红线进红口、黑线进白口，没有标正负。下面三只大圆从左到右是绿色 G、红色 L2/N、黑色 L1。本宅分相按线对线使用，中间这只当 L2，不接中性线。电表、主屋分盘、车库分盘、八块光伏板和两只 MCI 是带字的圆角框。连线是横平竖直的直角折线，颜色跟所接端子一致。</figcaption>
   </figure>
 
-  <p>BC Hydro 200 A。电表处设服务入口断路器，再以 200 A 四线（L1、L2、N、PE）进入 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 的 LINE。加拿大不把 Gateway 3 当服务设备：中性线与地的唯一连接和接地极留在这只服务断路器上，Gateway 3 出厂的 bonding screw 拆掉。Gateway 的进线从服务断路器的负荷侧整根接入。</p>
-  <p>LOAD 以 200 A 四线接主屋现有 200 A 配电盘的主输入端。该盘改为分盘，拆掉盘内中性线与地的连接。内部 8 位母排保留原厂跳线，接在备用侧，与主屋盘同为全屋备电。母排 200 A，分支断路器最大 125 A，用 Eaton BR（连续负载用带 H 后缀的型号，如 BR260H）、Siemens QP 或 Square D HOM。最上面一位是 L2，齿向左咬入；下一位是 L1，齿向右咬入。Powerwall 断路器反送电，装 hold-down。</p>
-  <p><a href="https://www.tesla.com/solarpanels" target="_blank" rel="noopener noreferrer">Tesla Solar Panels</a> 以直流组串直接进 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 的 MPPT，不经过独立逆变器，也不占 Gateway 槽位。每台 6 路 MPPT，直流最多 20 kW；只有 1–2 与 5–6 可以跳接，3 与 4 出厂封闭。交流仍走已有的 60 A，默认 11.5 kW。组串分接到两台。每串装 MCI。组串电压保持在 60–550 V DC，来回线长不超过 160 m；同一串的组件同一坡向、同一倾角。不用优化器。组件数量按当地最低气温用 Tesla Solar Stringing Tool 算定。</p>
-  <p>槽位按 Tesla 的顺序排：Powerwall，然后 <a href="https://www.tesla.com/wall-connector" target="_blank" rel="noopener noreferrer">Wall Connector</a>，负载放在最下面。</p>
-<div class="design-devices-wrap">
-  <table class="devices-table">
-    <thead>
-      <tr>
-        <th>Space</th>
-        <th>Breaker</th>
-        <th>Lands</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1–2</td>
-        <td>60 A 2-pole</td>
-        <td><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> Leader</td>
-      </tr>
-      <tr>
-        <td>3–4</td>
-        <td>60 A 2-pole</td>
-        <td><a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> Follower</td>
-      </tr>
-      <tr>
-        <td>5–6</td>
-        <td>100 A 2-pole</td>
-        <td>两个 <a href="https://www.tesla.com/wall-connector" target="_blank" rel="noopener noreferrer">Wall Connector</a></td>
-      </tr>
-      <tr>
-        <td>7–8</td>
-        <td>80 A 2-pole</td>
-        <td>车库 Workshop 分盘</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-  <p>两台 <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a> 各按默认 11.5 kW / 48 A，配 60 A。不启用离网 15.4 kW，那一档要 80 A 断路器和相应线径。两台合计 23 kW。服务侧的计算负荷不超过 200 A。</p>
-  <p>两个 Wall Connector 共用 5–6 位，以 Power Share 把持续电流限在 80 A。离网时这只断路器在备用母排上；Powerwall 按家庭负载削减或停止车辆充电。</p>
-  <p>7–8 位馈到车库 Workshop 分盘。分盘母排 100 A 或 125 A，留 10–12 位。馈线用 4 AWG 或 3 AWG 铜，按距离和压降选定；四线，中性线与地分开。</p>
-  <ul>
-    <li>车库主照明与射灯：15 A 或 20 A。</li>
-    <li>墙面工具插座：20 A。</li>
-    <li>台锯、刨床等重型工具：20 A 或 30 A，单独回路。</li>
-    <li>除尘：20 A，单独回路。</li>
-    <li>压缩机或大型设备：30 A，预留。</li>
-    <li>备用：20 A。</li>
-  </ul>
-  <p>Tesla 安装手册里的接线仓图和系统单线如下。单线上的字母用 Wiring Overview 的 A–I。</p>
   <ul>
     <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-5A34398F-EB43-4BA8-8E37-6C32F0D35E1D.html" target="_blank" rel="noopener noreferrer">Gateway 3 Wiring Overview</a>：打开盖板后的接线仓。A 为 Supply（S1、S2），B 为 Backup 出线，C 为大号中性排、D 为附加中性排，E 为内部母排上的 Backup 端子，F 为大号地排、G 为附加地排，H 为 8 位内部母排，I 为通信插头。</li>
     <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-56C487B0-31D6-44B4-B646-0762DF3ADFC4.html" target="_blank" rel="noopener noreferrer">Backup Lugs</a>：跳线桥的放大图。桥上印 REMOVE TO ISOLATE SUB-PANEL。这张放大图自己的 C 就是这只桥；本宅保留它，内部母排留在备用侧。</li>
@@ -2828,10 +2483,6 @@
     <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-FDF6014A-AD21-443F-B299-26FCC56B4A28.html" target="_blank" rel="noopener noreferrer">Powerwall 3 AC and PV Wiring</a>：交流与光伏合在一张参考图上。</li>
     <li><a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/GUID-3B4FFAB3-FDB9-492C-85D6-8FA60E1226FB.html" target="_blank" rel="noopener noreferrer">Powerwall 3 as a Wiring Raceway</a>：两台之间过线时，交流从一侧进、光伏从另一侧进。</li>
   </ul>
-
-  <p>机械间配电盘旁的分路电表，定为 <a href="https://store.egauge.net/egauge-pro-v2-warrantied" target="_blank" rel="noopener noreferrer">eGauge Pro</a>（EG4030W-64E）。配电盘仍是房屋的负荷中心。30 个传感器口；表从盘内断路器取电（L1 对中性线，85–277 V），典型约 2 W。CT 夹在盘内分路上，用 <a href="https://store.egauge.net/Split-Core-CTID" target="_blank" rel="noopener noreferrer">Split Core CTs with CTid</a>：分路 ECS09-50A（9 mm / 50 A），粗线 ECS20-100A（20 mm / 100 A），引线 2.4 m。表体放在盘旁的 <a href="https://store.egauge.net/powered_enclosure_kit_120" target="_blank" rel="noopener noreferrer">Powered Enclosure Kit (120/240VAC, 120/208VAC)</a> 里，外壳落在引线长度内。</p>
-  <p>只传数据。以太网经配线架第 13 口 <a href="https://store.ui.com/us/en/products/uacc-keystone-coupler-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Coupler</a> 两段跳线接入，不占打线模块，该口 PoE 关闭。VLAN 40。口位见 <a href="#2.1.8" class="page-ref">§2.1.8</a> 与 <a href="#appendix-topology" class="page-ref">Topology</a>。Home Assistant 的 <a href="https://www.home-assistant.io/integrations/egauge/" target="_blank" rel="noopener noreferrer">eGauge</a> 集成在本地读取。全屋电网、光伏与电池以 <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf" target="_blank" rel="noopener noreferrer">Gateway 3</a> 为准；本表记备用侧各分路。</p>
-  <p>参考 <a href="https://www.egauge.net/media/support/docs/EG4030-datasheet-web-v1-1.pdf" target="_blank" rel="noopener noreferrer">eGauge Pro Datasheet</a>。</p>
 
     <h2>Appendix. Order Fees Running Total</h2>
   <p class="lede">订单级费用（Shipping / Handling 及摊在运费上的税），<strong>不</strong>摊入 <a href="#2.3" class="page-ref">§2.3</a> / <a href="#3.3" class="page-ref">§3.3</a> 的 Device Price。按结款单整单记账；新单只追加本表。结款 PDF 在 <code>orders/</code>。</p>
