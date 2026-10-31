@@ -2054,79 +2054,36 @@
     }
 
     .spa-spec .spa-article figure.gw-compartment .gw-zoom-bar {
-      display: block;
-      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
       margin: 0 0 0.45rem;
     }
 
-    .spa-spec .spa-article figure.gw-compartment .gw-zoom-slider {
-      --gw-zoom: 0%;
-      display: block;
-      width: 100%;
-      height: 1.5rem;
+    .spa-spec .spa-article figure.gw-compartment:fullscreen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
       margin: 0;
-      appearance: none;
-      background: transparent;
-      cursor: pointer;
+      padding: 0.65rem 0.9rem 0.7rem;
+      background: var(--panel);
     }
 
-    .spa-spec .spa-article figure.gw-compartment .gw-zoom-slider:focus-visible {
-      outline: 2px solid var(--sheet-status);
-      outline-offset: 3px;
+    .spa-spec .spa-article figure.gw-compartment:fullscreen .gw-zoom-bar {
+      flex: 0 0 auto;
+      margin: 0;
     }
 
-    .spa-spec .spa-article figure.gw-compartment .gw-zoom-slider::-webkit-slider-runnable-track {
-      height: 3px;
-      border: none;
-      border-radius: 999px;
-      background: linear-gradient(to right, var(--sheet-ink) var(--gw-zoom), var(--sheet-line) var(--gw-zoom));
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .gw-zoom-slider::-webkit-slider-thumb {
-      appearance: none;
-      width: 16px;
-      height: 16px;
-      margin-top: -6.5px;
-      box-sizing: border-box;
-      border: 1.5px solid var(--sheet-ink);
-      border-radius: 50%;
-      background: var(--sheet-paper);
-      box-shadow: 0 1px 2px rgba(42, 38, 34, 0.18), 0 0 0 4px rgba(42, 38, 34, 0.04);
-      transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .gw-zoom-slider:hover::-webkit-slider-thumb {
-      transform: scale(1.08);
-      box-shadow: 0 2px 6px rgba(42, 38, 34, 0.22), 0 0 0 5px rgba(42, 38, 34, 0.05);
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .gw-zoom-slider:active::-webkit-slider-thumb {
-      transform: scale(0.96);
-      background: var(--sheet-ink);
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .gw-zoom-slider::-moz-range-track {
-      height: 3px;
-      border: none;
-      border-radius: 999px;
-      background: var(--sheet-line);
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .gw-zoom-slider::-moz-range-progress {
-      height: 3px;
-      border: none;
-      border-radius: 999px;
-      background: var(--sheet-ink);
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .gw-zoom-slider::-moz-range-thumb {
-      width: 16px;
-      height: 16px;
-      box-sizing: border-box;
-      border: 1.5px solid var(--sheet-ink);
-      border-radius: 50%;
-      background: var(--sheet-paper);
-      box-shadow: 0 1px 2px rgba(42, 38, 34, 0.18), 0 0 0 4px rgba(42, 38, 34, 0.04);
+    .spa-spec .spa-article figure.gw-compartment:fullscreen .gw-zoom-viewport {
+      flex: 1 1 auto;
+      min-height: 0;
+      aspect-ratio: auto;
+      margin-top: 0.55rem;
     }
 
     .spa-spec .spa-article figure.gw-compartment .gw-zoom-viewport {
@@ -2136,21 +2093,6 @@
       height: auto;
       overflow: hidden;
       background: var(--sheet-paper);
-      cursor: grab;
-      touch-action: none;
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .gw-zoom-viewport::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      border: 1.5px solid var(--sheet-ink);
-      pointer-events: none;
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .gw-zoom-viewport:active {
-      cursor: grabbing;
     }
 
     .spa-spec .spa-article figure.gw-compartment .gw-zoom-viewport:focus-visible {
@@ -2166,7 +2108,6 @@
       transform-origin: 0 0;
       -webkit-user-select: none;
       user-select: none;
-      --gw-hairline: 0.5px;
       --gw-frame: 1.5px;
       --gw-device: 1px;
       font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
@@ -2182,29 +2123,6 @@
       stroke: var(--sheet-ink);
       stroke-width: calc(var(--gw-frame) / var(--gw-scale, 1));
       vector-effect: non-scaling-stroke;
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .gw-ref {
-      fill: #d2b48c;
-      stroke: none;
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .gw-grid {
-      fill: none;
-      stroke: #c9c0b6;
-      stroke-width: calc(var(--gw-hairline) / var(--gw-scale, 1));
-      vector-effect: non-scaling-stroke;
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .gw-cell-hot {
-      fill: #efe4d4;
-      stroke: none;
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .gw-cell-name {
-      fill: var(--sheet-ink);
-      font-size: 2.7px;
-      font-family: inherit;
     }
 
     .spa-spec .spa-article figure.gw-compartment .gw-h-space {
@@ -2432,12 +2350,17 @@
     }
 
     .spa-spec .spa-article figure.gw-compartment .sheet-tag {
-      font-size: 16px;
+      font-size: 36px;
       dominant-baseline: alphabetic;
     }
 
+    .spa-spec .spa-article figure.gw-compartment .sheet-unit[data-device^="pv-"] .sheet-tag {
+      font-size: 24px;
+    }
+
     .spa-spec .spa-article figure.gw-compartment .sheet-name,
-    .spa-spec .spa-article figure.gw-compartment .sheet-name text {
+    .spa-spec .spa-article figure.gw-compartment .sheet-name text,
+    .spa-spec .spa-article figure.gw-compartment .sheet-name tspan {
       text-decoration: none;
     }
 
@@ -2446,21 +2369,18 @@
     }
 
     .spa-spec .spa-article figure.gw-compartment .sheet-name:hover .sheet-tag,
-    .spa-spec .spa-article figure.gw-compartment .sheet-name:focus-visible .sheet-tag {
+    .spa-spec .spa-article figure.gw-compartment .sheet-name:focus-visible .sheet-tag,
+    .spa-spec .spa-article figure.gw-compartment .sheet-name:hover .sheet-sku,
+    .spa-spec .spa-article figure.gw-compartment .sheet-name:focus-visible .sheet-sku {
       fill: var(--sheet-status);
     }
 
     .spa-spec .spa-article figure.gw-compartment .sheet-bar {
       fill: var(--sheet-ink);
       font-family: inherit;
-      font-size: 16px;
+      font-size: 36px;
       text-anchor: start;
       dominant-baseline: central;
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .sheet-bar.sub {
-      fill: var(--sheet-floor-ink);
-      font-size: 13px;
     }
 
     .spa-spec .spa-article figure.gw-compartment .sheet-label {
@@ -2473,8 +2393,10 @@
       font-size: 14px;
     }
 
-    .spa-spec .spa-article figure.gw-compartment .sheet-label.mci {
-      font-size: 9px;
+    .spa-spec .spa-article figure.gw-compartment .sheet-tag.mci {
+      font-size: 18px;
+      text-anchor: middle;
+      dominant-baseline: central;
     }
 
     .spa-spec .spa-article figure.gw-compartment .pv-term {
@@ -2486,10 +2408,6 @@
 
     .spa-spec .spa-article figure.gw-compartment .sheet-unit {
       cursor: pointer;
-    }
-
-    .spa-spec .spa-article figure.gw-compartment .gw-zoom-viewport:active .sheet-unit {
-      cursor: grabbing;
     }
 
     .spa-spec .spa-article figure.gw-compartment .sheet-unit:focus {
@@ -2524,6 +2442,9 @@
 
     .spa-spec .spa-article figure.gw-compartment .pw-pe .pw-space { stroke: #1c7c34; }
     .spa-spec .spa-article figure.gw-compartment .pw-pe .pw-label { fill: #1c7c34; font-size: 11px; }
+
+    .spa-spec .spa-article figure.gw-compartment .pw-eth .pw-space { stroke: #6b4c9a; }
+    .spa-spec .spa-article figure.gw-compartment .pw-eth .pw-label { fill: #6b4c9a; font-size: 8px; }
 
     .spa-spec .spa-article figure.gw-compartment .pw-pv[data-pol="+"] .pw-space { stroke: #d20f0f; }
     .spa-spec .spa-article figure.gw-compartment .pw-pv[data-pol="+"] .pw-label { fill: #d20f0f; font-size: 11px; }
@@ -2574,12 +2495,22 @@
       stroke-width: calc(3px / var(--gw-scale, 1));
     }
 
+    .spa-spec .spa-article figure.gw-compartment .sheet-port.is-wired :is(
+      .gw-h-space, .gw-e-space, .gw-b-space, .gw-a-space, .gw-i-space,
+      .gw-c-space, .gw-d-space, .gw-f-space, .gw-g-space, .gw-jumper-space,
+      .pw-space, .wc-space, .pv-term
+    ) {
+      fill: var(--port-ink);
+      fill-opacity: 0.3;
+    }
+
     .spa-spec .spa-article figure.gw-compartment[data-pick] .sheet-port.is-linked :is(
       .gw-h-space, .gw-e-space, .gw-b-space, .gw-a-space, .gw-i-space,
       .gw-c-space, .gw-d-space, .gw-f-space, .gw-g-space, .gw-jumper-space,
       .pw-space, .wc-space, .pv-term
     ) {
       fill: var(--port-ink);
+      fill-opacity: 1;
       stroke: var(--port-ink);
       stroke-width: calc(2.25px / var(--gw-scale, 1));
     }

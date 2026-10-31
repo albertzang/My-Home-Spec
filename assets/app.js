@@ -749,7 +749,11 @@
         });
       }
 
-      function applyLogoSlot(table) {
+      function applyLogoSlot(table, fixedSlot) {
+        if (fixedSlot) {
+          table.style.setProperty("--logo-slot", fixedSlot);
+          return;
+        }
         var imgs = table.querySelectorAll("img.brand-logo");
         if (!imgs.length) return;
         var maxRatio = 0;
@@ -768,9 +772,9 @@
         table.style.setProperty("--logo-slot", Math.ceil(maxRatio * 16 + pad) + "px");
       }
 
-      function tighten(table) {
+      function tighten(table, fixedSlot) {
         if (!table || table.clientWidth < 2) return;
-        applyLogoSlot(table);
+        applyLogoSlot(table, fixedSlot);
         var units = scheduleUnits(table);
         units.forEach(function (unit) {
           unit.classList.remove("is-logo-hidden");
@@ -794,10 +798,16 @@
       }
 
       function fitSchedules() {
-        var home = document.querySelector("#tab-spec table.home-appliances");
+        var homes = document.querySelectorAll("#tab-spec table.home-appliances");
+        var lead = homes[0];
+        tighten(lead);
+        var slot = lead ? lead.style.getPropertyValue("--logo-slot") : "";
+        Array.prototype.forEach.call(homes, function (table, i) {
+          if (i === 0) return;
+          tighten(table, slot);
+        });
         var devices = document.querySelector("#tab-spec table.device-list");
         var ha = document.querySelector("#tab-spec table.ha-devices");
-        tighten(home);
         tighten(devices);
         tighten(ha);
       }
@@ -854,11 +864,10 @@
       }
 
       function lockAll() {
-        var home = document.querySelector("#tab-spec table.home-appliances");
+        Array.prototype.forEach.call(document.querySelectorAll("#tab-spec table.home-appliances"), lockPane);
         var devices = document.querySelector("#tab-spec table.device-list");
         var power = document.querySelector("#tab-spec table.power-tree");
         var ha = document.querySelector("#tab-spec table.devices-table.span-groups:not(.device-list)");
-        if (home) lockPane(home);
         if (devices) lockPane(devices);
         if (power) lockPower(power);
         if (ha) lockPane(ha);
@@ -3996,49 +4005,9 @@
   if (!root) return;
   var viewport = root.querySelector(".gw-zoom-viewport");
   var svg = viewport.querySelector("svg");
-  var slider = root.querySelector(".gw-zoom-slider");
-  var readout = svg.querySelector("#gw-cell-readout");
-  var hot = svg.querySelector("#gw-cell-hot");
-  var nameEl = svg.querySelector("#gw-cell-name");
-  var scale = 1;
+  var fullscreen = document.getElementById("gw-fullscreen");
   var x = 0;
   var y = 0;
-  var minScale = 1;
-  var maxScale = 8;
-  var cell = 10;
-  var cols = 250;
-  var readoutMin = 36;
-  var pointer = null;
-  var svgNs = "http://www.w3.org/2000/svg";
-
-  function buildSheet() {
-    var refs = svg.querySelector(".gw-refs");
-    var grid = svg.querySelector(".gw-grid");
-    if (!refs || !grid || refs.childNodes.length) return;
-    var frag = document.createDocumentFragment();
-    var mark;
-    var col;
-    var row;
-    var at;
-    for (col = 9; col < cols; col += 10) {
-      for (row = 9; row < cols; row += 10) {
-        mark = document.createElementNS(svgNs, "rect");
-        mark.setAttribute("class", "gw-ref");
-        mark.setAttribute("x", String(col * cell));
-        mark.setAttribute("y", String(row * cell));
-        mark.setAttribute("width", String(cell));
-        mark.setAttribute("height", String(cell));
-        frag.appendChild(mark);
-      }
-    }
-    refs.appendChild(frag);
-    var parts = [];
-    var extent = cols * cell;
-    for (at = cell; at < extent; at += cell) {
-      parts.push("M" + at + " 0V" + extent + "M0 " + at + "H" + extent);
-    }
-    grid.setAttribute("d", parts.join(""));
-  }
 
   function layoutSize() {
     var vb = svg.viewBox.baseVal;
@@ -4048,149 +4017,52 @@
     return { w: vb.width * fit, h: vb.height * fit };
   }
 
-  function rowName(index) {
-    return String.fromCharCode(65 + Math.floor(index / 26)) + String.fromCharCode(65 + (index % 26));
-  }
-
-  function colName(index) {
-    return rowName(index);
-  }
-
-  function insideSheet(px, py) {
-    var extent = cols * cell;
-    return px >= 0 && py >= 0 && px < extent && py < extent;
-  }
-
-  function userFromClient(cx, cy) {
-    var pt = svg.createSVGPoint();
-    pt.x = cx;
-    pt.y = cy;
-    var matrix = svg.getScreenCTM();
-    if (!matrix) return null;
-    return pt.matrixTransform(matrix.inverse());
-  }
-
-  function placeReadout() {
-    if (!readout) return;
-    if (!pointer) {
-      readout.setAttribute("visibility", "hidden");
-      return;
-    }
-    var cellPx = layoutSize().w / cols * scale;
-    var p = userFromClient(pointer.x, pointer.y);
-    if (!p || cellPx < readoutMin || !insideSheet(p.x, p.y)) {
-      readout.setAttribute("visibility", "hidden");
-      return;
-    }
-    var col = Math.floor(p.x / cell);
-    var row = Math.floor(p.y / cell);
-    if (col < 0 || col >= cols || row < 0 || row >= cols) {
-      readout.setAttribute("visibility", "hidden");
-      return;
-    }
-    var x0 = col * cell;
-    var y0 = row * cell;
-    hot.setAttribute("x", String(x0));
-    hot.setAttribute("y", String(y0));
-    nameEl.setAttribute("x", String(x0 + cell / 2));
-    nameEl.setAttribute("y", String(y0 + cell / 2));
-    nameEl.textContent = colName(col) + "-" + rowName(row);
-    readout.setAttribute("visibility", "visible");
-  }
-
   function apply() {
-    svg.style.setProperty("--gw-scale", String(scale));
-    svg.style.transform = "translate(" + x + "px," + y + "px) scale(" + scale + ")";
-    if (slider) {
-      slider.value = String(scale);
-      slider.setAttribute("aria-valuetext", scale.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1") + "×");
-      slider.style.setProperty("--gw-zoom", ((scale - minScale) / (maxScale - minScale) * 100) + "%");
-    }
-    placeReadout();
-  }
-
-  function clamp() {
-    var box = layoutSize();
-    var vw = viewport.clientWidth;
-    var vh = viewport.clientHeight;
-    var w = box.w * scale;
-    var h = box.h * scale;
-    if (w <= vw) x = (vw - w) / 2;
-    else x = Math.min(0, Math.max(vw - w, x));
-    if (h <= vh) y = (vh - h) / 2;
-    else y = Math.min(0, Math.max(vh - h, y));
+    svg.style.setProperty("--gw-scale", "1");
+    svg.style.transform = "translate(" + x + "px," + y + "px) scale(1)";
   }
 
   function fit() {
     var box = layoutSize();
     svg.style.width = box.w + "px";
     svg.style.height = box.h + "px";
-    scale = 1;
     x = (viewport.clientWidth - box.w) / 2;
     y = (viewport.clientHeight - box.h) / 2;
     apply();
   }
 
-  function zoomAt(cx, cy, next) {
-    next = Math.min(maxScale, Math.max(minScale, next));
-    var k = next / scale;
-    x = cx - k * (cx - x);
-    y = cy - k * (cy - y);
-    scale = next;
-    clamp();
-    apply();
+  function syncFullscreen() {
+    var on = document.fullscreenElement === root;
+    if (fullscreen) {
+      fullscreen.textContent = on ? "Exit Full Screen" : "Full Screen";
+      fullscreen.setAttribute("aria-pressed", on ? "true" : "false");
+    }
+    fit();
   }
 
-  slider.addEventListener("input", function () {
-    zoomAt(viewport.clientWidth / 2, viewport.clientHeight / 2, Number(slider.value));
-  });
+  if (fullscreen) {
+    fullscreen.addEventListener("click", function () {
+      if (document.fullscreenElement === root) {
+        document.exitFullscreen();
+        return;
+      }
+      if (root.requestFullscreen) root.requestFullscreen();
+    });
+    document.addEventListener("fullscreenchange", function () {
+      requestAnimationFrame(syncFullscreen);
+    });
+  }
 
-  viewport.addEventListener("wheel", function (event) {
-    event.preventDefault();
-    var rect = viewport.getBoundingClientRect();
-    var factor = event.deltaY < 0 ? 1.08 : 1 / 1.08;
-    zoomAt(event.clientX - rect.left, event.clientY - rect.top, scale * factor);
-  }, { passive: false });
+  var press = null;
 
   viewport.addEventListener("pointermove", function (event) {
-    pointer = { x: event.clientX, y: event.clientY };
-    if (pointers.has(event.pointerId)) {
-      pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
-    }
-    if (pointers.size >= 2 && pinch) {
-      var dist = pointDistance();
-      if (pinch.dist > 0) {
-        var mid = pointMid();
-        zoomAt(mid.x, mid.y, pinch.scale * (dist / pinch.dist));
-      }
-      return;
-    }
-    if (press && press.id === event.pointerId && Math.hypot(event.clientX - press.x, event.clientY - press.y) > 4) {
-      press.moved = true;
-    }
-    if (drag && drag.id === event.pointerId) {
-      x = drag.x + (event.clientX - drag.px);
-      y = drag.y + (event.clientY - drag.py);
-      clamp();
-      apply();
-      return;
-    }
-    placeReadout();
+    if (!press || press.id !== event.pointerId) return;
+    if (Math.hypot(event.clientX - press.x, event.clientY - press.y) > 4) press.moved = true;
   });
-
-  viewport.addEventListener("pointerleave", function () {
-    pointer = null;
-    placeReadout();
-  });
-
-  var pointers = new Map();
-  var drag = null;
-  var pinch = null;
-  var press = null;
   var deviceName = {
     gw: "Tesla Gateway 3",
-    "pw-follower": "Tesla Powerwall 3，Follower",
-    "pw-leader": "Tesla Powerwall 3，Leader",
+    "pw-follower": "Tesla Powerwall 3 · Follower",
+    "pw-leader": "Tesla Powerwall 3 · Leader",
     wc1: "Wall Connector Gen 3，1",
     wc2: "Wall Connector Gen 3，2",
     meter: "Meter-Main",
@@ -4218,36 +4090,37 @@
     { ends: ["house", "gw-f-4"] },
     { ends: ["pw-leader-l1", "gw-h-l1-01"] },
     { ends: ["pw-leader-l2", "gw-h-l2-01"] },
-    { ends: ["pw-leader-n", "gw-c-1"] },
-    { ends: ["pw-leader-pe-1", "gw-f-2"] },
+    { ends: ["pw-leader-n", "gw-d-2"] },
+    { ends: ["pw-leader-pe-1", "gw-g-1"] },
     { ends: ["pw-leader-12v", "gw-i-12v"] },
     { ends: ["pw-leader-gnd", "gw-i-gnd"] },
     { ends: ["pw-leader-cnp", "gw-i-cnp"] },
     { ends: ["pw-leader-cnn", "gw-i-cnn"] },
     { ends: ["pw-follower-l1", "gw-h-l1-02"] },
     { ends: ["pw-follower-l2", "gw-h-l2-02"] },
-    { ends: ["pw-follower-n", "gw-d-3"] },
-    { ends: ["pw-follower-pe-3", "gw-g-1"] },
+    { ends: ["pw-follower-n", "gw-d-5"] },
+    { ends: ["pw-follower-pe-1", "gw-g-2"] },
     { ends: ["wc1-l1", "wc2-l1", "gw-h-l1-03"] },
     { ends: ["wc1-l2", "wc2-l2", "gw-h-l2-03"] },
-    { ends: ["wc1-g", "wc2-g", "gw-g-5"] },
+    { ends: ["wc1-g", "gw-g-3"] },
+    { ends: ["wc2-g", "gw-g-4"] },
     { ends: ["garage", "gw-h-l1-04"] },
     { ends: ["garage", "gw-h-l2-04"] },
-    { ends: ["garage", "gw-d-7"] },
-    { ends: ["garage", "gw-f-3"] },
+    { ends: ["garage", "gw-d-9"] },
+    { ends: ["garage", "gw-g-5"] },
     { ends: ["pv-f1-pos", "pw-follower-pv-1p"] },
     { ends: ["pv-f1-neg", "pv-f2-pos"] },
-    { ends: ["pv-f2-neg", "mci-f"] },
-    { ends: ["mci-f", "pv-f3-pos"] },
+    { ends: ["pv-f2-neg", "mci-f-neg"] },
+    { ends: ["mci-f-pos", "pv-f3-pos"] },
     { ends: ["pv-f3-neg", "pv-f4-pos"] },
     { ends: ["pv-f4-neg", "pw-follower-pv-1m"] },
     { ends: ["pv-l1-pos", "pw-leader-pv-1p"] },
     { ends: ["pv-l1-neg", "pv-l2-pos"] },
-    { ends: ["pv-l2-neg", "mci-l"] },
-    { ends: ["mci-l", "pv-l3-pos"] },
+    { ends: ["pv-l2-neg", "mci-l-neg"] },
+    { ends: ["mci-l-pos", "pv-l3-pos"] },
     { ends: ["pv-l3-neg", "pv-l4-pos"] },
     { ends: ["pv-l4-neg", "pw-leader-pv-1m"] },
-    { ends: ["pw-follower", "pw-leader"], peer: true }
+    { ends: ["pw-leader-eth", "pw-follower-eth"] }
   ];
 
   function portOwner() {
@@ -4264,35 +4137,18 @@
     svg.querySelectorAll(".is-selected, .is-linked, .is-peer, .is-hot").forEach(function (el) {
       el.classList.remove("is-selected", "is-linked", "is-peer", "is-hot");
     });
-    svg.querySelectorAll("[data-device]").forEach(function (unit) {
-      unit.setAttribute("aria-pressed", "false");
+    svg.querySelectorAll("[data-device], .sheet-port.is-wired").forEach(function (el) {
+      el.setAttribute("aria-pressed", "false");
     });
   }
 
-  function pickDevice(id) {
-    var owner = portOwner();
-    var portOn = {};
-    var deviceOn = {};
-    var peerOn = {};
-    clearPick();
-    nets.forEach(function (net) {
-      var touches = net.ends.some(function (end) {
-        return end === id || owner[end] === id;
-      });
-      if (!touches) return;
-      if (net.peer) {
-        net.ends.forEach(function (end) {
-          if (end !== id) peerOn[end] = true;
-        });
-        return;
-      }
-      net.ends.forEach(function (end) {
-        if (owner[end]) portOn[end] = true;
-        else deviceOn[end] = true;
-      });
-    });
+  function applySelection(id, portOn, deviceOn, peerOn) {
     svg.querySelectorAll("[data-port]").forEach(function (port) {
-      if (portOn[port.getAttribute("data-port")]) port.classList.add("is-linked");
+      var pid = port.getAttribute("data-port");
+      var on = !!portOn[pid];
+      port.classList.toggle("is-linked", on);
+      port.classList.toggle("is-selected", pid === id);
+      if (port.classList.contains("is-wired")) port.setAttribute("aria-pressed", pid === id ? "true" : "false");
     });
     svg.querySelectorAll("[data-device]").forEach(function (unit) {
       var dev = unit.getAttribute("data-device");
@@ -4307,14 +4163,64 @@
     root.setAttribute("data-pick", id);
   }
 
-  function toggleDevice(id) {
+  function collect(id, byOwner) {
+    var owner = portOwner();
+    var portOn = {};
+    var deviceOn = {};
+    var peerOn = {};
+    nets.forEach(function (net) {
+      var touches = net.ends.some(function (end) {
+        return end === id || (byOwner && owner[end] === id);
+      });
+      if (!touches) return;
+      if (net.peer) {
+        net.ends.forEach(function (end) {
+          if (end !== id) peerOn[end] = true;
+        });
+        return;
+      }
+      net.ends.forEach(function (end) {
+        if (owner[end]) portOn[end] = true;
+        else deviceOn[end] = true;
+      });
+    });
+    if (!byOwner) portOn[id] = true;
+    return { portOn: portOn, deviceOn: deviceOn, peerOn: peerOn };
+  }
+
+  function pickDevice(id) {
+    var found = collect(id, true);
+    clearPick();
+    applySelection(id, found.portOn, found.deviceOn, found.peerOn);
+  }
+
+  function pickPort(id) {
+    var found = collect(id, false);
+    clearPick();
+    applySelection(id, found.portOn, found.deviceOn, found.peerOn);
+  }
+
+  function togglePick(id, pick) {
     if (root.getAttribute("data-pick") === id) clearPick();
-    else pickDevice(id);
+    else pick(id);
+  }
+
+  function toggleDevice(id) {
+    togglePick(id, pickDevice);
   }
 
   function pickAt(cx, cy) {
     var el = document.elementFromPoint(cx, cy);
-    var unit = el && el.closest ? el.closest("[data-device]") : null;
+    if (!el || !el.closest || !svg.contains(el)) {
+      clearPick();
+      return;
+    }
+    var port = el.closest("[data-port]");
+    if (port && svg.contains(port) && port.classList.contains("is-wired")) {
+      togglePick(port.getAttribute("data-port"), pickPort);
+      return;
+    }
+    var unit = el.closest("[data-device]");
     if (!unit || !svg.contains(unit)) clearPick();
     else toggleDevice(unit.getAttribute("data-device"));
   }
@@ -4326,66 +4232,39 @@
     unit.setAttribute("aria-pressed", "false");
     unit.setAttribute("aria-label", deviceName[id] || id);
   });
+  var wired = {};
+  nets.forEach(function (net) {
+    net.ends.forEach(function (end) {
+      wired[end] = true;
+    });
+  });
   svg.querySelectorAll(".sheet-port").forEach(function (port) {
     var shape = port.querySelector("rect, circle");
-    if (!shape) return;
-    var stroke = getComputedStyle(shape).stroke;
-    if (stroke && stroke !== "none") port.style.setProperty("--port-ink", stroke);
+    if (shape) {
+      var stroke = getComputedStyle(shape).stroke;
+      if (stroke && stroke !== "none") port.style.setProperty("--port-ink", stroke);
+    }
+    if (!wired[port.getAttribute("data-port")]) return;
+    port.classList.add("is-wired");
+    port.setAttribute("role", "button");
+    port.setAttribute("aria-pressed", "false");
   });
-
-  function pointDistance() {
-    var pts = Array.from(pointers.values());
-    var dx = pts[0].x - pts[1].x;
-    var dy = pts[0].y - pts[1].y;
-    return Math.hypot(dx, dy);
-  }
-
-  function pointMid() {
-    var rect = viewport.getBoundingClientRect();
-    var pts = Array.from(pointers.values());
-    return {
-      x: (pts[0].x + pts[1].x) / 2 - rect.left,
-      y: (pts[0].y + pts[1].y) / 2 - rect.top
-    };
-  }
 
   viewport.addEventListener("pointerdown", function (event) {
     if (event.button !== undefined && event.button !== 0) return;
     var link = event.target.closest && event.target.closest("a");
     if (link && svg.contains(link)) return;
-    pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
-    viewport.setPointerCapture(event.pointerId);
-    if (pointers.size === 1) {
-      drag = { id: event.pointerId, px: event.clientX, py: event.clientY, x: x, y: y };
-      press = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
-      pinch = null;
-    } else if (pointers.size === 2) {
-      drag = null;
-      press = null;
-      pinch = { dist: pointDistance(), scale: scale };
-    }
+    press = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
   });
 
-  function endDrag(event) {
-    if (!pointers.has(event.pointerId)) return;
-    pointers.delete(event.pointerId);
-    if (drag && drag.id === event.pointerId) drag = null;
-    if (pointers.size < 2) pinch = null;
-    if (pointers.size === 1) {
-      var only = pointers.entries().next().value;
-      drag = { id: only[0], px: only[1].x, py: only[1].y, x: x, y: y };
-    }
-  }
   viewport.addEventListener("pointerup", function (event) {
     var was = press;
-    endDrag(event);
     if (press && press.id === event.pointerId) press = null;
     if (!was || was.id !== event.pointerId || was.moved) return;
     pickAt(event.clientX, event.clientY);
   });
   viewport.addEventListener("pointercancel", function (event) {
     if (press && press.id === event.pointerId) press = null;
-    endDrag(event);
   });
   viewport.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
@@ -4400,13 +4279,8 @@
   });
 
   window.addEventListener("resize", function () {
-    if (scale === 1) fit();
-    else {
-      clamp();
-      apply();
-    }
+    fit();
   });
 
-  buildSheet();
   fit();
 })();
