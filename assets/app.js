@@ -335,6 +335,7 @@
        A span row collapses every following row until the next span at the
        same or shallower level. Nested spans (patch-cable specs) use
        data-level. Floor bands stay visible. The header toggles every span.
+       A sheet with no spans collapses its product rows instead.
        "-" is expanded, "+" is collapsed. */
     (function () {
       function bindSpanTable(table) {
@@ -351,7 +352,13 @@
         if (headerMark) headerMark.textContent = open ? "-" : "+";
       }
 
+      var sheetClosed = false;
+
       function syncHeader() {
+        if (!rooms.length) {
+          setHeaderOpen(!sheetClosed);
+          return;
+        }
         var allOpen = rooms.every(function (row) {
           return row.getAttribute("aria-expanded") !== "false";
         });
@@ -405,6 +412,14 @@
       }
 
       function applyVisibility() {
+        if (!rooms.length) {
+          bodyRows.forEach(function (row) {
+            setRowHidden(row, sheetClosed && !row.classList.contains("floor-span"));
+          });
+          if (window.fitScheduleLines) window.fitScheduleLines();
+          if (window.pinSheetHeads) window.pinSheetHeads();
+          return;
+        }
         var collapsedAt = Infinity;
         bodyRows.forEach(function (row) {
           var level = levelOf(row);
@@ -445,6 +460,12 @@
       if (thead && headerButton) {
         thead.addEventListener("click", function (event) {
           if (event.target.closest && event.target.closest("a, .port-split")) return;
+          if (!rooms.length) {
+            sheetClosed = !sheetClosed;
+            applyVisibility();
+            syncHeader();
+            return;
+          }
           var allOpen = rooms.every(function (row) {
             return row.getAttribute("aria-expanded") !== "false";
           });
