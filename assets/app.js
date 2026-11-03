@@ -4043,6 +4043,14 @@
     svg.style.transform = "translate(" + x + "px," + y + "px) scale(1)";
   }
 
+  function placeMeterLink() {
+    var label = svg.querySelector('[data-device="meter"] > .sheet-bar');
+    var model = svg.querySelector('[data-device="meter"] .sheet-name text');
+    if (!label || !model) return;
+    var start = Number(label.getAttribute("x")) || 0;
+    model.setAttribute("x", start + label.getComputedTextLength());
+  }
+
   function fit() {
     var box = layoutSize();
     svg.style.width = box.w + "px";
@@ -4050,6 +4058,7 @@
     x = (viewport.clientWidth - box.w) / 2;
     y = (viewport.clientHeight - box.h) / 2;
     apply();
+    placeMeterLink();
   }
 
   function syncFullscreen() {
@@ -4105,10 +4114,11 @@
     { ends: ["meter", "gw-a-s2"] },
     { ends: ["meter", "gw-c-3"] },
     { ends: ["meter", "gw-f-1"] },
-    { ends: ["house", "gw-b-l1"] },
-    { ends: ["house", "gw-b-l2"] },
-    { ends: ["house", "gw-c-2"] },
-    { ends: ["house", "gw-f-4"] },
+    { ends: ["garage", "gw-b-l1"] },
+    { ends: ["garage", "gw-b-l2"] },
+    { ends: ["garage", "gw-c-2"] },
+    { ends: ["garage", "gw-f-4"] },
+    { ends: ["house", "garage"] },
     { ends: ["pw-leader-l1", "gw-h-l1-01"] },
     { ends: ["pw-leader-l2", "gw-h-l2-01"] },
     { ends: ["pw-leader-n", "gw-d-2"] },
@@ -4121,14 +4131,12 @@
     { ends: ["pw-follower-l2", "gw-h-l2-02"] },
     { ends: ["pw-follower-n", "gw-d-5"] },
     { ends: ["pw-follower-pe-1", "gw-g-2"] },
-    { ends: ["wc1-l1", "wc2-l1", "gw-h-l1-03"] },
-    { ends: ["wc1-l2", "wc2-l2", "gw-h-l2-03"] },
+    { ends: ["wc1-l1", "gw-h-l1-03"] },
+    { ends: ["wc1-l2", "gw-h-l2-03"] },
     { ends: ["wc1-g", "gw-g-3"] },
+    { ends: ["wc2-l1", "gw-h-l1-04"] },
+    { ends: ["wc2-l2", "gw-h-l2-04"] },
     { ends: ["wc2-g", "gw-g-4"] },
-    { ends: ["garage", "gw-h-l1-04"] },
-    { ends: ["garage", "gw-h-l2-04"] },
-    { ends: ["garage", "gw-d-9"] },
-    { ends: ["garage", "gw-g-5"] },
     { ends: ["pv-f1-pos", "pw-follower-pv-1p"] },
     { ends: ["pv-f1-neg", "pv-f2-pos"] },
     { ends: ["pv-f2-neg", "mci-f-neg"] },
