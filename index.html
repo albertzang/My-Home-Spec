@@ -41,8 +41,8 @@
   <nav class="design-toc" id="sidebar" aria-label="Contents"></nav>
   <article class="spa-article">
 <h2>1. Appliances &amp; Furnitures</h2>
-  <p>过滤水系统：待定</p>
-  <p>HVAC系统：待定</p>
+  <p>Filtered water: pending.</p>
+  <p>HVAC: pending.</p>
 <div class="design-devices-wrap appliances-wrap">
 <table class="appliances-table home-appliances span-groups spec-sheet">
 <thead>
@@ -103,7 +103,7 @@
       <span class="udc-device-meta">
         <span class="udc-device-title"><a href="https://shop.canon.ca/en_ca/p/imageclass-mf663cdw" target="_blank" rel="noopener noreferrer">imageCLASS MF663Cdw</a></span>
         <span class="sku-line"><span class="sku-links"><a class="udc-sku" href="https://s7d1.scene7.com/is/content/canon/imageCLASS-MF663Cdw-Brochurepdf" target="_blank" rel="noopener noreferrer">6928C012</a></span></span>
-        <span class="home-price" title="含环保费 $6.95 + GST/PST">$454.66</span>
+        <span class="home-price" title="Includes environmental fee $6.95 + GST/PST">$454.66</span>
       </span>
     </span>
   </td>
@@ -437,7 +437,7 @@
     <span class="udc-device">
       <a class="brand-logo-link" href="https://www.shure.com/en-US" target="_blank" rel="noopener noreferrer" title="Shure"><img class="brand-logo" src="assets/brands/shure.png" alt="Shure"></a>
       <span class="udc-device-meta">
-        <span class="udc-device-title">待定</span>
+        <span class="udc-device-title">Pending</span>
         <span class="sku-line"><span class="sku-links"><span class="udc-sku">-</span></span></span>
         <span class="home-price">-</span>
       </span>
@@ -513,7 +513,7 @@
       <span class="brand-logo-link" aria-hidden="true"></span>
       <span class="udc-device-meta">
         <span class="udc-device-title"><a href="https://barflybymercer.com/" target="_blank" rel="noopener noreferrer">Barfly by Mercer</a></span>
-        <span class="sku-line"><span class="sku-links"><span class="udc-sku">调酒工具</span></span></span>
+        <span class="sku-line"><span class="sku-links"><span class="udc-sku">Bar tools</span></span></span>
         <span class="home-price">-</span>
       </span>
     </span>
@@ -525,7 +525,7 @@
       <span class="brand-logo-link" aria-hidden="true"></span>
       <span class="udc-device-meta">
         <span class="udc-device-title"><a href="https://rhinocoffeegear.com/" target="_blank" rel="noopener noreferrer">Rhino Coffee Gear</a></span>
-        <span class="sku-line"><span class="sku-links"><span class="udc-sku">咖啡吧台配件</span></span></span>
+        <span class="sku-line"><span class="sku-links"><span class="udc-sku">Coffee bar accessories</span></span></span>
         <span class="home-price">-</span>
       </span>
     </span>
@@ -582,47 +582,47 @@
 
 <h2>2. UniFi Networking System</h2>
   <h3>2.1 Ethernet Infrastructure</h3>
-  <p class="lede">WAN、网关、交换、Wi‑Fi、NAS、Room Drop、线材与机柜的选型与适配。</p>
+  <p class="lede">Selection and fit for the WAN, gateway, switching, Wi‑Fi, NAS, room drops, cabling, and rack.</p>
 
   <h4>2.1.1 ISP</h4>
-  <p><a href="https://www.telus.com/en/internet/fibre/5-gigabit" target="_blank" rel="noopener noreferrer">Telus PureFibre 5 Gigabit</a>：运营商光纤 → TELUS ONT (Optical Network Terminal)。ONT 只做光电转换。</p>
+  <p><a href="https://www.telus.com/en/internet/fibre/5-gigabit" target="_blank" rel="noopener noreferrer">Telus PureFibre 5 Gigabit</a>: carrier fibre into the TELUS ONT (Optical Network Terminal). The ONT only converts optical to Ethernet.</p>
   <ul>
-    <li>定稿：Nokia <a href="https://www.nokia.com/asset/210704/" target="_blank" rel="noopener noreferrer">XS-010X-Q</a>（优先；XGS-PON SFU：无 Wi‑Fi，1×100M/1/2.5/5/10G）或 Nokia <a href="https://www.nokia.com/broadband-access/in-home-connectivity/fiber-ont/" target="_blank" rel="noopener noreferrer">XS-250X-A</a>（次选；无 Wi‑Fi，常见 1×10G + 4×1G；Telus 实装更常见）。本宅只用 10G 口。优先机库存与技师意愿不保证。</li>
-    <li>回退：Telus NAH（常见 NH20A / NH20T），开桥接，同样 10G 短跳进 UDM。
+    <li>Chosen: Nokia <a href="https://www.nokia.com/asset/210704/" target="_blank" rel="noopener noreferrer">XS-010X-Q</a> (preferred; XGS-PON SFU, no Wi‑Fi, 1×100M/1/2.5/5/10G) or Nokia <a href="https://www.nokia.com/broadband-access/in-home-connectivity/fiber-ont/" target="_blank" rel="noopener noreferrer">XS-250X-A</a> (alternate; no Wi‑Fi, commonly 1×10G + 4×1G, and the unit Telus installs more often). This house uses only the 10G port. Stock of the preferred unit, and the technician's choice, are not guaranteed.</li>
+    <li>Fallback: Telus NAH (commonly NH20A / NH20T), bridged, with the same 10G short patch into the UDM.
       <ul>
-        <li>Router：默认。NAH 自做 NAT / DHCP / 防火墙；再挂 UDM = 双 NAT。</li>
-        <li><strong>Port 10G Bridge：10G 口透传成 WAN，公网落到 UDM。</strong></li>
-        <li>Port 1 Bridge：桥 1G 口，不够 5 Gig。</li>
-        <li>Full Bridge：所有口暴露给运营商侧；家用动态公网少，下游自扛防火墙。</li>
+        <li>Router: the default. The NAH runs its own NAT / DHCP / firewall, so a UDM behind it is double NAT.</li>
+        <li><strong>Port 10G Bridge: the 10G port passes through as the WAN, and the public address lands on the UDM.</strong></li>
+        <li>Port 1 Bridge: bridges a 1G port, which is short of 5 Gig.</li>
+        <li>Full Bridge: every port is exposed on the carrier side. A residential dynamic public address is uncommon, and the downstream device carries the firewall.</li>
       </ul>
     </li>
   </ul>
 
   <h4>2.1.2 Gateway</h4>
-  <p><a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> 承担路由、防火墙、VPN、威胁管理和 Protect / Access / Network。公网由它 DHCP 取得。面板上的 2.5G 铜 WAN 不用。口位见 <a href="#2.1.8" class="page-ref">§2.1.8</a>。</p>
+  <p><a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> handles routing, the firewall, VPN, threat management, and Protect / Access / Network. It takes the public address by DHCP. The 2.5G copper WAN on the face is unused. Port assignment is in <a href="#2.1.8" class="page-ref">§2.1.8</a>.</p>
 
   <h4>2.1.3 Switching</h4>
-  <p>机柜一台 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 做汇聚。<a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 在 Media，只传数据，给这间多口有线。<a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 在 Garage，给车库的 <a href="#2.1.4" class="page-ref">Wi‑Fi</a>、<a href="#2.2.1" class="page-ref">门禁</a>和 <a href="#2.2.4" class="page-ref">USL</a> 供电。两台边缘交换机都用 10G RJ45 上联，combo 上的 SFP+ 空着，墙端不接 AC。</p>
+  <p>One <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> in the rack is the aggregation switch. <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> is in Media and carries data only, for the many wired ports in that room. <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> is in the Garage and powers the garage <a href="#2.1.4" class="page-ref">Wi‑Fi</a>, <a href="#2.2.1" class="page-ref">Exterior Door</a>, and <a href="#2.2.4" class="page-ref">USL</a>. Both edge switches uplink on 10G RJ45. The SFP+ on the combo is empty. The far end is not plugged into AC.</p>
 
   <h4>2.1.4 Wi‑Fi</h4>
   <ul>
-    <li>主屋：Basement / Main / Upper 三层墙面 <a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> ×3（配 <a href="https://store.ui.com/us/en/products/uacc-u7-pro-wall-fm" target="_blank" rel="noopener noreferrer">U7 Pro Wall Paintable Flush Mount</a>），2.5G / Wi‑Fi 7。</li>
-    <li>车库：<a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a>。</li>
+    <li>House: one wall-mounted <a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> on each of Basement / Main / Upper, with a <a href="https://store.ui.com/us/en/products/uacc-u7-pro-wall-fm" target="_blank" rel="noopener noreferrer">U7 Pro Wall Paintable Flush Mount</a>. 2.5G / Wi‑Fi 7.</li>
+    <li>Garage: <a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a>.</li>
   </ul>
 
   <h4>2.1.5 NAS</h4>
-  <p>机柜 <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">FlashStation FS2500</a>，1U，官方 DSM，导轨 <a href="https://www.synology.com/en-us/products/RKS-01" target="_blank" rel="noopener noreferrer">Synology Rail Kit RKS-01</a>（深度 553–834 mm）。12×2.5″ SATA SSD，不插 HDD。内存按 16–32 GB（出厂 8 GB）。单电源 350 W，接市电 / <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a>。口位见 <a href="#2.1.8" class="page-ref">§2.1.8</a>。</p>
+  <p>Rack: <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">FlashStation FS2500</a>, 1U, official DSM, on <a href="https://www.synology.com/en-us/products/RKS-01" target="_blank" rel="noopener noreferrer">Synology Rail Kit RKS-01</a> (depth 553–834 mm). 12×2.5″ SATA SSD, no HDD. Memory is planned at 16–32 GB (8 GB from the factory). A single 350 W supply, on utility power / <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a>. Port assignment is in <a href="#2.1.8" class="page-ref">§2.1.8</a>.</p>
 
   <h4>2.1.6 Room Drops</h4>
-  <p>七间房各一根在用的 <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmr" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMR</a>，Den 另有第二根。Den 用 <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-2p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a>（H-2P），两口都启用，分别是 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> 和 <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a>（见 <a href="#3.1" class="page-ref">§3.1</a>）。其余六间用 <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-1p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a>（V-1P）。Media 和 Garage 的远端接各自的 <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> 与 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a>。配线架 <a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a> 装一块、备用一块。第 13、14、15、23、24 口是 <a href="https://store.ui.com/us/en/products/uacc-keystone-coupler-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Coupler</a>，两端都是跳线；其余在用口是两端 <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack</a> 的永久链路。空孔 0。<a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack</a> 用 38：配线架打线 19，墙面 8，设备端 11。数量见 <a href="#2.3" class="page-ref">§2.3</a>。</p>
+  <p>Seven rooms each have one live <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmr" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMR</a>, and Den has a second. Den uses a <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-2p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a> (H-2P). Both ports are live: <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> and <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a> (see <a href="#3.1" class="page-ref">§3.1</a>). The other six rooms use a <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-1p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a> (V-1P). The far ends in Media and Garage land on that room's <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> and <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a>. One <a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a> is installed, and one is spare. Ports 13, 14, 15, 23, and 24 are a <a href="https://store.ui.com/us/en/products/uacc-keystone-coupler-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Coupler</a>, with a patch cable on both ends. Every other live port is a permanent link with a <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack</a> at each end. Empty holes: 0. <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack</a> quantity is 38: 19 punched down on the patch panel, 8 at the walls, and 11 at the devices. Quantities are in <a href="#2.3" class="page-ref">§2.3</a>.</p>
 
   <h4>2.1.7 Cables</h4>
-  <p>永久链路：<a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmr" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMR</a>。短跳：<a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable</a>。采购数量见 <a href="#2.3" class="page-ref">§2.3</a>。</p>
+  <p>Permanent links: <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmr" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMR</a>. Short patches: <a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable</a>. Purchase quantities are in <a href="#2.3" class="page-ref">§2.3</a>.</p>
   <ul>
-    <li>入墙用 <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmr" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMR</a> ×2（每盒 305 m）。静压箱路径改用 <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmp" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMP</a>。</li>
-    <li><a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable</a>：口位对齐的用 0.15 m，机尾用已购的 1 m。数量见 <a href="#2.3" class="page-ref">§2.3</a>。</li>
-    <li>户外摄像头与读头：<a href="https://store.ui.com/us/en/products/uacc-cable-patch-outdoor-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable Outdoor</a>，黑色。十根从就地 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 到门口设备，不进机柜。<a href="#2.2.1" class="page-ref">读头</a>与前门 <a href="#2.2.2" class="page-ref">G6 Pro Entry</a> 2 m ×5；<a href="#2.2.2" class="page-ref">Frontyard Turret</a> 5 m、<a href="#2.2.2" class="page-ref">Courtyard Turret</a> 5 m、<a href="#2.2.2" class="page-ref">Backyard Turret</a> 8 m、<a href="#2.2.2" class="page-ref">Walkway Bullet</a> 8 m、<a href="#2.2.2" class="page-ref">Laneway Turret</a> 12 m。合计 48 m，按门口就地汇聚估算。五条摄像头线各在 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 一端串一只 <a href="https://store.ui.com/us/en/products/uacc-eth-sp-din" target="_blank" rel="noopener noreferrer">Ethernet Surge Protection</a>。</li>
-    <li>非以太网：门锁 LOCK 为 Wet 12V 控制线；DPS 为干接点门磁（本宅 <a href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a>）；Tesla 控制为 CAN。LOCK / DPS / Tesla CAN 不按以太网线规。</li>
+    <li>In-wall runs use <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmr" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMR</a> ×2 (305 m per box). A plenum path uses <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmp" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMP</a> instead.</li>
+    <li><a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable</a>: 0.15 m where the ports line up, and the purchased 1 m at the equipment tail. Quantities are in <a href="#2.3" class="page-ref">§2.3</a>.</li>
+    <li>Outdoor cameras and readers: <a href="https://store.ui.com/us/en/products/uacc-cable-patch-outdoor-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable Outdoor</a>, black. Ten cables run from the local <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> to the devices at the door and do not enter the rack. <a href="#2.2.1" class="page-ref">Readers</a> and the front-door <a href="#2.2.2" class="page-ref">G6 Pro Entry</a> are 2 m ×5; <a href="#2.2.2" class="page-ref">Frontyard Turret</a> 5 m, <a href="#2.2.2" class="page-ref">Courtyard Turret</a> 5 m, <a href="#2.2.2" class="page-ref">Backyard Turret</a> 8 m, <a href="#2.2.2" class="page-ref">Walkway Bullet</a> 8 m, <a href="#2.2.2" class="page-ref">Laneway Turret</a> 12 m. Total 48 m, estimated from local aggregation at each door. Each of the five camera runs has one <a href="https://store.ui.com/us/en/products/uacc-eth-sp-din" target="_blank" rel="noopener noreferrer">Ethernet Surge Protection</a> in series at the <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> end.</li>
+    <li>Not Ethernet: the lock LOCK pair is a wet 12V control cable; DPS is a dry-contact door magnet (this house uses <a href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a>); Tesla control is CAN. LOCK / DPS / Tesla CAN are not pulled to Ethernet rules.</li>
   </ul>
 
   <h4>2.1.8 Server Rack</h4>
@@ -778,10 +778,10 @@
   </div>
 
   <h3>2.2 Protect &amp; Access</h3>
-  <p class="lede">户外人行门禁、Protect 监视、车道门与 SuperLink 传感。连线落点见 <a href="#appendix-topology" class="page-ref">Topology</a>；功率预算见 <a href="#2.4" class="page-ref">§2.4</a>。</p>
+  <p class="lede">Exterior pedestrian access, Protect surveillance, the driveway gate, and SuperLink sensing. Cable landings are in <a href="#2.5" class="page-ref">Topology</a>. The power budget is in <a href="#2.4" class="page-ref">§2.4</a>.</p>
 
   <h4>2.2.1 Exterior Door</h4>
-  <p>五扇户外人行门共用同一模式。就地汇聚用 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>：上行 PoE++，两个 PoE+ 口分别给读头与一台摄像头。LOCK（Wet 12V）接 <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>（15 mm，无内置 DPS）。DPS 另接第三方干接点 <a href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a>（木框 DPS-W、钢框 DPS-M → Hub DPS+/−）。REX 本宅空闲。无 DPS 时，App 只能显示 Locked / Unlocked。Access App 的 Door Position 是软件配置，本宅选 Open Active（NC，常闭，门关时接通）；Close Active（NO，常开）则是门开时接通。</p>
+  <p>Five exterior pedestrian doors share one pattern. Local aggregation is a <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>: PoE++ uplink, and two PoE+ ports, one for the reader and one for a camera. LOCK (wet 12V) feeds a <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a> (15 mm, no built-in DPS). DPS is a separate third-party dry contact, <a href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a> (DPS-W on a wood frame, DPS-M on a steel frame, into Hub DPS+/−). REX is idle in this house. Without a DPS, the app can show only Locked / Unlocked. Door Position in the Access app is a software setting. This house uses Open Active (NC, normally closed, conducting when the door is closed). Close Active (NO, normally open) conducts when the door is open.</p>
 
   <table class="door-access" id="door-access">
     <colgroup>
@@ -797,12 +797,12 @@
               <a class="door-hub" href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>
               <p class="door-uplink" data-door-uplink>PoE++ from <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></p>
               <div class="door-relay">
-                <button type="button" class="door-relay-btn is-wet" role="switch" aria-checked="true" aria-label="门锁输出，12V = 1A">
+                <button type="button" class="door-relay-btn is-wet" role="switch" aria-checked="true" aria-label="Lock output, 12V = 1A">
                   <span class="door-relay-side" data-side="dry">DRY</span>
                   <span class="door-relay-track" aria-hidden="true"><span class="door-relay-thumb"></span></span>
                   <span class="door-relay-side" data-side="wet">12V = 1A</span>
                 </button>
-                <p class="door-relay-note" hidden>Dry 不向锁输出 12V。本宅 Fail-Secure Strike 无外部电源，会一直锁死。</p>
+                <p class="door-relay-note" hidden>Dry puts no 12V on the lock. This house's Fail-Secure Strike has no external supply, so it stays locked.</p>
               </div>
             </div>
             <div class="door-pick-controls">
@@ -813,15 +813,15 @@
                   <span class="door-select-index" data-door-index>01 / 05</span>
                   <span class="door-select-mark" aria-hidden="true"></span>
                 </button>
-                <ul class="door-select-list" id="door-access-list" role="listbox" aria-label="人行门" hidden></ul>
+                <ul class="door-select-list" id="door-access-list" role="listbox" aria-label="Pedestrian doors" hidden></ul>
               </div>
               <div class="door-select door-status" data-status-select>
-                <button type="button" class="door-select-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="door-status-list" aria-label="Access 状态，Locked，Closed · Locked">
+                <button type="button" class="door-select-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="door-status-list" aria-label="Access state, Locked, Closed · Locked">
                   <span class="door-select-kicker">Status</span>
                   <span class="door-select-name" data-status-name>Locked</span>
                   <span class="door-select-mark" aria-hidden="true"></span>
                 </button>
-                <ul class="door-select-list" id="door-status-list" role="listbox" aria-label="Access 状态" hidden></ul>
+                <ul class="door-select-list" id="door-status-list" role="listbox" aria-label="Access state" hidden></ul>
               </div>
             </div>
           </div>
@@ -855,7 +855,7 @@
               <a data-role-name href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a>
               <div data-role-meta></div>
             </div>
-            <button type="button" class="door-switch" data-switch="lock" role="switch" aria-checked="false" aria-label="Lock，Locked">
+            <button type="button" class="door-switch" data-switch="lock" role="switch" aria-checked="false" aria-label="Lock, Locked">
               <span class="door-switch-track" aria-hidden="true"><span class="door-switch-thumb"></span></span>
               <span class="door-switch-label" data-switch-label>Locked</span>
             </button>
@@ -870,7 +870,7 @@
               <a data-role-name href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a>
               <div data-role-meta></div>
             </div>
-            <button type="button" class="door-switch" data-switch="dps" role="switch" aria-checked="false" aria-label="DPS，Closed">
+            <button type="button" class="door-switch" data-switch="dps" role="switch" aria-checked="false" aria-label="DPS, Closed">
               <span class="door-switch-track" aria-hidden="true"><span class="door-switch-thumb"></span></span>
               <span class="door-switch-label" data-switch-label>Closed</span>
             </button>
@@ -892,15 +892,15 @@
   </table>
 
   <h4>2.2.2 Security CCTV</h4>
-  <p>门口摄像头挂在各门 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> 下（见 <a href="#2.2.1" class="page-ref">Exterior Door</a>）。Hub 重启时，该门口摄像头短暂同离线。</p>
-  <p>墙端监视在 Main / Kitchen，与 <a href="https://www.mieleusa.com/product/11876580/compact-combi-steam-oven-24-width-with-directwater-plus-dgc-7845-am-stainless-steel-clean-touch-steel" target="_blank" rel="noopener noreferrer">Compact Combi-Steam Oven</a>（DGC 7845 AM）、<a href="https://www.mieleusa.com/product/11804640/24-compact-speed-oven-h-7840-bm-am-stainless-steel-clean-touch-steel" target="_blank" rel="noopener noreferrer">Compact Speed Oven</a>（H 7840 BM AM）并列。两台烤箱正面都是 W 23 3/8 × H 18 in（595 × 456 mm）。屏幕面板按这个面做。</p>
-  <p>屏用 <a href="https://www.dell.com/en-ca/shop/monitors/apd/dell-pro-p-24-monitor-p2426h-without-stand/p2426h_wost/-" target="_blank" rel="noopener noreferrer">Dell Pro P 24 Monitor - P2426H_WOST</a>（非触控，1920×1080，HDMI）。去掉支架后机身 21.21 × 12.37 × 1.97 in（538.64 × 314.23 × 50.03 mm），VESA 100 mm，宽在烤箱壁龛上限 22 3/8 in（568 mm）以内。16:9 画面居中，盖板收到 23 3/8 × 18 in，上下留钢面。Viewport 只有 HDMI 出。屏走柜内市电，不进 PoE。<a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a> 本机 1G PoE（见 <a href="#2.4" class="page-ref">§2.4</a>），由 <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 直供，不经过 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>。实时预览与门口操作在这块屏上；录像仍由 UniFi Protect（<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>）承担。</p>
+  <p>The camera at each door hangs off that door's <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> (see <a href="#2.2.1" class="page-ref">Exterior Door</a>). When the hub reboots, that door's camera drops offline with it.</p>
+  <p>The wall monitor is in Main / Kitchen, beside the <a href="https://www.mieleusa.com/product/11876580/compact-combi-steam-oven-24-width-with-directwater-plus-dgc-7845-am-stainless-steel-clean-touch-steel" target="_blank" rel="noopener noreferrer">Compact Combi-Steam Oven</a> (DGC 7845 AM) and the <a href="https://www.mieleusa.com/product/11804640/24-compact-speed-oven-h-7840-bm-am-stainless-steel-clean-touch-steel" target="_blank" rel="noopener noreferrer">Compact Speed Oven</a> (H 7840 BM AM). Both oven fronts are W 23 3/8 × H 18 in (595 × 456 mm). The screen panel is built to that face.</p>
+  <p>The screen is a <a href="https://www.dell.com/en-ca/shop/monitors/apd/dell-pro-p-24-monitor-p2426h-without-stand/p2426h_wost/-" target="_blank" rel="noopener noreferrer">Dell Pro P 24 Monitor - P2426H_WOST</a> (not touch, 1920×1080, HDMI). Without the stand the chassis is 21.21 × 12.37 × 1.97 in (538.64 × 314.23 × 50.03 mm), VESA 100 mm, and the width is inside the oven-niche limit of 22 3/8 in (568 mm). The 16:9 image is centered. The cover closes to 23 3/8 × 18 in, leaving steel above and below. Viewport has HDMI out only. The screen takes utility power in the cabinet and is not on PoE. <a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a> itself is 1G PoE (see <a href="#2.4" class="page-ref">§2.4</a>), fed directly by <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>, not through a <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>. Live view and door actions are on this screen. Recording stays with UniFi Protect (<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>).</p>
 
   <h4>2.2.3 Garage Gate</h4>
-  <p>车道大门 / 电动门禁位，与 Garage Door（车库行人/车门）分开记账。控制与读头型号待定，不占现有五套 <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>。</p>
+  <p>The driveway gate is accounted separately from the Garage Door (the garage pedestrian door and the vehicle door). Controller and reader models are pending. It does not use any of the five <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> units already allocated.</p>
 
   <h4>2.2.4 USL</h4>
-  <p><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a>：100M PoE，由 <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> 直供，挂车库半高墙、避大金属面。传感器选型待定。</p>
+  <p><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a>: 100M PoE, fed directly by <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a>, mounted on a half-height garage wall, clear of large metal surfaces. Sensor selection is pending.</p>
 
   <h3>2.3 Device List</h3>
 <div class="design-devices-wrap">
@@ -965,7 +965,7 @@
             <img src="https://static.ui.com/fingerprint/ui/images/40ae7055-11f8-4c8e-9a58-a4c6eead2055/default/4a4722f355074f13d9a4ea8e3dbca7be.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a></span>
-              <span class="udc-sku">UDM-Pro-Max · Incl. CyberSecure</span><span class="home-price" title="含 Enhanced CyberSecure + Memory Surcharge + 税">$1,215.20</span>
+              <span class="udc-sku">UDM-Pro-Max · Incl. CyberSecure</span><span class="home-price" title="Includes Enhanced CyberSecure + memory surcharge + tax">$1,215.20</span>
             </span>
           </span>
           </div>
@@ -1289,7 +1289,7 @@
             <img src="https://cdn.ecomm.ui.com/products/8166e57f-3ab1-4683-8e89-d88d7e4ae171/e519b029-32c7-4227-bf89-fb891a813575.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a></span>
-              <span class="udc-sku">UP-Viewport</span><span class="home-price" title="含 Memory Surcharge + 税">$331.52</span>
+              <span class="udc-sku">UP-Viewport</span><span class="home-price" title="Includes memory surcharge + tax">$331.52</span>
             </span>
           </span>
           </div>
@@ -1969,44 +1969,53 @@
   </table>
   </div>
 
+<h3>2.5 Topology</h3>
+  <div class="spec-topo-frame" id="spec-topo-frame">
+    <div class="spec-topo-bar">
+      <button type="button" id="spec-topo-fullscreen" class="spec-topo-mode" aria-pressed="false">Full Screen</button>
+      <button type="button" id="export-page-pdf" class="topo-export-button">Export Blueprint</button>
+    </div>
+    <div class="spec-topo" id="spec-topo"></div>
+  </div>
+
 <h2>3. Home Assistant System</h2>
-  <p class="lede">本地智能家居控制面：Den Hub、墙面 Wallpanel（×3）+ Den 长期桌测一套，与 <a href="#3.3" class="page-ref">§3.3</a> Device List。射频硬件（<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a>×2 + <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a>）落在 <a href="#3.1" class="page-ref">§3.1</a>；IP 侧（Wi‑Fi / MQTT / Matter-over-Wi‑Fi）不另买棒。录像 / 门禁仍归 <a href="#2.2" class="page-ref">§2.2</a> UniFi Protect / Access；HA 只做联动，不取代 NVR 或 Access 逻辑。买设备前先查 <a href="https://www.home-assistant.io/integrations/" target="_blank" rel="noopener noreferrer">HA Integrations</a> / 社区兼容表；优先本地控制，云只作后备。</p>
+  <p class="lede">Local smart-home control plane: the Den hub, three wall Wallpanels, and one long-term bench set in the Den, with the <a href="#3.3" class="page-ref">§3.3</a> Device List. Radio hardware (<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> ×2 + <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a>) lands in <a href="#3.1" class="page-ref">§3.1</a>. The IP side (Wi‑Fi / MQTT / Matter-over-Wi‑Fi) does not add another stick. Recording and access stay with <a href="#2.2" class="page-ref">§2.2</a> UniFi Protect / Access. HA only automates across them and does not replace the NVR or the Access logic. Check <a href="https://www.home-assistant.io/integrations/" target="_blank" rel="noopener noreferrer">HA Integrations</a> and the community compatibility tables before buying a device. Prefer local control. Cloud is the fallback.</p>
 
-  <p><strong>Bluetooth / BLE：</strong>日常说的「蓝牙」常混用两套：<strong>Bluetooth Classic</strong>（音响、旧串口等）与 <strong>Bluetooth Low Energy（BLE）</strong>（低功耗广播与短连接）。Home Assistant 的 <a href="https://www.home-assistant.io/integrations/bluetooth/" target="_blank" rel="noopener noreferrer">Bluetooth</a> 集成<strong>只支持 BLE</strong>，不支持 Classic。本宅短距传感（BTHome 温湿度等）、部分体脂秤与辅助存在探测走 BLE；墙体衰减大、无 mesh，不靠 Hub 机身蓝牙，而靠房间级 <a href="https://www.home-assistant.io/integrations/bluetooth/#remote-adapters-bluetooth-proxies" target="_blank" rel="noopener noreferrer">Bluetooth Proxy（remote adapter）</a>。按需、非 Day‑1：每层 1–2 台以太网 / PoE ESP32（优先外置天线，如 Olimex ESP32-PoE-ISO-EA）刷 <a href="https://esphome.io/components/bluetooth_proxy/" target="_blank" rel="noopener noreferrer">ESPHome Bluetooth Proxy</a>，专做 BLE 广告与短连接；Proxy 板本身走有线，避免再打 Wi‑Fi 与 BLE 抢射频。不拿 ZWA-2 兼 BLE 主力。厂商私有桥（Lutron Caseta 等）与红外-only 设备的 IR blaster 有才买；重要安防不单靠手机蓝牙存在。</p>
+  <p><strong>Bluetooth / BLE:</strong> Everyday speech uses “Bluetooth” for two different things: <strong>Bluetooth Classic</strong> (audio, older serial, and the like) and <strong>Bluetooth Low Energy (BLE)</strong> (low-power advertising and short connections). The Home Assistant <a href="https://www.home-assistant.io/integrations/bluetooth/" target="_blank" rel="noopener noreferrer">Bluetooth</a> integration <strong>supports BLE only</strong>, and does not support Classic. Short-range sensing in this house (BTHome temperature and humidity, and similar), some body-composition scales, and auxiliary presence detection use BLE. Walls attenuate it heavily and there is no mesh, so this does not rely on the Bluetooth radio in the hub chassis. It uses a room-level <a href="https://www.home-assistant.io/integrations/bluetooth/#remote-adapters-bluetooth-proxies" target="_blank" rel="noopener noreferrer">Bluetooth Proxy (remote adapter)</a>. As needed, and not on day 1: one or two Ethernet / PoE ESP32 boards per floor (an external antenna is preferred, such as the Olimex ESP32-PoE-ISO-EA), flashed with <a href="https://esphome.io/components/bluetooth_proxy/" target="_blank" rel="noopener noreferrer">ESPHome Bluetooth Proxy</a>, dedicated to BLE advertisements and short connections. The proxy board itself is wired, so it does not put Wi‑Fi and BLE on the same radio. The ZWA-2 is not the main BLE radio. Buy a vendor bridge (Lutron Caseta and the like) or an IR blaster for an infrared-only device only when one is actually needed. Important security does not depend on phone Bluetooth presence alone.</p>
 
-  <p><strong>Wi‑Fi：</strong>高带宽或厂商只给了 Wi‑Fi 的设备（部分电器、Matter-over-Wi‑Fi、少数 IoT）走本宅 UniFi AP；HA 不另建 Wi‑Fi，也不在 Hub 上插 USB Wi‑Fi 棒。吞吐高、配网熟，但占 AP airtime、云依赖机型断云即残，且 2.4 GHz 与 Zigbee / Thread 互害。本地 API 清晰的品牌可用；能有线（Room Drop）的固定设备走有线。补充通道，不是传感器主干。</p>
+  <p><strong>Wi‑Fi:</strong> Devices that need high bandwidth, or that the vendor offers only over Wi‑Fi (some appliances, Matter-over-Wi‑Fi, a few IoT devices), use this house's UniFi APs. HA does not run a second Wi‑Fi network, and the hub does not get a USB Wi‑Fi stick. Throughput is high and onboarding is familiar, but the devices take AP airtime, a cloud-dependent model is crippled when the cloud drops, and 2.4 GHz contends with Zigbee / Thread. Brands with a clear local API are acceptable. A fixed device that can be wired (a room drop) is wired. This is a side channel, not the sensor backbone.</p>
 
-  <p><strong>MQTT：</strong>软件消息总线，不是无线制式；跑在 Ethernet / Wi‑Fi / IP 上。本宅在 Hub 上按需装 Mosquitto，供 Tasmota / ESPHome、部分 DIY、以及日后若上 Zigbee2MQTT 时进 HA。解耦灵活、可全本地；要自管 Broker 与发现约定。ZHA 直连 Zigbee 时不必为 Zigbee 而装 MQTT；大量 ESP 或改 Z2M 时再升格为基础设施。</p>
+  <p><strong>MQTT:</strong> A software message bus, not a radio. It runs over Ethernet / Wi‑Fi / IP. This house installs Mosquitto on the hub when needed, for Tasmota / ESPHome, some DIY gear, and a later move to Zigbee2MQTT into HA. It decouples cleanly and can stay fully local. The broker and the discovery convention are run here. ZHA talking to Zigbee directly does not need MQTT for the sake of Zigbee. A large ESP fleet, or a move to Z2M, is when it becomes infrastructure.</p>
 
-  <p><strong>Matter：</strong>应用层互联标准，可跑在 Thread 或 Wi‑Fi / Ethernet 上。HA 用 Matter Server 做本地控制器；Matter-over-Thread 经 <a href="#3.1" class="page-ref">§3.1</a> 第二根 ZBT-2 Border Router，Matter-over-Wi‑Fi 经局域网、不占该棒。多生态本地控制的长期方向，不是把现有稳定 Zigbee / Z-Wave 网推倒重来的理由。Thread / Matter 对 IPv6 与 mDNS 敏感，防火墙未放行前不要先拆 VLAN。</p>
+  <p><strong>Matter:</strong> An application-layer standard. It can run on Thread or on Wi‑Fi / Ethernet. HA uses the Matter Server as the local controller. Matter-over-Thread goes through the second ZBT-2 Border Router in <a href="#3.1" class="page-ref">§3.1</a>. Matter-over-Wi‑Fi goes over the LAN and does not use that stick. It is the long-term direction for local control across ecosystems. It is not a reason to tear down a Zigbee / Z-Wave network that is already stable. Thread / Matter are sensitive to IPv6 and mDNS. Leave the VLANs as they are until the firewall allows that traffic.</p>
 
   <h3>3.1 Hub</h3>
   <ul>
     <li><a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a>
       <ul>
-        <li>安装：放在 Den，与 <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> 同室、分机独立；不进设备间机柜。金属机箱，附 VESA（可挂桌下 / 墙面）。三根 Connect 棒的天线座用原装线放到 Den 开阔处，彼此约 0.5–1 m，远离 USB 3、SSD、显示器电源与最近的 AP；不要塞进封闭金属腔。2.4 GHz 上 AP / Zigbee / Thread 并存时，靠拉开天线座与频谱规划共存。</li>
-        <li>系统与算力：Generic x86-64 Home Assistant OS（厂商预调 BIOS：掉电自启等）；CPU 为 Intel N100 四核。</li>
-        <li>内存与存储：定型 16 GB DDR4 + 256 GB M.2 2280 SATA。不选 8 GB（跑 HAOS + 协议栈偏紧）或 32 GB（本机不做 Frigate / 大模型）；不选 128 GB（备份 / recorder 易满）或更大盘 / 2.5″（影音与长备份进 NAS）。下单「Custom build」点名 16 GB / 256 GB。</li>
-        <li>网络与供电：PoE++ IN → Den 第二根 Room Drop → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 10G PoE+++（见 <a href="#2.1.6" class="page-ref">§2.1.6</a>）；Studio 独占 10G Drop。一口空闲 2.5G 短跳 → Den 桌测 Wallpanel 的 PoE+ 注入器 DATA IN（见 <a href="#3.2" class="page-ref">§3.2</a>）；其余 2.5G 口可留作日后用。供电按 ≥30 W PoE++ 预留（见 <a href="#2.4" class="page-ref">§2.4</a>），12 V DC 仅装机 / 排错。机身 USB：1× USB-C + 1× USB 3.0-A + 4× USB 2.0-A；三根棒分插三只 USB 2.0-A（射频噪声更小），USB-C / USB 3.0-A 留作他用。</li>
-        <li><a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZWA-2</a>（Z-Wave）
+        <li>Placement: in the Den, in the same room as the <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>, on its own machine. It does not go in the equipment-room rack. Metal chassis, with VESA (under the desk or on the wall). The antenna bases of the three Connect sticks use the supplied cables and sit in an open part of the Den, about 0.5–1 m apart, away from USB 3, SSDs, display power supplies, and the nearest AP. Keep them out of a closed metal cavity. Where AP / Zigbee / Thread share 2.4 GHz, coexistence comes from separating the antenna bases and from channel planning.</li>
+        <li>OS and compute: Generic x86-64 Home Assistant OS (the vendor's BIOS preset includes power-on after power loss). The CPU is a quad-core Intel N100.</li>
+        <li>Memory and storage: settled at 16 GB DDR4 + 256 GB M.2 2280 SATA. 8 GB is tight for HAOS plus the protocol stacks, and 32 GB is unused headroom because this machine does not run Frigate or a large model. 128 GB fills up with backups and the recorder, and a larger drive or a 2.5″ drive is for media and long backups, which go to the NAS. On the order, name 16 GB / 256 GB under Custom build.</li>
+        <li>Network and power: PoE++ IN → the Den's second room drop → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 10G PoE+++ (see <a href="#2.1.6" class="page-ref">§2.1.6</a>). The Studio has the 10G drop to itself. One free 2.5G port, on a short patch, goes to the DATA IN of the PoE+ injector for the Den bench Wallpanel (see <a href="#3.2" class="page-ref">§3.2</a>). The remaining 2.5G ports can stay free for later. Power is reserved at ≥30 W PoE++ (see <a href="#2.4" class="page-ref">§2.4</a>). 12 V DC is only for setup and troubleshooting. Chassis USB: 1× USB-C + 1× USB 3.0-A + 4× USB 2.0-A. The three sticks each take a USB 2.0-A, where the radio noise is lower. USB-C and USB 3.0-A stay free.</li>
+        <li><a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZWA-2</a> (Z-Wave)
           <ul>
-            <li>接线：原装 USB-C→USB-A 插一只 USB 2.0-A；天线见上方安装总则。</li>
-            <li>角色：门锁、部分墙开 / 插座、对穿透与干扰更敏感的关键控制骨干；Sub‑GHz，与 2.4 GHz Wi‑Fi 错开。经 Z-Wave JS 进 HA；Z-Wave / Z-Wave Long Range（北美）。与 Zigbee 并列本地控制骨干，不互相替代；门锁优先 Z-Wave / 已有 UniFi Access，不优先 Wi‑Fi 云锁。</li>
-            <li>取舍：墙体穿透通常好于 2.4 GHz mesh，LR 适合庭院距离，不占 Wi‑Fi airtime；北美 / 欧频不通用，生态与价格逊于 Zigbee，mesh 仍依赖插电路由节点。掉线先查天线是否开阔、路由节点是否被拔、是否混入错频设备、控制器旁 USB 3 噪声。认证锁与老牌墙开（Zooz / Inovelli / Yale 等）更稳。</li>
+            <li>Wiring: the supplied USB-C to USB-A cable into one USB 2.0-A. Antenna placement follows the rule above.</li>
+            <li>Role: locks, some wall switches and outlets, and the control backbone that is more sensitive to penetration and interference. Sub‑GHz, off the 2.4 GHz Wi‑Fi band. It enters HA through Z-Wave JS: Z-Wave / Z-Wave Long Range (North America). It sits beside Zigbee as a local control backbone. The two stay in parallel. Locks prefer Z-Wave, or the UniFi Access already in the house, ahead of a Wi‑Fi cloud lock.</li>
+            <li>Tradeoff: wall penetration is usually better than a 2.4 GHz mesh. Long Range suits yard distances and does not take Wi‑Fi airtime. North American and European frequencies are not interchangeable, the ecosystem and the prices trail Zigbee, and the mesh still depends on mains-powered routing nodes. On a dropout, check that the antenna is in the open, that a routing node was not unplugged, that a wrong-region device was not added, and that USB 3 noise is not next to the controller. Certified locks and established wall switches (Zooz / Inovelli / Yale, and the like) are the steadier choice.</li>
           </ul>
         </li>
-        <li><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a>（Zigbee）
+        <li><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a> (Zigbee)
           <ul>
-            <li>接线：原装 USB-C→USB-A 插一只 USB 2.0-A；天线见上方安装总则。</li>
-            <li>角色：传感器、灯泡、开关、插座数量最大的本地 mesh；固定 Zigbee + ZHA（不兼 Thread；官方不推荐 MultiPAN）。不另买第二套 Zigbee 协调器。硬件与 Thread 棒相近，网络不互通。默认「小数目常在线设备」首选；能 Zigbee 就少堆 Wi‑Fi IoT。</li>
-            <li>取舍：设备便宜、有电路由一开则电池末端跟网、ZHA 路径短；与 Wi‑Fi / Thread 同处 2.4 GHz 须规划信道，部分 Tuya 私有 cluster 在 ZHA 上残缺，mesh 质量取决于插电节点密度而非协调器标称距离。IKEA / Hue / Aqara（注意桥与直连）/ Sonoff 官方线更稳；白牌电池传感先用插座 / 灯铺路由骨架。天线勿塞封闭金属腔。</li>
+            <li>Wiring: the supplied USB-C to USB-A cable into one USB 2.0-A. Antenna placement follows the rule above.</li>
+            <li>Role: the largest local mesh, for sensors, bulbs, switches, and outlets. Fixed as Zigbee + ZHA (Thread stays on the other stick; the vendor does not recommend MultiPAN). A second Zigbee coordinator stays off the list. The hardware is close to the Thread stick. The networks do not talk to each other. This is the default first choice for a small number of devices that stay online. Where Zigbee is available, add fewer Wi‑Fi IoT devices.</li>
+            <li>Tradeoff: the devices are inexpensive, a mains-powered router brings the battery ends onto the mesh, and the ZHA path is short. It shares 2.4 GHz with Wi‑Fi / Thread, so the channels have to be planned. Some Tuya private clusters are incomplete on ZHA. Mesh quality follows the density of mains-powered nodes, rather than the coordinator's rated distance. The official lines from IKEA / Hue / Aqara (a bridge and a direct join behave differently) / Sonoff are steadier. For white-label battery sensors, lay the routing skeleton with outlets and lights first. Keep the antenna out of a closed metal cavity.</li>
           </ul>
         </li>
-        <li><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a>（Thread）
+        <li><a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZBT-2</a> (Thread)
           <ul>
-            <li>接线：原装 USB-C→USB-A 插一只 USB 2.0-A；天线见上方安装总则。</li>
-            <li>角色：低功耗 IPv6 mesh 传输层，主要承载 Matter-over-Thread；本棒固定作 HA Border Router（不兼 Zigbee；不依赖 HomePod / Nest）。不另买第三根 Thread 棒（除非日后独立实验室网）。新买电池类 Matter 的传输首选；不取代现有 Zigbee 库存。</li>
-            <li>取舍：为电池设备优化，经 BR 可 IP 直达；Thread 本身不是应用层——无 Matter / 厂商应用则「裸 Thread」无意义；前期设备贵、与 Zigbee 同频要分开天线与信道。掉线常见于 BR 断电、IPv6 / mDNS 被 VLAN 误伤、单 BR 位置极差。日后 Apple TV / Nest 可作辅 BR，本宅以 HA 棒为准。</li>
+            <li>Wiring: the supplied USB-C to USB-A cable into one USB 2.0-A. Antenna placement follows the rule above.</li>
+            <li>Role: a low-power IPv6 mesh transport, mainly for Matter-over-Thread. This stick is fixed as the HA Border Router (Zigbee stays on the other stick, and it does not depend on a HomePod or a Nest). A third Thread stick waits unless a separate lab network comes later. For newly purchased battery Matter devices, this is the preferred transport. It leaves the Zigbee devices already on hand in place.</li>
+            <li>Tradeoff: it is built for battery devices, and through the border router they are reachable over IP. Thread itself is not an application layer. Bare Thread, with no Matter or vendor application, does nothing useful. Early devices are expensive, and it shares a band with Zigbee, so the antennas and the channels stay apart. Dropouts usually come from the border router losing power, from IPv6 / mDNS being broken by a VLAN, or from a single border router in a poor spot. An Apple TV or a Nest can be an extra border router later. This house treats the HA stick as the one that counts.</li>
           </ul>
         </li>
       </ul>
@@ -2014,35 +2023,35 @@
   </ul>
 
   <h3>3.2 Wallpanel</h3>
-  <p>全宅四套同款核心栈见 <a href="#3.3" class="page-ref">§3.3</a>：三套墙装（Basement / Main / Upper）+ Den 长期桌测一套。墙装每路按 <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> IEEE 802.3at 上限 30 W 预留记账（见 <a href="#2.4" class="page-ref">§2.4</a>）；桌测支架定稿 <a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a>（采购见 <a href="#3.3" class="page-ref">§3.3</a>）；墙装后壳见 <a href="#3.2.1" class="page-ref">§3.2.1</a>。</p>
+  <p>Four identical core stacks for the house are in <a href="#3.3" class="page-ref">§3.3</a>: three wall mounts (Basement / Main / Upper) and one long-term bench set in the Den. Each wall mount is budgeted at the 30 W IEEE 802.3at ceiling of the <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> (see <a href="#2.4" class="page-ref">§2.4</a>). The bench stand is settled as the <a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a> (purchase in <a href="#3.3" class="page-ref">§3.3</a>). The wall-mount rear shell is in <a href="#3.2.1" class="page-ref">§3.2.1</a>.</p>
 
   <ul>
-    <li>墙装 ×3：Cat6A home-run → 配线架 → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 10G PoE+++ → HAT (C) RJ45。</li>
-    <li>Den 桌测 ×1：<a href="#3.1" class="page-ref">§3.1</a> Hub 空闲 2.5G → 短跳 → <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）DATA IN；墙插 AC → 注入器；注入器 DATA+PoE OUT → HAT (C) RJ45。电走 HAT，与墙机同路径；链路协商 1G（Pi 5 板载千兆）。</li>
+    <li>Wall mount ×3: Cat6A home run → patch panel → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 10G PoE+++ → HAT (C) RJ45.</li>
+    <li>Den bench ×1: a free 2.5G port on the <a href="#3.1" class="page-ref">§3.1</a> hub → short patch → <a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a> (30W · 1G) DATA IN. A wall AC outlet feeds the injector. Injector DATA+PoE OUT → HAT (C) RJ45. Power comes through the HAT, the same path as the wall units. The link negotiates 1G (the Pi 5's onboard gigabit).</li>
   </ul>
 
-  <h4>3.2.1 墙装后壳落地（3D 打印 / 钣金）</h4>
-  <p>仅墙装三套。下列 STL 为社区起点，均未在本宅核心栈（见 <a href="#3.3" class="page-ref">§3.3</a>）上实机验收——到手后须试配，必要时改深度 / 开孔。可组合：全包后壳背面留 VESA + 市售臂。</p>
+  <h4>3.2.1 Wall-mount rear shell (3D print / sheet metal)</h4>
+  <p>The three wall mounts only. The STLs below are community starting points. None has been checked on this house's core stack (see <a href="#3.3" class="page-ref">§3.3</a>). After they arrive they have to be test-fitted, and the depth or the openings may need a change. They can be combined: a full rear shell with VESA on the back, plus an off-the-shelf arm.</p>
   <ul>
-    <li>3D 打印（现成图样）
+    <li>3D print (ready-made models)
       <ul>
-        <li><a href="https://makerworld.com/en/models/3116241-raspberry-pi-10-touch-display-2-case" target="_blank" rel="noopener noreferrer">MakerWorld · Raspberry Pi 10.1″ Touch Display 2 Case</a>（CreationThroughChaos）— 针对 10″ TD2；当前以桌面 / 导轨为主，作者称墙装支架仍在开发；Pi 位与屏脚位因公差可能需微调。</li>
-        <li><a href="https://www.printables.com/model/1202915-raspberry-pi-touch-display-2-wall-mount-case" target="_blank" rel="noopener noreferrer">Printables · Touch Display 2 wall mount case</a>（fbm3334）—墙装；thick 约 60 mm 预留 HAT、可选散热孔，附 OpenSCAD 源文件。社区多用于 7″ TD2；上 10″ 须按 167×248 mm 外廓重参或试打改模。</li>
-        <li><a href="https://github.com/cnxsoft/vesa-adapter-pi-touch-display-10" target="_blank" rel="noopener noreferrer">GitHub · cnxsoft VESA adapter（10″ TD2）</a> — 屏背 M2.5 → 100×100 VESA；可选日后配市售臂上墙。不包 Pi / HAT，开背正好让 Cooler / HAT (C)。</li>
-        <li><a href="https://www.printables.com/model/1214965-raspberry-pi-touch-display-2-wallmount-case-for-ra" target="_blank" rel="noopener noreferrer">Printables · Frank Delporte wallmount（PoE / HAT 加高）</a> — 网口与散热开孔设计可参考；模型基于 7″ TD2，10″ 须按外廓改模。</li>
-        <li><a href="https://learn.adafruit.com/pi-wall-mount" target="_blank" rel="noopener noreferrer">Adafruit · Articulated Pi Display V2 Mount</a> — 教程含 Pi 5 + Active Cooler + M.2 HAT+ 层叠；ST 默认 7″ TD2，10″ 作结构参考。</li>
+        <li><a href="https://makerworld.com/en/models/3116241-raspberry-pi-10-touch-display-2-case" target="_blank" rel="noopener noreferrer">MakerWorld · Raspberry Pi 10.1″ Touch Display 2 Case</a> (CreationThroughChaos) — made for the 10″ TD2. Today it is mainly a desk or rail case. The author says the wall-mount bracket is still in development. The Pi position and the display feet may need a small adjustment for tolerance.</li>
+        <li><a href="https://www.printables.com/model/1202915-raspberry-pi-touch-display-2-wall-mount-case" target="_blank" rel="noopener noreferrer">Printables · Touch Display 2 wall mount case</a> (fbm3334) — wall mount. The thick version is about 60 mm and leaves room for a HAT, with optional vent holes, and it includes the OpenSCAD source. The community mostly uses it for the 7″ TD2. Moving it to 10″ means re-parameterizing, or test-printing a revised model, to the 167×248 mm outline.</li>
+        <li><a href="https://github.com/cnxsoft/vesa-adapter-pi-touch-display-10" target="_blank" rel="noopener noreferrer">GitHub · cnxsoft VESA adapter (10″ TD2)</a> — display-back M2.5 to 100×100 VESA. An off-the-shelf arm can go on the wall later. It does not enclose the Pi or the HAT. The open back leaves room for the Cooler and the HAT (C).</li>
+        <li><a href="https://www.printables.com/model/1214965-raspberry-pi-touch-display-2-wallmount-case-for-ra" target="_blank" rel="noopener noreferrer">Printables · Frank Delporte wallmount (raised for PoE / HAT)</a> — the network-port and vent openings are worth copying. The model is based on the 7″ TD2. 10″ needs a revised model to the outline.</li>
+        <li><a href="https://learn.adafruit.com/pi-wall-mount" target="_blank" rel="noopener noreferrer">Adafruit · Articulated Pi Display V2 Mount</a> — the guide includes a Pi 5 + Active Cooler + M.2 HAT+ stack. The ST defaults to the 7″ TD2. Treat 10″ as a structural reference.</li>
       </ul>
     </li>
-    <li>3D 打印（自改）：以实机堆叠尺寸为准，在 OpenSCAD / CAD 里加深内腔（Cooler 出风 + HAT (C) + 2230 + RJ45）；PETG / ABS 优于 PLA 贴墙温升。打印后壳时注意 Active Cooler 出风、HAT (C) / RJ45 净空。</li>
-    <li>钣金：画 STEP（外形贴 TD2、内腔让出 Cooler + HAT (C) + 2230、开 RJ45 / 散热 / 可选 VESA 孔）→ SendCutSend 或本地激光 + 折弯（铝 1.0–1.5 mm）；喷粉 / 阳极。须出图下单。</li>
+    <li>3D print (modified here): take the stacked size of the real hardware, and deepen the cavity in OpenSCAD / CAD (Cooler exhaust + HAT (C) + 2230 + RJ45). PETG / ABS handles the temperature against a wall better than PLA. When printing the rear shell, keep the Active Cooler exhaust and the HAT (C) / RJ45 clearances.</li>
+    <li>Sheet metal: draw a STEP (outline matching the TD2, cavity clearing the Cooler + HAT (C) + 2230, openings for RJ45 / ventilation / optional VESA) → SendCutSend or a local laser and brake (aluminum 1.0–1.5 mm), then powder coat or anodize. It has to be drawn before it can be ordered.</li>
   </ul>
 
-  <h4>3.2.2 软件</h4>
+  <h4>3.2.2 Software</h4>
   <ul>
-    <li>系统：Raspberry Pi OS（或轻量镜像）从 NVMe 启动；kiosk 全屏打开 HA Dashboard（<a href="https://www.home-assistant.io/integrations/companion/" target="_blank" rel="noopener noreferrer">Home Assistant Companion</a> 作 Home App，或 Fully Kiosk 等浏览器壳）。四套同镜像基线；墙装三套按楼层切 Dashboard，Den 桌测可切任意层做预览。</li>
-    <li>账号：每块板独立 panel 用户；墙装权限只覆盖该层 Dashboard，桌测账号可放宽便于调试。</li>
-    <li>亮屏：墙装用人近亮屏 / 人走降亮（板载相机或房间存在传感器）；桌测可常亮或同策略。</li>
-    <li>施工顺序：先在 Den 用注入器 PoE 老化并克隆镜像 → 三套开孔上墙、口上 PoE+++；桌测套长期留 Den，接线见上方。</li>
+    <li>System: Raspberry Pi OS (or a lighter image) boots from NVMe. A kiosk opens the HA dashboard full screen (<a href="https://www.home-assistant.io/integrations/companion/" target="_blank" rel="noopener noreferrer">Home Assistant Companion</a> as the home app, or a browser shell such as Fully Kiosk). All four share one image baseline. The three wall mounts switch dashboard by floor. The Den bench can switch to any floor for a preview.</li>
+    <li>Accounts: each board has its own panel user. A wall mount's permissions cover only that floor's dashboard. The bench account can be wider, for debugging.</li>
+    <li>Screen on: a wall mount brightens when someone is near and dims when they leave (the onboard camera, or a presence sensor in the room). The bench can stay on, or use the same policy.</li>
+    <li>Build order: age the image on injector PoE in the Den and clone it, then cut openings for the three wall sets and put them on PoE+++. The bench set stays in the Den. Wiring is above.</li>
   </ul>
 
   <h3>3.3 Device List</h3>
@@ -2185,7 +2194,7 @@
         <td class="device-cell is-purchased">
           <span class="udc-device">
             <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a>（30W · 1G）</span>
+              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a> (30W · 1G)</span>
               <span class="protocol-line"></span>
               <span class="home-price">$22.40</span>
             </span>
@@ -2516,9 +2525,9 @@
     <div class="gw-zoom-bar">
       <button type="button" id="gw-fullscreen" class="spec-topo-mode" aria-pressed="false">Full Screen</button>
     </div>
-    <div class="gw-zoom-viewport" tabindex="0" aria-label="整张图。点一台设备，它接到的接口会涂实。点一个已经接线的端口，只涂实同一根导线上的接口。点没有接线的端口，等于点那台设备。再点同一处或空白处取消。">
+    <div class="gw-zoom-viewport" tabindex="0" aria-label="The whole drawing. Click a device and the terminals it lands on fill in. Click a wired port and only the terminals on that same conductor fill in. Click an unwired port and that selects the device. Click the same place again, or blank paper, to clear.">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2200 2200" role="group" aria-labelledby="gw3-desc">
-<desc id="gw3-desc">整张接线图。点一台设备，它接到的接口会涂实，其余接口变淡。点一个已经接线的端口，只涂实同一根导线上的接口。点没有接线的端口，等于点那台设备。再点同一处或空白处取消。</desc>
+<desc id="gw3-desc">The whole wiring drawing. Click a device and the terminals it lands on fill in, and the other terminals fade. Click a wired port and only the terminals on that same conductor fill in. Click an unwired port and that selects the device. Click the same place again, or blank paper, to clear.</desc>
 <defs>
 <clipPath id="gw-bay-clip"><rect x="0.75" y="0.75" width="998.5" height="998.5" rx="10"/></clipPath><clipPath id="pw3-clip"><rect x="0.75" y="0.75" width="998.5" height="558.5" rx="10"/></clipPath><clipPath id="wc3-clip"><rect x="0.75" y="0.75" width="448.5" height="358.5" rx="10"/></clipPath>
 </defs>
@@ -2570,7 +2579,7 @@
   <p>Reference: <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/index.html" target="_blank" rel="noopener noreferrer">Powerwall 3 Installation Manual with Gateway 3</a>.</p>
 
     <h2>Appendix. Order Fees Running Total</h2>
-  <p class="lede">订单级费用（Shipping / Handling 及摊在运费上的税），<strong>不</strong>摊入 <a href="#2.3" class="page-ref">§2.3</a> / <a href="#3.3" class="page-ref">§3.3</a> 的 Device Price。按结款单整单记账；新单只追加本表。结款 PDF 在 <code>orders/</code>。</p>
+  <p class="lede">Order-level fees (shipping / handling, and tax charged on the freight). They are <strong>not</strong> spread into the Device Price in <a href="#2.3" class="page-ref">§2.3</a> / <a href="#3.3" class="page-ref">§3.3</a>. Each settlement is booked as a whole order. A new order is only appended to this table. Settlement PDFs are in <code>orders/</code>.</p>
   <div class="design-devices-wrap">
   <table class="devices-table order-fees-table">
     <thead>
@@ -2594,7 +2603,7 @@
       <tr>
         <td><a href="orders/CanaKit%20-%20Order%20%23%20W100518020664.pdf" target="_blank" rel="noopener noreferrer">CanaKit <code>W100518020664</code></a></td>
         <td class="price-cell">$29.06</td>
-        <td>Shipping $25.95 + 运费 GST/PST $3.11</td>
+        <td>Shipping $25.95 + GST/PST on freight $3.11</td>
       </tr>
       <tr>
         <td><a href="orders/Waveshare%20-%20Order%20%23%20261006-010726-E0.pdf" target="_blank" rel="noopener noreferrer">Waveshare <code>261006-010726-E0</code></a></td>
@@ -2604,12 +2613,12 @@
       <tr>
         <td><a href="orders/ameriDroid%20-%20Order%20%23%20A136752.pdf" target="_blank" rel="noopener noreferrer">ameriDroid <code>A136752</code></a></td>
         <td class="price-cell">$32.33<span class="price-usd">US$21.78</span></td>
-        <td>Shipping（PoE Mini PC）</td>
+        <td>Shipping (PoE Mini PC)</td>
       </tr>
       <tr>
         <td><a href="orders/ameriDroid%20-%20Order%20%23%20A136769.pdf" target="_blank" rel="noopener noreferrer">ameriDroid <code>A136769</code></a></td>
         <td class="price-cell">$12.05<span class="price-usd">US$8.22</span></td>
-        <td>Shipping（ZWA-2 + ZBT-2×2）</td>
+        <td>Shipping (ZWA-2 + ZBT-2×2)</td>
       </tr>
       <tr>
         <td><a href="orders/Pimoroni%20-%20Order%20%23%20PI803622.pdf" target="_blank" rel="noopener noreferrer">Pimoroni <code>PI803622</code></a></td>
@@ -2619,7 +2628,7 @@
       <tr>
         <td><a href="orders/Waveshare%20-%20Order%20%23%20261006-010726-E0%20-%20Custom%20Duty.pdf" target="_blank" rel="noopener noreferrer">Waveshare <code>261006-010726-E0</code> · DHL</a></td>
         <td class="price-cell">$35.08</td>
-        <td>清关：进口 GST/PST $16.18 + 清关服务费 $18.00 + GST $0.90</td>
+        <td>Customs: import GST/PST $16.18 + clearance fee $18.00 + GST $0.90</td>
       </tr>
       <tr>
         <td><a href="orders/Dell%20-%20Order%20%23%201017312738.pdf" target="_blank" rel="noopener noreferrer">Dell <code>1017312738</code></a></td>
@@ -2649,25 +2658,17 @@
       <tr>
         <td><a href="orders/Canon%20-%20Order%20%23%2030682113.pdf" target="_blank" rel="noopener noreferrer">Canon <code>30682113</code></a></td>
         <td class="price-cell">$84.00</td>
-        <td>Freight Surcharge $75.00 + 运费 GST/PST $9.00</td>
+        <td>Freight surcharge $75.00 + GST/PST on freight $9.00</td>
       </tr>
     </tbody>
     <tfoot>
       <tr class="order-fees-sum">
         <th scope="row">Running Total</th>
         <td class="price-cell">$281.34</td>
-        <td>加元合计</td>
+        <td>Total in CAD</td>
       </tr>
     </tfoot>
   </table>
-  </div>
-  <h2>Appendix. Topology</h2>
-  <div class="spec-topo-frame" id="spec-topo-frame">
-    <div class="spec-topo-bar">
-      <button type="button" id="spec-topo-fullscreen" class="spec-topo-mode" aria-pressed="false">Full Screen</button>
-      <button type="button" id="export-page-pdf" class="topo-export-button">Export Blueprint</button>
-    </div>
-    <div class="spec-topo" id="spec-topo"></div>
   </div>
 </article>
   </div>

@@ -1963,7 +1963,7 @@
     .udc-port.fe { --port-c: #f0b429; background: #f0b429; } /* 100M */
     .udc-port.other {
       --port-c: #c4785a;
-      background: #c4785a; /* 非以太网：光纤 / USB / CAN / REX / DPS / LOCK */
+      background: #c4785a; /* Not Ethernet: fibre / USB / CAN / REX / DPS / LOCK */
       color: #fff;
     }
 
@@ -2955,7 +2955,7 @@
     }
 
     /*
-     * Appendix Topology is the drawing. The bar stays outside the stage so
+     * §2.5 Topology is the drawing. The bar stays outside the stage so
      * Export Blueprint clones the stage alone. The box is as tall as the
      * drawing: the Spec pane scrolls it vertically, and the box pans sideways.
      */

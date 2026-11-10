@@ -84,7 +84,7 @@
         });
       });
 
-      /* Body page-refs (§2.3, Topology, 见下方…) scroll the Spec pane. */
+      /* Body page-refs (§2.3, Topology, see below…) scroll the Spec pane. */
       article.addEventListener("click", function (event) {
         var a = event.target.closest && event.target.closest("a.page-ref");
         if (!a || !article.contains(a)) return;
@@ -3195,7 +3195,7 @@
       }
 
       /*
-       * The stage is content-sized, so the appendix column does not reflow it.
+       * The stage is content-sized, so the spec column does not reflow it.
        * Relayout, then clone that stage onto the sheet.
        */
       async function stageTopologySheet(spec) {
@@ -3642,7 +3642,7 @@
         var was = control.getAttribute("aria-checked") === "true";
         var label = switchLabel(which, on);
         control.setAttribute("aria-checked", on ? "true" : "false");
-        control.setAttribute("aria-label", (which === "lock" ? "Lock，" : "DPS，") + label);
+        control.setAttribute("aria-label", (which === "lock" ? "Lock, " : "DPS, ") + label);
         control.classList.toggle("is-on", on);
         control.querySelector("[data-switch-label]").textContent = label;
         if (animate && was !== on) {
@@ -3696,7 +3696,7 @@
         apply: function (door, i, animate) {
           nameEl.textContent = door.name;
           indexEl.textContent = pad(i + 1) + " / " + pad(doors.length);
-          doorRoot.querySelector(".door-select-btn").setAttribute("aria-label", "人行门，" + door.name + "，第 " + (i + 1) + " 扇，共 " + doors.length + " 扇");
+          doorRoot.querySelector(".door-select-btn").setAttribute("aria-label", "Pedestrian door, " + door.name + ", " + (i + 1) + " of " + doors.length);
           fillUplink(door, animate);
           fillRole("reader", door.reader, animate);
           fillRole("camera", door.camera, animate);
@@ -3718,7 +3718,7 @@
         onOpen: function () { doorMenu.close(); },
         apply: function (state, i, animate) {
           statusNameEl.textContent = state.name;
-          statusRoot.querySelector(".door-select-btn").setAttribute("aria-label", "Access 状态，" + state.name + "，" + state.hint);
+          statusRoot.querySelector(".door-select-btn").setAttribute("aria-label", "Access state, " + state.name + ", " + state.hint);
           paintSwitch("lock", state.lock, animate);
           paintSwitch("dps", state.dps, animate);
         }
@@ -3729,7 +3729,7 @@
       function paintRelay(wet) {
         relayBtn.classList.toggle("is-wet", wet);
         relayBtn.setAttribute("aria-checked", wet ? "true" : "false");
-        relayBtn.setAttribute("aria-label", wet ? "门锁输出，12V = 1A" : "门锁输出，DRY");
+        relayBtn.setAttribute("aria-label", wet ? "Lock output, 12V = 1A" : "Lock output, dry");
         relayNote.hidden = wet;
       }
       relayBtn.addEventListener("click", function () {
@@ -4093,21 +4093,21 @@
     gw: "Tesla Gateway 3",
     "pw-follower": "Tesla Powerwall 3 · Follower",
     "pw-leader": "Tesla Powerwall 3 · Leader",
-    wc1: "Wall Connector Gen 3，1",
-    wc2: "Wall Connector Gen 3，2",
+    wc1: "Wall Connector Gen 3, 1",
+    wc2: "Wall Connector Gen 3, 2",
     meter: "Meter-Main",
     house: "Main House Subpanel",
     garage: "Garage Subpanel",
-    "pv-f1": "Tesla Solar Panel，Follower 1",
-    "pv-f2": "Tesla Solar Panel，Follower 2",
-    "pv-f3": "Tesla Solar Panel，Follower 3",
-    "pv-f4": "Tesla Solar Panel，Follower 4",
-    "pv-l1": "Tesla Solar Panel，Leader 1",
-    "pv-l2": "Tesla Solar Panel，Leader 2",
-    "pv-l3": "Tesla Solar Panel，Leader 3",
-    "pv-l4": "Tesla Solar Panel，Leader 4",
-    "mci-f": "MCI-1，Follower 组串",
-    "mci-l": "MCI-1，Leader 组串"
+    "pv-f1": "Tesla Solar Panel, Follower 1",
+    "pv-f2": "Tesla Solar Panel, Follower 2",
+    "pv-f3": "Tesla Solar Panel, Follower 3",
+    "pv-f4": "Tesla Solar Panel, Follower 4",
+    "pv-l1": "Tesla Solar Panel, Leader 1",
+    "pv-l2": "Tesla Solar Panel, Leader 2",
+    "pv-l3": "Tesla Solar Panel, Leader 3",
+    "pv-l4": "Tesla Solar Panel, Leader 4",
+    "mci-f": "MCI-1, Follower string",
+    "mci-l": "MCI-1, Leader string"
   };
   var nets = [
     { ends: ["meter", "gw-a-s1"] },
