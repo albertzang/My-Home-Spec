@@ -264,8 +264,6 @@
         var idx = rows.indexOf(handle);
         for (var i = idx + 1; i < rows.length; i += 1) {
           var row = rows[i];
-          /* The handle's own port row shares its level and is not a descendant. */
-          if (row.classList.contains("power-tree-ports")) continue;
           var rowLevel = Number(row.getAttribute("data-level"));
           if (rowLevel <= level) break;
           if (row.classList.contains("power-tree-handle")) setHandleOpen(row, false);
@@ -290,8 +288,7 @@
         var collapsedDepth = Infinity;
         rows.forEach(function (row) {
           var level = Number(row.getAttribute("data-level"));
-          /* A port row shares its device's level, so it must not clear that
-             device's collapse. The next handle at the same level does. */
+          /* The next handle at this level ends the collapsed subtree. */
           var opensLevel = level < collapsedDepth || (
             level === collapsedDepth && row.classList.contains("power-tree-handle")
           );
@@ -316,6 +313,8 @@
         }
       }
 
+      handles.forEach(function (row) { setHandleOpen(row, false); });
+
       rows.forEach(function (row) {
         if (!row.classList.contains("power-tree-handle")) return;
         row.addEventListener("click", function (event) {
@@ -334,9 +333,9 @@
     /* Span-row tables (chapter 1 rooms, §2.3 / §3.3 categories).
        A span row collapses every following row until the next span at the
        same or shallower level. Nested spans (patch-cable specs) use
-       data-level. Floor bands stay visible. The header toggles every span.
+       data-level.        Floor bands stay visible. The header toggles every span.
        A sheet with no spans collapses its product rows instead.
-       "-" is expanded, "+" is collapsed. */
+       Every sheet starts collapsed. "-" is expanded, "+" is collapsed. */
     (function () {
       function bindSpanTable(table) {
       var rooms = Array.prototype.slice.call(table.querySelectorAll("tbody > tr.room-span"));
@@ -352,7 +351,7 @@
         if (headerMark) headerMark.textContent = open ? "-" : "+";
       }
 
-      var sheetClosed = false;
+      var sheetClosed = true;
 
       function syncHeader() {
         if (!rooms.length) {
@@ -459,7 +458,7 @@
       var thead = table.querySelector("thead");
       if (thead && headerButton) {
         thead.addEventListener("click", function (event) {
-          if (event.target.closest && event.target.closest("a, .port-split")) return;
+          if (event.target.closest && event.target.closest("a")) return;
           if (!rooms.length) {
             sheetClosed = !sheetClosed;
             applyVisibility();
@@ -475,6 +474,7 @@
         });
       }
 
+      rooms.forEach(function (row) { setFlags(row, false); });
       applyVisibility();
       syncHeader();
       revealReady = true;
@@ -591,9 +591,6 @@
 
       function lockPower(table) {
         lockPane(table);
-        Array.prototype.forEach.call(table.querySelectorAll("colgroup col"), function (col) {
-          col.style.width = "50%";
-        });
       }
 
       function fitPowerLines() {
@@ -1009,7 +1006,7 @@
           up: [P("ups-lan", "fe", { title: "100/10 MbE management ← patch 23 ← UDM LAN 8" })],
           down: idleMany(2, "ups-surge", "gbe1", { title: "GbE surge in/out unused", idle: true }) },
         { id: "xg", vlan: "management", name: "USW-Pro-XG-24-PoE", loc: "Rack Cabinet", href: UI + "usw-pro-xg-24-poe", info: "2×SFP28 + 8×2.5G PoE+++ + 16×10G PoE+++. Unused ports hollow.",
-          poeBar: { label: "PoE Output Used", used: 445.9, cap: 720 },
+          poeBar: { label: "PoE Output Used", used: 442.9, cap: 720 },
           up: [
             P("xg-sfp", "sfp", { t: "SFP28", title: "SFP28 ← UACC-DAC-SFP10 at 10G" }),
             P("xg-sfp2", "sfp", { t: "SFP28", title: "SFP28 unused", idle: true })
@@ -1220,6 +1217,9 @@
         { id: "lite", vlan: "management", name: "U7-Lite", loc: "Garage", href: UI + "u7-lite", info: "2.5G PoE from USW-Flex-2.5G-8-PoE.",
           poeBar: { used: 13, cap: 15.4 },
           up: [P("lite-up", "gbe2p5", { poe: "poe", title: "2.5G PoE" })], down: [] },
+        { id: "usl", vlan: "iot", name: "USL-Gateway", loc: "Garage", href: UI + "usl-gateway", info: "100M PoE from USW-Flex-2.5G-8-PoE.",
+          poeBar: { used: 3.4, cap: 15.4 },
+          up: [P("usl-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
         { id: "gar-mini", vlan: "security", name: "UA-Hub-Door-Mini", loc: "Garage Door", href: UI + "ua-hub-door-mini", info: "Uplink from USW-Flex-2.5G-8-PoE. PoE → UA-UA-G3 and Laneway Turret. REX, DPS, LOCK.",
           devicePower: { value: "19W" },
           poeBar: { label: "PoE Output Used", used: 20, cap: 45 },
@@ -1242,9 +1242,6 @@
         { id: "lane", vlan: "security", name: "UVC-G6-Pro-Turret", loc: "Laneway/Garage/South", href: UI + "uvc-g6-pro-turret", info: "1G PoE+ from Garage UA-Hub-Door-Mini.",
           poeBar: { used: 15, cap: 30 },
           up: [P("lane-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
-        { id: "usl", vlan: "iot", name: "USL-Gateway", loc: "Garage", href: UI + "usl-gateway", info: "100M PoE from USW-Flex-2.5G-8-PoE.",
-          poeBar: { used: 3.4, cap: 15.4 },
-          up: [P("usl-up", "fe", { poe: "poe", title: "100M PoE" })], down: [] },
         { id: "pw-lead", vlan: "iot", name: "Tesla Powerwall 3 (Leader)", loc: "Garage", href: "https://www.tesla.com/powerwall", info: "LAN from USW-Flex-2.5G-8-PoE. ETH → Follower. CAN → GW3.",
           up: [P("pw-lead-lan", "gbe1", { title: "1G ← USW-Flex-2.5G-8-PoE" })],
           down: [P("pw-lead-eth", "gbe1", { title: "1G → Follower", child: "pw-follow" }), P("pw-lead-can", "other", { t: "CAN", title: "CAN → GW3", child: "gw3" })] },
@@ -1346,9 +1343,9 @@
         { from: "xg", fp: "xg-gar", to: "drop-gar", tp: "drop-gar-xg", info: "USW-Pro-XG-24-PoE → Garage C6A." },
         { from: "drop-gar", fp: "drop-gar-flex", to: "flex", tp: "flex-up", cable: "cat6", info: "Garage C6A home-run → Type 4 / 4PPoE-rated 24–26AWG pure-copper Cat6 short patch → USW-Flex-2.5G-8-PoE 10G RJ45 / PoE+++ input." },
         { from: "xg", fp: "xg-view", to: "view", tp: "view-up", info: "USW-Pro-XG-24-PoE 2.5G PoE+++ port → UP-Viewport at 1G PoE." },
-        { from: "flex", fp: "flex-usl", to: "usl", tp: "usl-up", info: "Flex 2.5G PoE++ port → USL-Gateway at 100M PoE." },
         { from: "flex", fp: "flex-tesla", to: "pw-lead", tp: "pw-lead-lan", info: "Flex 2.5G PoE++ port → PW3 Leader at 1G; PoE disabled at the endpoint." },
         { from: "flex", fp: "flex-lite", to: "lite", tp: "lite-up", info: "Flex 2.5G PoE++ port → U7-Lite at 2.5G PoE." },
+        { from: "flex", fp: "flex-usl", to: "usl", tp: "usl-up", info: "Flex 2.5G PoE++ port → USL-Gateway at 100M PoE." },
         { from: "pw-lead", fp: "pw-lead-eth", to: "pw-follow", tp: "pw-follow-eth", info: "Leader Ethernet → Follower." },
         { from: "pw-lead", fp: "pw-lead-can", to: "gw3", tp: "gw3-can", info: "Leader CAN → Gateway 3." },
         { from: "xg", fp: "xg-wallpanels", to: "group-wallpanels", tp: "wp-b-up", info: "3× USW-Pro-XG-24-PoE 10G PoE+++ ports → Home Assistant PoE Wallpanels at 1G PoE+." },
@@ -3343,6 +3340,25 @@
       var statusNameEl = statusRoot.querySelector("[data-status-name]");
       var XG = { name: "Pro XG 24 PoE", href: "https://store.ui.com/us/en/products/usw-pro-xg-24-poe" };
       var FLEX = { name: "Flex 2.5G PoE", href: "https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" };
+      function outdoor(meters) {
+        return {
+          name: "UniFi Premium Patch Cable Outdoor · " + meters + " m",
+          href: "https://store.ui.com/us/en/products/uacc-cable-patch-outdoor-c6a?variant=uacc-cable-patch-outdoor-c6a-" + meters + "m-bk"
+        };
+      }
+      var SURGE = {
+        name: "Ethernet Surge Protection",
+        href: "https://store.ui.com/us/en/products/uacc-eth-sp-din"
+      };
+      var RELAY = {
+        name: "Door Lock Relay Cable",
+        href: "https://store.ui.com/us/en/products/uacc-cable-doorlockrelay"
+      };
+      var READER_RUN = [outdoor(2)];
+      function cameraRun(meters) {
+        return [outdoor(meters), SURGE];
+      }
+      var LOCK_RUN = [RELAY];
       var G3 = {
         name: "G3 Reader",
         href: "https://store.ui.com/us/en/products/ua-g3",
@@ -3377,6 +3393,8 @@
             meta: []
           },
           camera: turret("Frontyard / Front Eave / North East"),
+          readerRun: READER_RUN,
+          cameraRun: cameraRun(5),
           lock: LOCK,
           dps: DPS
         },
@@ -3387,6 +3405,8 @@
           hint: "G3 Reader · Backyard",
           reader: G3,
           camera: turret("Backyard / Balcony Eave / South West"),
+          readerRun: READER_RUN,
+          cameraRun: cameraRun(8),
           lock: LOCK,
           dps: DPS
         },
@@ -3401,6 +3421,8 @@
             href: "https://store.ui.com/us/en/products/uvc-g6-pro-bullet",
             meta: ["Walkway / Balcony Eave / South East"]
           },
+          readerRun: READER_RUN,
+          cameraRun: cameraRun(8),
           lock: LOCK,
           dps: DPS
         },
@@ -3411,6 +3433,8 @@
           hint: "G3 Reader · Courtyard",
           reader: G3,
           camera: turret("Courtyard / Eave"),
+          readerRun: READER_RUN,
+          cameraRun: cameraRun(5),
           lock: LOCK,
           dps: DPS
         },
@@ -3421,6 +3445,8 @@
           hint: "G3 Reader · Laneway · Flex",
           reader: G3,
           camera: turret("Laneway / Garage / South"),
+          readerRun: READER_RUN,
+          cameraRun: cameraRun(12),
           lock: LOCK,
           dps: DPS
         }
@@ -3465,6 +3491,28 @@
           uplinkEl.classList.remove("is-fresh");
           void uplinkEl.offsetWidth;
           uplinkEl.classList.add("is-fresh");
+        }
+      }
+
+      function fillRun(role, parts, animate) {
+        var row = table.querySelector('.door-role[data-role="' + role + '"]');
+        var line = row.querySelector("[data-role-run]");
+        var prev = line.textContent.replace(/\s+/g, " ").trim();
+        var next = parts.map(function (part) { return part.name; }).join(" ");
+        line.textContent = "";
+        parts.forEach(function (part) {
+          var link = document.createElement("a");
+          link.className = "door-run-link";
+          link.href = part.href;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = part.name;
+          line.appendChild(link);
+        });
+        if (animate && prev !== next) {
+          row.classList.remove("is-fresh");
+          void row.offsetWidth;
+          row.classList.add("is-fresh");
         }
       }
 
@@ -3702,6 +3750,9 @@
           fillRole("camera", door.camera, animate);
           fillRole("lock", door.lock, animate);
           fillRole("dps", door.dps, animate);
+          fillRun("reader", door.readerRun, animate);
+          fillRun("camera", door.cameraRun, animate);
+          fillRun("lock", LOCK_RUN, animate);
           equalizeRows();
         }
       });
@@ -3821,9 +3872,9 @@
 
   var runs = {
     viewport: homeRun(shop("ufp-viewport", "Protect Viewport")),
-    "u7-basement": homeRun(shop("u7-pro-wall", "U7 Pro Wall", "Basement")),
-    "u7-main": homeRun(shop("u7-pro-wall", "U7 Pro Wall", "Main")),
-    "u7-upper": homeRun(shop("u7-pro-wall", "U7 Pro Wall", "Upper")),
+    "u7-basement": homeRun(shop("u7-pro", "U7 Pro", "Basement")),
+    "u7-main": homeRun(shop("u7-pro", "U7 Pro", "Main")),
+    "u7-upper": homeRun(shop("u7-pro", "U7 Pro", "Upper")),
     "door-front": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Front")),
     "door-mud": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Mud")),
     "door-dining": homeRun(shop("ua-hub-door-mini", "Door Hub Mini", "Dining")),

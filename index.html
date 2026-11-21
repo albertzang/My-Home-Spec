@@ -24,6 +24,11 @@
       <path fill="currentColor" d="m6.482 15.604.734-4.482-3.61.005a.34.34 0 0 1-.26-.562l5.56-6.445c.227-.262.656-.062.598.28L8.74 8.863l3.654-.004a.34.34 0 0 1 .26.562L7.08 15.88c-.225.261-.653.063-.598-.276Z"/>
       <path fill="currentColor" d="M15.375 5.375v1.25c0 .21-.165.375-.375.375a.371.371 0 0 1-.375-.375v-1.25h-1.25A.371.371 0 0 1 13 5c0-.21.165-.375.375-.375h1.25v-1.25c0-.21.165-.375.375-.375s.375.165.375.375v1.25h1.25c.21 0 .375.165.375.375s-.165.375-.375.375h-1.25Zm0 5v1.25c0 .21-.165.375-.375.375a.371.371 0 0 1-.375-.375V10.375h-1.25A.371.371 0 0 1 13 10c0-.21.165-.375.375-.375h1.25V8.375c0-.21.165-.375.375-.375s.375.165.375.375v1.25h1.25c.21 0 .375.165.375.375s-.165.375-.375.375h-1.25Zm0 5v1.25c0 .21-.165.375-.375.375a.371.371 0 0 1-.375-.375v-1.25h-1.25A.371.371 0 0 1 13 15c0-.21.165-.375.375-.375h1.25v-1.25c0-.21.165-.375.375-.375s.375.165.375.375v1.25h1.25c.21 0 .375.165.375.375s-.165.375-.375.375h-1.25Z"/>
     </symbol>
+    <symbol id="power-arrow" viewBox="0 0 72 18">
+      <circle cx="3" cy="9" r="1.7" fill="currentColor" opacity="0.28"/>
+      <path fill="currentColor" opacity="0.55" d="M6.4 8.25 44 6.7 44 11.3 6.4 9.75Z"/>
+      <path fill="currentColor" d="M40.6 2.35 68.4 9 40.6 15.65 47.8 9Z"/>
+    </symbol>
     <symbol id="udc-wan" viewBox="0 0 20 20">
       <circle cx="10" cy="10" r="8" fill="currentColor" opacity="0.25"/>
       <path fill="currentColor" d="M17.984 9.5a8.002 8.002 0 0 0-9.192-7.409 8.002 8.002 0 0 0 .686 15.892 8.2 8.2 0 0 0 1.73-.074A8.002 8.002 0 0 0 17.984 9.5ZM10.5 3.298A8.978 8.978 0 0 1 13.486 9.5H10.5V3.298Zm0 7.202h2.986a8.978 8.978 0 0 1-2.986 6.202V10.5Zm-1 6.202A8.978 8.978 0 0 1 6.514 10.5H9.5v6.202Zm0-13.404V9.5H6.514A8.978 8.978 0 0 1 9.5 3.298Zm-1.386-.04A9.96 9.96 0 0 0 5.512 9.5H3.018a7.013 7.013 0 0 1 5.096-6.242ZM3.018 10.5h2.494a9.96 9.96 0 0 0 2.602 6.242A7.013 7.013 0 0 1 3.018 10.5Zm8.868 6.242a9.96 9.96 0 0 0 2.602-6.242h2.494a7.013 7.013 0 0 1-5.096 6.242ZM14.488 9.5a9.96 9.96 0 0 0-2.602-6.242A7.013 7.013 0 0 1 16.982 9.5h-2.494Z"/>
@@ -47,18 +52,18 @@
 <table class="appliances-table home-appliances span-groups spec-sheet">
 <thead>
 <tr>
-  <th class="product-head price-head"><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true" aria-label="Collapse all"><span class="room-mark" aria-hidden="true">-</span></button>Product</span><span class="price-total">Total: $1,973.92</span></th>
+  <th class="product-head price-head"><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand all"><span class="room-mark" aria-hidden="true">+</span></button></span><span class="price-total">Total: $4,828.80</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="floor-span">
   <th>Main</th>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Living</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Living</span></span></th>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Den</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Den</span></span></th>
 </tr>
 <tr class="is-pending">
   <td class="device-cell">
@@ -108,14 +113,14 @@
     </span>
   </td>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Powder</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Powder</span></span></th>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Dining</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Dining</span></span></th>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Kitchen</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Kitchen</span></span></th>
 </tr>
 <tr class="is-pending">
   <td class="device-cell">
@@ -201,8 +206,8 @@
     </span>
   </td>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Wok</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Wok</span></span></th>
 </tr>
 <tr class="is-pending">
   <td class="device-cell">
@@ -240,14 +245,14 @@
     </span>
   </td>
 </tr>
-<tr class="is-pending">
+<tr class="is-purchased">
   <td class="device-cell">
     <span class="udc-device">
       <a class="brand-logo-link" href="https://ca.fotileglobal.com/" target="_blank" rel="noopener noreferrer" title="Fotile"><img class="brand-logo" src="assets/brands/fotile.png" alt="Fotile"></a>
       <span class="udc-device-meta">
         <span class="udc-device-title"><a href="https://ca.fotileglobal.com/products/jqg7515-jqg9015" target="_blank" rel="noopener noreferrer">Range Hood</a></span>
         <span class="sku-line"><span class="sku-links"><a class="udc-sku" href="https://cdn.shopify.com/s/files/1/0557/1729/8345/files/Inclined_series_range_hood_JQG7515_JQG9015_spec.pdf?v=1760057660" target="_blank" rel="noopener noreferrer">JQG9015</a></span></span>
-        <span class="home-price">-</span>
+        <span class="home-price">$2,854.88</span>
       </span>
     </span>
   </td>
@@ -255,17 +260,17 @@
 <tr class="floor-span">
   <th>Upper</th>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Master Ensuite</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Master Ensuite</span></span></th>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Ensuite 1</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Ensuite 1</span></span></th>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Ensuite 2</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Ensuite 2</span></span></th>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Laundry</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Laundry</span></span></th>
 </tr>
 <tr class="is-pending">
   <td class="device-cell">
@@ -303,14 +308,14 @@
     </span>
   </td>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Seating</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Seating</span></span></th>
 </tr>
 <tr class="floor-span">
   <th>Basement</th>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Home Theatre</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Home Theatre</span></span></th>
 </tr>
 <tr class="is-pending">
   <td class="device-cell">
@@ -444,8 +449,8 @@
     </span>
   </td>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Wet Bar</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Wet Bar</span></span></th>
 </tr>
 <tr class="is-pending">
   <td class="device-cell">
@@ -531,8 +536,8 @@
     </span>
   </td>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Bath 3</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Bath 3</span></span></th>
 </tr>
 <tr class="is-pending">
   <td class="device-cell">
@@ -570,21 +575,17 @@
     </span>
   </td>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Mechanical</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Mechanical</span></span></th>
 </tr>
-<tr class="room-span" aria-expanded="true">
-  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Courtyard</span></span></th>
+<tr class="room-span" aria-expanded="false">
+  <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Courtyard</span></span></th>
 </tr>
 </tbody>
 </table>
 </div>
 
 <h2>2. UniFi Networking System</h2>
-  <h3>2.1 Ethernet Infrastructure</h3>
-  <p class="lede">Selection and fit for the WAN, gateway, switching, Wi‑Fi, NAS, room drops, cabling, and rack.</p>
-
-  <h4>2.1.1 ISP</h4>
   <p><a href="https://www.telus.com/en/internet/fibre/5-gigabit" target="_blank" rel="noopener noreferrer">Telus PureFibre 5 Gigabit</a>: carrier fibre into the TELUS ONT (Optical Network Terminal). The ONT only converts optical to Ethernet.</p>
   <ul>
     <li>Chosen: Nokia <a href="https://www.nokia.com/asset/210704/" target="_blank" rel="noopener noreferrer">XS-010X-Q</a> (preferred; XGS-PON SFU, no Wi‑Fi, 1×100M/1/2.5/5/10G) or Nokia <a href="https://www.nokia.com/broadband-access/in-home-connectivity/fiber-ont/" target="_blank" rel="noopener noreferrer">XS-250X-A</a> (alternate; no Wi‑Fi, commonly 1×10G + 4×1G, and the unit Telus installs more often). This house uses only the 10G port. Stock of the preferred unit, and the technician's choice, are not guaranteed.</li>
@@ -598,34 +599,6 @@
     </li>
   </ul>
 
-  <h4>2.1.2 Gateway</h4>
-  <p><a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a> handles routing, the firewall, VPN, threat management, and Protect / Access / Network. It takes the public address by DHCP. The 2.5G copper WAN on the face is unused. Port assignment is in <a href="#2.1.8" class="page-ref">§2.1.8</a>.</p>
-
-  <h4>2.1.3 Switching</h4>
-  <p>One <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> in the rack is the aggregation switch. <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> is in Media and carries data only, for the many wired ports in that room. <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> is in the Garage and powers the garage <a href="#2.1.4" class="page-ref">Wi‑Fi</a>, <a href="#2.2.1" class="page-ref">Exterior Door</a>, and <a href="#2.2.4" class="page-ref">USL</a>. Both edge switches uplink on 10G RJ45. The SFP+ on the combo is empty. The far end is not plugged into AC.</p>
-
-  <h4>2.1.4 Wi‑Fi</h4>
-  <ul>
-    <li>House: one wall-mounted <a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> on each of Basement / Main / Upper, with a <a href="https://store.ui.com/us/en/products/uacc-u7-pro-wall-fm" target="_blank" rel="noopener noreferrer">U7 Pro Wall Paintable Flush Mount</a>. 2.5G / Wi‑Fi 7.</li>
-    <li>Garage: <a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a>.</li>
-  </ul>
-
-  <h4>2.1.5 NAS</h4>
-  <p>Rack: <a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">FlashStation FS2500</a>, 1U, official DSM, on <a href="https://www.synology.com/en-us/products/RKS-01" target="_blank" rel="noopener noreferrer">Synology Rail Kit RKS-01</a> (depth 553–834 mm). 12×2.5″ SATA SSD, no HDD. Memory is planned at 16–32 GB (8 GB from the factory). A single 350 W supply, on utility power / <a href="https://www.tesla.com/powerwall" target="_blank" rel="noopener noreferrer">Powerwall 3</a>. Port assignment is in <a href="#2.1.8" class="page-ref">§2.1.8</a>.</p>
-
-  <h4>2.1.6 Room Drops</h4>
-  <p>Seven rooms each have one live <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmr" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMR</a>, and Den has a second. Den uses a <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-h-2p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a> (H-2P). Both ports are live: <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a> and <a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid PoE Mini PC for Home Assistant</a> (see <a href="#3.1" class="page-ref">§3.1</a>). The other six rooms use a <a href="https://store.ui.com/us/en/products/uacc-wp-keystone?variant=uacc-wp-keystone-v-1p" target="_blank" rel="noopener noreferrer">Universal Paintable Keystone Wall Plate</a> (V-1P). The far ends in Media and Garage land on that room's <a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> and <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a>. One <a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a> is installed, and one is spare. Ports 13, 14, 15, 23, and 24 are a <a href="https://store.ui.com/us/en/products/uacc-keystone-coupler-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Coupler</a>, with a patch cable on both ends. Every other live port is a permanent link with a <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack</a> at each end. Empty holes: 0. <a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack</a> quantity is 38: 19 punched down on the patch panel, 8 at the walls, and 11 at the devices. Quantities are in <a href="#2.3" class="page-ref">§2.3</a>.</p>
-
-  <h4>2.1.7 Cables</h4>
-  <p>Permanent links: <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmr" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMR</a>. Short patches: <a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable</a>. Purchase quantities are in <a href="#2.3" class="page-ref">§2.3</a>.</p>
-  <ul>
-    <li>In-wall runs use <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmr" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMR</a> ×2 (305 m per box). A plenum path uses <a href="https://store.ui.com/us/en/products/uacc-cable-c6a-cmp" target="_blank" rel="noopener noreferrer">UniFi Indoor Cable Cat6A CMP</a> instead.</li>
-    <li><a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable</a>: 0.15 m where the ports line up, and the purchased 1 m at the equipment tail. Quantities are in <a href="#2.3" class="page-ref">§2.3</a>.</li>
-    <li>Outdoor cameras and readers: <a href="https://store.ui.com/us/en/products/uacc-cable-patch-outdoor-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable Outdoor</a>, black. Ten cables run from the local <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> to the devices at the door and do not enter the rack. <a href="#2.2.1" class="page-ref">Readers</a> and the front-door <a href="#2.2.2" class="page-ref">G6 Pro Entry</a> are 2 m ×5; <a href="#2.2.2" class="page-ref">Frontyard Turret</a> 5 m, <a href="#2.2.2" class="page-ref">Courtyard Turret</a> 5 m, <a href="#2.2.2" class="page-ref">Backyard Turret</a> 8 m, <a href="#2.2.2" class="page-ref">Walkway Bullet</a> 8 m, <a href="#2.2.2" class="page-ref">Laneway Turret</a> 12 m. Total 48 m, estimated from local aggregation at each door. Each of the five camera runs has one <a href="https://store.ui.com/us/en/products/uacc-eth-sp-din" target="_blank" rel="noopener noreferrer">Ethernet Surge Protection</a> in series at the <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> end.</li>
-    <li>Not Ethernet: the lock LOCK pair is a wet 12V control cable; DPS is a dry-contact door magnet (this house uses <a href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a>); Tesla control is CAN. LOCK / DPS / Tesla CAN are not pulled to Ethernet rules.</li>
-  </ul>
-
-  <h4>2.1.8 Server Rack</h4>
   <div class="table-scroll">
   <table class="rack-face">
     <tbody>
@@ -777,12 +750,6 @@
   </table>
   </div>
 
-  <h3>2.2 Protect &amp; Access</h3>
-  <p class="lede">Exterior pedestrian access, Protect surveillance, the driveway gate, and SuperLink sensing. Cable landings are in <a href="#2.5" class="page-ref">Topology</a>. The power budget is in <a href="#2.4" class="page-ref">§2.4</a>.</p>
-
-  <h4>2.2.1 Exterior Door</h4>
-  <p>Five exterior pedestrian doors share one pattern. Local aggregation is a <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>: PoE++ uplink, and two PoE+ ports, one for the reader and one for a camera. LOCK (wet 12V) feeds a <a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a> (15 mm, no built-in DPS). DPS is a separate third-party dry contact, <a href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a> (DPS-W on a wood frame, DPS-M on a steel frame, into Hub DPS+/−). REX is idle in this house. Without a DPS, the app can show only Locked / Unlocked. Door Position in the Access app is a software setting. This house uses Open Active (NC, normally closed, conducting when the door is closed). Close Active (NO, normally open) conducts when the door is open.</p>
-
   <table class="door-access" id="door-access">
     <colgroup>
       <col class="door-pick-col">
@@ -834,6 +801,9 @@
               <div data-role-meta></div>
             </div>
           </div>
+          <div class="door-run" data-role-run>
+            <a class="door-run-link" href="https://store.ui.com/us/en/products/uacc-cable-patch-outdoor-c6a?variant=uacc-cable-patch-outdoor-c6a-2m-bk" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable Outdoor · 2 m</a>
+          </div>
         </td>
       </tr>
       <tr>
@@ -844,6 +814,10 @@
               <a data-role-name href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a>
               <div data-role-meta><span class="cell-meta">Frontyard / Front Eave / North East</span></div>
             </div>
+          </div>
+          <div class="door-run" data-role-run>
+            <a class="door-run-link" href="https://store.ui.com/us/en/products/uacc-cable-patch-outdoor-c6a?variant=uacc-cable-patch-outdoor-c6a-5m-bk" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable Outdoor · 5 m</a>
+            <a class="door-run-link" href="https://store.ui.com/us/en/products/uacc-eth-sp-din" target="_blank" rel="noopener noreferrer">Ethernet Surge Protection</a>
           </div>
         </td>
       </tr>
@@ -859,6 +833,9 @@
               <span class="door-switch-track" aria-hidden="true"><span class="door-switch-thumb"></span></span>
               <span class="door-switch-label" data-switch-label>Locked</span>
             </button>
+          </div>
+          <div class="door-run" data-role-run>
+            <a class="door-run-link" href="https://store.ui.com/us/en/products/uacc-cable-doorlockrelay" target="_blank" rel="noopener noreferrer">Door Lock Relay Cable</a>
           </div>
         </td>
       </tr>
@@ -891,31 +868,16 @@
     </tbody>
   </table>
 
-  <h4>2.2.2 Security CCTV</h4>
-  <p>The camera at each door hangs off that door's <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> (see <a href="#2.2.1" class="page-ref">Exterior Door</a>). When the hub reboots, that door's camera drops offline with it.</p>
-  <p>The wall monitor is in Main / Kitchen, beside the <a href="https://www.mieleusa.com/product/11876580/compact-combi-steam-oven-24-width-with-directwater-plus-dgc-7845-am-stainless-steel-clean-touch-steel" target="_blank" rel="noopener noreferrer">Compact Combi-Steam Oven</a> (DGC 7845 AM) and the <a href="https://www.mieleusa.com/product/11804640/24-compact-speed-oven-h-7840-bm-am-stainless-steel-clean-touch-steel" target="_blank" rel="noopener noreferrer">Compact Speed Oven</a> (H 7840 BM AM). Both oven fronts are W 23 3/8 × H 18 in (595 × 456 mm). The screen panel is built to that face.</p>
-  <p>The screen is a <a href="https://www.dell.com/en-ca/shop/monitors/apd/dell-pro-p-24-monitor-p2426h-without-stand/p2426h_wost/-" target="_blank" rel="noopener noreferrer">Dell Pro P 24 Monitor - P2426H_WOST</a> (not touch, 1920×1080, HDMI). Without the stand the chassis is 21.21 × 12.37 × 1.97 in (538.64 × 314.23 × 50.03 mm), VESA 100 mm, and the width is inside the oven-niche limit of 22 3/8 in (568 mm). The 16:9 image is centered. The cover closes to 23 3/8 × 18 in, leaving steel above and below. Viewport has HDMI out only. The screen takes utility power in the cabinet and is not on PoE. <a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a> itself is 1G PoE (see <a href="#2.4" class="page-ref">§2.4</a>), fed directly by <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a>, not through a <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a>. Live view and door actions are on this screen. Recording stays with UniFi Protect (<a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a>).</p>
-
-  <h4>2.2.3 Garage Gate</h4>
-  <p>The driveway gate is accounted separately from the Garage Door (the garage pedestrian door and the vehicle door). Controller and reader models are pending. It does not use any of the five <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> units already allocated.</p>
-
-  <h4>2.2.4 USL</h4>
-  <p><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a>: 100M PoE, fed directly by <a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a>, mounted on a half-height garage wall, clear of large metal surfaces. Sensor selection is pending.</p>
-
-  <h3>2.3 Device List</h3>
 <div class="design-devices-wrap">
-  <table class="devices-table device-list span-groups spec-sheet">
+  <table class="devices-table device-list span-groups spec-sheet" id="devices-list">
         <thead>
       <tr>
-        <th class="product-head price-head"><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true" aria-label="Collapse all"><span class="room-mark" aria-hidden="true">-</span></button>Device</span><span class="price-total">Total: $18,262.73</span></th>
-      </tr>
-      <tr>
-        <th class="port-split"><span>Uplink</span><span>Downlink</span></th>
+        <th class="product-head price-head"><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand all"><span class="room-mark" aria-hidden="true">+</span></button></span><span class="price-total">Total: $15,895.05</span></th>
       </tr>
     </thead>
     <tbody>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Rack</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Rack</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-purchased">
@@ -928,176 +890,93 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Power</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Power</span></span></th>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-pending">
-            <span class="udc-device">
+        <td class="device-cell is-pending">
+          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/bd1e065b-9ed7-4753-ac94-b4c0b06bb173/d2bea2d1-57e3-45c8-b5bd-a061d67e94d9.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/ups-2u-pro-us" target="_blank" rel="noopener noreferrer">UPS 2U Pro</a></span>
               <span class="udc-sku">UPS-2U-Pro</span><span class="home-price">-</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-pending"><span class="udc-ports" title="100/10 MbE management">
-              <span class="udc-port fe" title="100/10 MbE"></span>
-            </span></div>
-<div class="port-cell device-cell is-pending"><span class="udc-ports" title="GbE surge in/out ×2">
-              <span class="udc-port-wrap">
-                <span class="udc-port gbe1" title="GbE surge in/out ×2"></span>
-                <span class="udc-count">×2</span>
-              </span>
-            </span></div>
-          </div>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Gateway</span></span></th>
+      <tr>
+        <td class="device-cell is-purchased">
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/7dd20fea-c0f0-4018-be5e-c2b54777fb28/50ded4fc-2197-43b9-bad7-025bb15eb758.png" alt="">
+            <span class="udc-device-meta">
+              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a> (30W · 1G)</span>
+              <span class="udc-sku">U-PoE+</span><span class="home-price">$22.40</span>
+            </span>
+          </span>
+        </td>
+      </tr>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Gateway</span></span></th>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
+        <td class="device-cell is-purchased">
+          <span class="udc-device">
             <img src="https://static.ui.com/fingerprint/ui/images/40ae7055-11f8-4c8e-9a58-a4c6eead2055/default/4a4722f355074f13d9a4ea8e3dbca7be.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/udm-pro-max" target="_blank" rel="noopener noreferrer">Dream Machine Pro Max</a></span>
               <span class="udc-sku">UDM-Pro-Max · Incl. CyberSecure</span><span class="home-price" title="Includes Enhanced CyberSecure + memory surcharge + tax">$1,215.20</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="WAN: 2.5G RJ45 + 10G SFP+">
-              <span class="udc-port gbe2p5" title="WAN 2.5 GbE RJ45"><svg class="udc-poe" aria-hidden="true"><use href="#udc-wan"/></svg></span>
-              <span class="udc-port sfp" title="WAN 10G SFP+">
-                <svg class="udc-poe" aria-hidden="true"><use href="#udc-wan"/></svg>
-                <span class="udc-sfp-txt">SFP+</span>
-              </span>
-            </span></div>
-<div class="port-cell device-cell is-purchased"><span class="udc-ports" title="LAN: 8×1G RJ45 + 10G SFP+">
-              <span class="udc-port-wrap">
-                <span class="udc-port gbe1" title="LAN 1 GbE RJ45 ×8"></span>
-                <span class="udc-count">×8</span>
-              </span>
-              <span class="udc-port sfp" title="LAN 10G SFP+"><span class="udc-sfp-txt">SFP+</span></span>
-            </span></div>
-          </div>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Switching</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Switching</span></span></th>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
+        <td class="device-cell is-purchased">
+          <span class="udc-device">
             <img src="https://static.ui.com/fingerprint/ui/images/7fbef028-eaf4-4fad-8fee-71ed08b8e961/default/09ff02ec999057694e58c6df46beb81e.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></span>
               <span class="udc-sku">USW-Pro-XG-24-PoE</span><span class="home-price">$3,184.16</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="25G SFP28 uplink ×2">
-            <span class="udc-port-wrap">
-              <span class="udc-port sfp" title="25G SFP28 ×2"><span class="udc-sfp-txt">SFP28</span></span>
-              <span class="udc-count">×2</span>
-            </span>
-          </span></div>
-<div class="port-cell device-cell is-purchased"><span class="udc-ports" title="8×2.5G + 16×10G RJ45 PoE+++">
-            <span class="udc-port-wrap">
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 PoE+++ ×8"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-count">×8</span>
-            </span>
-            <span class="udc-port-wrap">
-              <span class="udc-port gbe10" title="10 GbE RJ45 PoE+++ ×16"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span>
-              <span class="udc-count">×16</span>
-            </span>
-          </span></div>
-          </div>
         </td>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
+        <td class="device-cell is-purchased">
+          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/e9d97121-f363-4261-83db-5f74e093a304/fe2ed56d-fab4-4051-b3e9-100bb823afd4.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a></span>
               <span class="udc-sku">USW-Flex-2.5G-8-PoE</span><span class="home-price">$351.68</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="10G RJ45 uplink · PoE+++ in; SFP+ unused"><span class="udc-port gbe10" title="10 GbE RJ45 uplink · PoE+++ in"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><span class="udc-port sfp" title="10G SFP+ combo · unused"><span class="udc-sfp-txt">SFP+</span></span></span></div>
-<div class="port-cell device-cell is-purchased"><span class="udc-ports" title="8×2.5G RJ45 PoE++">
-              <span class="udc-port-wrap">
-                <span class="udc-port gbe2p5" title="2.5 GbE RJ45 PoE++ ×8"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span>
-                <span class="udc-count">×8</span>
-              </span>
-            </span></div>
-          </div>
         </td>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
+        <td class="device-cell is-purchased">
+          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/1d18e099-3be0-4f49-8126-5ade125543b5/f8ae2e00-dce6-47f8-a822-47f86dae3763.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a></span>
               <span class="udc-sku">USW-Flex-2.5G-8</span><span class="home-price">$282.24</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="10G RJ45 uplink · PoE+ in; SFP+ unused"><span class="udc-port gbe10" title="10 GbE RJ45 uplink · PoE+ input"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span><span class="udc-port sfp" title="10G SFP+ combo · unused"><span class="udc-sfp-txt">SFP+</span></span></span></div>
-<div class="port-cell device-cell is-purchased"><span class="udc-ports" title="8×2.5G RJ45 · no PoE output">
-            <span class="udc-port-wrap">
-              <span class="udc-port gbe2p5" title="2.5 GbE RJ45 ×8 · no PoE output"></span>
-              <span class="udc-count">×8</span>
-            </span>
-          </span></div>
-          </div>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">NAS</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">NAS</span></span></th>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-pending">
-            <span class="udc-device">
+        <td class="device-cell is-pending">
+          <span class="udc-device">
             <img src="assets/devices/fs2500.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://www.synology.com/en-us/products/FS2500" target="_blank" rel="noopener noreferrer">FlashStation FS2500</a></span>
               <span class="udc-sku">FS2500</span><span class="home-price">-</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-pending"><span class="udc-ports" title="2×1G + 2×10G LACP">
-            <span class="udc-port-wrap">
-              <span class="udc-port gbe1" title="1 GbE RJ45 ×2"></span>
-              <span class="udc-count">×2</span>
-            </span>
-            <span class="udc-port-wrap">
-              <span class="udc-port gbe10" title="10 GbE RJ45 ×2"></span>
-              <span class="udc-count">×2</span>
-            </span>
-          </span></div>
-<div class="port-cell device-cell is-pending"><span class="udc-ports" title="2×USB 3.2 Gen 1 + Console">
-            <span class="udc-port-wrap">
-              <span class="udc-port other" title="USB 3.2 Gen 1 ×2">USB-3</span>
-              <span class="udc-count">×2</span>
-            </span>
-            <span class="udc-port other" title="Console">COM</span>
-          </span></div>
-          </div>
         </td>
       </tr>
       <tr>
@@ -1111,213 +990,135 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Wi-Fi AP</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Wi-Fi AP</span></span></th>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/7dacb4f6-b703-4154-9264-784f2eb0dbda/f1cb65a5-c557-4e02-bcbb-090502a95b84.png" alt="">
+        <td class="device-cell is-pending">
+          <span class="udc-device">
+            <img src="https://cdn.ecomm.ui.com/products/fa8dd4e4-36c8-4c79-a928-22c7bff2ce29/ab5bc8a4-6135-402e-a695-e3ea5e16d3e6.png" alt="">
             <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> <span class="udc-count">×3</span></span>
-              <span class="udc-sku">U7-Pro-Wall</span><span class="home-price">$994.56</span>
+              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7 Pro</a> <span class="udc-count">×3</span></span>
+              <span class="udc-sku">U7-Pro</span><span class="home-price">-</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="2.5G RJ45, PoE+"><span class="udc-port gbe2p5"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span></div>
-<div class="port-cell device-cell is-purchased">-</div>
-          </div>
         </td>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
+        <td class="device-cell is-purchased">
+          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/253cc208-4b09-4b2e-9d1a-7aa1e8f93507/49241c96-878f-4e40-8541-c2e89c1c5e6e.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a></span>
               <span class="udc-sku">U7-Lite</span><span class="home-price">$172.48</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="2.5G RJ45, PoE"><span class="udc-port gbe2p5"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span></div>
-<div class="port-cell device-cell is-purchased">-</div>
-          </div>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Protect &amp; Access</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Protect &amp; Access</span></span></th>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
+        <td class="device-cell is-purchased">
+          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/9550c5cc-2b6d-4910-81ec-3cb37c85db50/04093a9c-52cf-4769-b9d8-0838ed2f6f68.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> <span class="udc-count">×5</span></span>
               <span class="udc-sku">UA-Hub-Door-Mini</span><span class="home-price">$1,103.20</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="UA-Hub-Door-Mini uplink: 1G PoE++"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></span></div>
-<div class="port-cell device-cell is-purchased"><span class="udc-ports" title="2× PoE+ out; REX; DPS; LOCK">
-              <span class="udc-port-wrap">
-                <span class="udc-port gbe1" title="1 GbE PoE+ out ×2"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span>
-                <span class="udc-count">×2</span>
-              </span>
-              <span class="udc-port other" title="Request to Exit">REX</span>
-              <span class="udc-port other" title="Door Position Sensor">DPS</span>
-              <span class="udc-port other" title="Lock relay">LOCK</span>
-            </span></div>
-          </div>
         </td>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
+        <td class="device-cell is-purchased">
+          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/f20970ca-1951-4ed9-9016-3eea65981a94/b36edf90-78d4-43fc-b818-172dbc1ce079.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a> <span class="udc-count">×4</span></span>
               <span class="udc-sku">UA-G3</span><span class="home-price">$1,084.16</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="UA-G3 · PoE"><span class="udc-port fe"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span></div>
-<div class="port-cell device-cell is-purchased">-</div>
-          </div>
         </td>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
+        <td class="device-cell is-purchased">
+          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/d0355a03-91c9-4d71-a5b2-003f70ef722d/513cca75-07c6-4b31-94d3-78f1fc7c31a6.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-entry" target="_blank" rel="noopener noreferrer">G6 Pro Entry</a></span>
               <span class="udc-sku">UVC-G6-Pro-Entry</span><span class="home-price">$672.00</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="Entry · PoE+"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span></div>
-<div class="port-cell device-cell is-purchased">-</div>
-          </div>
         </td>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
+        <td class="device-cell is-purchased">
+          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/26e646b0-09d9-4f83-b9a2-398f55f31f28/959cdb9c-6699-4be9-b445-a8f7bd6d3e7f.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a> <span class="udc-count">×4</span></span>
               <span class="udc-sku">UVC-G6-Pro-Turret</span><span class="home-price">$3,377.92</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="1G RJ45, PoE+"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span></div>
-<div class="port-cell device-cell is-purchased">-</div>
-          </div>
         </td>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
+        <td class="device-cell is-purchased">
+          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/c48d3ada-c223-4a2b-98f3-2bb55c3b1a11/69792922-3944-41ab-a386-2059b23a6b1b.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-bullet" target="_blank" rel="noopener noreferrer">G6 Pro Bullet</a></span>
               <span class="udc-sku">UVC-G6-Pro-Bullet</span><span class="home-price">$844.48</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="1G RJ45, PoE+"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span></div>
-<div class="port-cell device-cell is-purchased">-</div>
-          </div>
         </td>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
+        <td class="device-cell is-purchased">
+          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/4169e695-52be-466d-af67-4f258887ea6c/009b4172-ae10-45e5-a793-8d668561b4e1.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm" target="_blank" rel="noopener noreferrer">Fail-Secure Strike Lock</a> <span class="udc-count">×5</span></span>
               <span class="udc-sku">UACC-Lock-Strike-Secure-15mm</span><span class="home-price">$722.40</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="Strike · LOCK only · no built-in DPS">
-              <span class="udc-port other" title="Lock relay">LOCK</span>
-            </span></div>
-<div class="port-cell device-cell is-purchased">-</div>
-          </div>
         </td>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-pending">
-            <span class="udc-device">
+        <td class="device-cell is-pending">
+          <span class="udc-device">
             <img src="assets/devices/securitron-dps.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://www.securitron.com/en/products/system-accessories/dps-w--dps-m" target="_blank" rel="noopener noreferrer">Securitron DPS</a> <span class="udc-count">×5</span></span>
               <span class="udc-sku">DPS-W / DPS-M</span><span class="home-price">-</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-pending"><span class="udc-ports" title="Dry-contact NC door magnet · Hub DPS">
-              <span class="udc-port other" title="Door Position Sensor">DPS</span>
-            </span></div>
-<div class="port-cell device-cell is-pending">-</div>
-          </div>
         </td>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
+        <td class="device-cell is-purchased">
+          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/8166e57f-3ab1-4683-8e89-d88d7e4ae171/e519b029-32c7-4227-bf89-fb891a813575.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a></span>
               <span class="udc-sku">UP-Viewport</span><span class="home-price" title="Includes memory surcharge + tax">$331.52</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="1G RJ45, PoE"><span class="udc-port gbe1"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span></div>
-<div class="port-cell device-cell is-purchased">-</div>
-          </div>
         </td>
       </tr>
       <tr>
-        <td class="device-cell">
-          <div class="device-main device-cell is-purchased">
-            <span class="udc-device">
+        <td class="device-cell is-pending">
+          <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/0538991d-6168-429b-8ea2-8408dac7357a/9cbe0575-17ac-4a7c-8028-1c9bb18322e5.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a></span>
-              <span class="udc-sku">USL-Gateway</span><span class="home-price">$227.36</span>
+              <span class="udc-sku">USL-Gateway</span><span class="home-price">-</span>
             </span>
           </span>
-          </div>
-          <div class="port-pair">
-            <div class="port-cell device-cell is-purchased"><span class="udc-ports" title="10/100M RJ45, PoE"><span class="udc-port fe"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span></div>
-<div class="port-cell device-cell is-purchased">-</div>
-          </div>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Accessories</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Accessories</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-purchased">
@@ -1352,15 +1153,15 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span cable-span" data-level="1" aria-expanded="true">
+      <tr class="room-span cable-span" data-level="1" aria-expanded="false">
         <th >
           <span class="room-line">
-            <button type="button" class="room-toggle" aria-expanded="true" aria-label="Collapse UniFi Premium Patch Cable"><span class="room-mark" aria-hidden="true">-</span></button>
+            <button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand UniFi Premium Patch Cable"><span class="room-mark" aria-hidden="true">+</span></button>
             <span class="udc-device">
               <img src="https://cdn.ecomm.ui.com/products/477a69c1-5b69-4f0f-bfaf-d1b97fa804da/d1281ace-4a5e-451c-956d-3d1f09dd66d1.png" alt="">
               <span class="udc-device-meta">
                 <span class="udc-device-title room-name"><a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable</a></span>
-                <span class="udc-sku">UACC-Cable-Patch-EL-C6A</span><span class="home-price">$316.96</span>
+                <span class="udc-sku">UACC-Cable-Patch-EL-C6A</span><span class="home-price">-</span>
               </span>
             </span>
           </span></th>
@@ -1374,24 +1175,24 @@
         </td>
       </tr>
       <tr class="cable-spec" data-level="2">
-        <td class="device-cell is-purchased">
+        <td class="device-cell is-pending">
           <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a?variant=uacc-cable-patch-el-c6a-0dot3m-w-10" target="_blank" rel="noopener noreferrer">0.3 m</a> <span class="udc-count">10-Pack ×1</span></span>
           <span class="sku-line"></span>
-          <span class="home-price">$88.48</span>
+          <span class="home-price">-</span>
         </td>
       </tr>
       <tr class="cable-spec" data-level="2">
-        <td class="device-cell is-purchased">
+        <td class="device-cell is-pending">
           <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a?variant=uacc-cable-patch-el-c6a-1m-w-10" target="_blank" rel="noopener noreferrer">1 m</a> <span class="udc-count">10-Pack ×1</span></span>
           <span class="sku-line"></span>
-          <span class="home-price">$106.40</span>
+          <span class="home-price">-</span>
         </td>
       </tr>
       <tr class="cable-spec" data-level="2">
-        <td class="device-cell is-purchased">
+        <td class="device-cell is-pending">
           <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-cable-patch-el-c6a?variant=uacc-cable-patch-el-c6a-2m-w-10" target="_blank" rel="noopener noreferrer">2 m</a> <span class="udc-count">10-Pack ×1</span></span>
           <span class="sku-line"></span>
-          <span class="home-price">$122.08</span>
+          <span class="home-price">-</span>
         </td>
       </tr>
       <tr class="cable-spec" data-level="2">
@@ -1429,26 +1230,19 @@
           <span class="home-price">-</span>
         </td>
       </tr>
-      <tr class="room-span cable-span" data-level="1" aria-expanded="true">
+      <tr class="room-span cable-span" data-level="1" aria-expanded="false">
         <th >
           <span class="room-line">
-            <button type="button" class="room-toggle" aria-expanded="true" aria-label="Collapse UniFi Premium Patch Cable Outdoor"><span class="room-mark" aria-hidden="true">-</span></button>
+            <button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand UniFi Premium Patch Cable Outdoor"><span class="room-mark" aria-hidden="true">+</span></button>
             <span class="udc-device">
               <img src="https://cdn.ecomm.ui.com/products/1306284b-8bee-4509-9407-4260360917b4/a23aa0ae-aa87-4d0b-a451-0a3ce79160c8.png" alt="">
               <span class="udc-device-meta">
                 <span class="udc-device-title room-name"><a href="https://store.ui.com/us/en/products/uacc-cable-patch-outdoor-c6a" target="_blank" rel="noopener noreferrer">UniFi Premium Patch Cable Outdoor</a></span>
-                <span class="udc-sku">UACC-Cable-Patch-Outdoor-C6A · Black</span><span class="home-price">$229.60</span>
+                <span class="udc-sku">UACC-Cable-Patch-Outdoor-C6A · Black</span><span class="home-price">-</span>
               </span>
             </span>
           </span></th>
         
-      </tr>
-      <tr class="cable-spec" data-level="2">
-        <td class="device-cell is-purchased">
-          <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-cable-patch-outdoor-c6a?variant=uacc-cable-patch-outdoor-c6a-1m-bk" target="_blank" rel="noopener noreferrer">1 m</a> <span class="udc-count">×5</span></span>
-          <span class="sku-line"></span>
-          <span class="home-price">$72.80</span>
-        </td>
       </tr>
       <tr class="cable-spec" data-level="2">
         <td class="device-cell is-pending">
@@ -1479,10 +1273,10 @@
         </td>
       </tr>
       <tr class="cable-spec" data-level="2">
-        <td class="device-cell is-purchased">
+        <td class="device-cell is-pending">
           <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-cable-patch-outdoor-c6a?variant=uacc-cable-patch-outdoor-c6a-8m-bk" target="_blank" rel="noopener noreferrer">8 m</a> <span class="udc-count">×5</span></span>
           <span class="sku-line"></span>
-          <span class="home-price">$156.80</span>
+          <span class="home-price">-</span>
         </td>
       </tr>
       <tr class="cable-spec" data-level="2">
@@ -1515,8 +1309,8 @@
           <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/b78c6ae3-515b-439d-86e6-079719ef5fca/c0e353a5-43e9-4fe0-8038-b2d7a27c62d3.png" alt="">
             <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack</a> <span class="udc-count">12-Pack ×5</span></span>
-              <span class="udc-sku">UACC-Keystone-Jack-C6A</span><span class="home-price">$308.00</span>
+              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-keystone-jack-c6a" target="_blank" rel="noopener noreferrer">Cat6A Keystone Jack</a> <span class="udc-count">12-Pack ×4</span></span>
+              <span class="udc-sku">UACC-Keystone-Jack-C6A</span><span class="home-price">$246.40</span>
             </span>
           </span>
         </td>
@@ -1537,74 +1331,19 @@
           <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/6ab1a848-c395-4ba6-8295-5caf711dd19e/9fafb528-3340-4789-a24a-b1c83a009c22.png" alt="">
             <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a> <span class="udc-count">×2</span></span>
-              <span class="udc-sku">UACC-Rack-Panel-Patch-Blank-24</span><span class="home-price">$89.60</span>
+              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-rack-panel-patch-blank-24" target="_blank" rel="noopener noreferrer">24-Port Blank Keystone Patch Panel</a></span>
+              <span class="udc-sku">UACC-Rack-Panel-Patch-Blank-24</span><span class="home-price">$44.80</span>
             </span>
           </span>
         </td>
       </tr>
       <tr>
-        <td class="device-cell is-purchased">
+        <td class="device-cell is-pending">
           <span class="udc-device">
             <img src="https://cdn.ecomm.ui.com/products/01036d73-b03c-42d6-a03f-a1bfd3eb29d5/cfdd1c52-a08b-430f-96f6-745816c4412c.png" alt="">
             <span class="udc-device-meta">
               <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-rack-shelf-clv" target="_blank" rel="noopener noreferrer">Fixed Rack Shelf</a></span>
-              <span class="udc-sku">UACC-Rack-Shelf-CLV</span><span class="home-price">$78.40</span>
-            </span>
-          </span>
-        </td>
-      </tr>
-      <tr>
-        <td class="device-cell is-purchased">
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/24c35f46-e2bf-4085-8fa4-946f927ce372/263b223f-64c2-44b7-81b0-1b1b38472489.png" alt="">
-            <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-rack-panel-ocd?variant=uacc-rack-panel-vented-1u" target="_blank" rel="noopener noreferrer">1U Vented Panel</a> <span class="udc-count">×2</span></span>
-              <span class="udc-sku">UACC-Rack-Panel-Vented-1U</span><span class="home-price">$89.60</span>
-            </span>
-          </span>
-        </td>
-      </tr>
-      <tr>
-        <td class="device-cell is-purchased">
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/24c35f46-e2bf-4085-8fa4-946f927ce372/52ca35fd-eb8c-44c8-ab9f-54b00e971dcc.png" alt="">
-            <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-rack-panel-ocd?variant=uacc-rack-panel-vented-2u" target="_blank" rel="noopener noreferrer">2U Vented Panel</a></span>
-              <span class="udc-sku">UACC-Rack-Panel-Vented-2U</span><span class="home-price">$61.60</span>
-            </span>
-          </span>
-        </td>
-      </tr>
-      <tr>
-        <td class="device-cell is-purchased">
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/24c35f46-e2bf-4085-8fa4-946f927ce372/514a75a5-22e8-4a6a-abbd-8d9f236340f5.png" alt="">
-            <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-rack-panel-ocd?variant=uacc-rack-panel-blank-2u" target="_blank" rel="noopener noreferrer">2U Blank Panel</a></span>
-              <span class="udc-sku">UACC-Rack-Panel-Blank-2U</span><span class="home-price">$44.80</span>
-            </span>
-          </span>
-        </td>
-      </tr>
-      <tr>
-        <td class="device-cell is-purchased">
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/24c35f46-e2bf-4085-8fa4-946f927ce372/acfecbb9-e83a-4351-a2cd-d955cf988300.png" alt="">
-            <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-rack-panel-ocd?variant=uacc-rack-panel-blank-1u" target="_blank" rel="noopener noreferrer">1U Blank Panel</a></span>
-              <span class="udc-sku">UACC-Rack-Panel-Blank-1U</span><span class="home-price">$28.00</span>
-            </span>
-          </span>
-        </td>
-      </tr>
-      <tr>
-        <td class="device-cell is-purchased">
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/87a0cd9f-b8be-4801-bf15-a623f34ad03e/c0793a17-e23a-4771-8f5d-a0089e6c6366.png" alt="">
-            <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-keystone-blank-insert" target="_blank" rel="noopener noreferrer">Keystone Blank Insert</a> <span class="udc-count">24-Pack</span></span>
-              <span class="udc-sku">UACC-Keystone-Blank-Insert</span><span class="home-price">$28.00</span>
+              <span class="udc-sku">UACC-Rack-Shelf-CLV</span><span class="home-price">-</span>
             </span>
           </span>
         </td>
@@ -1664,312 +1403,148 @@
           </span>
         </td>
       </tr>
-      <tr>
-        <td class="device-cell is-purchased">
-          <span class="udc-device">
-            <img src="https://cdn.ecomm.ui.com/products/4d3f66f7-fc49-4213-a623-ca984c64d3c5/69b00d6c-6a3c-4c87-844f-91862631cc47.png" alt="">
-            <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/uacc-u7-pro-wall-fm" target="_blank" rel="noopener noreferrer">U7 Pro Wall Paintable Flush Mount</a> <span class="udc-count">×3</span></span>
-              <span class="udc-sku">UACC-U7-Pro-Wall-FM</span><span class="home-price">$184.80</span>
-            </span>
-          </span>
-        </td>
-      </tr>
     </tbody>
   </table>
   </div>
 
-<h3>2.4 PoE Power Breakdown</h3>
-
   <div class="power-tree-wrap">
-  <table class="power-tree spec-sheet">
-    <colgroup>
-      <col />
-      <col />
-    </colgroup>
+  <table class="power-tree spec-sheet" id="poe-power">
     <thead>
       <tr>
-        <th colspan="2">Device</th>
-      </tr>
-      <tr>
-        <th class="port-sub">Port</th>
-        <th class="port-sub">Upstream Port</th>
+        <th>PoE Power Breakdown</th>
       </tr>
     </thead>
     <tbody>
-      <tr class="power-tree-handle" data-level="0" aria-expanded="true">
-        <th colspan="2">
+      <tr class="power-tree-handle" data-level="0" aria-expanded="false">
+        <th>
           <div class="power-handle">
-            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="true" aria-label="Collapse Pro XG 24 PoE"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name"><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></span><span class="power-readout"><strong>445.9</strong><span> / 720W</span><small>61.9%</small></span></span>
-            <div class="power-meter" aria-label="USW-Pro-XG-24-PoE 445.9 of 720 watts"><span style="width:61.931%"></span></div>
-            <div class="power-terms" aria-label="30 times 4, plus 22 times 3, plus 9.5, plus 14, plus 50, plus 39 times 3, plus 69.4, equals 445.9 watts">30×4 + 22×3 + 9.5 + 14 + 50 + 39×3 + 69.4 = 445.9W</div>
+            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand Pro XG 24 PoE"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name"><a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a></span><span class="power-readout"><strong>442.9</strong><span> / 720W</span><small>61.5%</small></span></span>
+            <div class="power-meter" aria-label="USW-Pro-XG-24-PoE 442.9 of 720 watts"><span style="width:61.514%"></span></div>
+            <div class="power-terms" aria-label="30 times 4, plus 21 times 3, plus 9.5, plus 14, plus 50, plus 39 times 3, plus 69.4, equals 442.9 watts">30×4 + 21×3 + 9.5 + 14 + 50 + 39×3 + 69.4 = 442.9W</div>
           </div>
         </th>
       </tr>
-
       <tr class="power-tree-leaf" data-level="1">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid</a></span><span class="power-field">30W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="10G PoE+++ ≤90W feeds 2.5G PoE++ ≤60W"><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe2p5" title="2.5G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://ameridroid.com/products/poe-mini-pc-for-home-assistant" target="_blank" rel="noopener noreferrer">ameriDroid</a></span><span class="power-field">30W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-      </tr>
-
-      <tr class="power-tree-leaf" data-level="1">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name">HA PoE Wallpanel · Basement</span><span class="power-field">30W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="10G PoE+++ ≤90W feeds 1G PoE+ ≤30W"><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name">HA PoE Wallpanel · Basement</span><span class="power-field">30W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-      </tr>
-
-      <tr class="power-tree-leaf" data-level="1">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name">HA PoE Wallpanel · Main</span><span class="power-field">30W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="10G PoE+++ ≤90W feeds 1G PoE+ ≤30W"><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name">HA PoE Wallpanel · Main</span><span class="power-field">30W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-      </tr>
-
-      <tr class="power-tree-leaf" data-level="1">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name">HA PoE Wallpanel · Upper</span><span class="power-field">30W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="10G PoE+++ ≤90W feeds 1G PoE+ ≤30W"><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name">HA PoE Wallpanel · Upper</span><span class="power-field">30W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-      </tr>
-
-      <tr class="power-tree-leaf" data-level="1">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> · Main</span><span class="power-field">22W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="2.5G PoE+++ ≤90W feeds 2.5G PoE+ ≤30W"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe2p5" title="2.5G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7 Pro</a> · Main</span><span class="power-field">21W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-      </tr>
-
-      <tr class="power-tree-leaf" data-level="1">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> · Basement</span><span class="power-field">22W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="2.5G PoE+++ ≤90W feeds 2.5G PoE+ ≤30W"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe2p5" title="2.5G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7 Pro</a> · Basement</span><span class="power-field">21W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-      </tr>
-
-      <tr class="power-tree-leaf" data-level="1">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/u7-pro-wall" target="_blank" rel="noopener noreferrer">U7 Pro Wall</a> · Upper</span><span class="power-field">22W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="2.5G PoE+++ ≤90W feeds 2.5G PoE+ ≤30W"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe2p5" title="2.5G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/u7-pro" target="_blank" rel="noopener noreferrer">U7 Pro</a> · Upper</span><span class="power-field">21W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-      </tr>
-
-      <tr class="power-tree-leaf" data-level="1">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a></span><span class="power-field">9.5W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="2.5G PoE+++ ≤90W feeds 1G PoE ≤15.4W"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/ufp-viewport" target="_blank" rel="noopener noreferrer">Protect Viewport</a></span><span class="power-field">9.5W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="1">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="10G PoE+++ ≤90W feeds 10G PoE+ ≤30W"><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe10" title="10G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> · Media</span><span class="power-field">14W</span></div></td>
       </tr>
-
-      <tr class="power-tree-leaf" data-level="1">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8" target="_blank" rel="noopener noreferrer">Flex 2.5G</a> · Media</span><span class="power-field">14W</span></div></td>
-      </tr>
-      <tr class="power-tree-leaf" data-level="1">
-        <td class="power-port"><span class="udc-port gbe10" title="10G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-      </tr>
-
       <tr class="power-tree-handle" data-level="1" aria-expanded="false">
-        <th colspan="2">
+        <th>
           <div class="power-handle">
-            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand Front Door Hub Mini"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Front <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></span><span class="power-readout"><strong>33</strong><span> / 45W</span><small>73.3%</small></span></span>
-            <div class="power-meter" aria-label="Front Door Hub Mini PoE Output Used 33 of 45 watts"><span style="width:73.333%"></span></div>
+            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand Door Hub Mini · Front"><span class="room-mark" aria-hidden="true">+</span></button><span class="power-feed" aria-label="2.5G PoE+++ ≤90W feeds 1G PoE++ ≤60W"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="room-name"><a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> · Front</span><span class="power-readout"><strong>33</strong><span> / 45W</span><small>73.3%</small></span></span>
+            <div class="power-meter" aria-label="Door Hub Mini · Front PoE Output Used 33 of 45 watts"><span style="width:73.333%"></span></div>
             <div class="power-terms" aria-label="18 plus 15 equals 33 watts output. Upstream 50 watts.">18 + 15 = 33W · Upstream 50W</div>
           </div>
         </th>
       </tr>
-
-      <tr class="power-tree-ports" data-level="1">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-      </tr>
-
       <tr class="power-tree-leaf" data-level="2">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-entry" target="_blank" rel="noopener noreferrer">G6 Pro Entry</a></span><span class="power-field">18W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="1G PoE+ ≤30W feeds 1G PoE+ ≤30W"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-entry" target="_blank" rel="noopener noreferrer">G6 Pro Entry</a></span><span class="power-field">18W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="2">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="1G PoE+ ≤30W feeds 1G PoE+ ≤30W"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a> · Frontyard</span><span class="power-field">15W</span></div></td>
       </tr>
-
-      <tr class="power-tree-leaf" data-level="2">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a> · Frontyard</span><span class="power-field">15W</span></div></td>
-      </tr>
-      <tr class="power-tree-leaf" data-level="2">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-      </tr>
-
       <tr class="power-tree-handle" data-level="1" aria-expanded="false">
-        <th colspan="2">
+        <th>
           <div class="power-handle">
-            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand Mud Door Hub Mini"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Mud <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></span><span class="power-readout"><strong>20</strong><span> / 45W</span><small>44.4%</small></span></span>
-            <div class="power-meter" aria-label="Mud Door Hub Mini PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
+            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand Door Hub Mini · Mud"><span class="room-mark" aria-hidden="true">+</span></button><span class="power-feed" aria-label="2.5G PoE+++ ≤90W feeds 1G PoE++ ≤60W"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="room-name"><a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> · Mud</span><span class="power-readout"><strong>20</strong><span> / 45W</span><small>44.4%</small></span></span>
+            <div class="power-meter" aria-label="Door Hub Mini · Mud PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
             <div class="power-terms" aria-label="5 plus 15 equals 20 watts output. Upstream 39 watts.">5 + 15 = 20W · Upstream 39W</div>
           </div>
         </th>
       </tr>
-
-      <tr class="power-tree-ports" data-level="1">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-      </tr>
-
       <tr class="power-tree-leaf" data-level="2">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a></span><span class="power-field">5W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="1G PoE+ ≤30W feeds 100M PoE ≤15.4W"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port fe" title="100M PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a></span><span class="power-field">5W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="2">
-        <td class="power-port"><span class="udc-port fe" title="100M PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="1G PoE+ ≤30W feeds 1G PoE+ ≤30W"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a> · Backyard</span><span class="power-field">15W</span></div></td>
       </tr>
-
-      <tr class="power-tree-leaf" data-level="2">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a> · Backyard</span><span class="power-field">15W</span></div></td>
-      </tr>
-      <tr class="power-tree-leaf" data-level="2">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-      </tr>
-
       <tr class="power-tree-handle" data-level="1" aria-expanded="false">
-        <th colspan="2">
+        <th>
           <div class="power-handle">
-            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand Dining Door Hub Mini"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Dining <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></span><span class="power-readout"><strong>20</strong><span> / 45W</span><small>44.4%</small></span></span>
-            <div class="power-meter" aria-label="Dining Door Hub Mini PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
+            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand Door Hub Mini · Dining"><span class="room-mark" aria-hidden="true">+</span></button><span class="power-feed" aria-label="2.5G PoE+++ ≤90W feeds 1G PoE++ ≤60W"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="room-name"><a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> · Dining</span><span class="power-readout"><strong>20</strong><span> / 45W</span><small>44.4%</small></span></span>
+            <div class="power-meter" aria-label="Door Hub Mini · Dining PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
             <div class="power-terms" aria-label="5 plus 15 equals 20 watts output. Upstream 39 watts.">5 + 15 = 20W · Upstream 39W</div>
           </div>
         </th>
       </tr>
-
-      <tr class="power-tree-ports" data-level="1">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-      </tr>
-
       <tr class="power-tree-leaf" data-level="2">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a></span><span class="power-field">5W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="1G PoE+ ≤30W feeds 100M PoE ≤15.4W"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port fe" title="100M PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a></span><span class="power-field">5W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="2">
-        <td class="power-port"><span class="udc-port fe" title="100M PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="1G PoE+ ≤30W feeds 1G PoE+ ≤30W"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-bullet" target="_blank" rel="noopener noreferrer">G6 Pro Bullet</a> · Walkway</span><span class="power-field">15W</span></div></td>
       </tr>
-
-      <tr class="power-tree-leaf" data-level="2">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-bullet" target="_blank" rel="noopener noreferrer">G6 Pro Bullet</a> · Walkway</span><span class="power-field">15W</span></div></td>
-      </tr>
-      <tr class="power-tree-leaf" data-level="2">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-      </tr>
-
       <tr class="power-tree-handle" data-level="1" aria-expanded="false">
-        <th colspan="2">
+        <th>
           <div class="power-handle">
-            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand Basement Door Hub Mini"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Basement <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></span><span class="power-readout"><strong>20</strong><span> / 45W</span><small>44.4%</small></span></span>
-            <div class="power-meter" aria-label="Basement Door Hub Mini PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
+            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand Door Hub Mini · Basement"><span class="room-mark" aria-hidden="true">+</span></button><span class="power-feed" aria-label="2.5G PoE+++ ≤90W feeds 1G PoE++ ≤60W"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="room-name"><a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> · Basement</span><span class="power-readout"><strong>20</strong><span> / 45W</span><small>44.4%</small></span></span>
+            <div class="power-meter" aria-label="Door Hub Mini · Basement PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
             <div class="power-terms" aria-label="5 plus 15 equals 20 watts output. Upstream 39 watts.">5 + 15 = 20W · Upstream 39W</div>
           </div>
         </th>
       </tr>
-
-      <tr class="power-tree-ports" data-level="1">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-      </tr>
-
       <tr class="power-tree-leaf" data-level="2">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a></span><span class="power-field">5W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="1G PoE+ ≤30W feeds 100M PoE ≤15.4W"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port fe" title="100M PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a></span><span class="power-field">5W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="2">
-        <td class="power-port"><span class="udc-port fe" title="100M PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="1G PoE+ ≤30W feeds 1G PoE+ ≤30W"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a> · Courtyard</span><span class="power-field">15W</span></div></td>
       </tr>
-
-      <tr class="power-tree-leaf" data-level="2">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a> · Courtyard</span><span class="power-field">15W</span></div></td>
-      </tr>
-      <tr class="power-tree-leaf" data-level="2">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-      </tr>
-
       <tr class="power-tree-handle" data-level="1" aria-expanded="false">
-        <th colspan="2">
+        <th>
           <div class="power-handle">
-            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand Flex 2.5G PoE · Garage"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name"><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> · Garage</span><span class="power-readout"><strong>55.4</strong><span> / 76W</span><small>72.9%</small></span></span>
+            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand Flex 2.5G PoE · Garage"><span class="room-mark" aria-hidden="true">+</span></button><span class="power-feed" aria-label="10G PoE+++ ≤90W feeds 10G PoE+++ ≤90W"><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="room-name"><a href="https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" target="_blank" rel="noopener noreferrer">Flex 2.5G PoE</a> · Garage</span><span class="power-readout"><strong>55.4</strong><span> / 76W</span><small>72.9%</small></span></span>
             <div class="power-meter" aria-label="USW-Flex-2.5G-8-PoE 55.4 of 76 watts"><span style="width:72.895%"></span></div>
             <div class="power-terms" aria-label="13 plus 39 plus 3.4 equals 55.4 watts output. Upstream 69.4 watts.">13 + 39 + 3.4 = 55.4W · Upstream 69.4W</div>
           </div>
         </th>
       </tr>
-
-      <tr class="power-tree-ports" data-level="1">
-        <td class="power-port"><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe10" title="10G PoE+++ ≤90W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplusplus"/></svg></span></td>
-      </tr>
-
       <tr class="power-tree-leaf" data-level="2">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a></span><span class="power-field">13W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="2.5G PoE++ ≤60W feeds 2.5G PoE ≤15.4W"><span class="udc-port gbe2p5" title="2.5G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe2p5" title="2.5G PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/u7-lite" target="_blank" rel="noopener noreferrer">U7 Lite</a></span><span class="power-field">13W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="2">
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="2.5G PoE++ ≤60W feeds 100M PoE ≤15.4W"><span class="udc-port gbe2p5" title="2.5G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port fe" title="100M PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a></span><span class="power-field">3.4W</span></div></td>
       </tr>
-
-      <tr class="power-tree-leaf" data-level="2">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/usl-gateway" target="_blank" rel="noopener noreferrer">SuperLink Gateway</a></span><span class="power-field">3.4W</span></div></td>
-      </tr>
-      <tr class="power-tree-leaf" data-level="2">
-        <td class="power-port"><span class="udc-port fe" title="100M PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></td>
-      </tr>
-
       <tr class="power-tree-handle" data-level="2" aria-expanded="false">
-        <th colspan="2">
+        <th>
           <div class="power-handle">
-            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand Garage Door Hub Mini"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Garage <a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a></span><span class="power-readout"><strong>20</strong><span> / 45W</span><small>44.4%</small></span></span>
-            <div class="power-meter" aria-label="Garage Door Hub Mini PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
+            <span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand Door Hub Mini · Garage"><span class="room-mark" aria-hidden="true">+</span></button><span class="power-feed" aria-label="2.5G PoE++ ≤60W feeds 1G PoE++ ≤60W"><span class="udc-port gbe2p5" title="2.5G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="room-name"><a href="https://store.ui.com/us/en/products/ua-hub-door-mini" target="_blank" rel="noopener noreferrer">Door Hub Mini</a> · Garage</span><span class="power-readout"><strong>20</strong><span> / 45W</span><small>44.4%</small></span></span>
+            <div class="power-meter" aria-label="Door Hub Mini · Garage PoE Output Used 20 of 45 watts"><span style="width:44.444%"></span></div>
             <div class="power-terms" aria-label="5 plus 15 equals 20 watts output. Upstream 39 watts.">5 + 15 = 20W · Upstream 39W</div>
           </div>
         </th>
       </tr>
-
-      <tr class="power-tree-ports" data-level="2">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe2p5" title="2.5G PoE++ ≤60W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plusplus"/></svg></span></td>
-      </tr>
-
       <tr class="power-tree-leaf" data-level="3">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a></span><span class="power-field">5W</span></div></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="1G PoE+ ≤30W feeds 100M PoE ≤15.4W"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port fe" title="100M PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/ua-g3" target="_blank" rel="noopener noreferrer">G3 Reader</a></span><span class="power-field">5W</span></div></td>
       </tr>
       <tr class="power-tree-leaf" data-level="3">
-        <td class="power-port"><span class="udc-port fe" title="100M PoE ≤15.4W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
+        <td class="power-device"><div class="power-device-line"><span class="power-feed" aria-label="1G PoE+ ≤30W feeds 1G PoE+ ≤30W"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span><svg class="power-arrow" viewBox="0 0 72 18" aria-hidden="true"><use href="#power-arrow"/></svg><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></span><span class="power-sep" aria-hidden="true">·</span><span class="power-device-name"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a> · Laneway</span><span class="power-field">15W</span></div></td>
       </tr>
-
-      <tr class="power-tree-leaf" data-level="3">
-        <td colspan="2" class="power-device"><div class="power-device-line"><span class="power-device-name"><a href="https://store.ui.com/us/en/products/uvc-g6-pro-turret" target="_blank" rel="noopener noreferrer">G6 Pro Turret</a> · Laneway</span><span class="power-field">15W</span></div></td>
-      </tr>
-      <tr class="power-tree-leaf" data-level="3">
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-        <td class="power-port"><span class="udc-port gbe1" title="1G PoE+ ≤30W"><svg class="udc-poe" aria-hidden="true"><use href="#udc-poe-plus"/></svg></span></td>
-      </tr>
-
     </tbody>
   </table>
   </div>
 
-<h3>2.5 Topology</h3>
   <div class="spec-topo-frame" id="spec-topo-frame">
     <div class="spec-topo-bar">
       <button type="button" id="spec-topo-fullscreen" class="spec-topo-mode" aria-pressed="false">Full Screen</button>
@@ -1979,7 +1554,7 @@
   </div>
 
 <h2>3. Home Assistant System</h2>
-  <p class="lede">Local smart-home control plane: the Den hub, three wall Wallpanels, and one long-term bench set in the Den, with the <a href="#3.3" class="page-ref">§3.3</a> Device List. Radio hardware (<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> ×2 + <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a>) lands in <a href="#3.1" class="page-ref">§3.1</a>. The IP side (Wi‑Fi / MQTT / Matter-over-Wi‑Fi) does not add another stick. Recording and access stay with <a href="#2.2" class="page-ref">§2.2</a> UniFi Protect / Access. HA only automates across them and does not replace the NVR or the Access logic. Check <a href="https://www.home-assistant.io/integrations/" target="_blank" rel="noopener noreferrer">HA Integrations</a> and the community compatibility tables before buying a device. Prefer local control. Cloud is the fallback.</p>
+  <p class="lede">Local smart-home control plane: the Den hub, three wall Wallpanels, and one long-term bench set in the Den, with the <a href="#3.3" class="page-ref">§3.3</a> Device List. Radio hardware (<a href="https://www.home-assistant.io/connect/zbt-2/" target="_blank" rel="noopener noreferrer">ZBT-2</a> ×2 + <a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">ZWA-2</a>) lands in <a href="#3.1" class="page-ref">§3.1</a>. The IP side (Wi‑Fi / MQTT / Matter-over-Wi‑Fi) does not add another stick. Recording and access stay with UniFi Protect / Access. HA only automates across them and does not replace the NVR or the Access logic. Check <a href="https://www.home-assistant.io/integrations/" target="_blank" rel="noopener noreferrer">HA Integrations</a> and the community compatibility tables before buying a device. Prefer local control. Cloud is the fallback.</p>
 
   <p><strong>Bluetooth / BLE:</strong> Everyday speech uses “Bluetooth” for two different things: <strong>Bluetooth Classic</strong> (audio, older serial, and the like) and <strong>Bluetooth Low Energy (BLE)</strong> (low-power advertising and short connections). The Home Assistant <a href="https://www.home-assistant.io/integrations/bluetooth/" target="_blank" rel="noopener noreferrer">Bluetooth</a> integration <strong>supports BLE only</strong>, and does not support Classic. Short-range sensing in this house (BTHome temperature and humidity, and similar), some body-composition scales, and auxiliary presence detection use BLE. Walls attenuate it heavily and there is no mesh, so this does not rely on the Bluetooth radio in the hub chassis. It uses a room-level <a href="https://www.home-assistant.io/integrations/bluetooth/#remote-adapters-bluetooth-proxies" target="_blank" rel="noopener noreferrer">Bluetooth Proxy (remote adapter)</a>. As needed, and not on day 1: one or two Ethernet / PoE ESP32 boards per floor (an external antenna is preferred, such as the Olimex ESP32-PoE-ISO-EA), flashed with <a href="https://esphome.io/components/bluetooth_proxy/" target="_blank" rel="noopener noreferrer">ESPHome Bluetooth Proxy</a>, dedicated to BLE advertisements and short connections. The proxy board itself is wired, so it does not put Wi‑Fi and BLE on the same radio. The ZWA-2 is not the main BLE radio. Buy a vendor bridge (Lutron Caseta and the like) or an IR blaster for an infrared-only device only when one is actually needed. Important security does not depend on phone Bluetooth presence alone.</p>
 
@@ -1996,7 +1571,7 @@
         <li>Placement: in the Den, in the same room as the <a href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Mac Studio</a>, on its own machine. It does not go in the equipment-room rack. Metal chassis, with VESA (under the desk or on the wall). The antenna bases of the three Connect sticks use the supplied cables and sit in an open part of the Den, about 0.5–1 m apart, away from USB 3, SSDs, display power supplies, and the nearest AP. Keep them out of a closed metal cavity. Where AP / Zigbee / Thread share 2.4 GHz, coexistence comes from separating the antenna bases and from channel planning.</li>
         <li>OS and compute: Generic x86-64 Home Assistant OS (the vendor's BIOS preset includes power-on after power loss). The CPU is a quad-core Intel N100.</li>
         <li>Memory and storage: settled at 16 GB DDR4 + 256 GB M.2 2280 SATA. 8 GB is tight for HAOS plus the protocol stacks, and 32 GB is unused headroom because this machine does not run Frigate or a large model. 128 GB fills up with backups and the recorder, and a larger drive or a 2.5″ drive is for media and long backups, which go to the NAS. On the order, name 16 GB / 256 GB under Custom build.</li>
-        <li>Network and power: PoE++ IN → the Den's second room drop → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 10G PoE+++ (see <a href="#2.1.6" class="page-ref">§2.1.6</a>). The Studio has the 10G drop to itself. One free 2.5G port, on a short patch, goes to the DATA IN of the PoE+ injector for the Den bench Wallpanel (see <a href="#3.2" class="page-ref">§3.2</a>). The remaining 2.5G ports can stay free for later. Power is reserved at ≥30 W PoE++ (see <a href="#2.4" class="page-ref">§2.4</a>). 12 V DC is only for setup and troubleshooting. Chassis USB: 1× USB-C + 1× USB 3.0-A + 4× USB 2.0-A. The three sticks each take a USB 2.0-A, where the radio noise is lower. USB-C and USB 3.0-A stay free.</li>
+        <li>Network and power: PoE++ IN → the Den's second room drop → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 10G PoE+++. The Studio has the 10G drop to itself. One free 2.5G port, on a short patch, goes to the DATA IN of the PoE+ injector for the Den bench Wallpanel (see <a href="#3.2" class="page-ref">§3.2</a>). The remaining 2.5G ports can stay free for later. Power is reserved at ≥30 W PoE++ (see <a href="#poe-power" class="page-ref">PoE Power Breakdown</a>). 12 V DC is only for setup and troubleshooting. Chassis USB: 1× USB-C + 1× USB 3.0-A + 4× USB 2.0-A. The three sticks each take a USB 2.0-A, where the radio noise is lower. USB-C and USB 3.0-A stay free.</li>
         <li><a href="https://www.home-assistant.io/connect/zwa-2/" target="_blank" rel="noopener noreferrer">Home Assistant Connect ZWA-2</a> (Z-Wave)
           <ul>
             <li>Wiring: the supplied USB-C to USB-A cable into one USB 2.0-A. Antenna placement follows the rule above.</li>
@@ -2023,7 +1598,7 @@
   </ul>
 
   <h3>3.2 Wallpanel</h3>
-  <p>Four identical core stacks for the house are in <a href="#3.3" class="page-ref">§3.3</a>: three wall mounts (Basement / Main / Upper) and one long-term bench set in the Den. Each wall mount is budgeted at the 30 W IEEE 802.3at ceiling of the <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> (see <a href="#2.4" class="page-ref">§2.4</a>). The bench stand is settled as the <a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a> (purchase in <a href="#3.3" class="page-ref">§3.3</a>). The wall-mount rear shell is in <a href="#3.2.1" class="page-ref">§3.2.1</a>.</p>
+  <p>Four identical core stacks for the house are in <a href="#3.3" class="page-ref">§3.3</a>: three wall mounts (Basement / Main / Upper) and one long-term bench set in the Den. Each wall mount is budgeted at the 30 W IEEE 802.3at ceiling of the <a href="https://www.waveshare.com/poe-m.2-hat-plus-c.htm" target="_blank" rel="noopener noreferrer">Waveshare PoE M.2 HAT+ (C)</a> (see <a href="#poe-power" class="page-ref">PoE Power Breakdown</a>). The bench stand is settled as the <a href="https://shop.pimoroni.com/en-us/products/pibow-frame-for-raspberry-pi-touch-display-2-10" target="_blank" rel="noopener noreferrer">Pimoroni Pibow Frame — Touch Display 2 10.1″</a> (purchase in <a href="#3.3" class="page-ref">§3.3</a>). The wall-mount rear shell is in <a href="#3.2.1" class="page-ref">§3.2.1</a>.</p>
 
   <ul>
     <li>Wall mount ×3: Cat6A home run → patch panel → <a href="https://store.ui.com/us/en/products/usw-pro-xg-24-poe" target="_blank" rel="noopener noreferrer">Pro XG 24 PoE</a> 10G PoE+++ → HAT (C) RJ45.</li>
@@ -2059,12 +1634,12 @@
   <table class="devices-table ha-devices span-groups spec-sheet">
         <thead>
       <tr>
-        <th class="product-head price-head"><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true" aria-label="Collapse all"><span class="room-mark" aria-hidden="true">-</span></button>Device</span><span class="price-total">Total: $1,480.80</span></th>
+        <th class="product-head price-head"><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand all"><span class="room-mark" aria-hidden="true">+</span></button></span><span class="price-total">Total: $1,458.40</span></th>
       </tr>
     </thead>
     <tbody>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Hub</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Hub</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-purchased">
@@ -2099,8 +1674,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Wallpanel</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Wallpanel</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-purchased">
@@ -2190,19 +1765,8 @@
           </span>
         </td>
       </tr>
-      <tr>
-        <td class="device-cell is-purchased">
-          <span class="udc-device">
-            <span class="udc-device-meta">
-              <span class="udc-device-title"><a href="https://store.ui.com/us/en/products/u-poe-plus" target="_blank" rel="noopener noreferrer">PoE+ Adapter</a> (30W · 1G)</span>
-              <span class="protocol-line"></span>
-              <span class="home-price">$22.40</span>
-            </span>
-          </span>
-        </td>
-      </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Lighting</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Lighting</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2215,8 +1779,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Switch</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Switch</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2229,8 +1793,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">HVAC</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">HVAC</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2243,8 +1807,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Shades &amp; Blinds</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Shades &amp; Blinds</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2257,8 +1821,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Sensors</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Sensors</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2271,8 +1835,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Energy &amp; Power</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Energy &amp; Power</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2285,8 +1849,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Presence &amp; Occupancy</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Presence &amp; Occupancy</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2299,8 +1863,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Locks &amp; Access Integration</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Locks &amp; Access Integration</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2313,8 +1877,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Media &amp; AV</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Media &amp; AV</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2327,8 +1891,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Irrigation &amp; Outdoor</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Irrigation &amp; Outdoor</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2341,8 +1905,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Water Safety</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Water Safety</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2355,8 +1919,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Voice &amp; Assist Satellites</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Voice &amp; Assist Satellites</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2369,8 +1933,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Buttons &amp; Scene Controllers</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Buttons &amp; Scene Controllers</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2383,8 +1947,8 @@
           </span>
         </td>
       </tr>
-      <tr class="room-span" aria-expanded="true">
-        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true"><span class="room-mark" aria-hidden="true">-</span></button><span class="room-name">Fans &amp; Air Quality</span></span></th>
+      <tr class="room-span" aria-expanded="false">
+        <th><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false"><span class="room-mark" aria-hidden="true">+</span></button><span class="room-name">Fans &amp; Air Quality</span></span></th>
       </tr>
       <tr>
         <td class="device-cell is-pending">
@@ -2406,7 +1970,7 @@
   <table class="appliances-table home-appliances span-groups spec-sheet">
   <thead>
   <tr>
-    <th class="product-head price-head"><span class="room-line"><button type="button" class="room-toggle" aria-expanded="true" aria-label="Collapse all"><span class="room-mark" aria-hidden="true">-</span></button>Product</span><span class="price-total">Total: $-</span></th>
+    <th class="product-head price-head"><span class="room-line"><button type="button" class="room-toggle" aria-expanded="false" aria-label="Expand all"><span class="room-mark" aria-hidden="true">+</span></button></span><span class="price-total">Total: $-</span></th>
   </tr>
   </thead>
   <tbody>
@@ -2579,7 +2143,7 @@
   <p>Reference: <a href="https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/3/InstallManual/Gateway/3/en-us/index.html" target="_blank" rel="noopener noreferrer">Powerwall 3 Installation Manual with Gateway 3</a>.</p>
 
     <h2>Appendix. Order Fees Running Total</h2>
-  <p class="lede">Order-level fees (shipping / handling, and tax charged on the freight). They are <strong>not</strong> spread into the Device Price in <a href="#2.3" class="page-ref">§2.3</a> / <a href="#3.3" class="page-ref">§3.3</a>. Each settlement is booked as a whole order. A new order is only appended to this table. Settlement PDFs are in <code>orders/</code>.</p>
+  <p class="lede">Order-level fees (shipping / handling, and tax charged on the freight). They are <strong>not</strong> spread into the Device Price in <a href="#devices-list" class="page-ref">Devices List</a> / <a href="#3.3" class="page-ref">§3.3</a>. Each settlement is booked as a whole order. A new order is only appended to this table. Settlement PDFs are in <code>orders/</code>.</p>
   <div class="design-devices-wrap">
   <table class="devices-table order-fees-table">
     <thead>
@@ -2591,12 +2155,12 @@
     </thead>
     <tbody>
       <tr>
-        <td><a href="orders/Ubiquiti%20-%20Order%20%23%20CA6335578.pdf" target="_blank" rel="noopener noreferrer">UniFi <code>CA6335578</code></a></td>
+        <td><a href="orders/Ubiquiti/Ubiquiti%20-%20Order%20%23%20CA6335578%20-%20Updated.pdf" target="_blank" rel="noopener noreferrer">UniFi <code>CA6335578</code></a></td>
         <td class="price-cell">$0.00</td>
         <td>Free Shipping</td>
       </tr>
       <tr>
-        <td><a href="orders/Ubiquiti%20-%20Order%20%23%20CA6414987.pdf" target="_blank" rel="noopener noreferrer">UniFi <code>CA6414987</code></a></td>
+        <td><a href="orders/Ubiquiti/Ubiquiti%20-%20Order%20%23%20CA6414987%20-%20Updated.pdf" target="_blank" rel="noopener noreferrer">UniFi <code>CA6414987</code></a></td>
         <td class="price-cell">$0.00</td>
         <td>Free Shipping</td>
       </tr>
@@ -2641,7 +2205,7 @@
         <td>Free Shipping</td>
       </tr>
       <tr>
-        <td><a href="orders/Ubiquiti%20-%20Order%20%23%20CA6432219.pdf" target="_blank" rel="noopener noreferrer">UniFi <code>CA6432219</code></a></td>
+        <td><a href="orders/Ubiquiti/Ubiquiti%20-%20Order%20%23%20CA6432219%20-%20Updated.pdf" target="_blank" rel="noopener noreferrer">UniFi <code>CA6432219</code></a></td>
         <td class="price-cell">$0.00</td>
         <td>Free Shipping</td>
       </tr>
@@ -2651,7 +2215,7 @@
         <td>Free Shipping</td>
       </tr>
       <tr>
-        <td><a href="orders/Ubiquiti%20-%20Order%20%23%20CA6446590.pdf" target="_blank" rel="noopener noreferrer">UniFi <code>CA6446590</code></a></td>
+        <td><a href="orders/Ubiquiti/Ubiquiti%20-%20Order%20%23%20CA6446590%20-%20Updated.pdf" target="_blank" rel="noopener noreferrer">UniFi <code>CA6446590</code></a></td>
         <td class="price-cell">$0.00</td>
         <td>Free Shipping</td>
       </tr>
@@ -2659,6 +2223,11 @@
         <td><a href="orders/Canon%20-%20Order%20%23%2030682113.pdf" target="_blank" rel="noopener noreferrer">Canon <code>30682113</code></a></td>
         <td class="price-cell">$84.00</td>
         <td>Freight surcharge $75.00 + GST/PST on freight $9.00</td>
+      </tr>
+      <tr>
+        <td><a href="orders/Standard%20Kitchen%20-%20Order%20%23%2012038.pdf" target="_blank" rel="noopener noreferrer">Standard Kitchen <code>12038</code></a></td>
+        <td class="price-cell">$0.00</td>
+        <td>No freight on the invoice</td>
       </tr>
     </tbody>
     <tfoot>

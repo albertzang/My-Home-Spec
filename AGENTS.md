@@ -27,7 +27,7 @@ If port 8000 is already serving this checkout, leave that process running. Do no
 
 ### Page files
 
-This site is one static page. The spec lives in `index.html` (`#tab-spec`). The topology drawing is §2.5 Topology inside that spec. Behaviour stays in `assets/app.js`; chrome and drawing styles stay in `assets/styles.css`.
+This site is one static page. The spec lives in `index.html` (`#tab-spec`). The topology drawing sits in section 2, after the PoE table, with no heading of its own. Behaviour stays in `assets/app.js`; chrome and drawing styles stay in `assets/styles.css`.
 
 ### Verifying edits
 
@@ -49,7 +49,7 @@ The on-screen SVG and the exported sheet are one drawing. Do not fix a screen ru
 
 **Export Blueprint**
 
-- Keep Export Blueprint and Full Screen in the §2.5 Topology bar, outside the drawing stage (`#spec-topo`).
+- Keep Export Blueprint and Full Screen in the Topology bar, outside the drawing stage (`#spec-topo`).
 - Export clones the on-screen topology stage; do not change the drawing to make the buttons fit.
 
 **Cables**
@@ -80,7 +80,7 @@ The on-screen SVG and the exported sheet are one drawing. Do not fix a screen ru
 
 **Alignment**
 
-- Centre the drawing in the §2.5 view.
+- Centre the drawing in the Topology view.
 - Close every fanout on its subtree. The XG frame, the deepest box of the left subtree, and the deepest box of the right subtree share one bottom edge. Nested fanouts, including Flex and the Powerwall leader, follow the same rule.
 
 **PoE labels**

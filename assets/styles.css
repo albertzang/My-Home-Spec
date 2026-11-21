@@ -189,10 +189,6 @@
       box-shadow: 0 1px 0 var(--sheet-header);
     }
 
-    .spa-spec .spa-article table.device-list.is-head-fixed thead tr:nth-child(2) th {
-      box-shadow: 0 1px 0 var(--sheet-header-2);
-    }
-
     .spa-spec .spa-article table.power-tree.is-head-fixed thead tr:nth-child(2) th {
       box-shadow: none;
     }
@@ -218,13 +214,11 @@
       vertical-align: middle;
     }
 
-    /* A bought product, device name, uplink, or downlink carries a 3px brass rail.
+    /* A bought product or device name carries a 3px brass rail.
        An unbought cell keeps its place and draws no rail.
        Group rails stay charcoal. */
     .spa-spec .spa-article table.spec-sheet tbody tr.is-purchased > td.device-cell,
-    .spa-spec .spa-article table.spec-sheet td.device-cell.is-purchased,
-    .spa-spec .spa-article table.spec-sheet .device-main.is-purchased,
-    .spa-spec .spa-article table.spec-sheet .port-pair > .device-cell.is-purchased {
+    .spa-spec .spa-article table.spec-sheet td.device-cell.is-purchased {
       background-color: transparent;
       background-image: linear-gradient(var(--sheet-status), var(--sheet-status));
       background-repeat: no-repeat;
@@ -547,17 +541,17 @@
 
     .spa-spec .spa-article th.price-head .price-total {
       display: block;
-      margin-top: 0.15rem;
-      font-size: 0.72rem;
-      font-weight: 550;
-      line-height: 1.3;
-      color: #777;
+      margin-top: 0;
+      margin-left: auto;
+      font-size: 0.95rem;
+      font-weight: 650;
+      line-height: 1.2;
+      color: var(--sheet-header-ink);
       letter-spacing: 0;
       text-transform: none;
-    }
-
-    .spa-spec .spa-article table.spec-sheet th.price-head .price-total {
-      color: var(--sheet-total);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
     }
 
     .spa-spec .spa-article th.price-head .price-total-ccy {
@@ -823,6 +817,26 @@
 
     .spa-spec .spa-article table.door-access .door-pick-col {
       width: 19rem;
+    }
+
+    .spa-spec .spa-article table.door-access .door-role {
+      --door-tag: 5.4rem;
+      --door-gap: 0.85rem;
+    }
+
+    .spa-spec .spa-article table.door-access .door-run {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.12rem;
+      margin-top: 0.32rem;
+      padding-left: calc(var(--door-tag) + var(--door-gap));
+      min-width: 0;
+    }
+
+    .spa-spec .spa-article table.door-access .door-run-link {
+      font-size: 0.8rem;
+      line-height: 1.35;
     }
 
     .spa-spec .spa-article table.door-access td {
@@ -1185,7 +1199,7 @@
     .spa-spec .spa-article table.door-access .door-role-line {
       display: flex;
       align-items: center;
-      gap: 0.85rem;
+      gap: var(--door-gap, 0.85rem);
     }
 
     .spa-spec .spa-article table.door-access .door-switch {
@@ -1346,7 +1360,7 @@
     }
 
     .spa-spec .spa-article table.door-access .door-role-tag {
-      flex: 0 0 5.4rem;
+      flex: 0 0 var(--door-tag, 5.4rem);
       padding: 0.18rem 0.35rem;
       border-radius: 999px;
       background: var(--role-wash);
@@ -1405,14 +1419,16 @@
       }
 
       .spa-spec .spa-article table.door-access .door-role {
+        --door-tag: 5rem;
+        --door-gap: 0.7rem;
         container-type: inline-size;
       }
 
       .spa-spec .spa-article table.door-access .door-role-line {
         display: grid;
-        grid-template-columns: 5rem minmax(0, 1fr) auto;
+        grid-template-columns: var(--door-tag) minmax(0, 1fr) auto;
         align-items: center;
-        column-gap: 0.7rem;
+        column-gap: var(--door-gap);
         min-width: 0;
       }
 
@@ -1420,7 +1436,7 @@
         grid-column: 1;
         grid-row: 1;
         flex: none;
-        width: 5rem;
+        width: var(--door-tag);
         min-width: 0;
         box-sizing: border-box;
       }
@@ -1443,7 +1459,7 @@
     /* Once the switch would crush the name, drop it onto its own line. */
     @container (max-width: 25rem) {
       .spa-spec .spa-article table.door-access .door-role-line {
-        grid-template-columns: 5rem minmax(0, 1fr);
+        grid-template-columns: var(--door-tag) minmax(0, 1fr);
         row-gap: 0.4rem;
       }
 
@@ -1965,17 +1981,6 @@
       --port-c: #c4785a;
       background: #c4785a; /* Not Ethernet: fibre / USB / CAN / REX / DPS / LOCK */
       color: #fff;
-    }
-
-    td.port-cell {
-      min-width: 4.5rem;
-      vertical-align: middle !important;
-    }
-
-    /* Remove the inline-flex baseline gap so standalone port groups center exactly. */
-    td.port-cell > .udc-ports {
-      display: flex;
-      width: max-content;
     }
 
     .design-devices-wrap .devices-table > tbody > tr > td.price-cell {
@@ -2677,57 +2682,6 @@
       letter-spacing: 0;
     }
 
-    table.device-list td.device-cell:has(.device-main) {
-      padding: 0;
-    }
-
-    table.device-list .device-main {
-      padding: 0.5rem 0.75rem 0.45rem;
-    }
-
-    table.device-list .port-pair {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border-top: 1px solid var(--sheet-line);
-    }
-
-    table.device-list .port-pair > .port-cell {
-      min-width: 0;
-      padding: 0.45rem 0.75rem 0.5rem;
-    }
-
-    /* The ×n hangs below the chip. This follows the shorthand above so it wins. */
-    table.device-list .port-pair > .port-cell:has(.udc-count) {
-      padding-bottom: 1.25rem;
-    }
-
-    table.device-list .port-pair > .port-cell + .port-cell {
-      border-left: 1px solid var(--sheet-line);
-    }
-
-    table.device-list .port-pair .udc-ports {
-      display: flex;
-      flex-wrap: wrap;
-      width: auto;
-      max-width: 100%;
-    }
-
-    table.device-list thead th.port-split {
-      display: flex;
-      padding: 0;
-    }
-
-    table.device-list thead th.port-split > span {
-      flex: 1 1 50%;
-      min-width: 0;
-      padding: 0.35rem 0.75rem;
-      text-align: left;
-    }
-
-    table.device-list thead th.port-split > span + span {
-      box-shadow: inset 1px 0 0 rgba(247, 244, 239, 0.14);
-    }
-
     table.ha-devices .udc-device {
       display: flex;
       flex-direction: row;
@@ -2955,7 +2909,7 @@
     }
 
     /*
-     * §2.5 Topology is the drawing. The bar stays outside the stage so
+     * Topology is the drawing. The bar stays outside the stage so
      * Export Blueprint clones the stage alone. The box is as tall as the
      * drawing: the Spec pane scrolls it vertically, and the box pans sideways.
      */
@@ -3917,14 +3871,36 @@
     table.power-tree tr.power-tree-leaf > td.power-device {
       font-weight: 650;
       color: var(--sheet-ink);
-      padding-bottom: 0.45rem;
     }
 
     table.power-tree .power-device-line {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.45rem;
       min-width: 0;
+    }
+
+    table.power-tree .power-feed {
+      display: inline-flex;
+      align-items: center;
+      flex: 0 0 auto;
+      gap: 0.32rem;
+    }
+
+    table.power-tree .power-arrow {
+      display: block;
+      width: 2.35rem;
+      height: 0.62rem;
+      flex: 0 0 auto;
+      overflow: visible;
+      color: var(--sheet-meter-deep, #7a4e2b);
+    }
+
+    table.power-tree .power-sep {
+      flex: 0 0 auto;
+      color: #8a7464;
+      font-weight: 550;
+      line-height: 1;
     }
 
     table.power-tree .power-device-name {
@@ -3949,31 +3925,7 @@
       color: var(--sheet-price);
     }
 
-    .spa-spec .spa-article table.power-tree tr.power-tree-leaf > td.power-port {
-      padding-top: 0.4rem;
-      padding-bottom: 0.5rem;
-      font-size: 0.78rem;
-      border-top-color: rgba(42, 38, 34, 0.22);
-      box-shadow: inset 3px 0 0 var(--sheet-leaf-rail);
-    }
-
-    .spa-spec .spa-article table.power-tree tr.power-tree-leaf > td.power-port:first-child {
-      border-right-color: rgba(42, 38, 34, 0.22);
-    }
-
-    .spa-spec .spa-article table.power-tree tr.power-tree-leaf > td.power-port + td.power-port {
-      border-left-color: rgba(42, 38, 34, 0.22);
-    }
-
-    .spa-spec .spa-article table.power-tree tr.power-tree-leaf:has(> td.power-device) > td.power-device {
-      border-bottom-color: rgba(42, 38, 34, 0.22);
-    }
-
-    /* Name row and port row are one device. Hovering either paints both. */
-    .spa-spec .spa-article table.power-tree tr.power-tree-leaf:has(> td.power-device):hover > td,
-    .spa-spec .spa-article table.power-tree tr.power-tree-leaf:has(> td.power-device):hover + tr.power-tree-leaf > td,
-    .spa-spec .spa-article table.power-tree tr.power-tree-leaf:has(> td.power-device):has(+ tr.power-tree-leaf:hover) > td,
-    .spa-spec .spa-article table.power-tree tr.power-tree-leaf:has(> td.power-port):hover > td {
+    .spa-spec .spa-article table.power-tree tr.power-tree-leaf:hover > td {
       background-color: var(--sheet-leaf-hover);
     }
 
@@ -4112,58 +4064,11 @@
       color: var(--sheet-header-2-ink);
     }
 
-    .spa-spec .spa-article table.power-tree tr.power-tree-ports > td {
-      padding-top: 0.4rem;
-      padding-bottom: 0.5rem;
-      border-top-color: rgba(42, 38, 34, 0.22);
-      box-shadow: inset 3px 0 0 var(--sheet-leaf-rail);
-    }
-
-    .spa-spec .spa-article table.power-tree tr.power-tree-ports > td:first-child {
-      border-right-color: rgba(42, 38, 34, 0.22);
-    }
-
-    .spa-spec .spa-article table.power-tree tr.power-tree-ports > td + td {
-      border-left-color: rgba(42, 38, 34, 0.22);
-    }
-
-    .spa-spec .spa-article table.power-tree tr.power-tree-handle:has(+ tr.power-tree-ports) > th {
-      padding-bottom: 0.45rem;
-      border-bottom-color: rgba(42, 38, 34, 0.22);
-    }
-
-    /* The relay's own rail continues into its port row, in that row's colour. */
-    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="1"]:has(+ tr.power-tree-ports) > th {
-      box-shadow: inset 3px 0 0 var(--sheet-meter-deep);
-    }
-
-    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="2"]:has(+ tr.power-tree-ports) > th {
-      box-shadow: inset 3px 0 0 var(--sheet-nested-rail);
-    }
-
-    .spa-spec .spa-article table.power-tree tr.power-tree-ports[data-level="1"] > td {
-      background: var(--sheet-l1);
-      color: var(--sheet-l1-ink);
-      box-shadow: inset 3px 0 0 var(--sheet-meter-deep);
-    }
-
-    .spa-spec .spa-article table.power-tree tr.power-tree-ports[data-level="2"] > td {
-      background: var(--sheet-l2);
-      color: var(--sheet-ink);
-      box-shadow: inset 3px 0 0 var(--sheet-nested-rail);
-    }
-
-    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="1"]:hover > th,
-    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="1"]:hover + tr.power-tree-ports > td,
-    .spa-spec .spa-article table.power-tree tr.power-tree-ports[data-level="1"]:hover > td,
-    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="1"]:has(+ tr.power-tree-ports:hover) > th {
+    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="1"]:hover > th {
       background: var(--sheet-l1-hover);
     }
 
-    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="2"]:hover > th,
-    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="2"]:hover + tr.power-tree-ports > td,
-    .spa-spec .spa-article table.power-tree tr.power-tree-ports[data-level="2"]:hover > td,
-    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="2"]:has(+ tr.power-tree-ports:hover) > th {
+    .spa-spec .spa-article table.power-tree tr.power-tree-handle[data-level="2"]:hover > th {
       background: var(--sheet-l2-hover);
     }
 
