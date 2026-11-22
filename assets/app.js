@@ -3825,6 +3825,19 @@
   var path = document.getElementById("rack-path");
   if (!table || !path) return;
 
+  Array.prototype.forEach.call(document.querySelectorAll(".more-details"), function (button) {
+    var panel = document.getElementById(button.getAttribute("aria-controls"));
+    if (!panel) return;
+    button.addEventListener("click", function (event) {
+      event.stopPropagation();
+      var open = button.getAttribute("aria-expanded") !== "true";
+      button.setAttribute("aria-expanded", open ? "true" : "false");
+      panel.hidden = !open;
+      var row = button.closest("tr");
+      if (row && row.querySelector(".rack-slot")) row.classList.toggle("is-details", open);
+    });
+  });
+
   var UI = "https://store.ui.com/us/en/products/";
 
   function shop(slug, name, note) {
