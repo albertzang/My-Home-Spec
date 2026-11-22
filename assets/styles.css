@@ -1662,15 +1662,6 @@
       font-weight: 650;
     }
 
-    .spa-spec .spa-article .appliances-wrap table.home-appliances .sheet-more {
-      margin-top: 0.38rem;
-    }
-
-    .spa-spec .spa-article .appliances-wrap table.home-appliances:not(:has(.is-logo-hidden)) .sheet-more,
-    .spa-spec .spa-article .appliances-wrap table.home-appliances:not(:has(.is-logo-hidden)) td.device-cell > .more-panel {
-      margin-left: var(--logo-slot, 0px);
-    }
-
     .spa-spec .spa-article table.rack-face tbody tr.is-details,
     .spa-spec .spa-article table.rack-face tbody tr.is-details > th,
     .spa-spec .spa-article table.rack-face tbody tr.is-details > td {
