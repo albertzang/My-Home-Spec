@@ -1732,6 +1732,36 @@
       overflow: visible;
     }
 
+    .spa-spec .spa-article table.rack-face tbody tr.is-details td[rowspan] .rack-slot {
+      height: auto;
+      justify-content: flex-start;
+    }
+
+    .rack-photos {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: calc(26 * var(--rack-port) + 25 * var(--rack-gap));
+      max-width: 100%;
+      min-width: 0;
+      margin: 0.2rem 0 0.15rem;
+    }
+
+    .rack-photos[hidden] {
+      display: none;
+    }
+
+    .rack-photo {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      height: auto;
+      max-width: 100%;
+      object-fit: contain;
+      object-position: left center;
+      background: #fff;
+    }
+
     .spa-spec .spa-article table.rack-face tbody tr.is-details > th.rack-u {
       vertical-align: top;
       padding-top: 0.45rem;
