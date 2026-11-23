@@ -983,14 +983,14 @@
         return { kind: "door-hub-subtrees", branches: branches };
       }
 
-      var UI = "https://store.ui.com/us/en/products/";
+      var UI = "https://ca.store.ui.com/ca/en/products/";
       var nodes = [
-        { id: "nah", name: "Nokia XS-250X-A", loc: "Rack Cabinet", href: "https://www.telus.com/en/bc/internet", info: "Preferred TELUS XGS-PON ONT (no Wi-Fi). The jack edge faces the rack rear. 10G RJ45 leaves on a 1 m patch into patch port 24, then a 0.15 m patch up to the UDM CM adapter. If only a NAH is issued, same copper handoff with Port 10G Bridge—do not stack ONT+NAH.",
+        { id: "nah", name: "Nokia XS-250X-A", loc: "Rack", href: "https://www.telus.com/en/bc/internet", info: "Preferred TELUS XGS-PON ONT (no Wi-Fi). The jack edge faces the rack rear. 10G RJ45 leaves on a 1 m patch into patch port 24, then a 0.15 m patch up to the UDM CM adapter. If only a NAH is issued, same copper handoff with Port 10G Bridge—do not stack ONT+NAH.",
           up: [P("nah-pon", "other", { t: "F", title: "XGS-PON fiber in" })],
           down: idleMany(4, "nah-1g", "gbe1", { title: "1G RJ45 unused", idle: true }).concat([
             P("nah-10g", "gbe10", { poe: "wan", title: "10G RJ45 WAN out · 1 m rear into patch 24 · 0.15 m up to UDM CM adapter", child: "udm" })
           ]) },
-        { id: "udm", vlan: "management", name: "UDM-Pro-Max", loc: "Rack Cabinet", href: UI + "udm-pro-max", info: "ONT (or bridged NAH) faces its jack edge rearward. A 1 m patch runs from that jack into patch port 24, a Cat6A keystone coupler; a 0.15 m patch continues up to the RJ45 face of a UACC-CM-RJ45-MG inserted in UDM-Pro-Max WAN SFP+. LAN SFP+ connects directly to USW-Pro-XG-24-PoE by one DAC. LAN 8 reaches UPS 2U Pro management through patch port 23: a 0.15 m patch up from an RJ45–RJ45 keystone coupler, then a 1 m patch from the UPS rear jack into that coupler. The other seven 1G LAN ports stay unused.",
+        { id: "udm", vlan: "management", name: "UDM-Pro-Max", loc: "Rack", href: UI + "udm-pro-max", info: "ONT (or bridged NAH) faces its jack edge rearward. A 1 m patch runs from that jack into patch port 24, a Cat6A keystone coupler; a 0.15 m patch continues up to the RJ45 face of a UACC-CM-RJ45-MG inserted in UDM-Pro-Max WAN SFP+. LAN SFP+ connects directly to USW-Pro-XG-24-PoE by one DAC. LAN 8 reaches UPS 2U Pro management through patch port 23: a 0.15 m patch up from an RJ45–RJ45 keystone coupler, then a 1 m patch from the UPS rear jack into that coupler. The other seven 1G LAN ports stay unused.",
           embed: [
             { name: "UACC-CM-RJ45-MG · RJ45 ↔ SFP+", href: UI + "uacc-cm-rj45-mg" }
           ],
@@ -1002,10 +1002,10 @@
             P("udm-lan8", "gbe1", { title: "LAN 8 1G → patch 23 → UPS 2U Pro at 100M", child: "ups" }),
             P("udm-lan-sfp", "sfp", { t: "SFP+", title: "LAN SFP+ → UACC-DAC-SFP10", child: "xg" })
           ]) },
-        { id: "ups", vlan: "management", name: "UPS 2U Pro", loc: "Rack Cabinet", href: UI + "ups-2u-pro-us", info: "100/10 MbE management jack is on the rear. A 1 m patch lands on patch port 23, an RJ45–RJ45 keystone coupler; a 0.15 m patch continues up to UDM-Pro-Max LAN 8 for adoption and NUT. Two GbE surge in/out ports stay unused; the WAN path is SFP+.",
+        { id: "ups", vlan: "management", name: "UPS 2U Pro", loc: "Rack", href: UI + "ups-2u-pro-us", info: "100/10 MbE management jack is on the rear. A 1 m patch lands on patch port 23, an RJ45–RJ45 keystone coupler; a 0.15 m patch continues up to UDM-Pro-Max LAN 8 for adoption and NUT. Two GbE surge in/out ports stay unused; the WAN path is SFP+.",
           up: [P("ups-lan", "fe", { title: "100/10 MbE management ← patch 23 ← UDM LAN 8" })],
           down: idleMany(2, "ups-surge", "gbe1", { title: "GbE surge in/out unused", idle: true }) },
-        { id: "xg", vlan: "management", name: "USW-Pro-XG-24-PoE", loc: "Rack Cabinet", href: UI + "usw-pro-xg-24-poe", info: "2×SFP28 + 8×2.5G PoE+++ + 16×10G PoE+++. Unused ports hollow.",
+        { id: "xg", vlan: "management", name: "USW-Pro-XG-24-PoE", loc: "Rack", href: UI + "usw-pro-xg-24-poe", info: "2×SFP28 + 8×2.5G PoE+++ + 16×10G PoE+++. Unused ports hollow.",
           poeBar: { label: "PoE Output Used", used: 442.9, cap: 720 },
           up: [
             P("xg-sfp", "sfp", { t: "SFP28", title: "SFP28 ← UACC-DAC-SFP10 at 10G" }),
@@ -1029,7 +1029,7 @@
             P("xg-spare-10g-1", "gbe10", { poe: "ppp", title: "10G PoE+++ spare", idle: true }),
             P("xg-spare-10g-2", "gbe10", { poe: "ppp", title: "10G PoE+++ spare", idle: true })
           ] },
-        { id: "nas", vlan: "servers", inbound: "nas-10g", name: "Synology FS2500", loc: "Rack Cabinet", href: "https://www.synology.com/en-us/products/FS2500", info: "1U all-flash · 12×2.5\" SATA SSD. 2×10G LACP through patch ports 14 and 15, Cat6A keystone couplers: a 1 m patch from each rear jack up the rear post, then 0.15 m down to USW-Pro-XG-24-PoE. No punch-down jack. 2×1G unused. 2×USB 3.2 + Console unused.",
+        { id: "nas", vlan: "servers", inbound: "nas-10g", name: "Synology FS2500", loc: "Rack", href: "https://www.synology.com/en-us/products/FS2500", info: "1U all-flash · 12×2.5\" SATA SSD. 2×10G LACP through patch ports 14 and 15, Cat6A keystone couplers: a 1 m patch from each rear jack up the rear post, then 0.15 m down to USW-Pro-XG-24-PoE. No punch-down jack. 2×1G unused. 2×USB 3.2 + Console unused.",
           up: [
             P("nas-1g1", "gbe1", { title: "1G unused", idle: true }),
             P("nas-1g2", "gbe1", { title: "1G unused", idle: true }),
@@ -1041,7 +1041,7 @@
             P("nas-usb2", "other", { t: "USB-3", title: "USB 3.2 unused", idle: true }),
             P("nas-con", "other", { t: "COM", title: "Console unused", idle: true })
           ] },
-        { id: "ha", vlan: "servers", name: "ameriDroid PoE Mini PC for Home Assistant", loc: "Rack Cabinet", href: "https://ameridroid.com/products/poe-mini-pc-for-home-assistant", info: "PoE++ IN on a USW-Pro-XG-24-PoE 10G PoE+++ port, negotiated at 2.5G. 4×2.5G Intel I225/I226: one PoE++ IN plus three unused NICs are shown upstream. Three radios each use a stock USB-C to USB-A cable into a USB 2.0-A: ZWA-2 (Z-Wave), ZBT-2 (Zigbee), ZBT-2 (Thread). USB-C and USB 3.0-A unused.",
+        { id: "ha", vlan: "servers", name: "ameriDroid PoE Mini PC for Home Assistant", loc: "Main/Den", href: "https://ameridroid.com/products/poe-mini-pc-for-home-assistant", info: "PoE++ IN on a USW-Pro-XG-24-PoE 10G PoE+++ port, negotiated at 2.5G. 4×2.5G Intel I225/I226: one PoE++ IN plus three unused NICs are shown upstream. Three radios each use a stock USB-C to USB-A cable into a USB 2.0-A: ZWA-2 (Z-Wave), ZBT-2 (Zigbee), ZBT-2 (Thread). USB-C and USB 3.0-A unused.",
           embed: [
             { name: "Connect ZWA-2 · Z-Wave", href: "https://www.home-assistant.io/connect/zwa-2/" },
             { name: "Connect ZBT-2 · Zigbee", href: "https://www.home-assistant.io/connect/zbt-2/" },
@@ -1075,7 +1075,7 @@
         { id: "drop-media", name: "UACC-Keystone-Jack-C6A", loc: "Basement/Media Room", href: UI + "uacc-keystone-jack-c6a", info: "C6A home-run on a single-port plate → Cat6 short patch → USW-Flex-2.5G-8 10G RJ45 uplink with PoE+ input.",
           up: [P("drop-media-up", "gbe10", { poe: "ppp", title: "10G ← USW-Pro-XG-24-PoE" })],
           down: [P("drop-media-dn", "gbe10", { poe: "ppp", title: "10G PoE+++ pass-through → USW-Flex-2.5G-8 at PoE+", child: "media-flex" })] },
-        { id: "media-flex", vlan: "management", name: "USW-Flex-2.5G-8", loc: "Basement/Media Room", href: "https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", info: "Non-PoE model. C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45 uplink and PoE+ input from USW-Pro-XG-24-PoE. No AC / USB-C supply. SFP+ combo left unused. Eight 2.5G downlinks have no PoE output.",
+        { id: "media-flex", vlan: "management", name: "USW-Flex-2.5G-8", loc: "Basement/Media Room", href: "https://ca.store.ui.com/ca/en/category/switching-utility/products/usw-flex-2-5g-8", info: "Non-PoE model. C6A home-run ends at the wall; a Cat6 short patch feeds its 10G RJ45 uplink and PoE+ input from USW-Pro-XG-24-PoE. No AC / USB-C supply. SFP+ combo left unused. Eight 2.5G downlinks have no PoE output.",
           /* No PoE output, so it reads as a plain PD: draw against its PoE+ input. */
           poeBar: { used: 14, cap: 30 },
           up: [
@@ -1184,13 +1184,13 @@
           poeBar: { used: 15, cap: 30 },
           up: [P("cam-ct-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
 
-        { id: "wp-b", vlan: "iot", name: "Home Assistant PoE Wallpanel", loc: "Basement Wall Mount", info: "1G PoE+ uplink · 30W reserved (HAT (C) IEEE 802.3at max).",
+        { id: "wp-b", vlan: "iot", name: "Home Assistant PoE Raspberry Pi 5", loc: "Basement", info: "1G PoE+ uplink · 30W reserved (HAT (C) IEEE 802.3at max).",
           poeBar: { used: 30, cap: 30 },
           up: [P("wp-b-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
-        { id: "wp-m", vlan: "iot", name: "Home Assistant PoE Wallpanel", loc: "Main Wall Mount", info: "1G PoE+ uplink · 30W reserved (HAT (C) IEEE 802.3at max).",
+        { id: "wp-m", vlan: "iot", name: "Home Assistant PoE Raspberry Pi 5", loc: "Main", info: "1G PoE+ uplink · 30W reserved (HAT (C) IEEE 802.3at max).",
           poeBar: { used: 30, cap: 30 },
           up: [P("wp-m-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
-        { id: "wp-u", vlan: "iot", name: "Home Assistant PoE Wallpanel", loc: "Upper Wall Mount", info: "1G PoE+ uplink · 30W reserved (HAT (C) IEEE 802.3at max).",
+        { id: "wp-u", vlan: "iot", name: "Home Assistant PoE Raspberry Pi 5", loc: "Upper", info: "1G PoE+ uplink · 30W reserved (HAT (C) IEEE 802.3at max).",
           poeBar: { used: 30, cap: 30 },
           up: [P("wp-u-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [] },
 
@@ -1254,11 +1254,11 @@
         { id: "gw3", name: "Tesla Gateway 3", loc: "Garage", href: "https://energylibrary.tesla.com/docs/Public/EnergyStorage/Powerwall/General/Datasheet/Gateway/3/en-us/Gateway-3-Datasheet.pdf", info: "CAN from Leader only.",
           up: [P("gw3-can", "other", { t: "CAN", title: "CAN ← Leader" })], down: [] },
 
-        { id: "group-wallpanels", name: "Home Assistant PoE Wallpanel ×3", info: "Three identical USW-Pro-XG-24-PoE 10G PoE+++ ports feed Wallpanel runs at 1G PoE+ · 30W (HAT (C) IEEE 802.3at max); locations are listed at right.",
+        { id: "group-wallpanels", name: "Home Assistant PoE Raspberry Pi 5 ×3", info: "Three identical USW-Pro-XG-24-PoE 10G PoE+++ ports feed Wallpanel runs at 1G PoE+ · 30W (HAT (C) IEEE 802.3at max); locations are listed at right.",
           up: [P("wp-b-up", "gbe1", { poe: "plus", title: "1G PoE+" })], down: [],
           bundle: {
             kind: "single", count: 3, source: "wp-b",
-            locations: ["Basement Wall Mount", "Main Wall Mount", "Upper Wall Mount"]
+            locations: ["Basement", "Main", "Upper"]
           } },
         { id: "group-aps", name: "U7-Pro ×3", info: "Three identical USW-Pro-XG-24-PoE 2.5G PoE+++ ports feed U7-Pro runs at 2.5G PoE+; locations are listed at left.",
           up: [P("u7b-up", "gbe2p5", { poe: "plus", title: "2.5G PoE+" })], down: [],
@@ -3338,21 +3338,21 @@
       var uplinkEl = table.querySelector("[data-door-uplink]");
       var statusRoot = table.querySelector("[data-status-select]");
       var statusNameEl = statusRoot.querySelector("[data-status-name]");
-      var XG = { name: "Pro XG 24 PoE", href: "https://store.ui.com/us/en/products/usw-pro-xg-24-poe" };
-      var FLEX = { name: "Flex 2.5G PoE", href: "https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe" };
+      var XG = { name: "Pro XG 24 PoE", href: "https://ca.store.ui.com/ca/en/products/usw-pro-xg-24-poe" };
+      var FLEX = { name: "Flex 2.5G PoE", href: "https://ca.store.ui.com/ca/en/products/usw-flex-2-5g-8-poe" };
       function outdoor(meters) {
         return {
           name: "UniFi Premium Patch Cable Outdoor · " + meters + " m",
-          href: "https://store.ui.com/us/en/products/uacc-cable-patch-outdoor-c6a?variant=uacc-cable-patch-outdoor-c6a-" + meters + "m-bk"
+          href: "https://ca.store.ui.com/ca/en/products/uacc-cable-patch-outdoor-c6a?variant=uacc-cable-patch-outdoor-c6a-" + meters + "m-bk"
         };
       }
       var SURGE = {
         name: "Ethernet Surge Protection",
-        href: "https://store.ui.com/us/en/products/uacc-eth-sp-din"
+        href: "https://ca.store.ui.com/ca/en/products/uacc-eth-sp-din"
       };
       var RELAY = {
         name: "Door Lock Relay Cable",
-        href: "https://store.ui.com/us/en/products/uacc-cable-doorlockrelay"
+        href: "https://ca.store.ui.com/ca/en/products/uacc-cable-doorlockrelay"
       };
       var READER_RUN = [outdoor(2)];
       function cameraRun(meters) {
@@ -3361,12 +3361,12 @@
       var LOCK_RUN = [RELAY];
       var G3 = {
         name: "G3 Reader",
-        href: "https://store.ui.com/us/en/products/ua-g3",
+        href: "https://ca.store.ui.com/ca/en/products/ua-g3",
         meta: []
       };
       var LOCK = {
         name: "Fail-Secure Strike Lock",
-        href: "https://store.ui.com/us/en/products/uacc-lock-strike-secure-15mm",
+        href: "https://ca.store.ui.com/ca/en/products/uacc-lock-strike-secure-15mm",
         meta: []
       };
       var DPS = {
@@ -3377,7 +3377,7 @@
       function turret(place) {
         return {
           name: "G6 Pro Turret",
-          href: "https://store.ui.com/us/en/products/uvc-g6-pro-turret",
+          href: "https://ca.store.ui.com/ca/en/products/uvc-g6-pro-turret",
           meta: [place]
         };
       }
@@ -3389,7 +3389,7 @@
           hint: "G6 Pro Entry · Frontyard",
           reader: {
             name: "G6 Pro Entry",
-            href: "https://store.ui.com/us/en/products/uvc-g6-pro-entry",
+            href: "https://ca.store.ui.com/ca/en/products/uvc-g6-pro-entry",
             meta: []
           },
           camera: turret("Frontyard / Front Eave / North East"),
@@ -3418,7 +3418,7 @@
           reader: G3,
           camera: {
             name: "G6 Pro Bullet",
-            href: "https://store.ui.com/us/en/products/uvc-g6-pro-bullet",
+            href: "https://ca.store.ui.com/ca/en/products/uvc-g6-pro-bullet",
             meta: ["Walkway / Balcony Eave / South East"]
           },
           readerRun: READER_RUN,
@@ -3838,7 +3838,7 @@
     });
   });
 
-  var UI = "https://store.ui.com/us/en/products/";
+  var UI = "https://ca.store.ui.com/ca/en/products/";
 
   function shop(slug, name, note) {
     return { href: UI + slug, name: name, note: note || "" };
@@ -3898,17 +3898,64 @@
     "wall-upper": homeRun(ext("https://www.raspberrypi.com/products/raspberry-pi-5/", "Raspberry Pi 5 — 2\u202fGB RAM", "Upper")),
     meter: passThrough(ext("https://store.egauge.net/egauge-pro-v2-warrantied", "eGauge Pro"), patch, patch15, [xg]),
     fs: passThrough(ext("https://www.synology.com/en-us/products/FS2500", "Synology FS2500"), patch1, patch15, [xg]),
-    "drop-media": roomDrop(ext("https://store.ui.com/us/en/category/switching-utility/products/usw-flex-2-5g-8", "Flex 2.5G"), "uacc-wp-keystone-v-1p", "Media"),
+    "drop-media": roomDrop(ext("https://ca.store.ui.com/ca/en/category/switching-utility/products/usw-flex-2-5g-8", "Flex 2.5G"), "uacc-wp-keystone-v-1p", "Media"),
     "drop-den": roomDrop(ext("https://www.apple.com/mac-studio/", "Mac Studio"), "uacc-wp-keystone-h-2p", "Den"),
     "drop-master": roomDrop(null, "uacc-wp-keystone-v-1p", "Master"),
     "drop-br1": roomDrop(null, "uacc-wp-keystone-v-1p", "BR1"),
     "drop-br2": roomDrop(null, "uacc-wp-keystone-v-1p", "BR2"),
     "drop-seating": roomDrop(null, "uacc-wp-keystone-v-1p", "Seating"),
-    "drop-garage": roomDrop(ext("https://store.ui.com/us/en/products/usw-flex-2-5g-8-poe", "Flex 2.5G PoE"), "uacc-wp-keystone-v-1p", "Garage"),
+    "drop-garage": roomDrop(ext("https://ca.store.ui.com/ca/en/products/usw-flex-2-5g-8-poe", "Flex 2.5G PoE"), "uacc-wp-keystone-v-1p", "Garage"),
     ups: passThrough(shop("ups-2u-pro-us", "UPS 2U Pro"), patch1, patch15, [udm]),
     ont: passThrough(ext("https://www.nokia.com/broadband-access/in-home-connectivity/fiber-ont/", "XS-250X-A"), patch1, patch15, [adapter, udm]),
     dac: [udm, dacCable, xg]
   };
+
+  /* U5 labels use the topology card's name and location. */
+  (function labelPatch() {
+    var row = document.getElementById("rack-u5-ports");
+    var tags = document.querySelector("#rack-u5 .rack-tags");
+    if (!row || !tags) return;
+    var jack = UI + "uacc-keystone-jack-c6a";
+    var ends = {
+      viewport: ["UP-Viewport", "Main/Kitchen", UI + "ufp-viewport"],
+      "u7-basement": ["U7-Pro", "Basement", UI + "u7-pro"],
+      "u7-main": ["U7-Pro", "Main", UI + "u7-pro"],
+      "u7-upper": ["U7-Pro", "Upper", UI + "u7-pro"],
+      "door-front": ["UA-Hub-Door-Mini", "Front Door", UI + "ua-hub-door-mini"],
+      "door-mud": ["UA-Hub-Door-Mini", "Main/Mud/Back Door", UI + "ua-hub-door-mini"],
+      "door-dining": ["UA-Hub-Door-Mini", "Main/Dining/Back Door", UI + "ua-hub-door-mini"],
+      "door-basement": ["UA-Hub-Door-Mini", "Basement/Back Door", UI + "ua-hub-door-mini"],
+      ha: ["ameriDroid PoE Mini PC for Home Assistant", "Main/Den", "https://ameridroid.com/products/poe-mini-pc-for-home-assistant"],
+      "wall-basement": ["Home Assistant PoE Raspberry Pi 5", "Basement", "https://www.raspberrypi.com/products/raspberry-pi-5/"],
+      "wall-main": ["Home Assistant PoE Raspberry Pi 5", "Main", "https://www.raspberrypi.com/products/raspberry-pi-5/"],
+      "wall-upper": ["Home Assistant PoE Raspberry Pi 5", "Upper", "https://www.raspberrypi.com/products/raspberry-pi-5/"],
+      meter: ["eGauge Pro", "Mechanical Room", "https://store.egauge.net/egauge-pro-v2-warrantied"],
+      fs: ["Synology FS2500", "Rack", "https://www.synology.com/en-us/products/FS2500"],
+      "drop-den": ["UACC-Keystone-Jack-C6A", "Main/Den", jack],
+      "drop-master": ["UACC-Keystone-Jack-C6A", "Upper/Master Bedroom", jack],
+      "drop-br1": ["UACC-Keystone-Jack-C6A", "Upper/Bedroom 1", jack],
+      "drop-br2": ["UACC-Keystone-Jack-C6A", "Upper/Bedroom 2", jack],
+      "drop-seating": ["UACC-Keystone-Jack-C6A", "Upper/Seating Area", jack],
+      "drop-media": ["USW-Flex-2.5G-8", "Basement/Media Room", "https://ca.store.ui.com/ca/en/category/switching-utility/products/usw-flex-2-5g-8"],
+      "drop-garage": ["USW-Flex-2.5G-8-PoE", "Garage", UI + "usw-flex-2-5g-8-poe"],
+      ups: ["UPS 2U Pro", "Rack", UI + "ups-2u-pro-us"],
+      ont: ["Nokia XS-250X-A", "Rack", "https://www.telus.com/en/bc/internet"]
+    };
+    Array.prototype.forEach.call(row.querySelectorAll(".udc-port"), function (port) {
+      var end = ends[port.getAttribute("data-link")];
+      if (!end) return;
+      var tag = document.createElement("span");
+      tag.className = "rack-tag";
+      tag.setAttribute("data-link", port.getAttribute("data-link"));
+      var link = document.createElement("a");
+      link.href = end[2];
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = end[0] + " · " + end[1];
+      tag.appendChild(link);
+      tags.appendChild(tag);
+    });
+  })();
 
   var localThumbs = {
     "https://www.apple.com/mac-studio/": "assets/devices/mac-studio.png",
@@ -3978,10 +4025,6 @@
       face.appendChild(label);
     }
     bead.appendChild(face);
-    var note = document.createElement("span");
-    note.className = "rack-bead-note";
-    note.textContent = part.note || "";
-    bead.appendChild(note);
     return bead;
   }
 
@@ -4004,17 +4047,12 @@
     }
   }
 
-  /* Every circle uses the row height minus one caption line, whether or not this run has a caption. */
+  /* Every circle uses the full row height. U8 has no caption under the circles. */
   function placePath() {
     if (path.hidden) return;
     path.style.width = "";
     path.style.transform = "";
-    var row = path.clientHeight;
-    var note = Math.max(11, Math.round(row * 0.19));
-    var gap = 2;
-    path.style.setProperty("--rack-note", note + "px");
-    path.style.setProperty("--rack-note-gap", gap + "px");
-    var room = row - note - gap;
+    var room = path.clientHeight;
     if (room < 16) room = 16;
     path.style.setProperty("--rack-thumb", room.toFixed(2) + "px");
     path.style.setProperty("--rack-join", Math.max(8, Math.round(room * 0.42)) + "px");
@@ -4068,6 +4106,12 @@
   }
 
   table.addEventListener("click", function (event) {
+    var tag = event.target.closest(".rack-tag");
+    if (tag && table.contains(tag)) {
+      var id = tag.getAttribute("data-link");
+      if (id && runs[id]) selectRun(id);
+      return;
+    }
     if (event.target.closest("a")) return;
     var port = event.target.closest(".udc-port");
     if (!port || !table.contains(port)) return;

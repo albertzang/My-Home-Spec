@@ -1476,6 +1476,8 @@
     }
 
     .spa-spec .spa-article table.rack-face {
+      --rack-port: 26px;
+      --rack-gap: 2px;
       width: 100%;
       min-width: max-content;
       max-width: none;
@@ -1662,6 +1664,62 @@
       font-weight: 650;
     }
 
+    /* U5: one label under each keystone. Text starts at the port and reads downward. */
+    .more-panel.rack-tag-panel {
+      align-self: flex-start;
+      width: max-content;
+      margin: 0.28rem 0 0.1rem;
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+
+    .rack-tags {
+      display: flex;
+      align-items: stretch;
+      gap: var(--rack-gap, 2px);
+    }
+
+    .rack-tag {
+      box-sizing: border-box;
+      display: flex;
+      flex: 0 0 var(--rack-port, 26px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      width: var(--rack-port, 26px);
+      min-height: 4.6rem;
+      margin: 0;
+      padding: 0.22rem 0 0.35rem;
+      border: 1px solid var(--sheet-line);
+      border-radius: 2px;
+      background: var(--sheet-paper);
+      color: var(--sheet-ink);
+    }
+
+    .rack-tag > a {
+      display: block;
+      writing-mode: vertical-rl;
+      font-size: 0.68rem;
+      font-weight: 650;
+      line-height: 1;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .rack-tag > a:hover,
+    .rack-tag > a:focus-visible {
+      text-decoration: underline;
+      outline: none;
+    }
+
+    @supports (writing-mode: sideways-rl) {
+      .rack-tag > a {
+        writing-mode: sideways-rl;
+      }
+    }
+
     .spa-spec .spa-article table.rack-face tbody tr.is-details,
     .spa-spec .spa-article table.rack-face tbody tr.is-details > th,
     .spa-spec .spa-article table.rack-face tbody tr.is-details > td {
@@ -1672,6 +1730,11 @@
     .spa-spec .spa-article table.rack-face tbody tr.is-details .rack-slot {
       max-height: none;
       overflow: visible;
+    }
+
+    .spa-spec .spa-article table.rack-face tbody tr.is-details > th.rack-u {
+      vertical-align: top;
+      padding-top: 0.45rem;
     }
 
     .spa-spec .spa-article table.rack-face .rack-note {
@@ -1709,7 +1772,7 @@
       z-index: 1;
     }
 
-    /* A selected run is one skewer. Circle size comes from the row, with one caption line always reserved. */
+    /* A selected run is one skewer. Circle size comes from the full row height. */
     .spa-spec .spa-article table.rack-face .rack-path {
       --rack-wire: 1px;
       --rack-wire-color: var(--sheet-ink);
@@ -1721,7 +1784,7 @@
       max-height: calc(4.25rem - 4px);
       --rack-link-join: max(6px, calc(var(--rack-thumb, 2.6rem) * 0.16));
       --rack-link-pad: max(4px, calc(var(--rack-thumb, 2.6rem) * 0.12));
-      padding: 0 0.75rem calc(var(--rack-note, 12px) + var(--rack-note-gap, 2px));
+      padding: 0 0.75rem;
       align-items: center;
       align-content: center;
       white-space: nowrap;
@@ -1838,27 +1901,6 @@
       line-height: 1.05;
       text-align: center;
       white-space: normal;
-    }
-
-    .spa-spec .spa-article table.rack-face .rack-bead-note {
-      position: absolute;
-      left: 50%;
-      top: 100%;
-      display: block;
-      height: var(--rack-note, 0px);
-      margin-top: var(--rack-note-gap, 0px);
-      overflow: visible;
-      font-size: var(--rack-note, 0px);
-      font-weight: 650;
-      line-height: 1;
-      letter-spacing: 0.01em;
-      text-align: center;
-      white-space: nowrap;
-      transform: translateX(-50%);
-    }
-
-    .spa-spec .spa-article table.rack-face .rack-bead-note:empty {
-      display: none;
     }
 
     .spa-spec .spa-article table.rack-face .rack-bead-face:hover,
