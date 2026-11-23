@@ -3833,21 +3833,8 @@
       var open = button.getAttribute("aria-expanded") !== "true";
       button.setAttribute("aria-expanded", open ? "true" : "false");
       panel.hidden = !open;
-      var slot = button.closest(".rack-slot");
-      if (slot) {
-        Array.prototype.forEach.call(slot.querySelectorAll(".rack-photos"), function (photos) {
-          photos.hidden = !open;
-        });
-      }
       var row = button.closest("tr");
-      if (!row || !row.querySelector(".rack-slot")) return;
-      var cell = button.closest("td");
-      var span = cell ? parseInt(cell.getAttribute("rowspan") || "1", 10) : 1;
-      var target = row;
-      for (var i = 0; i < span && target; i++) {
-        target.classList.toggle("is-details", open);
-        target = target.nextElementSibling;
-      }
+      if (row && row.querySelector(".rack-slot")) row.classList.toggle("is-details", open);
     });
   });
 
