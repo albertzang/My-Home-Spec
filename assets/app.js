@@ -4098,18 +4098,20 @@
     if (runs[id]) port.setAttribute("aria-label", plain(runs[id]));
   });
 
-  function toggle(port) {
-    var id = port && port.getAttribute("data-link");
+  function toggleRun(id) {
     if (!id || !runs[id]) return;
     if (table.getAttribute("data-selected") === id) clearRun();
     else selectRun(id);
   }
 
+  function toggle(port) {
+    toggleRun(port && port.getAttribute("data-link"));
+  }
+
   table.addEventListener("click", function (event) {
     var tag = event.target.closest(".rack-tag");
     if (tag && table.contains(tag)) {
-      var id = tag.getAttribute("data-link");
-      if (id && runs[id]) selectRun(id);
+      toggleRun(tag.getAttribute("data-link"));
       return;
     }
     if (event.target.closest("a")) return;
