@@ -609,9 +609,9 @@
       }
 
       function scheduleLines(unit) {
-        var title = unit.querySelector(":scope > .udc-device-meta > .udc-device-title, :scope > .udc-device-title");
-        var sub = unit.querySelector(":scope > .udc-device-meta > .sku-line, :scope > .udc-device-meta > .protocol-line, :scope > .udc-device-meta > .udc-sku, :scope > .sku-line");
-        return [title, sub].filter(Boolean);
+        var title = unit.querySelector(":scope > .udc-device-meta > .udc-device-title, :scope > .udc-device-meta > .udc-device-head > .udc-device-title, :scope > .udc-device-title");
+        var subs = unit.querySelectorAll(":scope > .udc-device-meta > .sku-line, :scope > .udc-device-meta > .protocol-line, :scope > .udc-device-meta > .udc-sku, :scope > .sku-line");
+        return [title].concat(Array.prototype.slice.call(subs)).filter(Boolean);
       }
 
       function lineOverflows(el) {
@@ -747,7 +747,12 @@
           }
           var textW = 0;
           scheduleLines(unit).forEach(function (line) {
-            textW = Math.max(textW, inkWidth(line));
+            var width = inkWidth(line);
+            if (line.classList.contains("udc-device-title") && line.parentElement) {
+              var details = line.parentElement.querySelector(":scope > .more-details");
+              if (details) width += details.getBoundingClientRect().width + usedGap(line.parentElement);
+            }
+            textW = Math.max(textW, width);
           });
           var priceW = inkWidth(price);
           var logoW = markBox(unit);
@@ -826,13 +831,15 @@
         });
         var devices = document.querySelector("#tab-spec table.device-list");
         var ha = document.querySelector("#tab-spec table.ha-devices");
+        var costs = document.querySelector("#tab-spec table.cost-ledger");
         tighten(devices);
         tighten(ha);
+        tighten(costs);
       }
 
       window.fitScheduleLines = fitSchedules;
 
-      var sheetHeadSelector = "table.home-appliances, table.device-list, table.power-tree, table.ha-devices, table.order-fees-table";
+      var sheetHeadSelector = "table.home-appliances, table.device-list, table.power-tree, table.ha-devices, table.cost-ledger, table.order-fees-table";
 
       function pinSheetHeads() {
         var pane = document.getElementById("tab-spec");
@@ -886,9 +893,11 @@
         var devices = document.querySelector("#tab-spec table.device-list");
         var power = document.querySelector("#tab-spec table.power-tree");
         var ha = document.querySelector("#tab-spec table.devices-table.span-groups:not(.device-list)");
+        var costs = document.querySelector("#tab-spec table.cost-ledger");
         if (devices) lockPane(devices);
         if (power) lockPower(power);
         if (ha) lockPane(ha);
+        if (costs) lockPane(costs);
         fitPowerLines();
         fitSchedules();
         pinSheetHeads();
@@ -3709,19 +3718,44 @@
         return found;
       }
 
+      function hubContentHeight() {
+        var body = table.querySelector(".door-pick-body");
+        if (!body) return 0;
+        var need = 0;
+        Array.prototype.forEach.call(body.children, function (child) {
+          need += child.getBoundingClientRect().height;
+        });
+        var cs = getComputedStyle(body);
+        need += (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
+        return Math.ceil(need);
+      }
+
       function equalizeRows() {
         var rows = table.querySelectorAll(".door-role");
+        var pick = table.querySelector(".door-pick");
         var stacked = window.matchMedia("(max-width: 720px)").matches;
         Array.prototype.forEach.call(rows, function (row) { row.style.height = ""; });
+        if (pick) pick.style.minHeight = "";
         if (stacked) return;
-        var max = 0;
+        if (!table.querySelector('.more-details[aria-expanded="true"]')) {
+          var max = 0;
+          Array.prototype.forEach.call(rows, function (row) {
+            var h = row.getBoundingClientRect().height;
+            if (h > max) max = h;
+          });
+          if (max >= 1) {
+            var px = Math.ceil(max) + "px";
+            Array.prototype.forEach.call(rows, function (row) { row.style.height = px; });
+          }
+        }
+        if (!pick || !rows.length) return;
+        var need = hubContentHeight();
+        var have = pick.getBoundingClientRect().height;
+        if (need <= have + 1) return;
+        var extra = Math.ceil((need - have) / rows.length);
         Array.prototype.forEach.call(rows, function (row) {
-          var h = row.getBoundingClientRect().height;
-          if (h > max) max = h;
+          row.style.height = Math.ceil(row.getBoundingClientRect().height + extra) + "px";
         });
-        if (max < 1) return;
-        var px = Math.ceil(max) + "px";
-        Array.prototype.forEach.call(rows, function (row) { row.style.height = px; });
       }
       window.equalizeDoorRows = equalizeRows;
 
@@ -3835,6 +3869,8 @@
       panel.hidden = !open;
       var row = button.closest("tr");
       if (row && row.querySelector(".rack-slot")) row.classList.toggle("is-details", open);
+      if (window.pinSheetHeads) window.pinSheetHeads();
+      if (window.equalizeDoorRows && button.closest("#door-access")) window.equalizeDoorRows();
     });
   });
 
